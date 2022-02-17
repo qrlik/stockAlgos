@@ -27,3 +27,25 @@ std::string binance::getCandleIntervalApiStr(candleInterval aInterval) {
 	}
 	return "";
 }
+
+candle binance::parseCandleFromJson(const Json& aJson) {
+	auto result = candle();
+	for (const auto& [field, value] : aJson.items()) {
+		if (field == "time") {
+			result.time = value.get<std::string>();
+		}
+		else if (field == "open") {
+			result.open = value.get<float>();
+		}
+		else if (field == "high") {
+			result.high = value.get<float>();
+		}
+		else if (field == "low") {
+			result.low = value.get<float>();
+		}
+		else if (field == "close") {
+			result.close = value.get<float>();
+		}
+	}
+	return result;
+}

@@ -1,4 +1,5 @@
 #pragma once
+#include "../../third_party/json.hpp"
 #include <string>
 #include <unordered_map>
 
@@ -20,8 +21,6 @@ namespace binance {
 		ONE_WEEK = 604800000
 	};
 
-	std::string getCandleIntervalApiStr(candleInterval aInterval);
-
 	struct candle {
 		std::string time;
 		float open = 0.f;
@@ -32,7 +31,9 @@ namespace binance {
 		float atr = 0.f;
 		float superTrend = 0.f;
 
-		int interval = 0;
 		bool trendIsUp = false;
 	};
+
+	std::string getCandleIntervalApiStr(candleInterval aInterval);
+	candle parseCandleFromJson(const Json& aJson);
 }

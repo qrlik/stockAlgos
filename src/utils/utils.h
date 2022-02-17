@@ -1,4 +1,8 @@
 #pragma once
 #include "../../third_party/json.hpp"
+#include "../simpleStructs/candle.h"
 
-using json = nlohmann::json;
+namespace utils {
+	Json readFromJson(const std::string& aPath);
+	std::vector<binance::candle> parseCandles(const Json& aJson);
+}
