@@ -19,11 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\indicators\superTrend.cpp" />
+    <ClCompile Include="src\indicators\trueRange.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\simpleStructs\candle.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\indicators\superTrend.h" />
+    <ClInclude Include="src\indicators\trueRange.h" />
     <ClInclude Include="src\simpleStructs\candle.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="third_party\json.hpp" />
@@ -94,11 +98,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

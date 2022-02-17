@@ -8,6 +8,12 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\indicators\superTrend.cpp">
+      <Filter>indicators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\indicators\trueRange.cpp">
+      <Filter>indicators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="simpleStructs">
@@ -19,6 +25,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{7a4933c7-4978-44f8-a043-9e439ea52e50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="indicators">
+      <UniqueIdentifier>{325e142e-1f01-4874-9dde-d22e5ff49dec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="third_party\json.hpp">
@@ -29,6 +38,12 @@
     </ClInclude>
     <ClInclude Include="src\utils\utils.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\indicators\superTrend.h">
+      <Filter>indicators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\indicators\trueRange.h">
+      <Filter>indicators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

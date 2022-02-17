@@ -4,5 +4,7 @@
 
 namespace utils {
 	Json readFromJson(const std::string& aPath);
-	std::vector<binance::candle> parseCandles(const Json& aJson);
+	std::vector<candle> parseCandles(const Json& aJson);
+
+	double round(double aValue, int size);
 }
