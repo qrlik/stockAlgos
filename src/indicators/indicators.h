@@ -11,4 +11,5 @@ namespace indicators {
 	};
 
 	void calculateRangeAtr(std::vector<candle>& aCandles, eAtrType aType, size_t aSize);
+	void calculateSuperTrends(std::vector<candle>& aCandles, double aFactor);
 }

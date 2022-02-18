@@ -30,7 +30,7 @@ struct candle {
 	double atr = 0.f;
 	double superTrend = 0.f;
 
-	double trendIsUp = false;
+	bool trendIsUp = false;
 };
 
 std::string getCandleIntervalApiStr(eCandleInterval aInterval);

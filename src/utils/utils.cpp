@@ -22,7 +22,7 @@ std::vector<candle> utils::parseCandles(const Json& aJson) {
 	return result;
 }
 
-double utils::round(double aValue, int size) {
-	double factor = std::pow(10, size);
+double utils::round(double aValue, int aSize) {
+	auto factor = static_cast<int>(std::pow(10, aSize));
 	return std::round(aValue * factor) / factor;
 }

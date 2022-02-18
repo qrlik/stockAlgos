@@ -8,10 +8,7 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\indicators\superTrend.cpp">
-      <Filter>indicators</Filter>
-    </ClCompile>
-    <ClCompile Include="src\indicators\trueRange.cpp">
+    <ClCompile Include="src\indicators\indicators.cpp">
       <Filter>indicators</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,10 +36,7 @@
     <ClInclude Include="src\utils\utils.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="src\indicators\superTrend.h">
-      <Filter>indicators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\indicators\trueRange.h">
+    <ClInclude Include="src\indicators\indicators.h">
       <Filter>indicators</Filter>
     </ClInclude>
   </ItemGroup>

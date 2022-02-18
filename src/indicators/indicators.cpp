@@ -1,10 +1,15 @@
-#include "trueRange.h"
+#include "indicators.h"
+#include "../utils/utils.h"
 #include <deque>
 
 using namespace indicators;
 
 namespace {
     double lastEma = 0.0;
+    double lastUpperBand = 0.0;
+    double lastLowerBand = 0.0;
+    double lastTrend = 0.0;
+    double lastClose = 0.0;
 
     double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
         auto candleSize = aCandle.high - aCandle.low;
@@ -55,21 +60,58 @@ namespace {
             return calculateTrueRangeEMA(aTrList, 1.0 / aTrList.size());
         }
     }
+
+    void calculateSuperTrend(candle& aCandle, double aFactor) {
+        auto middlePrice = (aCandle.high + aCandle.low) / 2;
+
+        auto upperBand = utils::round(middlePrice + aFactor * aCandle.atr, 2);
+        auto lowerBand = utils::round(middlePrice - aFactor * aCandle.atr, 2);
+
+        upperBand = (upperBand < lastUpperBand || lastClose > lastUpperBand) ? upperBand : lastUpperBand;
+        lowerBand = (lowerBand > lastLowerBand || lastClose < lastLowerBand) ? lowerBand : lastLowerBand;
+
+        auto trendIsUp = false;
+        if (lastTrend == lastUpperBand) {
+            trendIsUp = aCandle.close > upperBand;
+        }
+        else {
+            trendIsUp = aCandle.close > lowerBand;
+        }
+
+        lastTrend = (trendIsUp) ? lowerBand : upperBand;
+        lastUpperBand = upperBand;
+        lastLowerBand = lowerBand;
+        lastClose = aCandle.close;
+        aCandle.superTrend = lastTrend;
+        aCandle.trendIsUp = trendIsUp;
+    }
+
+    void resetStData() {
+        lastUpperBand = 0.0;
+        lastLowerBand = 0.0;
+        lastTrend = 0.0;
+        lastClose = 0.0;
+    }
 }
 
 void indicators::calculateRangeAtr(std::vector<candle>& aCandles, eAtrType aType, size_t aSize) {
     std::deque<double> trList;
-    size_t index = 1;
-    while (index < aCandles.size()) {
-        auto currentTrueRange = calculateTrueRange(aCandles[index], aCandles[index - 1]);
+    for (size_t i = 1, size = aCandles.size(); i < size; ++i) {
+        auto currentTrueRange = calculateTrueRange(aCandles[i], aCandles[i - 1]);
         trList.push_back(currentTrueRange);
         if (trList.size() > aSize) {
             trList.pop_front();
         }
-        if (index >= aSize) {
-            aCandles[index].atr = calculateTrueRangeMA(trList, aType);
+        if (i >= aSize) {
+            aCandles[i].atr = calculateTrueRangeMA(trList, aType);
         }
-        index += 1;
     }
     lastEma = 0.0;
+}
+
+void indicators::calculateSuperTrends(std::vector<candle>& aCandles, double aFactor) {
+    for (auto& candle : aCandles) {
+        calculateSuperTrend(candle, aFactor);
+    }
+    resetStData();
 }

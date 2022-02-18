@@ -6,5 +6,5 @@ namespace utils {
 	Json readFromJson(const std::string& aPath);
 	std::vector<candle> parseCandles(const Json& aJson);
 
-	double round(double aValue, int size);
+	double round(double aValue, int aSize);
 }

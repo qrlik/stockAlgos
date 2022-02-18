@@ -19,15 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\indicators\superTrend.cpp" />
-    <ClCompile Include="src\indicators\trueRange.cpp" />
+    <ClCompile Include="src\indicators\indicators.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\simpleStructs\candle.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\indicators\superTrend.h" />
-    <ClInclude Include="src\indicators\trueRange.h" />
+    <ClInclude Include="src\indicators\indicators.h" />
     <ClInclude Include="src\simpleStructs\candle.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="third_party\json.hpp" />
