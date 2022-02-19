@@ -1,6 +1,7 @@
 #pragma once
 #include "../structs/algorithmData.h"
 #include "../structs/candle.h"
+#include "../structs/orderData.h"
 #include "../indicators/indicators.h"
 #include "activationWaiter.h"
 
@@ -16,10 +17,13 @@ namespace algorithm {
         };
         moneyMaker(const algorithmData& aData);
 
+        orderData& getOrder();
+        const candle& getCandle() const;
+        double getLastUpSuperTrend() const;
+        double getLastDownSuperTrend() const;
         eState getState() const;
         void setState(eState aState);
         bool getIsTrendUp() const;
-        const candle& getCandle() const;
 
         double getSuperTrend() const;
         double getActualSuperTrend() const;
@@ -41,7 +45,7 @@ namespace algorithm {
         bool isNewTrend = false;
         eState state = eState::NONE;
 
-        //order = None
+        orderData order;
         candle curCandle;
         candle prevCandle;
 

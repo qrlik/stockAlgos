@@ -28,6 +28,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\structs\algorithmData.cpp" />
     <ClCompile Include="src\structs\candle.cpp" />
+    <ClCompile Include="src\structs\orderData.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +40,7 @@
     <ClInclude Include="src\indicators\indicators.h" />
     <ClInclude Include="src\structs\algorithmData.h" />
     <ClInclude Include="src\structs\candle.h" />
+    <ClInclude Include="src\structs\orderData.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="third_party\json.hpp" />
   </ItemGroup>

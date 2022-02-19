@@ -29,6 +29,9 @@
     <ClCompile Include="src\structs\candle.cpp">
       <Filter>structs</Filter>
     </ClCompile>
+    <ClCompile Include="src\structs\orderData.cpp">
+      <Filter>structs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -76,6 +79,9 @@
       <Filter>structs</Filter>
     </ClInclude>
     <ClInclude Include="src\structs\candle.h">
+      <Filter>structs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structs\orderData.h">
       <Filter>structs</Filter>
     </ClInclude>
   </ItemGroup>

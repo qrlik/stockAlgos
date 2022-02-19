@@ -31,6 +31,18 @@ const candle& moneyMaker::getCandle() const {
 	return curCandle;
 }
 
+orderData& moneyMaker::getOrder() {
+	return order;
+}
+
+double moneyMaker::getLastUpSuperTrend() const {
+	return lastUpSuperTrend;
+}
+
+double moneyMaker::getLastDownSuperTrend() const {
+	return lastDownSuperTrend;
+}
+
 double moneyMaker::getSuperTrend() const {
 	return (isTrendUp) ? lastUpSuperTrend : lastDownSuperTrend;
 }
