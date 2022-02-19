@@ -12,6 +12,18 @@ namespace algorithm {
             STOP_LOSS_WAIT = 3,
             ACTIVATION_WAIT = 4
         };
+
+        eState getState() const;
+        void setState(eState aState);
+        bool getIsTrendUp() const;
+        const candle& getCandle() const;
+
+        double getSuperTrend() const;
+        double getActualSuperTrend() const;
+        double getTrendActivation(double aSuperTrend) const;
+        bool isNewTrendChanged();
+
+        void openOrder(eState aState, double aPrice);
     private:
         //activationWaiterModule = None
         //stopLossWaiterModule = None

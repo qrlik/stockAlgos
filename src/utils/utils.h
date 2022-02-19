@@ -7,4 +7,6 @@ namespace utils {
 	std::vector<candle> parseCandles(const Json& aJson);
 
 	double round(double aValue, int aSize);
+	double ceil(double aValue, int aSize);
+	double floor(double aValue, int aSize);
 }
