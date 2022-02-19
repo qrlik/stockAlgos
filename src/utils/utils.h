@@ -1,6 +1,6 @@
 #pragma once
 #include "../../third_party/json.hpp"
-#include "../simpleStructs/candle.h"
+#include "../structs/candle.h"
 
 namespace utils {
 	Json readFromJson(const std::string& aPath);

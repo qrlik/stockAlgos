@@ -3,6 +3,18 @@
 
 using namespace algorithm;
 
+moneyMaker::moneyMaker(const algorithmData& aData):
+	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
+	stFactor(aData.stFactor),
+	atrSize(aData.atrSize),
+	atrType(aData.atrType),
+	activationPercent(aData.activationPercent),
+	stopLossPercent(aData.stopLossPercent),
+	minimumProfitPercent(aData.minimumProfitPercent),
+	dealPercent(aData.dealPercent),
+	leverage(aData.leverage)
+{}
+
 moneyMaker::eState moneyMaker::getState() const {
 	return state;
 }

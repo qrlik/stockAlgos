@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\simpleStructs\candle.cpp">
-      <Filter>simpleStructs</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\utils.cpp">
       <Filter>utils</Filter>
     </ClCompile>
@@ -26,11 +23,14 @@
     <ClCompile Include="src\algorithm\trendOpener.cpp">
       <Filter>algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="src\structs\algorithmData.cpp">
+      <Filter>structs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\structs\candle.cpp">
+      <Filter>structs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="simpleStructs">
-      <UniqueIdentifier>{2854f3eb-676c-4916-8e0c-100f5bdaecb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="third_party">
       <UniqueIdentifier>{579b280f-f617-48cc-adfb-bc0b3528ffa2}</UniqueIdentifier>
     </Filter>
@@ -43,13 +43,13 @@
     <Filter Include="algorithm">
       <UniqueIdentifier>{2771bb50-8269-4ce5-84ba-901f11d92b1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="structs">
+      <UniqueIdentifier>{2854f3eb-676c-4916-8e0c-100f5bdaecb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="third_party\json.hpp">
       <Filter>third_party</Filter>
-    </ClInclude>
-    <ClInclude Include="src\simpleStructs\candle.h">
-      <Filter>simpleStructs</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\utils.h">
       <Filter>utils</Filter>
@@ -71,6 +71,12 @@
     </ClInclude>
     <ClInclude Include="src\algorithm\trendOpener.h">
       <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structs\algorithmData.h">
+      <Filter>structs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structs\candle.h">
+      <Filter>structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

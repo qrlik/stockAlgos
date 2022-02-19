@@ -26,7 +26,8 @@
     <ClCompile Include="src\algorithm\trendOpener.cpp" />
     <ClCompile Include="src\indicators\indicators.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\simpleStructs\candle.cpp" />
+    <ClCompile Include="src\structs\algorithmData.cpp" />
+    <ClCompile Include="src\structs\candle.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +37,8 @@
     <ClInclude Include="src\algorithm\stopLossWaiter.h" />
     <ClInclude Include="src\algorithm\trendOpener.h" />
     <ClInclude Include="src\indicators\indicators.h" />
-    <ClInclude Include="src\simpleStructs\candle.h" />
+    <ClInclude Include="src\structs\algorithmData.h" />
+    <ClInclude Include="src\structs\candle.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="third_party\json.hpp" />
   </ItemGroup>

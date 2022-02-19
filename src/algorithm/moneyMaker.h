@@ -1,6 +1,8 @@
 #pragma once
-#include "../simpleStructs/candle.h"
+#include "../structs/algorithmData.h"
+#include "../structs/candle.h"
 #include "../indicators/indicators.h"
+#include "activationWaiter.h"
 
 namespace algorithm {
     class moneyMaker {
@@ -12,6 +14,7 @@ namespace algorithm {
             STOP_LOSS_WAIT = 3,
             ACTIVATION_WAIT = 4
         };
+        moneyMaker(const algorithmData& aData);
 
         eState getState() const;
         void setState(eState aState);
@@ -25,7 +28,7 @@ namespace algorithm {
 
         void openOrder(eState aState, double aPrice);
     private:
-        //activationWaiterModule = None
+        activationWaiter activationWaiterModule;
         //stopLossWaiterModule = None
         //dynamicStopLossModule = None
         //trendTouchOpenerModule = None
@@ -43,7 +46,7 @@ namespace algorithm {
         candle prevCandle;
 
         double stFactor = 0.0;
-        int atrSize = 0;
+        size_t atrSize = 0;
         indicators::eAtrType atrType = indicators::eAtrType::NONE;
 
         double activationPercent = 0.0;

@@ -1,5 +1,5 @@
 #pragma once
-#include "../simpleStructs/candle.h"
+#include "../structs/candle.h"
 #include <vector>
 
 namespace indicators {

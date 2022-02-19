@@ -27,12 +27,12 @@ double utils::round(double aValue, int aSize) {
 	return std::round(aValue * factor) / factor;
 }
 
-double ceil(double aValue, int aSize) {
+double utils::ceil(double aValue, int aSize) {
 	auto factor = static_cast<int>(std::pow(10, aSize));
 	return std::ceil(aValue * factor) / factor;
 }
 
-double floor(double aValue, int aSize) {
+double utils::floor(double aValue, int aSize) {
 	auto factor = static_cast<int>(std::pow(10, aSize));
 	return std::floor(aValue * factor) / factor;
 }
