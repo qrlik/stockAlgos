@@ -4,6 +4,7 @@
 
 namespace indicators {
 	enum class eAtrType : unsigned char {
+		NONE = 0,
 		RMA = 1,
 		EMA = 2,
 		WMA = 3,

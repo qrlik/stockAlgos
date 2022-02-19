@@ -11,6 +11,21 @@
     <ClCompile Include="src\indicators\indicators.cpp">
       <Filter>indicators</Filter>
     </ClCompile>
+    <ClCompile Include="src\algorithm\activationWaiter.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algorithm\dynamicStopLoss.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algorithm\moneyMaker.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algorithm\stopLossWaiter.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algorithm\trendOpener.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="simpleStructs">
@@ -25,6 +40,9 @@
     <Filter Include="indicators">
       <UniqueIdentifier>{325e142e-1f01-4874-9dde-d22e5ff49dec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="algorithm">
+      <UniqueIdentifier>{2771bb50-8269-4ce5-84ba-901f11d92b1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="third_party\json.hpp">
@@ -38,6 +56,21 @@
     </ClInclude>
     <ClInclude Include="src\indicators\indicators.h">
       <Filter>indicators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\activationWaiter.h">
+      <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\dynamicStopLoss.h">
+      <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\moneyMaker.h">
+      <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\stopLossWaiter.h">
+      <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\trendOpener.h">
+      <Filter>algorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

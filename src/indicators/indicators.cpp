@@ -56,8 +56,11 @@ namespace {
             return calculateTrueRangeWMA(aTrList);
         case indicators::eAtrType::EMA:
             return calculateTrueRangeEMA(aTrList, 2.0 / (aTrList.size() + 1));
-        default:
+        case indicators::eAtrType::RMA:
             return calculateTrueRangeEMA(aTrList, 1.0 / aTrList.size());
+        default:
+            assert(false && "calculateTrueRangeMA NONE type");
+            return 0.0;
         }
     }
 
