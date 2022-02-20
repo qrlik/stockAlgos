@@ -2,6 +2,7 @@
 #include "../structs/algorithmData.h"
 #include "../structs/candle.h"
 #include "../structs/orderData.h"
+#include "../structs/statistic.h"
 #include "../indicators/indicators.h"
 #include "activationWaiter.h"
 #include "dynamicStopLoss.h"
@@ -54,7 +55,7 @@ namespace algorithm {
         dynamicStopLoss dynamicStopLossModule;
         trendTouchOpener trendTouchOpenerModule;
         trendBreakOpener trendBreakOpenerModule;
-        //stats = None
+        statistic stats;
 
         double lastUpSuperTrend = 0.0;
         double lastDownSuperTrend = 0.0;

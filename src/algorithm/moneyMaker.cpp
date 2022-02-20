@@ -125,6 +125,7 @@ bool moneyMaker::doAction(const candle& aCandle) {
 	if (withLogs) {
 		log();
 	}
+	return true;
 }
 
 bool moneyMaker::update() {
@@ -209,7 +210,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 	if (fullCheck) {
 		cash = utils::floor(cash, 2);
 	}
-	//stats.onOpenOrder(inNewTrend);
+	stats.onOpenOrder(isNewTrend);
 	isNewTrend = false;
 }
 
@@ -230,7 +231,7 @@ void moneyMaker::closeOrder() {
 		cash = utils::floor(cash, 2);
 	}
 	order = orderData{};
-	//stats.onCloseOrder(cash, profit);
+	stats.onCloseOrder(cash, profit);
 	if (cash <= stopCash) {
 		stopCashBreak = true;
 	}
