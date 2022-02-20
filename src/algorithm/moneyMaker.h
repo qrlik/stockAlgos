@@ -19,7 +19,8 @@ namespace algorithm {
             STOP_LOSS_WAIT = 3,
             ACTIVATION_WAIT = 4
         };
-        moneyMaker(const algorithmData& aData);
+        moneyMaker(const algorithmData& aData, double aCash);
+        void calculate(const std::vector<candle>& aCandles);
 
         activationWaiter& getActivationWaiter();
         orderData& getOrder();
@@ -37,6 +38,17 @@ namespace algorithm {
 
         void openOrder(eState aState, double aPrice);
     private:
+        bool doAction(const candle& aCandle);
+        bool update();
+        bool updateCandles(const candle& aCandle);
+        void updateTrends();
+        bool updateOrder();
+        bool checkTrend();
+        void closeOrder();
+        void log();
+        double getStopLossPrice() const;
+        double getMinimumProfitPrice() const;
+
         activationWaiter activationWaiterModule;
         stopLossWaiter stopLossWaiterModule;
         dynamicStopLoss dynamicStopLossModule;
@@ -54,23 +66,24 @@ namespace algorithm {
         candle curCandle;
         candle prevCandle;
 
-        double stFactor = 0.0;
-        size_t atrSize = 0;
-        indicators::eAtrType atrType = indicators::eAtrType::NONE;
+        const double stFactor = 0.0;
+        const size_t atrSize = 0;
+        const indicators::eAtrType atrType = indicators::eAtrType::NONE;
 
-        double activationPercent = 0.0;
-        double stopLossPercent = 0.0;
-        double minimumProfitPercent = 0.0;
-        double dealPercent = 0.0;
+        const double activationPercent = 0.0;
+        const double stopLossPercent = 0.0;
+        const double minimumProfitPercent = 0.0;
+        const double dealPercent = 0.0;
 
         const double tax = 0.0004;
+        const double startCash = 0.0;
+        const double stopCash = 0.0;
         double cash = 0.0;
-        double startCash = 0.0;
-        double stopCash = 0.0;
-        int leverage = 0;
+        const int leverage = 0;
 
         bool stopCashBreak = false;
         bool fullCheck = false;
         bool withLogs = true;
+        bool inited = false;
     };
 }
