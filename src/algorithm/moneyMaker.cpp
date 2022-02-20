@@ -7,6 +7,7 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
 	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
 	dynamicStopLossModule(this, aData.dynamicSLPercent, aData.dynamicSLTrendMode),
+	trendBreakOpenerModule(this, aData.breakOpenerEnabled, aData.breakOpenerActivationWaitMode, aData.alwaysUseNewTrend),
 	stFactor(aData.stFactor),
 	atrSize(aData.atrSize),
 	atrType(aData.atrType),
@@ -31,6 +32,10 @@ bool moneyMaker::getIsTrendUp() const {
 
 const candle& moneyMaker::getCandle() const {
 	return curCandle;
+}
+
+activationWaiter& moneyMaker::getActivationWaiter() {
+	return activationWaiterModule;
 }
 
 orderData& moneyMaker::getOrder() {

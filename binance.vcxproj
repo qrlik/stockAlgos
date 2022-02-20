@@ -23,7 +23,7 @@
     <ClCompile Include="src\algorithm\dynamicStopLoss.cpp" />
     <ClCompile Include="src\algorithm\moneyMaker.cpp" />
     <ClCompile Include="src\algorithm\stopLossWaiter.cpp" />
-    <ClCompile Include="src\algorithm\trendOpener.cpp" />
+    <ClCompile Include="src\algorithm\trendBreakOpener.cpp" />
     <ClCompile Include="src\indicators\indicators.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\structs\algorithmData.cpp" />
@@ -36,7 +36,7 @@
     <ClInclude Include="src\algorithm\dynamicStopLoss.h" />
     <ClInclude Include="src\algorithm\moneyMaker.h" />
     <ClInclude Include="src\algorithm\stopLossWaiter.h" />
-    <ClInclude Include="src\algorithm\trendOpener.h" />
+    <ClInclude Include="src\algorithm\trendBreakOpener.h" />
     <ClInclude Include="src\indicators\indicators.h" />
     <ClInclude Include="src\structs\algorithmData.h" />
     <ClInclude Include="src\structs\candle.h" />

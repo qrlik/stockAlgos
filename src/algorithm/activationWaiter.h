@@ -1,4 +1,5 @@
 #pragma once
+
 namespace algorithm {
 	class moneyMaker;
 	class activationWaiter {

@@ -6,6 +6,7 @@
 #include "activationWaiter.h"
 #include "dynamicStopLoss.h"
 #include "stopLossWaiter.h"
+#include "trendBreakOpener.h"
 
 namespace algorithm {
     class moneyMaker {
@@ -19,6 +20,7 @@ namespace algorithm {
         };
         moneyMaker(const algorithmData& aData);
 
+        activationWaiter& getActivationWaiter();
         orderData& getOrder();
         const candle& getCandle() const;
         double getLastUpSuperTrend() const;
@@ -38,7 +40,7 @@ namespace algorithm {
         stopLossWaiter stopLossWaiterModule;
         dynamicStopLoss dynamicStopLossModule;
         //trendTouchOpenerModule = None
-        //trendBreakOpenerModule = None
+        trendBreakOpener trendBreakOpenerModule;
         //stats = None
 
         double lastUpSuperTrend = 0.0;

@@ -20,9 +20,6 @@
     <ClCompile Include="src\algorithm\stopLossWaiter.cpp">
       <Filter>algorithm</Filter>
     </ClCompile>
-    <ClCompile Include="src\algorithm\trendOpener.cpp">
-      <Filter>algorithm</Filter>
-    </ClCompile>
     <ClCompile Include="src\structs\algorithmData.cpp">
       <Filter>structs</Filter>
     </ClCompile>
@@ -31,6 +28,9 @@
     </ClCompile>
     <ClCompile Include="src\structs\orderData.cpp">
       <Filter>structs</Filter>
+    </ClCompile>
+    <ClCompile Include="src\algorithm\trendBreakOpener.cpp">
+      <Filter>algorithm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +72,6 @@
     <ClInclude Include="src\algorithm\stopLossWaiter.h">
       <Filter>algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="src\algorithm\trendOpener.h">
-      <Filter>algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="src\structs\algorithmData.h">
       <Filter>structs</Filter>
     </ClInclude>
@@ -83,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="src\structs\orderData.h">
       <Filter>structs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\trendBreakOpener.h">
+      <Filter>algorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
