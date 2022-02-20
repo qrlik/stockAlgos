@@ -4,6 +4,8 @@
 #include "../structs/orderData.h"
 #include "../indicators/indicators.h"
 #include "activationWaiter.h"
+#include "dynamicStopLoss.h"
+#include "stopLossWaiter.h"
 
 namespace algorithm {
     class moneyMaker {
@@ -33,8 +35,8 @@ namespace algorithm {
         void openOrder(eState aState, double aPrice);
     private:
         activationWaiter activationWaiterModule;
-        //stopLossWaiterModule = None
-        //dynamicStopLossModule = None
+        stopLossWaiter stopLossWaiterModule;
+        dynamicStopLoss dynamicStopLossModule;
         //trendTouchOpenerModule = None
         //trendBreakOpenerModule = None
         //stats = None
