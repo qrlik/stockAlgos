@@ -32,6 +32,9 @@
     <ClCompile Include="src\algorithm\trendBreakOpener.cpp">
       <Filter>algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="src\algorithm\trendTouchOpener.cpp">
+      <Filter>algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -82,6 +85,9 @@
       <Filter>structs</Filter>
     </ClInclude>
     <ClInclude Include="src\algorithm\trendBreakOpener.h">
+      <Filter>algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\algorithm\trendTouchOpener.h">
       <Filter>algorithm</Filter>
     </ClInclude>
   </ItemGroup>

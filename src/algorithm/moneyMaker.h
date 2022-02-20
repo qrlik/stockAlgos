@@ -7,6 +7,7 @@
 #include "dynamicStopLoss.h"
 #include "stopLossWaiter.h"
 #include "trendBreakOpener.h"
+#include "trendTouchOpener.h"
 
 namespace algorithm {
     class moneyMaker {
@@ -39,7 +40,7 @@ namespace algorithm {
         activationWaiter activationWaiterModule;
         stopLossWaiter stopLossWaiterModule;
         dynamicStopLoss dynamicStopLossModule;
-        //trendTouchOpenerModule = None
+        trendTouchOpener trendTouchOpenerModule;
         trendBreakOpener trendBreakOpenerModule;
         //stats = None
 

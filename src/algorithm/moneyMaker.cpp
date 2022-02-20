@@ -7,6 +7,7 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
 	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
 	dynamicStopLossModule(this, aData.dynamicSLPercent, aData.dynamicSLTrendMode),
+	trendTouchOpenerModule(this, aData.touchOpenerActivationWaitMode),
 	trendBreakOpenerModule(this, aData.breakOpenerEnabled, aData.breakOpenerActivationWaitMode, aData.alwaysUseNewTrend),
 	stFactor(aData.stFactor),
 	atrSize(aData.atrSize),
