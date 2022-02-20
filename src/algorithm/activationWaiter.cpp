@@ -16,6 +16,10 @@ bool activationWaiter::operator==(const activationWaiter& other) {
 		&& fullCandleCheck == other.fullCandleCheck;
 }
 
+size_t activationWaiter::getCounter() const {
+	return activationWaitCounter;
+}
+
 void activationWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::ACTIVATION_WAIT) {
 		return;

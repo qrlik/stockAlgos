@@ -95,26 +95,51 @@ namespace {
         lastTrend = 0.0;
         lastClose = 0.0;
     }
+
+    void calculateRangeAtr(std::vector<candle>& aCandles, eAtrType aType, size_t aSize) {
+        std::deque<double> trList;
+        for (size_t i = 1, size = aCandles.size(); i < size; ++i) {
+            auto currentTrueRange = calculateTrueRange(aCandles[i], aCandles[i - 1]);
+            trList.push_back(currentTrueRange);
+            if (trList.size() > aSize) {
+                trList.pop_front();
+            }
+            if (i >= aSize) {
+                aCandles[i].atr = calculateTrueRangeMA(trList, aType);
+            }
+        }
+        lastEma = 0.0;
+    }
+
+    void calculateSuperTrends(std::vector<candle>& aCandles, double aFactor) {
+        for (auto& candle : aCandles) {
+            calculateSuperTrend(candle, aFactor);
+        }
+        resetStData();
+    }
 }
 
-void indicators::calculateRangeAtr(std::vector<candle>& aCandles, eAtrType aType, size_t aSize) {
-    std::deque<double> trList;
-    for (size_t i = 1, size = aCandles.size(); i < size; ++i) {
-        auto currentTrueRange = calculateTrueRange(aCandles[i], aCandles[i - 1]);
-        trList.push_back(currentTrueRange);
-        if (trList.size() > aSize) {
-            trList.pop_front();
-        }
-        if (i >= aSize) {
-            aCandles[i].atr = calculateTrueRangeMA(trList, aType);
-        }
+std::string indicators::atrTypeToString(eAtrType aType) {
+    switch (aType) {
+        case indicators::eAtrType::RMA:
+            return "RMA";
+        case indicators::eAtrType::EMA:
+            return "EMA";
+        case indicators::eAtrType::WMA:
+            return "WMA";
+        case indicators::eAtrType::SMA:
+            return "SMA";
+        default:
+            return "NONE";
     }
-    lastEma = 0.0;
 }
 
-void indicators::calculateSuperTrends(std::vector<candle>& aCandles, double aFactor) {
-    for (auto& candle : aCandles) {
-        calculateSuperTrend(candle, aFactor);
+void indicators::getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount) {
+    calculateRangeAtr(aCandles, aType, aSize);
+    calculateSuperTrends(aCandles, aFactor);
+    if (aAmount >= aCandles.size() || aAmount == 0) {
+        return;
     }
-    resetStData();
+    auto eraseSize = aCandles.size() - aAmount;
+    aCandles.erase(aCandles.begin(), aCandles.begin() + eraseSize);
 }

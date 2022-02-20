@@ -2,6 +2,7 @@
 #include <string>
 
 struct orderData {
+	std::string toString() const;
 	std::string time;
 	double price = 0.0;
 	double stopLoss = 0.0;

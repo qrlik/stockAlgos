@@ -38,6 +38,9 @@
     <ClCompile Include="src\structs\statistic.cpp">
       <Filter>structs</Filter>
     </ClCompile>
+    <ClCompile Include="src\calculation\singleCalculator.cpp">
+      <Filter>calculation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -54,6 +57,9 @@
     </Filter>
     <Filter Include="structs">
       <UniqueIdentifier>{2854f3eb-676c-4916-8e0c-100f5bdaecb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="calculation">
+      <UniqueIdentifier>{22818000-8503-4b2d-abc2-532f3c75d895}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="src\structs\statistic.h">
       <Filter>structs</Filter>
+    </ClInclude>
+    <ClInclude Include="src\calculation\singleCalculator.h">
+      <Filter>calculation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

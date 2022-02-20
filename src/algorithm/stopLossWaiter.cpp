@@ -18,6 +18,10 @@ bool stopLossWaiter::operator==(const stopLossWaiter& other) {
 		&& fullCandleCheck == other.fullCandleCheck;
 }
 
+size_t stopLossWaiter::getCounter() const {
+	return stopLossWaitCounter;
+}
+
 void stopLossWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::STOP_LOSS_WAIT) {
 		return;

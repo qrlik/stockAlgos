@@ -11,6 +11,6 @@ namespace indicators {
 		SMA = 4
 	};
 
-	void calculateRangeAtr(std::vector<candle>& aCandles, eAtrType aType, size_t aSize);
-	void calculateSuperTrends(std::vector<candle>& aCandles, double aFactor);
+	std::string atrTypeToString(eAtrType aType);
+	void getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount = 0);
 }

@@ -1,7 +1,23 @@
 #include "moneyMaker.h"
 #include "../utils/utils.h"
+#include <iostream>
 
 using namespace algorithm;
+
+std::string moneyMaker::stateToString(eState aState) {
+	switch (aState) {
+		case algorithm::moneyMaker::eState::LONG:
+			return "LONG";
+		case algorithm::moneyMaker::eState::SHORT:
+			return "SHORT";
+		case algorithm::moneyMaker::eState::STOP_LOSS_WAIT:
+			return "STOP_LOSS_WAIT";
+		case algorithm::moneyMaker::eState::ACTIVATION_WAIT:
+			return "ACTIVATION_WAIT";
+		default:
+			return "NONE";
+	}
+}
 
 moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
@@ -27,6 +43,10 @@ moneyMaker::eState moneyMaker::getState() const {
 
 void moneyMaker::setState(eState aState) {
 	state = aState;
+}
+
+void moneyMaker::setWithLogs(bool aState) {
+	withLogs = aState;
 }
 
 bool moneyMaker::getIsTrendUp() const {
@@ -238,5 +258,17 @@ void moneyMaker::closeOrder() {
 }
 
 void moneyMaker::log() {
-
+	std::cout << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
+		<< std::setw(8) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
+		<< std::setw(4) << std::to_string(isNewTrend);
+	if (state == eState::STOP_LOSS_WAIT) {
+		std::cout << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
+	}
+	else if (state == eState::ACTIVATION_WAIT) {
+		std::cout << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
+	}
+	else if (!order.time.empty()) {
+		std::cout << order.toString();
+	}
+	std::cout << std::endl;
 }

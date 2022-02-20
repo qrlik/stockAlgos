@@ -9,6 +9,7 @@ namespace algorithm {
 		void onNewTrend();
 		void start();
 		bool check();
+		size_t getCounter() const;
 	private:
 		moneyMaker* mm = nullptr;
 		const size_t activationWaitRange = 0;

@@ -20,6 +20,8 @@ namespace algorithm {
             STOP_LOSS_WAIT = 3,
             ACTIVATION_WAIT = 4
         };
+        static std::string stateToString(eState aState);
+
         moneyMaker(const algorithmData& aData, double aCash);
         void calculate(const std::vector<candle>& aCandles);
 
@@ -30,6 +32,7 @@ namespace algorithm {
         double getLastDownSuperTrend() const;
         eState getState() const;
         void setState(eState aState);
+        void setWithLogs(bool aState);
         bool getIsTrendUp() const;
 
         double getSuperTrend() const;
@@ -84,7 +87,7 @@ namespace algorithm {
 
         bool stopCashBreak = false;
         bool fullCheck = false;
-        bool withLogs = true;
+        bool withLogs = false;
         bool inited = false;
     };
 }
