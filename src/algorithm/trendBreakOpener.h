@@ -9,8 +9,8 @@ namespace algorithm {
 		bool check();
 	private:
 		moneyMaker* mm = nullptr;
-		const bool enabled = false;
-		const bool activationWaitMode = false;
-		const bool alwaysUseNewTrend = false;
+		const bool enabled;
+		const bool activationWaitMode;
+		const bool alwaysUseNewTrend;
 	};
 }

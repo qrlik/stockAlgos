@@ -12,10 +12,10 @@ namespace algorithm {
 		size_t getCounter() const;
 	private:
 		moneyMaker* mm = nullptr;
-		const size_t stopLossWaitRange = 0;
-		size_t stopLossWaitCounter = 0;
-		const bool enabled = false;
-		const bool resetAllowed = false;
-		const bool fullCandleCheck = false;
+		const int stopLossWaitRange;
+		int stopLossWaitCounter = 0;
+		const bool enabled;
+		const bool resetAllowed;
+		const bool fullCandleCheck;
 	};
 }

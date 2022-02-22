@@ -71,7 +71,7 @@ namespace algorithm {
         candle prevCandle;
 
         const double stFactor = 0.0;
-        const size_t atrSize = 0;
+        const int atrSize = 0;
         const indicators::eAtrType atrType = indicators::eAtrType::NONE;
 
         const double activationPercent = 0.0;
@@ -79,7 +79,6 @@ namespace algorithm {
         const double minimumProfitPercent = 0.0;
         const double dealPercent = 0.0;
 
-        const double tax = 0.0004;
         const double startCash = 0.0;
         const double stopCash = 0.0;
         double cash = 0.0;

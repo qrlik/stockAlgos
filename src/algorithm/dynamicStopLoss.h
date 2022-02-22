@@ -11,7 +11,7 @@ namespace algorithm {
 		bool checkDynamic();
 
 		moneyMaker* mm = nullptr;
-		const double dynamicSLPercent = 0.0;
-		const bool trendMode = false;
+		const double dynamicSLPercent;
+		const bool trendMode;
 	};
 }

@@ -24,6 +24,7 @@ void activationWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::ACTIVATION_WAIT) {
 		return;
 	}
+	assert(activationWaitRange >= 0);
 	if (resetAllowed) {
 		mm->setState(moneyMaker::eState::NONE);
 		activationWaitCounter = 0;
@@ -34,11 +35,13 @@ void activationWaiter::onNewTrend() {
 }
 
 void activationWaiter::start() {
+	assert(activationWaitRange >= 0);
 	mm->setState(moneyMaker::eState::ACTIVATION_WAIT);
 	activationWaitCounter = activationWaitRange;
 }
 
 bool activationWaiter::check() {
+	assert(activationWaitRange >= 0);
 	const auto trendActivation = mm->getTrendActivation(mm->getActualSuperTrend());
 	if (activationWaitCounter == 0) {
 		const auto isTrendUp = mm->getIsTrendUp();

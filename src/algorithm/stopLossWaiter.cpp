@@ -26,6 +26,7 @@ void stopLossWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::STOP_LOSS_WAIT) {
 		return;
 	}
+	assert(stopLossWaitRange >= 0);
 	if (resetAllowed) {
 		mm->setState(moneyMaker::eState::NONE);
 		stopLossWaitCounter = 0;
@@ -37,6 +38,7 @@ void stopLossWaiter::onNewTrend() {
 
 void stopLossWaiter::start() {
 	if (enabled) {
+		assert(stopLossWaitRange >= 0);
 		mm->setState(moneyMaker::eState::STOP_LOSS_WAIT);
 		stopLossWaitCounter = stopLossWaitRange;
 	}
@@ -50,6 +52,7 @@ bool stopLossWaiter::check() {
 		mm->setState(moneyMaker::eState::NONE);
 		return true;
 	}
+	assert(stopLossWaitRange >= 0);
 	const auto trendActivation = mm->getTrendActivation(mm->getActualSuperTrend());
 	if (stopLossWaitCounter == 0) {
 		const auto isTrendUp = mm->getIsTrendUp();

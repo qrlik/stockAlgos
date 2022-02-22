@@ -31,6 +31,7 @@ bool dynamicStopLoss::checkTrend() {
 bool dynamicStopLoss::checkDynamic() {
     auto& order = mm->getOrder();
     const auto& candle = mm->getCandle();
+    assert(dynamicSLPercent > 0.0);
     if (mm->getState() == moneyMaker::eState::LONG) {
         auto dynamicStopLoss = utils::floor(candle.high * (100.0 - dynamicSLPercent) / 100.0, 2);
         if (dynamicStopLoss >= order.minimumProfit && dynamicStopLoss > order.stopLoss) {

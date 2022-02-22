@@ -225,7 +225,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 	}
 	order.time = curCandle.time;
 
-	auto taxAmount = order.amount * leverage * tax;
+	auto taxAmount = order.amount * leverage * algorithmData::tax;
 	cash = cash - order.amount - taxAmount;
 	if (fullCheck) {
 		cash = utils::floor(cash, 2);
@@ -237,7 +237,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 void moneyMaker::closeOrder() {
 	auto orderOpenSummary = order.amount * leverage;
 	auto orderCloseSummary = orderOpenSummary / order.price * order.stopLoss;
-	auto orderCloseTax = orderCloseSummary * tax;
+	auto orderCloseTax = orderCloseSummary * algorithmData::tax;
 	auto profitWithoutTax = (state == eState::LONG) ? orderCloseSummary - orderOpenSummary : orderOpenSummary - orderCloseSummary;
 	auto profit = profitWithoutTax - orderCloseTax;
 	if (profit < 0) {

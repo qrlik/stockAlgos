@@ -8,6 +8,6 @@ namespace algorithm {
 		bool check();
 	private:
 		moneyMaker* mm = nullptr;
-		const bool activationWaitMode = false;
+		const bool activationWaitMode;
 	};
 }
