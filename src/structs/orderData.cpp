@@ -34,7 +34,7 @@ std::string orderData::toString() const {
 
 bool orderData::operator==(const orderData& aOther) {
     assert(fullCheck == aOther.fullCheck);
-    assert(price == aOther.price);
+    assert(utils::round(price, 5) == utils::round(aOther.price, 5));
     assert(time == aOther.time);
     if (fullCheck) {
         assert(stopLoss == aOther.stopLoss);

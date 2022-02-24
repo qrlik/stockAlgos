@@ -24,7 +24,7 @@ moneyMaker::eState moneyMaker::stateFromString(const std::string& aStr) {
 		return moneyMaker::eState::LONG;
 	}
 	else if (aStr == "SHORT") {
-		return moneyMaker::eState::LONG;
+		return moneyMaker::eState::SHORT;
 	}
 	else if (aStr == "STOP_LOSS_WAIT") {
 		return moneyMaker::eState::STOP_LOSS_WAIT;
@@ -49,6 +49,7 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	minimumProfitPercent(aData.minimumProfitPercent),
 	dealPercent(aData.dealPercent),
 	leverage(aData.leverage),
+	fullCheck(aData.fullCheck),
 	startCash(aCash),
 	cash(aCash),
 	stopCash(aCash * 0.1) {}
@@ -287,6 +288,7 @@ void moneyMaker::closeOrder() {
 		cash = utils::floor(cash, 2);
 	}
 	order = orderData{};
+	order.fullCheck = fullCheck;
 	stats.onCloseOrder(cash, profit);
 	if (cash <= stopCash) {
 		stopCashBreak = true;

@@ -67,7 +67,7 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 			testMoneyMaker->lastUpSuperTrend = value.get<double>();
 		}
 		else if (key == "lastDownSuperTrend") {
-			testMoneyMaker->lastUpSuperTrend = value.get<double>();
+			testMoneyMaker->lastDownSuperTrend = value.get<double>();
 		}
 		else if (key == "isTrendUp") {
 			testMoneyMaker->isTrendUp = value.get<bool>();
