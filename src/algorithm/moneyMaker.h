@@ -10,8 +10,13 @@
 #include "trendBreakOpener.h"
 #include "trendTouchOpener.h"
 
+namespace tests {
+    class mmChecker;
+}
+
 namespace algorithm {
     class moneyMaker {
+        friend class tests::mmChecker;
     public:
         enum class eState : unsigned char {
             NONE = 0,
@@ -21,11 +26,14 @@ namespace algorithm {
             ACTIVATION_WAIT = 4
         };
         static std::string stateToString(eState aState);
+        static eState stateFromString(const std::string& aStr);
 
         moneyMaker(const algorithmData& aData, double aCash);
         void calculate(const std::vector<candle>& aCandles);
+        bool operator==(const moneyMaker& aOther);
 
         activationWaiter& getActivationWaiter();
+        stopLossWaiter& getStopLossWaiter();
         orderData& getOrder();
         const candle& getCandle() const;
         double getLastUpSuperTrend() const;
@@ -41,8 +49,8 @@ namespace algorithm {
         bool isNewTrendChanged();
 
         void openOrder(eState aState, double aPrice);
-    private:
         bool doAction(const candle& aCandle);
+    private:
         bool update();
         bool updateCandles(const candle& aCandle);
         void updateTrends();

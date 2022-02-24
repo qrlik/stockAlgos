@@ -1,7 +1,11 @@
 #pragma once
+#include "../../third_party/json.hpp"
 #include <string>
 
 struct orderData {
+	static void initOrderDataFromJson(orderData& aData, Json aJson);
+
+	bool operator==(const orderData& aOther);
 	std::string toString() const;
 	std::string time;
 	double price = 0.0;

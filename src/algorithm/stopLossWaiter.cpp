@@ -22,6 +22,10 @@ size_t stopLossWaiter::getCounter() const {
 	return stopLossWaitCounter;
 }
 
+void stopLossWaiter::setCounter(size_t aAmount) {
+	stopLossWaitCounter = aAmount;
+}
+
 void stopLossWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::STOP_LOSS_WAIT) {
 		return;

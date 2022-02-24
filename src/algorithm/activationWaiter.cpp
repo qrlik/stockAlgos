@@ -20,6 +20,10 @@ size_t activationWaiter::getCounter() const {
 	return activationWaitCounter;
 }
 
+void activationWaiter::setCounter(size_t aAmount) {
+	activationWaitCounter = aAmount;
+}
+
 void activationWaiter::onNewTrend() {
 	if (mm->getState() != moneyMaker::eState::ACTIVATION_WAIT) {
 		return;

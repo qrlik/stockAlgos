@@ -19,6 +19,22 @@ std::string moneyMaker::stateToString(eState aState) {
 	}
 }
 
+moneyMaker::eState moneyMaker::stateFromString(const std::string& aStr) {
+	if (aStr == "LONG") {
+		return moneyMaker::eState::LONG;
+	}
+	else if (aStr == "SHORT") {
+		return moneyMaker::eState::LONG;
+	}
+	else if (aStr == "STOP_LOSS_WAIT") {
+		return moneyMaker::eState::STOP_LOSS_WAIT;
+	}
+	else if (aStr == "ACTIVATION_WAIT") {
+		return moneyMaker::eState::ACTIVATION_WAIT;
+	}
+	return moneyMaker::eState::NONE;
+}
+
 moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
 	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
@@ -36,6 +52,22 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	startCash(aCash),
 	cash(aCash),
 	stopCash(aCash * 0.1) {}
+
+bool moneyMaker::operator==(const moneyMaker& aOther) {
+	assert(activationWaiterModule == aOther.activationWaiterModule);
+	assert(stopLossWaiterModule == aOther.stopLossWaiterModule);
+	assert(state == aOther.state);
+	assert(order == aOther.order);
+	assert(fullCheck == aOther.fullCheck);
+	assert(isTrendUp == aOther.isTrendUp);
+	assert(isNewTrend == aOther.isNewTrend);
+	if (fullCheck) {
+		assert(cash == aOther.cash);
+		assert(lastUpSuperTrend == aOther.lastUpSuperTrend);
+		assert(lastDownSuperTrend == aOther.lastDownSuperTrend);
+	}
+	return true;
+}
 
 moneyMaker::eState moneyMaker::getState() const {
 	return state;
@@ -59,6 +91,10 @@ const candle& moneyMaker::getCandle() const {
 
 activationWaiter& moneyMaker::getActivationWaiter() {
 	return activationWaiterModule;
+}
+
+stopLossWaiter& moneyMaker::getStopLossWaiter() {
+	return stopLossWaiterModule;
 }
 
 orderData& moneyMaker::getOrder() {

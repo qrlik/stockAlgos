@@ -134,6 +134,22 @@ std::string indicators::atrTypeToString(eAtrType aType) {
     }
 }
 
+eAtrType indicators::atrTypeFromString(const std::string& aStr) {
+    if (aStr == "RMA") {
+        return indicators::eAtrType::RMA;
+    }
+    else if (aStr == "EMA") {
+        return indicators::eAtrType::EMA;
+    }
+    else if (aStr == "WMA") {
+        return indicators::eAtrType::WMA;
+    }
+    else if (aStr == "SMA") {
+        return indicators::eAtrType::SMA;
+    }
+    return indicators::eAtrType::NONE;
+}
+
 void indicators::getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount) {
     calculateRangeAtr(aCandles, aType, aSize);
     calculateSuperTrends(aCandles, aFactor);

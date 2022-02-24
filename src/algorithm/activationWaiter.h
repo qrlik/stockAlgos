@@ -10,6 +10,7 @@ namespace algorithm {
 		void start();
 		bool check();
 		size_t getCounter() const;
+		void setCounter(size_t aAmount);
 	private:
 		moneyMaker* mm = nullptr;
 		const int activationWaitRange;

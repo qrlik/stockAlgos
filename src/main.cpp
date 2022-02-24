@@ -1,8 +1,6 @@
-#include "indicators/indicators.h"
-#include "calculation/singleCalculator.h"
-#include "utils/utils.h"
+#include "tests/checkers.h"
 
 int main() {
-	calculation::singleCalculation();
+	tests::runTests();
 	return 0;
 }

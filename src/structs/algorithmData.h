@@ -3,6 +3,7 @@
 
 struct algorithmData {
     static const double tax;
+    static algorithmData initAlgorithmDataFromJson(Json aData);
 
     indicators::eAtrType atrType = indicators::eAtrType::NONE;
     int atrSize = -1;

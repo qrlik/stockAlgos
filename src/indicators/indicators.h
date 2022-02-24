@@ -12,5 +12,6 @@ namespace indicators {
 	};
 
 	std::string atrTypeToString(eAtrType aType);
+	eAtrType atrTypeFromString(const std::string& aStr);
 	void getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount = 0);
 }
