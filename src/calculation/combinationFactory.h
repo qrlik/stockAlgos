@@ -7,8 +7,9 @@ namespace calculation {
 
 	class combinationFactory {
 	public:
+        using iterateCallback = std::function<void(const algorithmData&, size_t)>;
         combinationFactory();
-        void iterateCombination(std::function<void(const algorithmData&)> aCallback);
+        void iterateCombination(iterateCallback aCallback);
         size_t getCombinationsAmount() const;
 	private:
         void iterateCombination();
@@ -22,33 +23,33 @@ namespace calculation {
         void onIterate();
 
         algorithmData data;
-        std::function<void(const algorithmData&)> callback;
+        iterateCallback callback;
         size_t combinations = 0;
 
-        int minAtrSize = 15;
-        int maxAtrSize = 15; // 25;
-        double minStFactor = 3.0;
-        double maxStFactor = 3.0; //5.0;
+        const int minAtrSize = 15;
+        const int maxAtrSize = 15; // 25;
+        const double minStFactor = 3.0;
+        const double maxStFactor = 3.0; //5.0;
 
-        double minDealPercent = 5.0; // 1.0;
-        double maxDealPercent = 5.0;
-        int minLeverage = 50;
-        int maxLeverage = 50;
+        const double minDealPercent = 5.0; // 1.0;
+        const double maxDealPercent = 5.0;
+        const int minLeverage = 50;
+        const int maxLeverage = 50;
 
-        double minMinProfitPercent = 0.5;// 1.0;
-        double maxMinProfitPercent = 0.5;// 2.0;
+        const double minMinProfitPercent = 0.5;// 1.0;
+        const double maxMinProfitPercent = 0.5;// 2.0;
 
-        double minActivationPercent = 0.0;
-        double minStopLossPercent = 1.0;
-        double minDynamicSLPercent = 1.0;
+        const double minActivationPercent = 0.0;
+        const double minStopLossPercent = 1.0;
+        const double minDynamicSLPercent = 1.0;
 
-        int minTrendActivationWaitRange = 0;
-        int maxTrendActivationWaitRange = 3;
-        int minStopLossWaitRange = 0;
-        int maxStopLossWaitRange = 3;
+        const int minTrendActivationWaitRange = 0;
+        const int maxTrendActivationWaitRange = 3;
+        const int minStopLossWaitRange = 0;
+        const int maxStopLossWaitRange = 3;
 
-        double stepFloat = 1.0;
-        int stepInt = 5;
+        const double stepFloat = 1.0;
+        const int stepInt = 5;
 
         bool callbackInited = false;
     };

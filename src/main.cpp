@@ -1,8 +1,8 @@
 #include "tests/checkers.h"
-#include "calculation/combinationFactory.h"
+#include "calculation/combinationCalculator.h"
 
 int main() {
 	//tests::runTests();
-	calculation::combinationFactory x;
+	calculation::calculate();
 	return 0;
 }

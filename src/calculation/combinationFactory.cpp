@@ -29,12 +29,12 @@ void combinationFactory::iterateCombination() {
 	generateSuperTrend();
 }
 
-void combinationFactory::iterateCombination(std::function<void(const algorithmData&)> aCallback) {
+void combinationFactory::iterateCombination(iterateCallback aCallback) {
+	combinations = 0;
 	callback = std::move(aCallback);
 	data = algorithmData{};
 	generateSuperTrend();
 	callback = nullptr;
-	combinations = 0;
 }
 
 void combinationFactory::generateSuperTrend() {
@@ -65,7 +65,6 @@ void combinationFactory::generatePercent() {
 	for (auto activationPercent : iotaWithStep(minActivationPercent, liquidationPercent + stepFloat, stepFloat)) {
 		data.activationPercent = activationPercent;
 		for (auto stopLossPercent : iotaWithStep(std::max(activationPercent, minStopLossPercent), liquidationPercent + stepFloat, stepFloat)) {
-			stopLossPercent = (stopLossPercent > 0.0) ? stopLossPercent : stepFloat;
 			data.stopLossPercent = stopLossPercent;
 			for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
 				data.minimumProfitPercent = minimumProfitPercent;
@@ -130,7 +129,7 @@ void combinationFactory::generateActivation() {
 	}
 	else {
 		data.activationWaiterResetAllowed = false;
-		data.activationWaiterRange = false;
+		data.activationWaiterRange = -1;
 		data.activationWaiterFullCandleCheck = false;
 		generateStop();
 	}
@@ -153,7 +152,7 @@ void combinationFactory::generateStop() {
 		}
 		else {
 			data.stopLossWaiterResetAllowed = false;
-			data.stopLossWaiterRange = false;
+			data.stopLossWaiterRange = -1;
 			data.stopLossWaiterFullCandleCheck = false;
 			onIterate();
 		}
@@ -163,6 +162,6 @@ void combinationFactory::generateStop() {
 void combinationFactory::onIterate() {
 	++combinations;
 	if (callback) {
-		callback(data);
+		callback(data, combinations);
 	}
 }

@@ -25,6 +25,7 @@
     <ClCompile Include="src\algorithm\stopLossWaiter.cpp" />
     <ClCompile Include="src\algorithm\trendBreakOpener.cpp" />
     <ClCompile Include="src\algorithm\trendTouchOpener.cpp" />
+    <ClCompile Include="src\calculation\combinationCalculator.cpp" />
     <ClCompile Include="src\calculation\combinationFactory.cpp" />
     <ClCompile Include="src\calculation\singleCalculator.cpp" />
     <ClCompile Include="src\indicators\indicators.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="src\algorithm\stopLossWaiter.h" />
     <ClInclude Include="src\algorithm\trendBreakOpener.h" />
     <ClInclude Include="src\algorithm\trendTouchOpener.h" />
+    <ClInclude Include="src\calculation\combinationCalculator.h" />
     <ClInclude Include="src\calculation\combinationFactory.h" />
     <ClInclude Include="src\calculation\singleCalculator.h" />
     <ClInclude Include="src\indicators\indicators.h" />
@@ -141,6 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

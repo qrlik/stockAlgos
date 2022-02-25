@@ -47,6 +47,9 @@
     <ClCompile Include="src\calculation\combinationFactory.cpp">
       <Filter>calculation</Filter>
     </ClCompile>
+    <ClCompile Include="src\calculation\combinationCalculator.cpp">
+      <Filter>calculation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -118,6 +121,9 @@
       <Filter>tests</Filter>
     </ClInclude>
     <ClInclude Include="src\calculation\combinationFactory.h">
+      <Filter>calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\calculation\combinationCalculator.h">
       <Filter>calculation</Filter>
     </ClInclude>
   </ItemGroup>
