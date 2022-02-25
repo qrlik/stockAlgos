@@ -48,10 +48,10 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 	data.erase("time");
 	for (const auto& [key, value] : data.items()) {
 		if (key == "activationWaitCounter") {
-			testMoneyMaker->getActivationWaiter().setCounter(value.get<size_t>());
+			testMoneyMaker->getActivationWaiter().setCounter(value.get<int>());
 		}
 		else if (key == "stopLossWaitCounter") {
-			testMoneyMaker->getStopLossWaiter().setCounter(value.get<size_t>());
+			testMoneyMaker->getStopLossWaiter().setCounter(value.get<int>());
 		}
 		else if (key == "order") {
 			auto& order = testMoneyMaker->getOrder();
@@ -83,7 +83,7 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 		}
 	}
 	testIndex += 1;
-	testNextTime = (testIndex < testMoneyMakerData.size()) ? testMoneyMakerData[testIndex]["time"].get<std::string>() : "ENDED";
+	testNextTime = (testIndex < static_cast<int>(testMoneyMakerData.size())) ? testMoneyMakerData[testIndex]["time"].get<std::string>() : "ENDED";
 }
 
 void tests::runTests() {

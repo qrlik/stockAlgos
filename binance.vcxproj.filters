@@ -44,6 +44,9 @@
     <ClCompile Include="src\tests\checkers.cpp">
       <Filter>tests</Filter>
     </ClCompile>
+    <ClCompile Include="src\calculation\combinationFactory.cpp">
+      <Filter>calculation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="src\tests\checkers.h">
       <Filter>tests</Filter>
+    </ClInclude>
+    <ClInclude Include="src\calculation\combinationFactory.h">
+      <Filter>calculation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
