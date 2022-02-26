@@ -9,22 +9,24 @@ namespace calculation {
 	public:
         using iterateCallback = std::function<void(const algorithmData&, size_t)>;
         combinationFactory();
-        void iterateCombination(iterateCallback aCallback);
+        void iterateCombination(int aPosition, iterateCallback aCallback);
         size_t getCombinationsAmount() const;
+        void reset();
 	private:
         void iterateCombination();
+        void generateSuperTrend(int aPosition);
         void generateSuperTrend();
-        void generateDeal();
-        void generatePercent();
-        void generateDynamicSL();
-        void generateOpener();
-        void generateActivation();
-        void generateStop();
-        void onIterate();
+        void generateDeal(int aPosition);
+        void generatePercent(int aPosition);
+        void generateDynamicSL(int aPosition);
+        void generateOpener(int aPosition);
+        void generateActivation(int aPosition);
+        void generateStop(int aPosition);
+        void onIterate(int aPosition);
 
-        algorithmData data;
-        iterateCallback callback;
-        size_t combinations = 0;
+        std::vector<algorithmData> data;
+        std::vector<iterateCallback> callbacks;
+        std::vector<size_t> combinations;
 
         const int minAtrSize = 15;
         const int maxAtrSize = 15; // 25;

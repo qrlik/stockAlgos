@@ -3,6 +3,7 @@
 
 int main() {
 	//tests::runTests();
-	calculation::calculate();
+	calculation::calculationSystem system;
+	system.calculate();
 	return 0;
 }
