@@ -3,6 +3,7 @@
 namespace algorithm {
 	class moneyMaker;
 	class trendTouchOpener {
+		friend class moneyMaker;
 	public:
 		trendTouchOpener(moneyMaker* aMm, bool aActivationWaitMode);
 		bool check();

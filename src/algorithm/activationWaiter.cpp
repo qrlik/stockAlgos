@@ -3,7 +3,7 @@
 
 using namespace algorithm;
 
-activationWaiter::activationWaiter(moneyMaker* aMm, size_t aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck)
+activationWaiter::activationWaiter(moneyMaker* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck)
 	:mm(aMm),
 	activationWaitRange(aActivationWaitRange),
 	resetAllowed(aResetAllowed),
@@ -16,11 +16,11 @@ bool activationWaiter::operator==(const activationWaiter& other) {
 		&& fullCandleCheck == other.fullCandleCheck;
 }
 
-size_t activationWaiter::getCounter() const {
+int activationWaiter::getCounter() const {
 	return activationWaitCounter;
 }
 
-void activationWaiter::setCounter(size_t aAmount) {
+void activationWaiter::setCounter(int aAmount) {
 	activationWaitCounter = aAmount;
 }
 

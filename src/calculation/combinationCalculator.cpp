@@ -34,6 +34,7 @@ void calculationSystem::calculate() {
 	for (auto& future : futures) {
 		future.wait();
 	}
+	saveFinalData();
 }
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
@@ -51,15 +52,24 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 				break;
 			}
 		}
+		threadInfo.finalData.push_back(moneyMaker.getFinalData());
 		printProgress(aIndex);
 	});
 }
 
 void calculationSystem::printProgress(size_t aIndex) {
-	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 1);
+	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2) * 100;
 	if (newProgress > progress) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;
 		std::cout << std::to_string(progress) + "%\n";
 	}
+}
+
+void calculationSystem::saveFinalData() {
+	Json value;
+	for (auto& data : threadsData) {
+		std::move(data.finalData.begin(), data.finalData.end(), std::back_inserter(value));
+	}
+	utils::saveToJson("finalData", value);
 }

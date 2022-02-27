@@ -3,6 +3,7 @@
 namespace algorithm {
 	class moneyMaker;
 	class dynamicStopLoss {
+		friend class moneyMaker;
 	public:
 		dynamicStopLoss(moneyMaker* aMm, double aPercent, bool aTrendMode);
 		bool check();

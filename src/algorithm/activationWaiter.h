@@ -3,14 +3,15 @@
 namespace algorithm {
 	class moneyMaker;
 	class activationWaiter {
+		friend class moneyMaker;
 	public:
-		activationWaiter(moneyMaker* aMm, size_t aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck);
+		activationWaiter(moneyMaker* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck);
 		bool operator==(const activationWaiter& other);
 		void onNewTrend();
 		void start();
 		bool check();
-		size_t getCounter() const;
-		void setCounter(size_t aAmount);
+		int getCounter() const;
+		void setCounter(int aAmount);
 	private:
 		moneyMaker* mm = nullptr;
 		const int activationWaitRange;

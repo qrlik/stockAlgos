@@ -3,7 +3,7 @@
 
 using namespace algorithm;
 
-stopLossWaiter::stopLossWaiter(moneyMaker* aMm, size_t aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck):
+stopLossWaiter::stopLossWaiter(moneyMaker* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck):
 	mm(aMm),
 	stopLossWaitRange(aStopLossWaitRange),
 	enabled(aEnabled),
@@ -18,11 +18,11 @@ bool stopLossWaiter::operator==(const stopLossWaiter& other) {
 		&& fullCandleCheck == other.fullCandleCheck;
 }
 
-size_t stopLossWaiter::getCounter() const {
+int stopLossWaiter::getCounter() const {
 	return stopLossWaitCounter;
 }
 
-void stopLossWaiter::setCounter(size_t aAmount) {
+void stopLossWaiter::setCounter(int aAmount) {
 	stopLossWaitCounter = aAmount;
 }
 
