@@ -10,6 +10,13 @@ namespace indicators {
 		WMA = 3,
 		SMA = 4
 	};
+	struct indicatorsData {
+		double lastEma = 0.0;
+		double lastUpperBand = 0.0;
+		double lastLowerBand = 0.0;
+		double lastTrend = 0.0;
+		double lastClose = 0.0;
+	};
 
 	std::string atrTypeToString(eAtrType aType);
 	eAtrType atrTypeFromString(const std::string& aStr);

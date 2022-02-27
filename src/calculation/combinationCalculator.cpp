@@ -47,11 +47,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 			threadInfo.saveCache(aData.atrType, aData.atrSize, aData.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(aData, 100.0);
-		for (const auto& candle : candles) {
-			if (!moneyMaker.doAction(candle)) {
-				break;
-			}
-		}
+		moneyMaker.calculate(candles);
 		threadInfo.finalData.push_back(moneyMaker.getFinalData());
 		printProgress(aIndex);
 	});

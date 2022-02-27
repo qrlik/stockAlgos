@@ -8,8 +8,5 @@ int main() {
 	calculation::calculationSystem system;
 	system.calculate();
 
-	//auto json = utils::readFromJson("finalDataSync");
-	//auto jsonAsync = utils::readFromJson("finalDataAsync");
-	//bool isEqual = json == jsonAsync;
 	return 0;
 }

@@ -38,5 +38,5 @@ void calculation::singleCalculation() {
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.calculate(candles);
-    auto breakvar = 5;
+    //auto breakvar = 5;
 }
