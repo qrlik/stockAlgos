@@ -1,51 +1,71 @@
 #include "combinationCalculator.h"
-#include "combinationFactory.h"
 #include "../algorithm/moneyMaker.h"
 #include "../structs/algorithmData.h"
 #include "../utils/utils.h"
 #include <iostream>
+#include <future>
 
 using namespace calculation;
 
-namespace {
-	Json finalData;
-	indicators::eAtrType cachedAtrType = indicators::eAtrType::NONE;
-	int cachedAtrSize = -1;
-	double cachedStFactor = -1.0;
-	double progress = 0.0;
-
-	bool isCached(indicators::eAtrType aType, int aSize, double aFactor) {
-		return aType == cachedAtrType && aSize == cachedAtrSize && aFactor == cachedStFactor;
-	}
-
-	void saveCache(indicators::eAtrType aType, int aSize, double aFactor) {
-		cachedAtrType = aType;
-		cachedAtrSize = aSize;
-		cachedStFactor = aFactor;
-	}
+calculationSystem::calculationSystem() {
+	auto json = utils::readFromJson("assets/candles/1h_year");
+	candlesSource = utils::parseCandles(json);
+	threadsData = std::vector<threadInfo>(threadCount);
 }
 
-void calculation::calculate() {
-	auto json = utils::readFromJson("assets/candles/1h_year");
-	auto candlesSource = utils::parseCandles(json);
+bool calculationSystem::threadInfo::isCached(indicators::eAtrType aType, int aSize, double aFactor) {
+	return aType == cachedAtrType && aSize == cachedAtrSize && aFactor == cachedStFactor;
+}
+
+void calculationSystem::threadInfo::saveCache(indicators::eAtrType aType, int aSize, double aFactor) {
+	cachedAtrType = aType;
+	cachedAtrSize = aSize;
+	cachedStFactor = aFactor;
+}
+
+void calculationSystem::calculate() {
+	std::vector<std::future<void>> futures;
+	auto factory = combinationFactory();
+	combinations = factory.getCombinationsAmount();
+	factory.reset();
+	for (auto i = 0; i < threadCount; ++i) {
+		futures.push_back(std::async(std::launch::async, [this, &factory, i]() {return iterate(factory, i); }));
+	}
+	for (auto& future : futures) {
+		future.wait();
+	}
+	saveFinalData();
+}
+
+void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	std::vector<candle> candles;
-	combinationFactory factory;
-	auto combinations = factory.getCombinationsAmount();
-	factory.iterateCombination([combinations, &candlesSource, &candles](const algorithmData& aData, size_t aIndex) {
-		if (!isCached(aData.atrType, aData.atrSize, aData.stFactor)) {
+	aFactory.iterateCombination(aThread, [this, &candles, aThread](const algorithmData& aData, size_t aIndex) {
+		auto& threadInfo = threadsData[aThread];
+		if (!threadInfo.isCached(aData.atrType, aData.atrSize, aData.stFactor)) {
 			candles = candlesSource;
 			indicators::getProcessedCandles(candles, aData.atrType, aData.atrSize, aData.stFactor, 8760);
-			saveCache(aData.atrType, aData.atrSize, aData.stFactor);
+			threadInfo.saveCache(aData.atrType, aData.atrSize, aData.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(aData, 100.0);
 		moneyMaker.calculate(candles);
-		finalData.push_back(moneyMaker.getFinalData());
-		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2) * 100;
-		if (newProgress > progress) {
-			progress = newProgress;
-			std::cout << std::to_string(progress) + "%\n";
-		}
+		threadInfo.finalData.push_back(moneyMaker.getFinalData());
+		printProgress(aIndex);
 	});
-	std::cout << std::to_string(finalData.size()) << '\n';
-	utils::saveToJson("finalData", finalData);
+}
+
+void calculationSystem::printProgress(size_t aIndex) {
+	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2) * 100;
+	if (newProgress > progress) {
+		std::lock_guard<std::mutex> lock(printMutex);
+		progress = newProgress;
+		std::cout << std::to_string(progress) + "%\n";
+	}
+}
+
+void calculationSystem::saveFinalData() {
+	Json value;
+	for (auto& data : threadsData) {
+		std::move(data.finalData.begin(), data.finalData.end(), std::back_inserter(value));
+	}
+	utils::saveToJson("finalData", value);
 }

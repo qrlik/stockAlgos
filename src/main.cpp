@@ -5,21 +5,9 @@
 
 int main() {
 	//tests::runTests();
-	
-	//calculation::calculate();
 
-	calculation::singleCalculation();
-
-	//auto str1 = utils::getStringFromFile("finalDataAsync");
-	//auto str2 = utils::getStringFromFile("finalDataSync");
-
-	//for (size_t i = 0, size = str1.size(); i < size; ++i) {
-	//	auto char1 = str1[i];
-	//	auto char2 = str2[i];
-	//	if (char1 != char2) {
-	//		auto test = 5;
-	//	}
-	//}
+	calculation::calculationSystem system;
+	system.calculate();
 
 	return 0;
 }

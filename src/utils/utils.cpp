@@ -20,7 +20,7 @@ std::string utils::getStringFromFile(const std::string& aPath) {
 
 void utils::saveToJson(const std::string& aPath, const Json& aData) {
 	std::ofstream output(aPath + ".json");
-	output << aData.dump(4);
+	output << aData;
 }
 
 std::vector<candle> utils::parseCandles(const Json& aJson) {

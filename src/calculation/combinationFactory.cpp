@@ -16,152 +16,176 @@ namespace {
 }
 
 combinationFactory::combinationFactory() {
+	reset();
 	iterateCombination();
 }
 
 size_t combinationFactory::getCombinationsAmount() const {
-	return combinations;
+	return std::accumulate(combinations.cbegin(), combinations.cend(), size_t{ 0 });
+}
+
+void combinationFactory::reset() {
+	combinations = std::vector<size_t>(8, 0);
+	data = std::vector<algorithmData>(8);
+	callbacks = std::vector<iterateCallback>(8);
 }
 
 void combinationFactory::iterateCombination() {
-	combinations = 0;
-	data = algorithmData{};
+	reset();
 	generateSuperTrend();
 }
 
-void combinationFactory::iterateCombination(iterateCallback aCallback) {
-	combinations = 0;
-	callback = std::move(aCallback);
-	data = algorithmData{};
-	generateSuperTrend();
-	callback = nullptr;
+void combinationFactory::iterateCombination(int aPosition, iterateCallback aCallback) {
+	callbacks[aPosition] = std::move(aCallback);
+	generateSuperTrend(aPosition);
+	callbacks[aPosition] = nullptr;
 }
 
 void combinationFactory::generateSuperTrend() {
 	for (auto atrType : { indicators::eAtrType::RMA, indicators::eAtrType::EMA, indicators::eAtrType::WMA, indicators::eAtrType::SMA }) {
-		data.atrType = atrType;
+		data[0].atrType = atrType;
 		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + stepInt, stepInt)) {
-			data.atrSize = atrSize;
+			data[0].atrSize = atrSize;
 			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stepFloat, stepFloat)) {
-				data.stFactor = stFactor;
-				generateDeal();
+				data[0].stFactor = stFactor;
+				generateDeal(0);
 			}
 		}
 	}
 }
 
-void combinationFactory::generateDeal() {
+void combinationFactory::generateSuperTrend(int aPosition) {
+	data[aPosition].atrType = static_cast<indicators::eAtrType>((aPosition / 2) + 1); // 2 = threads / atrTypes
+	auto atrSizes = iotaWithStep(minAtrSize, maxAtrSize + stepInt, stepInt);
+	auto halfSize = atrSizes.size() / 2;
+	if (aPosition % 2 == 0) {
+		atrSizes.erase(std::next(atrSizes.begin(), halfSize), atrSizes.end());
+	}
+	else {
+		atrSizes.erase(atrSizes.begin(), std::next(atrSizes.begin(), halfSize));
+	}
+
+	for (auto atrSize : atrSizes) {
+		data[aPosition].atrSize = atrSize;
+		for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stepFloat, stepFloat)) {
+			data[aPosition].stFactor = stFactor;
+			generateDeal(aPosition);
+		}
+	}
+}
+
+void combinationFactory::generateDeal(int aPosition) {
 	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + stepFloat, stepFloat)) {
-		data.dealPercent = dealPercent;
+		data[aPosition].dealPercent = dealPercent;
 		for (auto leverage : iotaWithStep(minLeverage, maxLeverage + stepInt, stepInt)) {
-			data.leverage = leverage;
-			generatePercent();
+			data[aPosition].leverage = leverage;
+			generatePercent(aPosition);
 		}
 	}
 }
 
-void combinationFactory::generatePercent() {
-	const auto liquidationPercent = 100 / data.leverage;
+void combinationFactory::generatePercent(int aPosition) {
+	const auto liquidationPercent = 100 / data[aPosition].leverage;
 	for (auto activationPercent : iotaWithStep(minActivationPercent, liquidationPercent + stepFloat, stepFloat)) {
-		data.activationPercent = activationPercent;
+		data[aPosition].activationPercent = activationPercent;
 		for (auto stopLossPercent : iotaWithStep(std::max(activationPercent, minStopLossPercent), liquidationPercent + stepFloat, stepFloat)) {
-			data.stopLossPercent = stopLossPercent;
+			data[aPosition].stopLossPercent = stopLossPercent;
 			for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
-				data.minimumProfitPercent = minimumProfitPercent;
-				generateDynamicSL();
+				data[aPosition].minimumProfitPercent = minimumProfitPercent;
+				generateDynamicSL(aPosition);
 			}
 		}
 	}
 }
 
-void combinationFactory::generateDynamicSL() {
+void combinationFactory::generateDynamicSL(int aPosition) {
 	for (auto dynamicSLTrendMode : { true, false }) {
-		data.dynamicSLTrendMode = dynamicSLTrendMode;
+		data[aPosition].dynamicSLTrendMode = dynamicSLTrendMode;
 		if (!dynamicSLTrendMode) {
-			const auto liquidationPercent = 100 / data.leverage;
+			const auto liquidationPercent = 100 / data[aPosition].leverage;
 			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, liquidationPercent + stepFloat, stepFloat)) {
-				data.dynamicSLPercent = dynamicSLPercent;
-				generateOpener();
+				data[aPosition].dynamicSLPercent = dynamicSLPercent;
+				generateOpener(aPosition);
 			}
 		}
 		else {
-			data.dynamicSLPercent = -1.0;
-			generateOpener();
+			data[aPosition].dynamicSLPercent = -1.0;
+			generateOpener(aPosition);
 		}
 	}
 }
 
-void combinationFactory::generateOpener() {
+void combinationFactory::generateOpener(int aPosition) {
 	for (auto touchOpenerActivationWaitMode : { true, false }) {
-		data.touchOpenerActivationWaitMode = touchOpenerActivationWaitMode;
+		data[aPosition].touchOpenerActivationWaitMode = touchOpenerActivationWaitMode;
 		for (auto breakOpenerEnabled : { true, false }) {
-			data.breakOpenerEnabled = breakOpenerEnabled;
+			data[aPosition].breakOpenerEnabled = breakOpenerEnabled;
 			if (breakOpenerEnabled) {
 				for (auto breakOpenerActivationWaitMode : { true, false }) {
-					data.breakOpenerActivationWaitMode = breakOpenerActivationWaitMode;
+					data[aPosition].breakOpenerActivationWaitMode = breakOpenerActivationWaitMode;
 					for (auto alwaysUseNewTrend : { true, false }) {
-						data.alwaysUseNewTrend = alwaysUseNewTrend;
-						generateActivation();
+						data[aPosition].alwaysUseNewTrend = alwaysUseNewTrend;
+						generateActivation(aPosition);
 					}
 				}
 			}
 			else {
-				data.breakOpenerActivationWaitMode = false;
-				data.alwaysUseNewTrend = false;
-				generateActivation();
+				data[aPosition].breakOpenerActivationWaitMode = false;
+				data[aPosition].alwaysUseNewTrend = false;
+				generateActivation(aPosition);
 			}
 		}
 	}
 }
 
-void combinationFactory::generateActivation() {
-	if (data.breakOpenerActivationWaitMode || data.touchOpenerActivationWaitMode) {
+void combinationFactory::generateActivation(int aPosition) {
+	if (data[aPosition].breakOpenerActivationWaitMode || data[aPosition].touchOpenerActivationWaitMode) {
 		for (auto activationWaiterResetAllowed : { true, false }) {
-			data.activationWaiterResetAllowed = activationWaiterResetAllowed;
+			data[aPosition].activationWaiterResetAllowed = activationWaiterResetAllowed;
 			for (auto activationWaiterRange : iotaWithStep(minTrendActivationWaitRange, maxTrendActivationWaitRange + 1, 1)) {
-				data.activationWaiterRange = activationWaiterRange;
+				data[aPosition].activationWaiterRange = activationWaiterRange;
 				for (auto activationWaiterFullCandleCheck : { true, false }) {
-					data.activationWaiterFullCandleCheck = activationWaiterFullCandleCheck;
-					generateStop();
+					data[aPosition].activationWaiterFullCandleCheck = activationWaiterFullCandleCheck;
+					generateStop(aPosition);
 				}
 			}
 		}
 	}
 	else {
-		data.activationWaiterResetAllowed = false;
-		data.activationWaiterRange = -1;
-		data.activationWaiterFullCandleCheck = false;
-		generateStop();
+		data[aPosition].activationWaiterResetAllowed = false;
+		data[aPosition].activationWaiterRange = -1;
+		data[aPosition].activationWaiterFullCandleCheck = false;
+		generateStop(aPosition);
 	}
 }
 
-void combinationFactory::generateStop() {
+void combinationFactory::generateStop(int aPosition) {
 	for (auto stopLossWaiterEnabled : { true, false }) {
-		data.stopLossWaiterEnabled = stopLossWaiterEnabled;
+		data[aPosition].stopLossWaiterEnabled = stopLossWaiterEnabled;
 		if (stopLossWaiterEnabled) {
 			for (auto stopLossWaiterResetAllowed : { true, false }) {
-				data.stopLossWaiterResetAllowed = stopLossWaiterResetAllowed;
+				data[aPosition].stopLossWaiterResetAllowed = stopLossWaiterResetAllowed;
 				for (auto stopLossWaiterRange : iotaWithStep(minStopLossWaitRange, maxStopLossWaitRange + 1, 1)) {
-					data.stopLossWaiterRange = stopLossWaiterRange;
+					data[aPosition].stopLossWaiterRange = stopLossWaiterRange;
 					for (auto stopLossWaiterFullCandleCheck : { true, false }) {
-						data.stopLossWaiterFullCandleCheck = stopLossWaiterFullCandleCheck;
-						onIterate();
+						data[aPosition].stopLossWaiterFullCandleCheck = stopLossWaiterFullCandleCheck;
+						onIterate(aPosition);
 					}
 				}
 			}
 		}
 		else {
-			data.stopLossWaiterResetAllowed = false;
-			data.stopLossWaiterRange = -1;
-			data.stopLossWaiterFullCandleCheck = false;
-			onIterate();
+			data[aPosition].stopLossWaiterResetAllowed = false;
+			data[aPosition].stopLossWaiterRange = -1;
+			data[aPosition].stopLossWaiterFullCandleCheck = false;
+			onIterate(aPosition);
 		}
 	}
 }
 
-void combinationFactory::onIterate() {
-	++combinations;
-	if (callback) {
-		callback(data, combinations);
+void combinationFactory::onIterate(int aPosition) {
+	++combinations[aPosition];
+	if (callbacks[aPosition]) {
+		callbacks[aPosition](data[aPosition], getCombinationsAmount());
 	}
 }
