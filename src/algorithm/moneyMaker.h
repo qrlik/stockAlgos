@@ -50,6 +50,7 @@ namespace algorithm {
 
         void openOrder(eState aState, double aPrice);
         bool doAction(const candle& aCandle);
+        Json getFinalData() const;
     private:
         bool update();
         bool updateCandles(const candle& aCandle);
@@ -60,6 +61,7 @@ namespace algorithm {
         void log();
         double getStopLossPrice() const;
         double getMinimumProfitPrice() const;
+        double getFullCash() const;
 
         activationWaiter activationWaiterModule;
         stopLossWaiter stopLossWaiterModule;

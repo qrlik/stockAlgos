@@ -8,6 +8,7 @@
 using namespace calculation;
 
 namespace {
+	Json finalData;
 	indicators::eAtrType cachedAtrType = indicators::eAtrType::NONE;
 	int cachedAtrSize = -1;
 	double cachedStFactor = -1.0;
@@ -42,10 +43,13 @@ void calculation::calculate() {
 				break;
 			}
 		}
-		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 3);
+		finalData.push_back(moneyMaker.getFinalData());
+		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2);
 		if (newProgress > progress) {
 			progress = newProgress;
 			std::cout << std::to_string(progress) + "%\n";
 		}
 	});
+	std::cout << std::to_string(finalData.size()) << '\n';
+	utils::saveToJson("finalData", finalData);
 }

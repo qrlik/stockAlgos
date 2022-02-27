@@ -3,6 +3,7 @@
 namespace algorithm {
 	class moneyMaker;
 	class trendBreakOpener {
+		friend class moneyMaker;
 	public:
 		trendBreakOpener(moneyMaker* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend);
 		bool isNewTrendAllowed();

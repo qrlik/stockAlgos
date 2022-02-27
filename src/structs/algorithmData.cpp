@@ -2,7 +2,7 @@
 
 const double algorithmData::tax = 0.0004;
 
-algorithmData algorithmData::initAlgorithmDataFromJson(Json aData) {
+algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 	algorithmData result;
 	for (const auto& [field, value] : aData.items()) {
 		if (field == "atrType") {

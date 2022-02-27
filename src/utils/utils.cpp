@@ -10,6 +10,11 @@ Json utils::readFromJson(const std::string& aPath) {
 	return json;
 }
 
+void utils::saveToJson(const std::string& aPath, const Json& aData) {
+	std::ofstream output(aPath + ".json");
+	output << aData;
+}
+
 std::vector<candle> utils::parseCandles(const Json& aJson) {
 	std::vector<candle> result;
 	if (!aJson.is_array()) {

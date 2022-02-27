@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <assert.h>
 
-void orderData::initOrderDataFromJson(orderData& aData, Json aJson) {
+void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
     for (const auto& [field, value] : aJson.items()) {
         if (field == "price") {
             aData.price = value.get<double>();

@@ -4,6 +4,7 @@
 
 namespace utils {
 	Json readFromJson(const std::string& aPath);
+	void saveToJson(const std::string& aPath, const Json& aData);
 	std::vector<candle> parseCandles(const Json& aJson);
 
 	double round(double aValue, int aSize);
