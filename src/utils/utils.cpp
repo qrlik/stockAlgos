@@ -12,7 +12,7 @@ Json utils::readFromJson(const std::string& aPath) {
 
 void utils::saveToJson(const std::string& aPath, const Json& aData) {
 	std::ofstream output(aPath + ".json");
-	output << aData;
+	output << aData.dump(4);
 }
 
 std::vector<candle> utils::parseCandles(const Json& aJson) {
