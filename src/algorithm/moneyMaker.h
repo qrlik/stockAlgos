@@ -38,6 +38,7 @@ namespace algorithm {
         const candle& getCandle() const;
         double getLastUpSuperTrend() const;
         double getLastDownSuperTrend() const;
+        double getFullCash() const;
         eState getState() const;
         void setState(eState aState);
         void setWithLogs(bool aState);
@@ -61,7 +62,6 @@ namespace algorithm {
         void log();
         double getStopLossPrice() const;
         double getMinimumProfitPrice() const;
-        double getFullCash() const;
 
         activationWaiter activationWaiterModule;
         stopLossWaiter stopLossWaiterModule;

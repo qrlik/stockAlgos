@@ -38,11 +38,7 @@ void calculation::calculate() {
 			saveCache(aData.atrType, aData.atrSize, aData.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(aData, 100.0);
-		for (const auto& candle : candles) {
-			if (!moneyMaker.doAction(candle)) {
-				break;
-			}
-		}
+		moneyMaker.calculate(candles);
 		finalData.push_back(moneyMaker.getFinalData());
 		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2) * 100;
 		if (newProgress > progress) {

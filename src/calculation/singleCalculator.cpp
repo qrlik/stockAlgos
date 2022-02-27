@@ -8,28 +8,33 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-    data.atrType = indicators::eAtrType::RMA;
-    data.atrSize = 14;
-    data.stFactor = 5;
+    data.atrType = indicators::eAtrType::EMA;
+    data.atrSize = 15;
+    data.stFactor = 3.0;
 
-    data.dealPercent = 5;
-    data.leverage = 10;
+    data.dealPercent = 5.0;
+    data.leverage = 50;
 
-    data.activationPercent = 0.25;
-    data.stopLossPercent = 1.25;
-    data.minimumProfitPercent = 0.25;
+    data.activationPercent = 0.0;
+    data.stopLossPercent = 1.0;
+    data.minimumProfitPercent = 0.5;
 
-    data.dynamicSLPercent = 0.25;
+    data.dynamicSLPercent = -1.0;
+    data.dynamicSLTrendMode = true;
 
-    data.touchOpenerActivationWaitMode = false;
+    data.touchOpenerActivationWaitMode = true;
 
     data.breakOpenerEnabled = true;
-    data.breakOpenerActivationWaitMode = false;
+    data.breakOpenerActivationWaitMode = true;
     data.alwaysUseNewTrend = true;
 
+    data.activationWaiterResetAllowed = true;
+    data.activationWaiterRange = 0;
+    data.activationWaiterFullCandleCheck = true;
+
     data.stopLossWaiterEnabled = true;
-    data.stopLossWaiterResetAllowed = false;
-    data.stopLossWaiterRange = 1;
+    data.stopLossWaiterResetAllowed = true;
+    data.stopLossWaiterRange = 0;
     data.stopLossWaiterFullCandleCheck = true;
 
     auto json = utils::readFromJson("assets/candles/1h_year");
@@ -38,5 +43,6 @@ void calculation::singleCalculation() {
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.calculate(candles);
-    auto breakvar = 5;
+    //auto fullCash = mm.getFullCash();
+    //auto breakvar = 5;
 }
