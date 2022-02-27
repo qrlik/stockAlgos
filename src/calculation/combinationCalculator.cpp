@@ -44,7 +44,7 @@ void calculation::calculate() {
 			}
 		}
 		finalData.push_back(moneyMaker.getFinalData());
-		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2);
+		const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations, 2) * 100;
 		if (newProgress > progress) {
 			progress = newProgress;
 			std::cout << std::to_string(progress) + "%\n";
