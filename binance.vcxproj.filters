@@ -50,6 +50,9 @@
     <ClCompile Include="src\calculation\combinationCalculator.cpp">
       <Filter>calculation</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\excel.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="src\calculation\combinationCalculator.h">
       <Filter>calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\excel.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
