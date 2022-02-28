@@ -6,6 +6,8 @@
 int main() {
 	//tests::runTests();
 
+	//calculation::singleCalculation();
+
 	calculation::calculationSystem system;
 	system.calculate();
 

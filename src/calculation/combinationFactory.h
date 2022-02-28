@@ -29,28 +29,28 @@ namespace calculation {
         std::vector<size_t> combinations;
 
         const int minAtrSize = 15;
-        const int maxAtrSize = 15; // 25;
+        const int maxAtrSize = 15;
         const double minStFactor = 3.0;
-        const double maxStFactor = 3.0; //5.0;
+        const double maxStFactor = 3.0;
 
-        const double minDealPercent = 5.0; // 1.0;
+        const double minDealPercent = 1.0;
         const double maxDealPercent = 5.0;
         const int minLeverage = 50;
         const int maxLeverage = 50;
 
-        const double minMinProfitPercent = 0.5;// 1.0;
-        const double maxMinProfitPercent = 0.5;// 2.0;
+        const double minMinProfitPercent = 0.5;
+        const double maxMinProfitPercent = 1.0;
 
         const double minActivationPercent = 0.0;
-        const double minStopLossPercent = 1.0;
-        const double minDynamicSLPercent = 1.0;
+        const double minStopLossPercent = 0.5;
+        const double minDynamicSLPercent = 0.5;
 
         const int minTrendActivationWaitRange = 0;
         const int maxTrendActivationWaitRange = 3;
         const int minStopLossWaitRange = 0;
         const int maxStopLossWaitRange = 3;
 
-        const double stepFloat = 1.0;
+        const double stepFloat = 0.5;
         const int stepInt = 5;
 
         bool callbackInited = false;

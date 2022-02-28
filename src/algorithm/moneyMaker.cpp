@@ -52,7 +52,7 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	fullCheck(aData.fullCheck),
 	startCash(aCash),
 	cash(aCash),
-	stopCash(aCash * 0.1) {}
+	stopCash(aCash * 0.4) {}
 
 bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(activationWaiterModule == aOther.activationWaiterModule);
@@ -305,7 +305,7 @@ void moneyMaker::closeOrder() {
 
 void moneyMaker::log() {
 	std::cout << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
-		<< std::setw(8) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
+		<< std::setw(18) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
 		<< std::setw(4) << std::to_string(isNewTrend);
 	if (state == eState::STOP_LOSS_WAIT) {
 		std::cout << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
@@ -327,7 +327,8 @@ Json moneyMaker::getFinalData() const {
 	result.push_back(stats.profitableStreak);
 	result.push_back(stats.unprofitableOrder);
 	result.push_back(stats.unprofitableStreak);
-	auto maxLossPercent = ((stats.maxLossHighCash / stats.maxLossLowCash) - 1.0) * 100;
+	auto maxLoss = stats.maxLossHighCash - stats.maxLossLowCash;
+	auto maxLossPercent = maxLoss / stats.maxLossHighCash * 100;
 	result.push_back(maxLossPercent);
 	result.push_back(stats.summaryLoss);
 	if (cash > startCash) {
