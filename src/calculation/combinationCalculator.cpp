@@ -1,12 +1,12 @@
 #include "combinationCalculator.h"
 #include "../structs/algorithmData.h"
 #include "../utils/utils.h"
+#include <execution>
 #include <iostream>
+#include <fstream>
 #include <future>
-#include <OpenXLSX/OpenXLSX.hpp>
 
 using namespace calculation;
-using namespace OpenXLSX;
 
 calculationSystem::calculationSystem() {
 	auto json = utils::readFromJson("assets/candles/1h_year");
@@ -35,7 +35,7 @@ void calculationSystem::calculate() {
 	for (auto& future : futures) {
 		future.wait();
 	}
-	saveFinalData();
+	saveFinalData2();
 }
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
@@ -113,79 +113,82 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 }
 
 void calculationSystem::saveFinalData() {
-	XLDocument doc;
-	doc.create("finalData.xlsx");
-	auto wks = doc.workbook().worksheet("Sheet1");
-	wks.cell(1, 1).value() = "Cash $";
-	wks.cell(1, 2).value() = "Profit Orders";
-	wks.cell(1, 3).value() = "Profit Streak";
-	wks.cell(1, 4).value() = "Unprofit Orders";
-	wks.cell(1, 5).value() = "Unprofit Streak";
-	wks.cell(1, 6).value() = "Max Loss %";
-	wks.cell(1, 7).value() = "Summary Loss $";
-	wks.cell(1, 8).value() = "RF Common";
-	wks.cell(1, 9).value() = "RF Summary";
-	wks.cell(1, 10).value() = "Touch Orders";
-	wks.cell(1, 11).value() = "Break Orders";
-	wks.cell(1, 12).value() = "ATR Type";
-	wks.cell(1, 13).value() = "ATR Size";
-	wks.cell(1, 14).value() = "ST Factor";
-	wks.cell(1, 15).value() = "Deal %";
-	wks.cell(1, 16).value() = "Leverage";
-	wks.cell(1, 17).value() = "Activation %";
-	wks.cell(1, 18).value() = "Stop Loss %";
-	wks.cell(1, 19).value() = "Min. Profit %";
-	wks.cell(1, 20).value() = "Dyn.Stop Loss %";
-	wks.cell(1, 21).value() = "Dyn.Stop Loss Trend";
-	wks.cell(1, 22).value() = "Touch Wait Mode";
-	wks.cell(1, 23).value() = "Break Enabled";
-	wks.cell(1, 24).value() = "Break Wait Mode";
-	wks.cell(1, 25).value() = "AlwaysUseNewTrend";
-	wks.cell(1, 26).value() = "Activation ResetAllowed";
-	wks.cell(1, 27).value() = "Activation Range";
-	wks.cell(1, 28).value() = "Activation FullCandleCheck";
-	wks.cell(1, 29).value() = "SL Waiter Enabled";
-	wks.cell(1, 30).value() = "SL Waiter ResetAllowed";
-	wks.cell(1, 31).value() = "SL Waiter Range";
-	wks.cell(1, 32).value() = "SL Waiter FullCandleCheck";
-
-	size_t row = 2;
-	for (const auto& threadData : threadsData) {
-		for (const auto& data : threadData.finalData) {
-			wks.cell(row, 1).value() = data.cash;
-			wks.cell(row, 2).value() = data.profitableOrder;
-			wks.cell(row, 3).value() = data.profitableStreak;
-			wks.cell(row, 4).value() = data.unprofitableOrder;
-			wks.cell(row, 5).value() = data.unprofitableStreak;
-			wks.cell(row, 6).value() = data.maxLossPercent;
-			wks.cell(row, 7).value() = data.summaryLoss;
-			wks.cell(row, 8).value() = data.RFCommon;
-			wks.cell(row, 9).value() = data.RFSummary;
-			wks.cell(row, 10).value() = data.touchTrendOrder;
-			wks.cell(row, 11).value() = data.breakTrendOrder;
-			wks.cell(row, 12).value() = data.atrType;
-			wks.cell(row, 13).value() = data.atrSize;
-			wks.cell(row, 14).value() = data.stFactor;
-			wks.cell(row, 15).value() = data.dealPercent;
-			wks.cell(row, 16).value() = data.leverage;
-			wks.cell(row, 17).value() = data.activationPercent;
-			wks.cell(row, 18).value() = data.stopLossPercent;
-			wks.cell(row, 19).value() = data.minimumProfitPercent;
-			wks.cell(row, 20).value() = data.dynamicSLPercent;
-			wks.cell(row, 21).value() = data.dynamicStopLossTrendMode;
-			wks.cell(row, 22).value() = data.trendTouchOpenerModuleActivationWaitMode;
-			wks.cell(row, 23).value() = data.trendBreakOpenerModuleEnabled;
-			wks.cell(row, 24).value() = data.trendBreakOpenerModuleActivationWaitMode;
-			wks.cell(row, 25).value() = data.trendBreakOpenerModuleAlwaysUseNewTrend;
-			wks.cell(row, 26).value() = data.activationWaiterModuleResetAllowed;
-			wks.cell(row, 27).value() = data.activationWaiterModuleActivationWaitRange;
-			wks.cell(row, 28).value() = data.activationWaiterModuleFullCandleCheck;
-			wks.cell(row, 29).value() = data.stopLossWaiterModuleEnabled;
-			wks.cell(row, 30).value() = data.stopLossWaiterModuleResetAllowed;
-			wks.cell(row, 31).value() = data.stopLossWaiterModuleStopLossWaitRange;
-			wks.cell(row, 32).value() = data.stopLossWaiterModuleFullCandleCheck;
-			++row;
-		}
+	std::vector<calculationSystem::finalData> finalVector;
+	finalVector.reserve(combinations);
+	for (auto& threadData : threadsData) {
+		std::move(std::make_move_iterator(threadData.finalData.begin()), std::make_move_iterator(threadData.finalData.end()), std::back_inserter(finalVector));
 	}
-	doc.save();
+	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
+
+	std::ofstream output("finalData.txt");
+	output
+		<< std::setw(12) << "Cash $"
+		<< std::setw(8) << "PrOrd"
+		<< std::setw(8) << "PrStr"
+		<< std::setw(8) << "UnprOrd"
+		<< std::setw(8) << "UnprStr"
+		<< std::setw(12) << "MaxLoss %"
+		<< std::setw(12) << "SumLoss $"
+		<< std::setw(12) << "RFCommon"
+		<< std::setw(12) << "RFSummary"
+		<< std::setw(8) << "TochOrd"
+		<< std::setw(8) << "BrekOrd"
+		<< std::setw(6) << "ATR T"
+		<< std::setw(6) << "ATR S"
+		<< std::setw(12) << "STFactor"
+		<< std::setw(12) << "Deal %"
+		<< std::setw(5) << "Level"
+		<< std::setw(12) << "Act %"
+		<< std::setw(12) << "SL %"
+		<< std::setw(12) << "MinPrf %"
+		<< std::setw(12) << "DSL %"
+		<< std::setw(10) << "DSLTrend"
+		<< std::setw(10) << "Touch WM"
+		<< std::setw(10) << "Break En"
+		<< std::setw(10) << "Break WM"
+		<< std::setw(10) << "UseNewTr"
+		<< std::setw(10) << "ActResAl"
+		<< std::setw(10) << "ActRange"
+		<< std::setw(10) << "ActFCChk"
+		<< std::setw(10) << "SLWEnbld"
+		<< std::setw(10) << "SLWResAl"
+		<< std::setw(10) << "SLWRange"
+		<< std::setw(10) << "SLWFCChk\n";
+	output << std::fixed;
+
+	for (const auto& data : finalVector) {
+		output
+			<< std::setw(12) << data.cash
+			<< std::setw(8) << data.profitableOrder
+			<< std::setw(8) << data.profitableStreak
+			<< std::setw(8) << data.unprofitableOrder
+			<< std::setw(8) << data.unprofitableStreak
+			<< std::setw(12) << data.maxLossPercent
+			<< std::setw(12) << data.summaryLoss
+			<< std::setw(12) << data.RFCommon
+			<< std::setw(12) << data.RFSummary
+			<< std::setw(8) << data.touchTrendOrder
+			<< std::setw(8) << data.breakTrendOrder
+			<< std::setw(6) << data.atrType
+			<< std::setw(6) << data.atrSize
+			<< std::setw(12) << data.stFactor
+			<< std::setw(12) << data.dealPercent
+			<< std::setw(5) << data.leverage
+			<< std::setw(12) << data.activationPercent
+			<< std::setw(12) << data.stopLossPercent
+			<< std::setw(12) << data.minimumProfitPercent
+			<< std::setw(12) << data.dynamicSLPercent
+			<< std::setw(10) << data.dynamicStopLossTrendMode
+			<< std::setw(10) << data.trendTouchOpenerModuleActivationWaitMode
+			<< std::setw(10) << data.trendBreakOpenerModuleEnabled
+			<< std::setw(10) << data.trendBreakOpenerModuleActivationWaitMode
+			<< std::setw(10) << data.trendBreakOpenerModuleAlwaysUseNewTrend
+			<< std::setw(10) << data.activationWaiterModuleResetAllowed
+			<< std::setw(10) << data.activationWaiterModuleActivationWaitRange
+			<< std::setw(10) << data.activationWaiterModuleFullCandleCheck
+			<< std::setw(10) << data.stopLossWaiterModuleEnabled
+			<< std::setw(10) << data.stopLossWaiterModuleResetAllowed
+			<< std::setw(10) << data.stopLossWaiterModuleStopLossWaitRange
+			<< std::setw(10) << data.stopLossWaiterModuleFullCandleCheck << '\n';
+	}
 }
