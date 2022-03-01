@@ -45,5 +45,5 @@ void calculation::singleCalculation() {
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.setWithLogs(true);
     mm.calculate(candles);
-    std::cout << mm.getFinalData() << '\n';
+    std::cout << mm.getFullCash() << '\n';
 }

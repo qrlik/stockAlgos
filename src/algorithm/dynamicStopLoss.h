@@ -1,9 +1,14 @@
 #pragma once
 
+namespace calculation {
+	class calculationSystem;
+}
+
 namespace algorithm {
 	class moneyMaker;
 	class dynamicStopLoss {
 		friend class moneyMaker;
+		friend class calculation::calculationSystem;
 	public:
 		dynamicStopLoss(moneyMaker* aMm, double aPercent, bool aTrendMode);
 		bool check();

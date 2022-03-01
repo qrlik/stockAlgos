@@ -1,9 +1,14 @@
 #pragma once
 
+namespace calculation {
+	class calculationSystem;
+}
+
 namespace algorithm {
 	class moneyMaker;
 	class stopLossWaiter {
 		friend class moneyMaker;
+		friend class calculation::calculationSystem;
 	public:
 		stopLossWaiter(moneyMaker* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck);
 		bool operator==(const stopLossWaiter& other);

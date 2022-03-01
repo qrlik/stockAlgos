@@ -1,7 +1,6 @@
 #include "tests/checkers.h"
 #include "calculation/singleCalculator.h"
 #include "calculation/combinationCalculator.h"
-#include "utils/excel.h"
 #include "utils/utils.h"
 
 int main() {
@@ -9,10 +8,8 @@ int main() {
 
 	//calculation::singleCalculation();
 
-	//calculation::calculationSystem system;
-	//system.calculate();
-
-	utils::saveDataToXsl({});
+	calculation::calculationSystem system;
+	system.calculate();
 
 	return 0;
 }

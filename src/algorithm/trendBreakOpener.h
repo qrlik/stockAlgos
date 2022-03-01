@@ -1,9 +1,14 @@
 #pragma once
 
+namespace calculation {
+	class calculationSystem;
+}
+
 namespace algorithm {
 	class moneyMaker;
 	class trendBreakOpener {
 		friend class moneyMaker;
+		friend class calculation::calculationSystem;
 	public:
 		trendBreakOpener(moneyMaker* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend);
 		bool isNewTrendAllowed();

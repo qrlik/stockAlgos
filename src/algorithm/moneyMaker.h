@@ -13,10 +13,14 @@
 namespace tests {
     class mmChecker;
 }
+namespace calculation {
+    class calculationSystem;
+}
 
 namespace algorithm {
     class moneyMaker {
         friend class tests::mmChecker;
+        friend class calculation::calculationSystem;
     public:
         enum class eState : unsigned char {
             NONE = 0,
@@ -51,7 +55,6 @@ namespace algorithm {
 
         void openOrder(eState aState, double aPrice);
         bool doAction(const candle& aCandle);
-        Json getFinalData() const;
     private:
         bool update();
         bool updateCandles(const candle& aCandle);
