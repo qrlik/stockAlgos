@@ -7,7 +7,7 @@
 namespace calculation {
 	class calculationSystem {
 	public:
-		calculationSystem();
+		calculationSystem(eCandleInterval aInterval);
 		void calculate();
 	private:
 		void iterate(combinationFactory& aFactory, int aThread);
@@ -63,7 +63,7 @@ namespace calculation {
 		std::vector<threadInfo> threadsData;
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
-		const int threadCount = 8;
+		const size_t threadsCount = 8;
 
 		double progress = 0.0;
 		size_t combinations = 0;

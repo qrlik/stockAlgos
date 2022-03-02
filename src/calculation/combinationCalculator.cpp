@@ -8,10 +8,10 @@
 
 using namespace calculation;
 
-calculationSystem::calculationSystem() {
-	auto json = utils::readFromJson("assets/candles/1h_year");
+calculationSystem::calculationSystem(eCandleInterval aInterval) {
+	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_year");
 	candlesSource = utils::parseCandles(json);
-	threadsData = std::vector<threadInfo>(threadCount);
+	threadsData = std::vector<threadInfo>(threadsCount);
 }
 
 bool calculationSystem::threadInfo::isCached(indicators::eAtrType aType, int aSize, double aFactor) {
@@ -26,10 +26,10 @@ void calculationSystem::threadInfo::saveCache(indicators::eAtrType aType, int aS
 
 void calculationSystem::calculate() {
 	std::vector<std::future<void>> futures;
-	auto factory = combinationFactory();
+	auto factory = combinationFactory(threadsCount);
 	combinations = factory.getCombinationsAmount();
 	factory.reset();
-	for (auto i = 0; i < threadCount; ++i) {
+	for (auto i = 0; i < threadsCount; ++i) {
 		futures.push_back(std::async(std::launch::async, [this, &factory, i]() {return iterate(factory, i); }));
 	}
 	for (auto& future : futures) {
@@ -44,7 +44,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 		auto& threadInfo = threadsData[aThread];
 		if (!threadInfo.isCached(aData.atrType, aData.atrSize, aData.stFactor)) {
 			candles = candlesSource;
-			indicators::getProcessedCandles(candles, aData.atrType, aData.atrSize, aData.stFactor, 8760);
+			indicators::getProcessedCandles(candles, aData.atrType, aData.atrSize, aData.stFactor, candlesSource.size() - 1000);
 			threadInfo.saveCache(aData.atrType, aData.atrSize, aData.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(aData, 100.0);

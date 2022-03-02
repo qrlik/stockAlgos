@@ -13,26 +13,40 @@ namespace {
 		}
 		return result;
 	}
+	std::vector<algorithmData> tmpAllData;
 }
 
-combinationFactory::combinationFactory() {
+combinationFactory::combinationFactory(size_t aThreadsCount) : threadsCount(aThreadsCount) {
 	reset();
-	iterateCombination();
+	generateSuperTrend();
+	data[0] = algorithmData{};
+
+	auto threadDataAmount = combinations / threadsCount;
+	auto lastThreadDataAmount = threadDataAmount + combinations % threadsCount;
+	for (size_t i = 0; i < threadsCount; ++i) {
+		const bool isLast = i == 0;
+		const auto index = threadsCount - 1 - i;
+		const auto amount = (isLast) ? lastThreadDataAmount : threadDataAmount;
+		combinationsData[index].reserve(amount);
+		std::copy(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end(), std::back_inserter(combinationsData[index]));
+		tmpAllData.erase(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end());
+	}
+	inited = true;
 }
 
 size_t combinationFactory::getCombinationsAmount() const {
-	return std::accumulate(combinations.cbegin(), combinations.cend(), size_t{ 0 });
+	return combinations;
+}
+
+size_t combinationFactory::getCurrentIndex() const {
+	return std::accumulate(indexes.cbegin(), indexes.cend(), size_t{ 0 });
 }
 
 void combinationFactory::reset() {
-	combinations = std::vector<size_t>(8, 0);
-	data = std::vector<algorithmData>(8);
-	callbacks = std::vector<iterateCallback>(8);
-}
-
-void combinationFactory::iterateCombination() {
-	reset();
-	generateSuperTrend();
+	combinationsData = std::vector<std::vector<algorithmData>>(threadsCount);
+	indexes = std::vector<size_t>(threadsCount, 0);
+	data = std::vector<algorithmData>(threadsCount);
+	callbacks = std::vector<iterateCallback>(threadsCount);
 }
 
 void combinationFactory::iterateCombination(int aPosition, iterateCallback aCallback) {
@@ -185,7 +199,12 @@ void combinationFactory::generateStop(int aPosition) {
 }
 
 void combinationFactory::onIterate(int aPosition) {
-	++combinations[aPosition];
+	if (!inited) {
+		++combinations;
+		tmpAllData.push_back(data[0]);
+		return;
+	}
+	++indexes[aPosition];
 	if (callbacks[aPosition]) {
 		callbacks[aPosition](data[aPosition], getCombinationsAmount());
 	}
