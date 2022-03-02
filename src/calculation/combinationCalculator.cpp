@@ -137,7 +137,7 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(6) << "ATR S"
 		<< std::setw(12) << "STFactor"
 		<< std::setw(12) << "Deal %"
-		<< std::setw(5) << "Level"
+		<< std::setw(7) << "Level"
 		<< std::setw(12) << "Act %"
 		<< std::setw(12) << "SL %"
 		<< std::setw(12) << "MinPrf %"
@@ -173,7 +173,7 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(6) << data.atrSize
 			<< std::setw(12) << data.stFactor
 			<< std::setw(12) << data.dealPercent
-			<< std::setw(5) << data.leverage
+			<< std::setw(7) << data.leverage
 			<< std::setw(12) << data.activationPercent
 			<< std::setw(12) << data.stopLossPercent
 			<< std::setw(12) << data.minimumProfitPercent

@@ -6,10 +6,10 @@
 int main() {
 	//tests::runTests();
 
-	//calculation::singleCalculation();
+	calculation::singleCalculation();
 
-	calculation::calculationSystem system;
-	system.calculate();
+	//calculation::calculationSystem system;
+	//system.calculate();
 
 	return 0;
 }
