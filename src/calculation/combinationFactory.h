@@ -33,8 +33,8 @@ namespace calculation {
         const double minStFactor = 3.0;
         const double maxStFactor = 3.0;
 
-        const double minDealPercent = 0.5;
-        const double maxDealPercent = 5.0;
+        const double minDealPercent = 7.5;
+        const double maxDealPercent = 15.0;
         const int minLeverage = 50;
         const int maxLeverage = 50;
 
@@ -42,11 +42,12 @@ namespace calculation {
         const double maxMinProfitPercent = 2.5;
 
         const double minActivationPercent = 0.0;
-        const double minStopLossPercent = 0.5;
+        const double minStopLossPercent = 1.0;
         const double minDynamicSLPercent = 0.5;
+        const double maxDynamicSLPercent = 1.0;
 
         const int minTrendActivationWaitRange = 0;
-        const int maxTrendActivationWaitRange = 3;
+        const int maxTrendActivationWaitRange = 4;
         const int minStopLossWaitRange = 0;
         const int maxStopLossWaitRange = 3;
 

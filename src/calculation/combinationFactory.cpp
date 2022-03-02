@@ -103,7 +103,8 @@ void combinationFactory::generateDynamicSL(int aPosition) {
 		data[aPosition].dynamicSLTrendMode = dynamicSLTrendMode;
 		if (!dynamicSLTrendMode) {
 			const auto liquidationPercent = 100 / data[aPosition].leverage;
-			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, liquidationPercent + stepFloat, stepFloat)) {
+			assert(maxDynamicSLPercent <= liquidationPercent);
+			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + stepFloat, stepFloat)) {
 				data[aPosition].dynamicSLPercent = dynamicSLPercent;
 				generateOpener(aPosition);
 			}

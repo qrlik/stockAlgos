@@ -127,8 +127,8 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(8) << "PrStr"
 		<< std::setw(8) << "UnprOrd"
 		<< std::setw(8) << "UnprStr"
-		<< std::setw(12) << "MaxLoss %"
-		<< std::setw(12) << "SumLoss $"
+		<< std::setw(15) << "MaxLoss %"
+		<< std::setw(15) << "SumLoss $"
 		<< std::setw(12) << "RFCommon"
 		<< std::setw(12) << "RFSummary"
 		<< std::setw(8) << "TochOrd"
@@ -163,8 +163,8 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(8) << data.profitableStreak
 			<< std::setw(8) << data.unprofitableOrder
 			<< std::setw(8) << data.unprofitableStreak
-			<< std::setw(12) << data.maxLossPercent
-			<< std::setw(12) << data.summaryLoss
+			<< std::setw(15) << data.maxLossPercent
+			<< std::setw(15) << data.summaryLoss
 			<< std::setw(12) << data.RFCommon
 			<< std::setw(12) << data.RFSummary
 			<< std::setw(8) << data.touchTrendOrder
