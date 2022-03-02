@@ -34,7 +34,7 @@ namespace calculation {
         const double maxStFactor = 3.0;
 
         const double minDealPercent = 0.5;
-        const double maxDealPercent = 0.5; //5.0;
+        const double maxDealPercent = 5.0;
         const int minLeverage = 50;
         const int maxLeverage = 50;
 

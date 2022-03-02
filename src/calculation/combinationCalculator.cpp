@@ -35,7 +35,7 @@ void calculationSystem::calculate() {
 	for (auto& future : futures) {
 		future.wait();
 	}
-	saveFinalData2();
+	saveFinalData();
 }
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {

@@ -13,7 +13,6 @@ namespace calculation {
 		void iterate(combinationFactory& aFactory, int aThread);
 		void printProgress(size_t aIndex);
 		void saveFinalData();
-		void saveFinalData2();
 
 		struct finalData {
 			std::string atrType;
