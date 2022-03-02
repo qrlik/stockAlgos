@@ -28,7 +28,6 @@ void calculationSystem::calculate() {
 	std::vector<std::future<void>> futures;
 	auto factory = combinationFactory(threadsCount);
 	combinations = factory.getCombinationsAmount();
-	factory.reset();
 	for (auto i = 0; i < threadsCount; ++i) {
 		futures.push_back(std::async(std::launch::async, [this, &factory, i]() {return iterate(factory, i); }));
 	}

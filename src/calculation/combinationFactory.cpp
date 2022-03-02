@@ -16,8 +16,13 @@ namespace {
 	std::vector<algorithmData> tmpAllData;
 }
 
-combinationFactory::combinationFactory(size_t aThreadsCount) : threadsCount(aThreadsCount) {
-	reset();
+combinationFactory::combinationFactory(size_t aThreadsCount) : 
+	threadsCount(aThreadsCount),
+	combinationsData(aThreadsCount),
+	indexes(aThreadsCount, 0),
+	data(aThreadsCount),
+	callbacks(aThreadsCount)
+{
 	generateSuperTrend();
 	data[0] = algorithmData{};
 
@@ -40,13 +45,6 @@ size_t combinationFactory::getCombinationsAmount() const {
 
 size_t combinationFactory::getCurrentIndex() const {
 	return std::accumulate(indexes.cbegin(), indexes.cend(), size_t{ 0 });
-}
-
-void combinationFactory::reset() {
-	combinationsData = std::vector<std::vector<algorithmData>>(threadsCount);
-	indexes = std::vector<size_t>(threadsCount, 0);
-	data = std::vector<algorithmData>(threadsCount);
-	callbacks = std::vector<iterateCallback>(threadsCount);
 }
 
 void combinationFactory::iterateCombination(int aPosition, iterateCallback aCallback) {

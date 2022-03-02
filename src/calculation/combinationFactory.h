@@ -10,7 +10,6 @@ namespace calculation {
         using iterateCallback = std::function<void(const algorithmData&, size_t)>;
         combinationFactory(size_t aThreadsCount);
         void iterateCombination(int aPosition, iterateCallback aCallback);
-        void reset();
         size_t getCombinationsAmount() const;
 	private:
         size_t getCurrentIndex() const;
