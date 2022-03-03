@@ -9,23 +9,21 @@ namespace calculation {
 	public:
         using iterateCallback = std::function<void(const algorithmData&, size_t)>;
         combinationFactory(size_t aThreadsCount);
-        void iterateCombination(int aPosition, iterateCallback aCallback);
         size_t getCombinationsAmount() const;
-	private:
         size_t getCurrentIndex() const;
-        void generateSuperTrend(int aPosition);
+        const std::vector<algorithmData>& getThreadData(int aThread);
+        void incrementThreadIndex(int aThread);
+	private:
         void generateSuperTrend();
-        void generateDeal(int aPosition);
-        void generatePercent(int aPosition);
-        void generateDynamicSL(int aPosition);
-        void generateOpener(int aPosition);
-        void generateActivation(int aPosition);
-        void generateStop(int aPosition);
-        void onIterate(int aPosition);
+        void generateDeal();
+        void generatePercent();
+        void generateDynamicSL();
+        void generateOpener();
+        void generateActivation();
+        void generateStop();
+        void onIterate();
 
         std::vector<std::vector<algorithmData>> combinationsData;
-        std::vector<algorithmData> data;
-        std::vector<iterateCallback> callbacks;
         std::vector<size_t> indexes;
         size_t combinations = 0;
         const size_t threadsCount = 1;

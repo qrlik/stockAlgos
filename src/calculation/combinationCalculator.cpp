@@ -39,18 +39,19 @@ void calculationSystem::calculate() {
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	std::vector<candle> candles;
-	aFactory.iterateCombination(aThread, [this, &candles, aThread](const algorithmData& aData, size_t aIndex) {
-		auto& threadInfo = threadsData[aThread];
-		if (!threadInfo.isCached(aData.atrType, aData.atrSize, aData.stFactor)) {
+	auto& threadInfo = threadsData[aThread];
+	for (const auto& data : aFactory.getThreadData(aThread)) {
+		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
-			indicators::getProcessedCandles(candles, aData.atrType, aData.atrSize, aData.stFactor, candlesSource.size() - 1000);
-			threadInfo.saveCache(aData.atrType, aData.atrSize, aData.stFactor);
+			indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candlesSource.size() - 1000);
+			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
-		auto moneyMaker = algorithm::moneyMaker(aData, 100.0);
+		auto moneyMaker = algorithm::moneyMaker(data, 100.0);
 		moneyMaker.calculate(candles);
 		threadInfo.finalData.push_back(getData(moneyMaker));
-		printProgress(aIndex);
-	});
+		aFactory.incrementThreadIndex(aThread);
+		printProgress(aFactory.getCurrentIndex());
+	}
 }
 
 void calculationSystem::printProgress(size_t aIndex) {
