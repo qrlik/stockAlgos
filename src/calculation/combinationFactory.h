@@ -42,16 +42,16 @@ namespace calculation {
         const double maxMinProfitPercent = 2.5;
 
         const double minActivationPercent = 0.0; // <= liqudation
-        const double minStopLossPercent = 0.5; // <= liqudation
-        const double minDynamicSLPercent = 0.5;
+        const double minStopLossPercent = 0.25; // <= liqudation
+        const double minDynamicSLPercent = 0.25;
         const double maxDynamicSLPercent = 2.0; // <= liqudation
 
         const int minTrendActivationWaitRange = 0;
-        const int maxTrendActivationWaitRange = 0;
+        const int maxTrendActivationWaitRange = 5;
         const int minStopLossWaitRange = 0;
-        const int maxStopLossWaitRange = 0;
+        const int maxStopLossWaitRange = 5;
 
-        const double stepFloat = 0.5; // 0.25
+        const double stepFloat = 0.25;
         const int stepInt = 5;
 
         bool inited = false;
