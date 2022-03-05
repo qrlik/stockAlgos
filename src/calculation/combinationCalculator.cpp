@@ -122,13 +122,13 @@ void calculationSystem::saveFinalData() {
 
 	std::ofstream output("finalData.txt");
 	output
-		<< std::setw(12) << "Cash $"
+		<< std::setw(18) << "Cash $"
 		<< std::setw(8) << "PrOrd"
 		<< std::setw(8) << "PrStr"
 		<< std::setw(8) << "UnprOrd"
 		<< std::setw(8) << "UnprStr"
-		<< std::setw(15) << "MaxLoss %"
-		<< std::setw(15) << "SumLoss $"
+		<< std::setw(18) << "MaxLoss %"
+		<< std::setw(18) << "SumLoss $"
 		<< std::setw(12) << "RFCommon"
 		<< std::setw(12) << "RFSummary"
 		<< std::setw(8) << "TochOrd"
@@ -158,13 +158,13 @@ void calculationSystem::saveFinalData() {
 
 	for (const auto& data : finalVector) {
 		output
-			<< std::setw(12) << data.cash
+			<< std::setw(18) << data.cash
 			<< std::setw(8) << data.profitableOrder
 			<< std::setw(8) << data.profitableStreak
 			<< std::setw(8) << data.unprofitableOrder
 			<< std::setw(8) << data.unprofitableStreak
-			<< std::setw(15) << data.maxLossPercent
-			<< std::setw(15) << data.summaryLoss
+			<< std::setw(18) << data.maxLossPercent
+			<< std::setw(18) << data.summaryLoss
 			<< std::setw(12) << data.RFCommon
 			<< std::setw(12) << data.RFSummary
 			<< std::setw(8) << data.touchTrendOrder
