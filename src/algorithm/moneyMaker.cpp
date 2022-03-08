@@ -82,6 +82,10 @@ void moneyMaker::setWithLogs(bool aState) {
 	withLogs = aState;
 }
 
+void moneyMaker::setTest(bool aState) {
+	isTest = aState;
+}
+
 bool moneyMaker::getIsTrendUp() const {
 	return isTrendUp;
 }
@@ -133,12 +137,29 @@ double moneyMaker::getTrendActivation(double aSuperTrend) const {
 }
 
 double moneyMaker::getStopLossPrice() const {
-	auto stopLossSign = (state == eState::LONG) ? -1 : 1;
-	auto result = order.price * (100.0 + stopLossSign * stopLossPercent) / 100.0;
-	if (fullCheck) {
-		return (state == eState::LONG) ? utils::floor(result, 2) : utils::ceil(result, 2);
+	if (stopLossPercent != -1.0) {
+		auto stopLossSign = (state == eState::LONG) ? -1 : 1;
+		auto result = order.price * (100.0 + stopLossSign * stopLossPercent) / 100.0;
+		if (isTest) {
+			if (fullCheck) {
+				return (state == eState::LONG) ? utils::floor(result, 2) : utils::ceil(result, 2);
+			}
+			return result;
+		}
+		auto liqudationPrice = getLiqudationPrice();
+		if (state == eState::LONG) {
+			return std::max(liqudationPrice, result);
+		}
+		return std::min(liqudationPrice, result);
 	}
-	return result;
+	return getLiqudationPrice();
+}
+
+double moneyMaker::getLiqudationPrice() const {
+	auto sign = (state == eState::LONG) ? 1 : -1;
+	const auto upper = (1 - sign * leverage) * order.price;
+	const auto lower = leverage * (mmb - sign);
+	return upper / lower;
 }
 
 double moneyMaker::getMinimumProfitPrice() const {
@@ -262,12 +283,12 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 	order = orderData{};
 	order.fullCheck = fullCheck;
 	order.price = aPrice;
-	order.stopLoss = getStopLossPrice();
 	order.minimumProfit = getMinimumProfitPrice();
 	order.amount = cash * dealPercent / 100.0;
 	if (fullCheck) {
 		order.amount = utils::floor(order.amount, 3);
 	}
+	order.stopLoss = getStopLossPrice();
 	order.time = curCandle.time;
 
 	auto taxAmount = order.amount * leverage * algorithmData::tax;

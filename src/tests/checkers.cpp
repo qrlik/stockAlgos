@@ -22,6 +22,8 @@ mmChecker::mmChecker(std::string aName) :
 	auto data = algorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
 	actualMoneyMaker = std::make_unique<algorithm::moneyMaker>(data, json["cash"].get<double>());
 	testMoneyMaker = std::make_unique<algorithm::moneyMaker>(data, json["cash"].get<double>());
+	actualMoneyMaker->setTest(true);
+	testMoneyMaker->setTest(true);
 	testMoneyMakerData = json["testMoneyMakerData"];
 	testNextTime = testMoneyMakerData[0]["time"].get<std::string>();
 

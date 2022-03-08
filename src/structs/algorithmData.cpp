@@ -74,3 +74,11 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 	}
 	return result;
 }
+
+double algorithmData::getLiqudationPercent(int aLeverage) {
+	const auto mmb = 0.004;
+	const auto upper = (1 + aLeverage);
+	const auto lower = aLeverage * (mmb + 1);
+	const auto factor = upper / lower - 1;
+	return factor * 100;
+}

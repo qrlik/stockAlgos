@@ -80,15 +80,23 @@ void combinationFactory::generateDeal() {
 }
 
 void combinationFactory::generatePercent() {
-	const auto liquidationPercent = 100 / tmpData.leverage;
-	for (auto activationPercent : iotaWithStep(minActivationPercent, liquidationPercent + stepFloat, stepFloat)) {
+	const auto liqPercentFormal = 100 / tmpData.leverage;
+	const auto liqPercent = algorithmData::getLiqudationPercent(tmpData.leverage);
+	for (auto activationPercent : iotaWithStep(minActivationPercent, liqPercentFormal + stepFloat, stepFloat)) {
 		tmpData.activationPercent = activationPercent;
-		for (auto stopLossPercent : iotaWithStep(std::max(activationPercent, minStopLossPercent), liquidationPercent + stepFloat, stepFloat)) {
-			tmpData.stopLossPercent = stopLossPercent;
-			for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
-				tmpData.minimumProfitPercent = minimumProfitPercent;
-				generateDynamicSL();
+		if (auto stopLossFloor = std::max(activationPercent, minStopLossPercent); stopLossFloor < liqPercent) {
+			for (auto stopLossPercent : iotaWithStep(stopLossFloor, liqPercent, stepFloat)) {
+				tmpData.stopLossPercent = stopLossPercent;
+				for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
+					tmpData.minimumProfitPercent = minimumProfitPercent;
+					generateDynamicSL();
+				}
 			}
+		}
+		tmpData.stopLossPercent = -1.0;
+		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
+			tmpData.minimumProfitPercent = minimumProfitPercent;
+			generateDynamicSL();
 		}
 	}
 }

@@ -46,6 +46,7 @@ namespace algorithm {
         eState getState() const;
         void setState(eState aState);
         void setWithLogs(bool aState);
+        void setTest(bool aState);
         bool getIsTrendUp() const;
 
         double getSuperTrend() const;
@@ -64,6 +65,7 @@ namespace algorithm {
         void closeOrder();
         void log();
         double getStopLossPrice() const;
+        double getLiqudationPrice() const;
         double getMinimumProfitPrice() const;
 
         activationWaiter activationWaiterModule;
@@ -91,6 +93,8 @@ namespace algorithm {
         const double stopLossPercent = 0.0;
         const double minimumProfitPercent = 0.0;
         const double dealPercent = 0.0;
+        const double mmb = 0.004;
+        const int cum = 0;
 
         const double startCash = 0.0;
         const double stopCash = 0.0;
@@ -99,6 +103,7 @@ namespace algorithm {
 
         bool stopCashBreak = false;
         bool fullCheck = false;
+        bool isTest = false;
         bool withLogs = false;
         bool inited = false;
     };

@@ -9,7 +9,7 @@
 using namespace calculation;
 
 calculationSystem::calculationSystem(eCandleInterval aInterval) {
-	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_3years");
+	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_year");
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
@@ -93,7 +93,7 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	result.dealPercent = aMM.dealPercent;
 	result.leverage = aMM.leverage;
 	result.activationPercent = aMM.activationPercent;
-	result.stopLossPercent = aMM.stopLossPercent;
+	result.stopLossPercent = (aMM.stopLossPercent != -1.0) ? aMM.stopLossPercent : algorithmData::getLiqudationPercent(aMM.leverage);
 	result.minimumProfitPercent = aMM.minimumProfitPercent;
 	result.dynamicSLPercent = aMM.dynamicStopLossModule.dynamicSLPercent;
 	result.dynamicStopLossTrendMode = aMM.dynamicStopLossModule.trendMode;
