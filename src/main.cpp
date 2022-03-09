@@ -8,7 +8,7 @@ int main() {
 
 	//calculation::singleCalculation();
 
-	calculation::calculationSystem system(eCandleInterval::ONE_HOUR);
+	calculation::calculationSystem system(eCandleInterval::TWO_HOUR);
 	system.calculate();
 
 	return 0;
