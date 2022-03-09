@@ -9,7 +9,7 @@
 using namespace calculation;
 
 calculationSystem::calculationSystem(eCandleInterval aInterval) {
-	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_3years");
+	auto json = utils::readFromJson("assets/candles/3year/" + getCandleIntervalApiStr(aInterval));
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
