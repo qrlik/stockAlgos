@@ -9,7 +9,7 @@
 using namespace calculation;
 
 calculationSystem::calculationSystem(eCandleInterval aInterval) {
-	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_year");
+	auto json = utils::readFromJson("assets/candles/" + getCandleIntervalApiStr(aInterval) + "_3years");
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
@@ -127,8 +127,8 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(8) << "PrStr"
 		<< std::setw(8) << "UnprOrd"
 		<< std::setw(8) << "UnprStr"
-		<< std::setw(18) << "MaxLoss %"
-		<< std::setw(18) << "SumLoss $"
+		<< std::setw(21) << "MaxLoss %"
+		<< std::setw(21) << "SumLoss $"
 		<< std::setw(12) << "RFCommon"
 		<< std::setw(12) << "RFSummary"
 		<< std::setw(8) << "TochOrd"
@@ -163,8 +163,8 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(8) << data.profitableStreak
 			<< std::setw(8) << data.unprofitableOrder
 			<< std::setw(8) << data.unprofitableStreak
-			<< std::setw(18) << data.maxLossPercent
-			<< std::setw(18) << data.summaryLoss
+			<< std::setw(21) << data.maxLossPercent
+			<< std::setw(21) << data.summaryLoss
 			<< std::setw(12) << data.RFCommon
 			<< std::setw(12) << data.RFSummary
 			<< std::setw(8) << data.touchTrendOrder
