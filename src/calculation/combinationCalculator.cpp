@@ -29,18 +29,21 @@ void calculationSystem::calculate() {
 	auto factory = combinationFactory(threadsCount);
 	combinations = factory.getCombinationsAmount();
 	for (auto i = 0; i < threadsCount; ++i) {
-		futures.push_back(std::async(std::launch::async, [this, &factory, i]() {return iterate(factory, i); }));
+		futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
 	}
 	for (auto& future : futures) {
 		future.wait();
 	}
+	factory.onFinish();
 	saveFinalData();
 }
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	std::vector<candle> candles;
 	auto& threadInfo = threadsData[aThread];
-	for (const auto& data : aFactory.getThreadData(aThread)) {
+	const auto& threadData = aFactory.getThreadData(aThread);
+	threadInfo.finalData.reserve(threadData.size());
+	for (const auto& data : threadData) {
 		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
 			indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candlesSource.size() - 1000);

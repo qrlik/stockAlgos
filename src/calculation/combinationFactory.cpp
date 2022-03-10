@@ -1,4 +1,5 @@
 #include "combinationFactory.h"
+#include <iostream>
 
 using namespace calculation;
 
@@ -33,6 +34,9 @@ combinationFactory::combinationFactory(size_t aThreadsCount) :
 		std::copy(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end(), std::back_inserter(combinationsData[index]));
 		tmpAllData.erase(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end());
 	}
+	if (!tmpAllData.empty()) {
+		std::cout << "[ERROR] combinationFactory tmpAllData not empty" << std::endl;
+	}
 	inited = true;
 }
 
@@ -50,6 +54,12 @@ const std::vector<algorithmData>& combinationFactory::getThreadData(int aThread)
 
 void combinationFactory::incrementThreadIndex(int aThread) {
 	++indexes[aThread];
+}
+
+void combinationFactory::onFinish() {
+	if (std::accumulate(indexes.begin(), indexes.end(), size_t{ 0 }) != combinations) {
+		std::cout << "[ERROR] combinationFactory onFinish combinations not correct" << std::endl;
+	}
 }
 
 void combinationFactory::generateSuperTrend() {

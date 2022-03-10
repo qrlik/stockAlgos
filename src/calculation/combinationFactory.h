@@ -13,6 +13,7 @@ namespace calculation {
         size_t getCurrentIndex() const;
         const std::vector<algorithmData>& getThreadData(int aThread);
         void incrementThreadIndex(int aThread);
+        void onFinish();
 	private:
         void generateSuperTrend();
         void generateDeal();
