@@ -90,9 +90,8 @@ void combinationFactory::generateDeal() {
 }
 
 void combinationFactory::generatePercent() {
-	const auto liqPercentFormal = 100 / tmpData.leverage;
 	const auto liqPercent = algorithmData::getLiqudationPercent(tmpData.leverage);
-	for (auto activationPercent : iotaWithStep(minActivationPercent, liqPercentFormal + stepFloat, stepFloat)) {
+	for (auto activationPercent : iotaWithStep(minActivationPercent, liqPercent, stepFloat)) {
 		tmpData.activationPercent = activationPercent;
 		if (auto stopLossFloor = std::max(activationPercent, minStopLossPercent); stopLossFloor < liqPercent) {
 			for (auto stopLossPercent : iotaWithStep(stopLossFloor, liqPercent, stepFloat)) {
@@ -108,6 +107,12 @@ void combinationFactory::generatePercent() {
 			tmpData.minimumProfitPercent = minimumProfitPercent;
 			generateDynamicSL();
 		}
+	}
+	tmpData.activationPercent = liqPercent;
+	tmpData.stopLossPercent = -1.0;
+	for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
+		tmpData.minimumProfitPercent = minimumProfitPercent;
+		generateDynamicSL();
 	}
 }
 

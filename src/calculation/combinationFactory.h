@@ -39,13 +39,13 @@ namespace calculation {
         const int minLeverage = 50;
         const int maxLeverage = 50;
 
-        const double minMinProfitPercent = 0.5;
+        const double minMinProfitPercent = 0.25;
         const double maxMinProfitPercent = 2.5;
 
         const double minActivationPercent = 0.0; // <= liqudation
         const double minStopLossPercent = 0.25; // <= liqudation
         const double minDynamicSLPercent = 0.25;
-        const double maxDynamicSLPercent = 2.0; // <= liqudation
+        const double maxDynamicSLPercent = 1.0;
 
         const int minTrendActivationWaitRange = 0;
         const int maxTrendActivationWaitRange = 5;
