@@ -64,7 +64,7 @@ namespace algorithm {
         bool checkTrend();
         void closeOrder();
         void log();
-        double getStopLossPrice() const;
+        double getStopLossPrice(bool aForce) const;
         double getLiqudationPrice() const;
         double getMinimumProfitPrice() const;
 

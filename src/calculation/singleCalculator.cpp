@@ -17,7 +17,7 @@ void calculation::singleCalculation() {
     data.leverage = 50;
 
     data.activationPercent = 2.0;
-    data.stopLossPercent = 2.0;
+    data.stopLossPercent = -1;
     data.minimumProfitPercent = 0.5;
 
     data.dynamicSLPercent = 0.25;
@@ -26,21 +26,21 @@ void calculation::singleCalculation() {
     data.touchOpenerActivationWaitMode = false;
 
     data.breakOpenerEnabled = true;
-    data.breakOpenerActivationWaitMode = false;
-    data.alwaysUseNewTrend = false;
+    data.breakOpenerActivationWaitMode = true;
+    data.alwaysUseNewTrend = true;
 
     data.activationWaiterResetAllowed = false;
-    data.activationWaiterRange = -1;
+    data.activationWaiterRange = 2;
     data.activationWaiterFullCandleCheck = false;
 
-    data.stopLossWaiterEnabled = true;
+    data.stopLossWaiterEnabled = false;
     data.stopLossWaiterResetAllowed = false;
-    data.stopLossWaiterRange = 0;
+    data.stopLossWaiterRange = -1;
     data.stopLossWaiterFullCandleCheck = false;
 
-    auto json = utils::readFromJson("assets/candles/1h_year");
+    auto json = utils::readFromJson("assets/candles/3year/1h");
     auto candles = utils::parseCandles(json);
-    indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, 8760);
+    indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candles.size() - 1000);
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.setWithLogs(true);

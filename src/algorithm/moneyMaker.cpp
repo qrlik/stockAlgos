@@ -1,6 +1,7 @@
 #include "moneyMaker.h"
 #include "../utils/utils.h"
 #include <iostream>
+#include <fstream>
 
 using namespace algorithm;
 
@@ -136,11 +137,15 @@ double moneyMaker::getTrendActivation(double aSuperTrend) const {
 	return result;
 }
 
-double moneyMaker::getStopLossPrice() const {
-	if (stopLossPercent != -1.0) {
+double moneyMaker::getStopLossPrice(bool aForce) const {
+	if (stopLossPercent != -1.0 || aForce) {
+		auto tmpStopLoss = stopLossPercent;
+		if (stopLossPercent == -1.0) {
+			tmpStopLoss = 100.0 / leverage;
+		}
 		auto stopLossSign = (state == eState::LONG) ? -1 : 1;
-		auto result = order.price * (100.0 + stopLossSign * stopLossPercent) / 100.0;
-		if (isTest) {
+		auto result = order.price * (100.0 + stopLossSign * tmpStopLoss) / 100.0;
+		if (isTest || aForce) {
 			if (fullCheck) {
 				return (state == eState::LONG) ? utils::floor(result, 2) : utils::ceil(result, 2);
 			}
@@ -200,6 +205,9 @@ void moneyMaker::calculate(const std::vector<candle>& aCandles) {
 }
 
 bool moneyMaker::doAction(const candle& aCandle) {
+	if (aCandle.time == "15:00 05-03-2019"){
+		auto test= 5 ;
+	}
 	if (stopCashBreak) {
 		return false;
 	}
@@ -288,7 +296,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 	if (fullCheck) {
 		order.amount = utils::floor(order.amount, 3);
 	}
-	order.stopLoss = getStopLossPrice();
+	order.stopLoss = getStopLossPrice(false);
 	order.time = curCandle.time;
 
 	auto taxAmount = order.amount * leverage * algorithmData::tax;
@@ -301,6 +309,9 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 }
 
 void moneyMaker::closeOrder() {
+	if (order.stopLoss == getLiqudationPrice()) {
+		order.stopLoss = getStopLossPrice(true);
+	}
 	auto orderOpenSummary = order.amount * leverage;
 	auto orderCloseSummary = orderOpenSummary / order.price * order.stopLoss;
 	auto orderCloseTax = orderCloseSummary * algorithmData::tax;
@@ -325,17 +336,18 @@ void moneyMaker::closeOrder() {
 }
 
 void moneyMaker::log() {
-	std::cout << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
+	std::ofstream output("Logs.txt", std::ios::app);
+	output << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
 		<< std::setw(18) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
 		<< std::setw(4) << std::to_string(isNewTrend);
 	if (state == eState::STOP_LOSS_WAIT) {
-		std::cout << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
+		output << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
 	}
 	else if (state == eState::ACTIVATION_WAIT) {
-		std::cout << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
+		output << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
 	}
 	else if (!order.time.empty()) {
-		std::cout << order.toString();
+		output << order.toString();
 	}
-	std::cout << std::endl;
+	output << std::endl;
 }
