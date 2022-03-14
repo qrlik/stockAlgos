@@ -1,0 +1,65 @@
+{
+    "precision": 1,
+    "marginTiers": [
+        {
+            "position": 50000,
+            "maxLeverage": 125,
+            "maintenanceMarginRate": 0.4,
+            "maintenanceAmount": 0
+        },
+        {
+            "position": 250000,
+            "maxLeverage": 100,
+            "maintenanceMarginRate": 0.5,
+            "maintenanceAmount": 50
+        },
+        {
+            "position": 1000000,
+            "maxLeverage": 50,
+            "maintenanceMarginRate": 1.0,
+            "maintenanceAmount": 1300
+        },
+        {
+            "position": 7500000,
+            "maxLeverage": 20,
+            "maintenanceMarginRate": 2.5,
+            "maintenanceAmount": 16300
+        },
+        {
+            "position": 40000000,
+            "maxLeverage": 10,
+            "maintenanceMarginRate": 5.0,
+            "maintenanceAmount": 203800
+        },
+        {
+            "position": 100000000,
+            "maxLeverage": 5,
+            "maintenanceMarginRate": 10.0,
+            "maintenanceAmount": 2203800
+        },
+        {
+            "position": 200000000,
+            "maxLeverage": 4,
+            "maintenanceMarginRate": 12.5,
+            "maintenanceAmount": 4703800
+        },
+        {
+            "position": 400000000,
+            "maxLeverage": 3,
+            "maintenanceMarginRate": 15.0,
+            "maintenanceAmount": 9703800
+        },
+        {
+            "position": 600000000,
+            "maxLeverage": 2,
+            "maintenanceMarginRate": 25.0,
+            "maintenanceAmount": 49703800
+        },
+        {
+            "position": 1000000000,
+            "maxLeverage": 1,
+            "maintenanceMarginRate": 50.0,
+            "maintenanceAmount": 199703800
+        }
+    ]
+}
