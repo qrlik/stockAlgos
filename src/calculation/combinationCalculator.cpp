@@ -46,7 +46,8 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	for (const auto& data : threadData) {
 		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
-			market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candlesSource.size() - 1000);
+			auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+			indicators.getProcessedCandles(candles, static_cast<int>(candlesSource.size()) - 1000);
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(data, 100.0);

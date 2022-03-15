@@ -29,7 +29,8 @@ mmChecker::mmChecker(std::string aName) :
 
 	auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
 	candles = utils::parseCandles(jsonCandles);
-	market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, json["candlesAmount"].get<int>());
+	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+	indicators.getProcessedCandles(candles, json["candlesAmount"].get<int>());
 }
 
 void mmChecker::check() {

@@ -40,7 +40,9 @@ void calculation::singleCalculation() {
 
     auto json = utils::readFromJson("assets/candles/3year/1h");
     auto candles = utils::parseCandles(json);
-    market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candles.size() - 1000);
+
+    auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+    indicators.getProcessedCandles(candles, candles.size() - 1000);
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.setWithLogs(true);

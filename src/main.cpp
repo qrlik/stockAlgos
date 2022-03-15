@@ -4,12 +4,12 @@
 #include "utils/utils.h"
 
 int main() {
-	//tests::runTests();
+	tests::runTests();
 
 	//calculation::singleCalculation();
 
-	calculation::calculationSystem system(eCandleInterval::TWO_HOUR);
-	system.calculate();
+	//calculation::calculationSystem system(eCandleInterval::TWO_HOUR);
+	//system.calculate();
 
 	return 0;
 }

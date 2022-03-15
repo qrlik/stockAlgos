@@ -1,6 +1,7 @@
 #pragma once
 #include "../structs/candle.h"
 #include <vector>
+#include <deque>
 
 namespace market {
 	enum class eAtrType : unsigned char {
@@ -10,15 +11,34 @@ namespace market {
 		WMA = 3,
 		SMA = 4
 	};
-	struct indicatorsData {
+	std::string atrTypeToString(eAtrType aType);
+	eAtrType atrTypeFromString(const std::string& aStr);
+
+	class indicatorSystem {
+	public:
+		indicatorSystem(eAtrType aType, int aSize, double aStFactor);
+		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
+		bool isEqual(eAtrType aType, int aSize, double aStFactor) const;
+	private:
+		double calculateTrueRangeWMA() const;
+		double calculateTrueRangeEMA(double aAlpha);
+		double calculateTrueRangeMA();
+		void calculateSuperTrend(candle& aCandle);
+		void calculateRangeAtr(candle& aCandle);
+		void processCandle(candle& aCandle);
+
+		eAtrType atrType;
+		int atrSize;
+		double stFactor;
+
+		std::deque<double> trList;
+		candle prevCandle;
 		double lastEma = 0.0;
+
 		double lastUpperBand = 0.0;
 		double lastLowerBand = 0.0;
 		double lastTrend = 0.0;
 		double lastClose = 0.0;
+		int lastCandleTime = 0;
 	};
-
-	std::string atrTypeToString(eAtrType aType);
-	eAtrType atrTypeFromString(const std::string& aStr);
-	void getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount = 0);
 }
