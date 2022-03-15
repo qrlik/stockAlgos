@@ -30,6 +30,7 @@
     <ClCompile Include="src\calculation\singleCalculator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\market\indicators.cpp" />
+    <ClCompile Include="src\market\marketRules.cpp" />
     <ClCompile Include="src\structs\algorithmData.cpp" />
     <ClCompile Include="src\structs\candle.cpp" />
     <ClCompile Include="src\structs\orderData.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="src\calculation\combinationFactory.h" />
     <ClInclude Include="src\calculation\singleCalculator.h" />
     <ClInclude Include="src\market\indicators.h" />
+    <ClInclude Include="src\market\marketRules.h" />
     <ClInclude Include="src\structs\algorithmData.h" />
     <ClInclude Include="src\structs\candle.h" />
     <ClInclude Include="src\structs\orderData.h" />

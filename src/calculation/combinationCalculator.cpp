@@ -14,11 +14,11 @@ calculationSystem::calculationSystem(eCandleInterval aInterval) {
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
 
-bool calculationSystem::threadInfo::isCached(indicators::eAtrType aType, int aSize, double aFactor) {
+bool calculationSystem::threadInfo::isCached(market::eAtrType aType, int aSize, double aFactor) {
 	return aType == cachedAtrType && aSize == cachedAtrSize && aFactor == cachedStFactor;
 }
 
-void calculationSystem::threadInfo::saveCache(indicators::eAtrType aType, int aSize, double aFactor) {
+void calculationSystem::threadInfo::saveCache(market::eAtrType aType, int aSize, double aFactor) {
 	cachedAtrType = aType;
 	cachedAtrSize = aSize;
 	cachedStFactor = aFactor;
@@ -46,7 +46,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	for (const auto& data : threadData) {
 		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
-			indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candlesSource.size() - 1000);
+			market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candlesSource.size() - 1000);
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(data, 100.0);
@@ -90,7 +90,7 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	}
 	result.touchTrendOrder = stats.touchTrendOrder;
 	result.breakTrendOrder = stats.breakTrendOrder;
-	result.atrType = indicators::atrTypeToString(aMM.atrType);
+	result.atrType = market::atrTypeToString(aMM.atrType);
 	result.atrSize = aMM.atrSize;
 	result.stFactor = aMM.stFactor;
 	result.dealPercent = aMM.dealPercent;

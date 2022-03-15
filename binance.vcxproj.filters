@@ -50,6 +50,9 @@
     <ClCompile Include="src\market\indicators.cpp">
       <Filter>market</Filter>
     </ClCompile>
+    <ClCompile Include="src\market\marketRules.cpp">
+      <Filter>market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -124,6 +127,9 @@
       <Filter>calculation</Filter>
     </ClInclude>
     <ClInclude Include="src\market\indicators.h">
+      <Filter>market</Filter>
+    </ClInclude>
+    <ClInclude Include="src\market\marketRules.h">
       <Filter>market</Filter>
     </ClInclude>
   </ItemGroup>

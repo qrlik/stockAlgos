@@ -10,13 +10,6 @@ Json utils::readFromJson(const std::string& aPath) {
 	return json;
 }
 
-std::string utils::getStringFromFile(const std::string& aPath) {
-	std::ifstream input(aPath + ".json");
-	std::string os;
-	input >> os;
-	return os;
-}
-
 void utils::saveToJson(const std::string& aPath, const Json& aData) {
 	std::ofstream output(aPath + ".json");
 	output << aData;

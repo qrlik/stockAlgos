@@ -2,7 +2,7 @@
 #include "../structs/candle.h"
 #include <vector>
 
-namespace indicators {
+namespace market {
 	enum class eAtrType : unsigned char {
 		NONE = 0,
 		RMA = 1,

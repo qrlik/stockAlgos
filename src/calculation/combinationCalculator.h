@@ -51,13 +51,13 @@ namespace calculation {
 		finalData getData(const algorithm::moneyMaker& aMM);
 
 		struct threadInfo {
-			bool isCached(indicators::eAtrType aType, int aSize, double aFactor);
-			void saveCache(indicators::eAtrType aType, int aSize, double aFactor);
+			bool isCached(market::eAtrType aType, int aSize, double aFactor);
+			void saveCache(market::eAtrType aType, int aSize, double aFactor);
 
 			std::vector<finalData> finalData;
 			double cachedStFactor = -1.0;
 			int cachedAtrSize = -1;
-			indicators::eAtrType cachedAtrType = indicators::eAtrType::NONE;
+			market::eAtrType cachedAtrType = market::eAtrType::NONE;
 		};
 
 		std::vector<threadInfo> threadsData;

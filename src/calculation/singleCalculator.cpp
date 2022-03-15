@@ -9,7 +9,7 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-    data.atrType = indicators::eAtrType::SMA;
+    data.atrType = market::eAtrType::SMA;
     data.atrSize = 15;
     data.stFactor = 3.0;
 
@@ -40,7 +40,7 @@ void calculation::singleCalculation() {
 
     auto json = utils::readFromJson("assets/candles/3year/1h");
     auto candles = utils::parseCandles(json);
-    indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candles.size() - 1000);
+    market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, candles.size() - 1000);
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.setWithLogs(true);

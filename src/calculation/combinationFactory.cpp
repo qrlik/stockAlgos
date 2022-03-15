@@ -67,7 +67,7 @@ void combinationFactory::generateSuperTrend() {
 		return;
 	}
 	tmpData = algorithmData{};
-	for (auto atrType : { indicators::eAtrType::RMA, indicators::eAtrType::EMA, indicators::eAtrType::WMA, indicators::eAtrType::SMA }) {
+	for (auto atrType : { market::eAtrType::RMA, market::eAtrType::EMA, market::eAtrType::WMA, market::eAtrType::SMA }) {
 		tmpData.atrType = atrType;
 		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + stepInt, stepInt)) {
 			tmpData.atrSize = atrSize;

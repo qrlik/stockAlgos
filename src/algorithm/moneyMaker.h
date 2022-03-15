@@ -87,7 +87,7 @@ namespace algorithm {
 
         const double stFactor = 0.0;
         const int atrSize = 0;
-        const indicators::eAtrType atrType = indicators::eAtrType::NONE;
+        const market::eAtrType atrType = market::eAtrType::NONE;
 
         const double activationPercent = 0.0;
         const double stopLossPercent = 0.0;

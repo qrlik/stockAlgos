@@ -5,7 +5,7 @@
 using namespace tests;
 
 void tests::checkAlgorithmData(const algorithmData& aData) {
-	assert(aData.atrType != indicators::eAtrType::NONE);
+	assert(aData.atrType != market::eAtrType::NONE);
 	assert(aData.stFactor > 0.0);
 	assert(aData.dealPercent > 0.0);
 
@@ -29,7 +29,7 @@ mmChecker::mmChecker(std::string aName) :
 
 	auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
 	candles = utils::parseCandles(jsonCandles);
-	indicators::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, json["candlesAmount"].get<int>());
+	market::getProcessedCandles(candles, data.atrType, data.atrSize, data.stFactor, json["candlesAmount"].get<int>());
 }
 
 void mmChecker::check() {

@@ -2,7 +2,7 @@
 #include "../utils/utils.h"
 #include <deque>
 
-using namespace indicators;
+using namespace market;
 
 namespace {
     double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
@@ -44,13 +44,13 @@ namespace {
 
     double calculateTrueRangeMA(indicatorsData& aData, std::deque<double>& aTrList, eAtrType aType) {
         switch (aType) {
-        case indicators::eAtrType::SMA:
+        case market::eAtrType::SMA:
             return std::accumulate(aTrList.begin(), aTrList.end(), 0.0) / aTrList.size();
-        case indicators::eAtrType::WMA:
+        case market::eAtrType::WMA:
             return calculateTrueRangeWMA(aTrList);
-        case indicators::eAtrType::EMA:
+        case market::eAtrType::EMA:
             return calculateTrueRangeEMA(aData, aTrList, 2.0 / (aTrList.size() + 1));
-        case indicators::eAtrType::RMA:
+        case market::eAtrType::RMA:
             return calculateTrueRangeEMA(aData, aTrList, 1.0 / aTrList.size());
         default:
             assert(false && "calculateTrueRangeMA NONE type");
@@ -104,38 +104,38 @@ namespace {
     }
 }
 
-std::string indicators::atrTypeToString(eAtrType aType) {
+std::string market::atrTypeToString(eAtrType aType) {
     switch (aType) {
-        case indicators::eAtrType::RMA:
+        case market::eAtrType::RMA:
             return "RMA";
-        case indicators::eAtrType::EMA:
+        case market::eAtrType::EMA:
             return "EMA";
-        case indicators::eAtrType::WMA:
+        case market::eAtrType::WMA:
             return "WMA";
-        case indicators::eAtrType::SMA:
+        case market::eAtrType::SMA:
             return "SMA";
         default:
             return "NONE";
     }
 }
 
-eAtrType indicators::atrTypeFromString(const std::string& aStr) {
+eAtrType market::atrTypeFromString(const std::string& aStr) {
     if (aStr == "RMA") {
-        return indicators::eAtrType::RMA;
+        return market::eAtrType::RMA;
     }
     else if (aStr == "EMA") {
-        return indicators::eAtrType::EMA;
+        return market::eAtrType::EMA;
     }
     else if (aStr == "WMA") {
-        return indicators::eAtrType::WMA;
+        return market::eAtrType::WMA;
     }
     else if (aStr == "SMA") {
-        return indicators::eAtrType::SMA;
+        return market::eAtrType::SMA;
     }
-    return indicators::eAtrType::NONE;
+    return market::eAtrType::NONE;
 }
 
-void indicators::getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount) {
+void market::getProcessedCandles(std::vector<candle>& aCandles, eAtrType aType, size_t aSize, double aFactor, size_t aAmount) {
     auto data = indicatorsData();
     calculateRangeAtr(data, aCandles, aType, aSize);
     calculateSuperTrends(data, aCandles, aFactor);

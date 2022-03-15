@@ -6,7 +6,7 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 	algorithmData result;
 	for (const auto& [field, value] : aData.items()) {
 		if (field == "atrType") {
-			result.atrType = indicators::atrTypeFromString(value.get<std::string>());
+			result.atrType = market::atrTypeFromString(value.get<std::string>());
 		}
 		else if (field == "atrSize") {
 			result.atrSize = value.get<int>();

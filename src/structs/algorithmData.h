@@ -6,7 +6,7 @@ struct algorithmData {
     static algorithmData initAlgorithmDataFromJson(const Json& aData);
     static double getLiqudationPercent(int aLeverage);
 
-    indicators::eAtrType atrType = indicators::eAtrType::NONE;
+    market::eAtrType atrType = market::eAtrType::NONE;
     int atrSize = -1;
     double stFactor = -1.0;
 
