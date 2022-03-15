@@ -1,7 +1,7 @@
 #include "singleCalculator.h"
 #include "../algorithm/moneyMaker.h"
 #include "../structs/algorithmData.h"
-#include "../indicators/indicators.h"
+#include "../market/indicators.h"
 #include "../utils/utils.h"
 #include <iostream>
 

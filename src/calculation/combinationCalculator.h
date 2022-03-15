@@ -1,7 +1,7 @@
 #pragma once
 #include "combinationFactory.h"
 #include "../algorithm/moneyMaker.h"
-#include "../indicators/indicators.h"
+#include "../market/indicators.h"
 #include <mutex>
 
 namespace calculation {

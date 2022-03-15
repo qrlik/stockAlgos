@@ -5,9 +5,6 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\indicators\indicators.cpp">
-      <Filter>indicators</Filter>
-    </ClCompile>
     <ClCompile Include="src\algorithm\activationWaiter.cpp">
       <Filter>algorithm</Filter>
     </ClCompile>
@@ -50,6 +47,9 @@
     <ClCompile Include="src\calculation\combinationCalculator.cpp">
       <Filter>calculation</Filter>
     </ClCompile>
+    <ClCompile Include="src\market\indicators.cpp">
+      <Filter>market</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -57,9 +57,6 @@
     </Filter>
     <Filter Include="utils">
       <UniqueIdentifier>{7a4933c7-4978-44f8-a043-9e439ea52e50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="indicators">
-      <UniqueIdentifier>{325e142e-1f01-4874-9dde-d22e5ff49dec}</UniqueIdentifier>
     </Filter>
     <Filter Include="algorithm">
       <UniqueIdentifier>{2771bb50-8269-4ce5-84ba-901f11d92b1a}</UniqueIdentifier>
@@ -73,6 +70,9 @@
     <Filter Include="tests">
       <UniqueIdentifier>{4163d617-f807-4aa8-823f-820c953f10e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="market">
+      <UniqueIdentifier>{325e142e-1f01-4874-9dde-d22e5ff49dec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="third_party\json.hpp">
@@ -80,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="src\utils\utils.h">
       <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\indicators\indicators.h">
-      <Filter>indicators</Filter>
     </ClInclude>
     <ClInclude Include="src\algorithm\activationWaiter.h">
       <Filter>algorithm</Filter>
@@ -125,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="src\calculation\combinationCalculator.h">
       <Filter>calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\market\indicators.h">
+      <Filter>market</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

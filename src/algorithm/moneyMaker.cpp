@@ -205,9 +205,6 @@ void moneyMaker::calculate(const std::vector<candle>& aCandles) {
 }
 
 bool moneyMaker::doAction(const candle& aCandle) {
-	if (aCandle.time == "15:00 05-03-2019"){
-		auto test= 5 ;
-	}
 	if (stopCashBreak) {
 		return false;
 	}

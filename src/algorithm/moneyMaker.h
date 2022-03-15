@@ -3,7 +3,7 @@
 #include "../structs/candle.h"
 #include "../structs/orderData.h"
 #include "../structs/statistic.h"
-#include "../indicators/indicators.h"
+#include "../market/indicators.h"
 #include "activationWaiter.h"
 #include "dynamicStopLoss.h"
 #include "stopLossWaiter.h"
