@@ -20,8 +20,8 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 		else if (field == "leverage") {
 			result.leverage = value.get<int>();
 		}
-		else if (field == "stopLossPercent") {
-			result.stopLossPercent = value.get<double>();
+		else if (field == "liquidationOffsetPercent") {
+			result.liquidationOffsetPercent = value.get<double>();
 		}
 		else if (field == "minimumProfitPercent") {
 			result.minimumProfitPercent = value.get<double>();
@@ -70,12 +70,4 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 		}
 	}
 	return result;
-}
-
-double algorithmData::getLiqudationPercent(int aLeverage) {
-	const auto mmb = 0.004;
-	const auto upper = (1 + aLeverage);
-	const auto lower = aLeverage * (mmb + 1);
-	const auto factor = upper / lower - 1;
-	return factor * 100;
 }

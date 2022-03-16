@@ -63,8 +63,7 @@ namespace algorithm {
         bool checkTrend();
         void closeOrder();
         void log();
-        double getStopLossPrice(bool aForce) const;
-        double getLiqudationPrice() const;
+        double getStopLossPrice() const;
         double getMinimumProfitPrice() const;
 
         activationWaiter activationWaiterModule;
@@ -88,7 +87,7 @@ namespace algorithm {
         const int atrSize = 0;
         const market::eAtrType atrType = market::eAtrType::NONE;
 
-        const double stopLossPercent = 0.0;
+        const double liquidationOffsetPercent = 0.0;
         const double minimumProfitPercent = 0.0;
         const double dealPercent = 0.0;
         const double mmb = 0.004;

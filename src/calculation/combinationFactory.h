@@ -42,7 +42,8 @@ namespace calculation {
         const double minMinProfitPercent = 0.25;
         const double maxMinProfitPercent = 2.5;
 
-        const double minStopLossPercent = 0.25; // <= liqudation
+        const double minliquidationOffsetPercent = 0.25;
+        const double maxliquidationOffsetPercent = 0.1; // < liquidation
         const double minDynamicSLPercent = 0.25;
         const double maxDynamicSLPercent = 1.0;
 

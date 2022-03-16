@@ -18,7 +18,6 @@ namespace market {
 	public:
 		indicatorSystem(eAtrType aType, int aSize, double aStFactor);
 		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
-		bool isEqual(eAtrType aType, int aSize, double aStFactor) const;
 	private:
 		double calculateTrueRangeWMA() const;
 		double calculateTrueRangeEMA(double aAlpha);

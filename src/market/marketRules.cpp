@@ -9,10 +9,6 @@ marketData* marketData::getInstance() {
 	return instance;
 }
 
-int marketData::getPrecision() {
-	return precision;
-}
-
 marketData::marketData() {
 	init();
 }
@@ -27,4 +23,12 @@ void marketData::init() {
 		data.maintenanceAmount = tier["maintenanceAmount"].get<int>();
 		tiersData[tier["position"].get<int>()] = data;
 	}
+}
+
+int marketData::getPrecision() const {
+	return precision;
+}
+
+double marketData::getLiquidationPrice() const {
+	return 0.0;
 }

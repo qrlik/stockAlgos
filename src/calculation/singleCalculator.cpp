@@ -16,7 +16,7 @@ void calculation::singleCalculation() {
     data.dealPercent = 5.0;
     data.leverage = 50;
 
-    data.stopLossPercent = -1;
+    data.liquidationOffsetPercent = 0.1;
     data.minimumProfitPercent = 0.5;
 
     data.dynamicSLPercent = 0.25;
@@ -41,7 +41,7 @@ void calculation::singleCalculation() {
     auto candles = utils::parseCandles(json);
 
     auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
-    indicators.getProcessedCandles(candles, candles.size() - 1000);
+    indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 1000);
 
     auto mm = algorithm::moneyMaker(data, 100.0);
     mm.setWithLogs(true);

@@ -7,7 +7,8 @@ namespace market {
 	class marketData {
 	public:
 		static marketData* getInstance();
-		int getPrecision();
+		int getPrecision() const;
+		double getLiquidationPrice() const;
 	private:
 		struct tierData {
 			double maintenanceMarginRate = 0.0;

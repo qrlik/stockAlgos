@@ -10,7 +10,7 @@
         "dealPercent": 5,
         "leverage": 10,
 
-        "stopLossPercent": 1.5,
+        "liquidationOffsetPercent": 0.1,
         "minimumProfitPercent": 1.0,
 
         "dynamicSLPercent": 1.0,

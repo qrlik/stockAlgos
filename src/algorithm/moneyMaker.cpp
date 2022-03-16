@@ -1,4 +1,5 @@
 #include "moneyMaker.h"
+#include "../market/marketRules.h"
 #include "../utils/utils.h"
 #include <iostream>
 #include <fstream>
@@ -45,7 +46,7 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	stFactor(aData.stFactor),
 	atrSize(aData.atrSize),
 	atrType(aData.atrType),
-	stopLossPercent(aData.stopLossPercent),
+	liquidationOffsetPercent(aData.liquidationOffsetPercent),
 	minimumProfitPercent(aData.minimumProfitPercent),
 	dealPercent(aData.dealPercent),
 	leverage(aData.leverage),
@@ -127,34 +128,11 @@ double moneyMaker::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double moneyMaker::getStopLossPrice(bool aForce) const {
-	if (stopLossPercent != -1.0 || aForce) {
-		auto tmpStopLoss = stopLossPercent;
-		if (stopLossPercent == -1.0) {
-			tmpStopLoss = 100.0 / leverage;
-		}
-		auto stopLossSign = (state == eState::LONG) ? -1 : 1;
-		auto result = order.price * (100.0 + stopLossSign * tmpStopLoss) / 100.0;
-		if (isTest || aForce) {
-			if (fullCheck) {
-				return (state == eState::LONG) ? utils::floor(result, 2) : utils::ceil(result, 2);
-			}
-			return result;
-		}
-		auto liqudationPrice = getLiqudationPrice();
-		if (state == eState::LONG) {
-			return std::max(liqudationPrice, result);
-		}
-		return std::min(liqudationPrice, result);
-	}
-	return getLiqudationPrice();
-}
-
-double moneyMaker::getLiqudationPrice() const {
-	auto sign = (state == eState::LONG) ? 1 : -1;
-	const auto upper = (1 - sign * leverage) * order.price;
-	const auto lower = leverage * (mmb - sign);
-	return upper / lower;
+double moneyMaker::getStopLossPrice() const {
+	const auto liqPrice = market::marketData::getInstance()->getLiquidationPrice();
+	auto stopLossSign = (state == eState::LONG) ? 1 : -1;
+	auto result = liqPrice * (100 + stopLossSign * liquidationOffsetPercent) / 100.0;
+	return result;
 }
 
 double moneyMaker::getMinimumProfitPrice() const {
@@ -282,7 +260,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 	if (fullCheck) {
 		order.amount = utils::floor(order.amount, 3);
 	}
-	order.stopLoss = getStopLossPrice(false);
+	order.stopLoss = getStopLossPrice();
 	order.time = curCandle.time;
 
 	auto taxAmount = order.amount * leverage * algorithmData::tax;
@@ -295,9 +273,6 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 }
 
 void moneyMaker::closeOrder() {
-	if (order.stopLoss == getLiqudationPrice()) {
-		order.stopLoss = getStopLossPrice(true);
-	}
 	auto orderOpenSummary = order.amount * leverage;
 	auto orderCloseSummary = orderOpenSummary / order.price * order.stopLoss;
 	auto orderCloseTax = orderCloseSummary * algorithmData::tax;

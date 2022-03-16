@@ -40,10 +40,6 @@ indicatorSystem::indicatorSystem(eAtrType aType, int aSize, double aStFactor):
     atrSize(aSize),
     stFactor(aStFactor) {}
 
-bool indicatorSystem::isEqual(eAtrType aType, int aSize, double aStFactor) const {
-    return atrType == aType && atrSize == aSize && stFactor == aStFactor;
-}
-
 namespace {
     double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
         auto candleSize = aCandle.high - aCandle.low;
