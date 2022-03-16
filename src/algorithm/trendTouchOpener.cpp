@@ -25,7 +25,7 @@ trendTouchOpener::trendTouchOpener(moneyMaker* aMm, bool aActivationWaitMode) :
 	activationWaitMode(aActivationWaitMode) {}
 
 bool trendTouchOpener::check() {
-	const auto trendActivation = mm->getTrendActivation(mm->getSuperTrend());
+	const auto trendActivation = mm->getSuperTrend();
 	const auto isTrendUp = mm->getIsTrendUp();
 	const auto& candle = mm->getCandle();
 	if (isTrendUp && candle.low <= trendActivation) {

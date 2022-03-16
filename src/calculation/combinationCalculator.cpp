@@ -96,7 +96,6 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	result.stFactor = aMM.stFactor;
 	result.dealPercent = aMM.dealPercent;
 	result.leverage = aMM.leverage;
-	result.activationPercent = aMM.activationPercent;
 	result.stopLossPercent = (aMM.stopLossPercent != -1.0) ? aMM.stopLossPercent : algorithmData::getLiqudationPercent(aMM.leverage);
 	result.minimumProfitPercent = aMM.minimumProfitPercent;
 	result.dynamicSLPercent = aMM.dynamicStopLossModule.dynamicSLPercent;
@@ -178,7 +177,6 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(12) << data.stFactor
 			<< std::setw(12) << data.dealPercent
 			<< std::setw(7) << data.leverage
-			<< std::setw(12) << data.activationPercent
 			<< std::setw(12) << data.stopLossPercent
 			<< std::setw(12) << data.minimumProfitPercent
 			<< std::setw(12) << data.dynamicSLPercent

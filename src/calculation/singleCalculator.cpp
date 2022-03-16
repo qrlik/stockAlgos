@@ -16,7 +16,6 @@ void calculation::singleCalculation() {
     data.dealPercent = 5.0;
     data.leverage = 50;
 
-    data.activationPercent = 2.0;
     data.stopLossPercent = -1;
     data.minimumProfitPercent = 0.5;
 

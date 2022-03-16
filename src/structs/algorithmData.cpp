@@ -20,9 +20,6 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 		else if (field == "leverage") {
 			result.leverage = value.get<int>();
 		}
-		else if (field == "activationPercent") {
-			result.activationPercent = value.get<double>();
-		}
 		else if (field == "stopLossPercent") {
 			result.stopLossPercent = value.get<double>();
 		}

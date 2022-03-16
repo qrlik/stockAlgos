@@ -45,7 +45,6 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	stFactor(aData.stFactor),
 	atrSize(aData.atrSize),
 	atrType(aData.atrType),
-	activationPercent(aData.activationPercent),
 	stopLossPercent(aData.stopLossPercent),
 	minimumProfitPercent(aData.minimumProfitPercent),
 	dealPercent(aData.dealPercent),
@@ -128,15 +127,6 @@ double moneyMaker::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double moneyMaker::getTrendActivation(double aSuperTrend) const {
-	auto trendActivationSign = (isTrendUp) ? 1 : -1;
-	auto result = aSuperTrend * (100 + trendActivationSign * activationPercent) / 100;
-	if (fullCheck) {
-		return (isTrendUp) ? utils::ceil(result, 2) : utils::floor(result, 2);
-	}
-	return result;
-}
-
 double moneyMaker::getStopLossPrice(bool aForce) const {
 	if (stopLossPercent != -1.0 || aForce) {
 		auto tmpStopLoss = stopLossPercent;
@@ -188,8 +178,7 @@ bool moneyMaker::isNewTrendChanged() {
 	if (!isNewTrend) {
 		return false;
 	}
-	const auto trendActivation = getTrendActivation(getSuperTrend());
-	if ((isTrendUp && curCandle.low <= trendActivation) || (!isTrendUp && curCandle.high >= trendActivation)) {
+	if ((isTrendUp && curCandle.low <= getSuperTrend()) || (!isTrendUp && curCandle.high >= getSuperTrend())) {
 		isNewTrend = false;
 		return true;
 	}

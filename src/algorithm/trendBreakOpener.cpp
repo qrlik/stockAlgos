@@ -41,7 +41,7 @@ bool trendBreakOpener::isNewTrendAllowed() {
 }
 
 bool trendBreakOpener::check() {
-	const auto trendActivation = mm->getTrendActivation(mm->getActualSuperTrend());
+	const auto trendActivation = mm->getActualSuperTrend();
 	const auto isTrendUp = mm->getIsTrendUp();
 	const auto& candle = mm->getCandle();
 	if (isTrendUp && candle.high >= trendActivation) {

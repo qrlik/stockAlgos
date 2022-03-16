@@ -57,7 +57,7 @@ bool stopLossWaiter::check() {
 		return true;
 	}
 	assert(stopLossWaitRange >= 0);
-	const auto trendActivation = mm->getTrendActivation(mm->getActualSuperTrend());
+	const auto trendActivation = mm->getActualSuperTrend();
 	if (stopLossWaitCounter == 0) {
 		const auto isTrendUp = mm->getIsTrendUp();
 		const auto& open = mm->getCandle().open;

@@ -46,7 +46,7 @@ void activationWaiter::start() {
 
 bool activationWaiter::check() {
 	assert(activationWaitRange >= 0);
-	const auto trendActivation = mm->getTrendActivation(mm->getActualSuperTrend());
+	const auto trendActivation = mm->getActualSuperTrend();
 	if (activationWaitCounter == 0) {
 		const auto isTrendUp = mm->getIsTrendUp();
 		const auto& open = mm->getCandle().open;

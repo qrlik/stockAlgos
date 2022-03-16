@@ -23,7 +23,6 @@ namespace calculation {
 			double RFSummary;
 			double stFactor;
 			double dealPercent;
-			double activationPercent;
 			double stopLossPercent;
 			double minimumProfitPercent;
 			double dynamicSLPercent;

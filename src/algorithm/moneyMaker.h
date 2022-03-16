@@ -51,7 +51,6 @@ namespace algorithm {
 
         double getSuperTrend() const;
         double getActualSuperTrend() const;
-        double getTrendActivation(double aSuperTrend) const;
         bool isNewTrendChanged();
 
         void openOrder(eState aState, double aPrice);
@@ -89,7 +88,6 @@ namespace algorithm {
         const int atrSize = 0;
         const market::eAtrType atrType = market::eAtrType::NONE;
 
-        const double activationPercent = 0.0;
         const double stopLossPercent = 0.0;
         const double minimumProfitPercent = 0.0;
         const double dealPercent = 0.0;

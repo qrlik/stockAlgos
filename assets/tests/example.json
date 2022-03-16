@@ -10,7 +10,6 @@
         "dealPercent": 5,
         "leverage": 10,
 
-        "activationPercent": 0.25,
         "stopLossPercent": 1.25,
         "minimumProfitPercent": 0.25,
 
