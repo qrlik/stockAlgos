@@ -8,6 +8,7 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 	assert(aData.atrType != market::eAtrType::NONE);
 	assert(aData.stFactor > 0.0);
 	assert(aData.dealPercent > 0.0);
+	assert(aData.leverage > 0 && aData.leverage <= 125);
 
 	const auto liquidationPercent = 100.0 / aData.leverage;
 	//assert(aData.stopLossPercent >= aData.activationPercent && aData.stopLossPercent <= liquidationPercent);
