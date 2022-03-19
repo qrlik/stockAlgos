@@ -32,19 +32,16 @@ int marketData::getPrecision() const {
 	return precision;
 }
 
-double marketData::getLiquidationPrice() const {
-	return 0.0;
+const tierData& marketData::getTierData(double aPosition) const {
+	auto data = std::upper_bound(tiersData.begin(), tiersData.end(), aPosition,
+								 [](auto aPosition, const tierData& aData) { return aPosition <= aData.position; });
+	return *data;
 }
 
 double marketData::getMaximumLeveragePosition(int aLeverage) const {
 	auto tier = std::upper_bound(tiersData.rbegin(), tiersData.rend(), aLeverage, 
-								 [](auto aLeverage, const tierData& aData) {
-									 return  aLeverage <= aData.maxLeverage;
-								 });
-	if (tier != tiersData.rend()) {
-		return tier->position;
-	}
-	return 0.0;
+								 [](auto aLeverage, const tierData& aData) { return  aLeverage <= aData.maxLeverage; });
+	return tier->position;
 }
 
 void marketData::runTests() {
@@ -73,4 +70,14 @@ void marketData::runTests() {
 	assert(getMaximumLeveragePosition(3) == tiersData[7].position);
 	assert(getMaximumLeveragePosition(2) == tiersData[8].position);
 	assert(getMaximumLeveragePosition(1) == tiersData[9].position);
+
+	for (size_t i = 0, size = tiersData.size(); i < size; ++i) {
+		if (i >= 1) {
+			assert(getTierData(tiersData[i - 1].position + 0.1).maxLeverage == tiersData[i].maxLeverage);
+		}
+		else {
+			assert(getTierData(tiersData[i].position / 10).maxLeverage == tiersData[i].maxLeverage);
+		}
+		assert(getTierData(tiersData[i].position).maxLeverage == tiersData[i].maxLeverage);
+	}
 }

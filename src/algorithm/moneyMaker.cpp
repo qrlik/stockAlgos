@@ -128,14 +128,14 @@ double moneyMaker::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double moneyMaker::getStopLossPrice() const {
-	const auto liqPrice = market::marketData::getInstance()->getLiquidationPrice();
+double moneyMaker::getStopLossPrice() const { // move inside order
+	const auto liqPrice = order.getLiquidationPrice();
 	auto stopLossSign = (state == eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * liquidationOffsetPercent) / 100.0;
 	return result;
 }
 
-double moneyMaker::getMinimumProfitPrice() const {
+double moneyMaker::getMinimumProfitPrice() const { // move inside order
 	auto minProfitSign = (state == eState::LONG) ? 1 : -1;
 	auto result = order.price * (100.0 + minProfitSign * minimumProfitPercent) / 100.0;
 	if (fullCheck) {
@@ -147,7 +147,7 @@ double moneyMaker::getMinimumProfitPrice() const {
 double moneyMaker::getFullCash() const {
 	auto curCash = cash;
 	if (!order.time.empty()) {
-		curCash += order.amount * (1 - algorithmData::tax);
+		curCash += order.margin;
 	}
 	return curCash;
 }
@@ -252,19 +252,21 @@ bool moneyMaker::updateOrder() {
 
 void moneyMaker::openOrder(eState aState, double aPrice) {
 	state = aState;
-	order = orderData{};
+	order = orderData{}; // move inside order
 	order.fullCheck = fullCheck;
 	order.price = aPrice;
 	order.minimumProfit = getMinimumProfitPrice();
-	order.amount = cash * dealPercent / 100.0;
+	order.margin = cash * dealPercent / 100.0;
+	order.notionalValue = order.margin * leverage;
+	order.quantity = order.notionalValue / order.price; // add 0.001 BTC here check
 	if (fullCheck) {
-		order.amount = utils::floor(order.amount, 3);
+		order.margin = utils::floor(order.margin, 3);
 	}
 	order.stopLoss = getStopLossPrice();
 	order.time = curCandle.time;
 
-	auto taxAmount = order.amount * leverage * algorithmData::tax;
-	cash = cash - order.amount - taxAmount;
+	auto taxAmount = order.notionalValue * algorithmData::tax;
+	cash = cash - order.margin - taxAmount;
 	if (fullCheck) {
 		cash = utils::floor(cash, 2);
 	}
@@ -273,10 +275,9 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 }
 
 void moneyMaker::closeOrder() {
-	auto orderOpenSummary = order.amount * leverage;
-	auto orderCloseSummary = orderOpenSummary / order.price * order.stopLoss;
+	auto orderCloseSummary = order.notionalValue / order.price * order.stopLoss; // move inside order
 	auto orderCloseTax = orderCloseSummary * algorithmData::tax;
-	auto profitWithoutTax = (state == eState::LONG) ? orderCloseSummary - orderOpenSummary : orderOpenSummary - orderCloseSummary;
+	auto profitWithoutTax = (state == eState::LONG) ? orderCloseSummary - order.notionalValue : order.notionalValue - orderCloseSummary;
 	auto profit = profitWithoutTax - orderCloseTax;
 	if (profit < 0) {
 		stopLossWaiterModule.start();
@@ -284,7 +285,7 @@ void moneyMaker::closeOrder() {
 	else {
 		state = eState::NONE;
 	}
-	cash = cash + order.amount + profit;
+	cash = cash + order.margin + profit;
 	if (fullCheck) {
 		cash = utils::floor(cash, 2);
 	}
