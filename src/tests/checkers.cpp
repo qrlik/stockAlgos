@@ -41,7 +41,7 @@ void mmChecker::check() {
 		assert(*actualMoneyMaker == *testMoneyMaker);
 		actualIndex += 1;
 	}
-	std::cout << name + " OK" << std::endl;
+	std::cout << "[OK] mmChecker - " + name + '\n';
 }
 
 void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
@@ -88,15 +88,4 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 	}
 	testIndex += 1;
 	testNextTime = (testIndex < static_cast<int>(testMoneyMakerData.size())) ? testMoneyMakerData[testIndex]["time"].get<std::string>() : "ENDED";
-}
-
-void tests::runTests() {
-	auto checker1 = mmChecker("test1");
-	checker1.check();
-	auto checker2 = mmChecker("test2");
-	checker2.check();
-	auto checker3 = mmChecker("test3");
-	checker3.check();
-	auto checker4 = mmChecker("test4");
-	checker4.check();
 }

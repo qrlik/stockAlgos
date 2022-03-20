@@ -16,11 +16,11 @@ namespace market {
 		static marketData* getInstance();
 		int getPrecision() const;
 		const tierData& getTierData(double aPosition) const;
+		const std::vector<tierData>& getTiersData() const;
 		double getMaximumLeveragePosition(int aLeverage) const;
 	private:
 		marketData();
 		void init();
-		void runTests();
 
 		static marketData* instance;
 		std::vector<tierData> tiersData;

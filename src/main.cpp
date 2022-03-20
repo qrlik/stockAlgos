@@ -1,4 +1,4 @@
-#include "tests/checkers.h"
+#include "tests/tests.h"
 #include "calculation/singleCalculator.h"
 #include "calculation/combinationCalculator.h"
 #include "utils/utils.h"

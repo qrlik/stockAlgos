@@ -4,7 +4,6 @@
 
 namespace tests {
 	void checkAlgorithmData(const algorithmData& aData);
-	void runTests();
 
 	class mmChecker {
 	public:

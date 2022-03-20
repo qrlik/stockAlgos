@@ -53,6 +53,9 @@
     <ClCompile Include="src\market\marketRules.cpp">
       <Filter>market</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\tests.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="src\market\marketRules.h">
       <Filter>market</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\tests.h">
+      <Filter>tests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

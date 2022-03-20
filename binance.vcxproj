@@ -36,6 +36,7 @@
     <ClCompile Include="src\structs\orderData.cpp" />
     <ClCompile Include="src\structs\statistic.cpp" />
     <ClCompile Include="src\tests\checkers.cpp" />
+    <ClCompile Include="src\tests\tests.cpp" />
     <ClCompile Include="src\utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +56,7 @@
     <ClInclude Include="src\structs\orderData.h" />
     <ClInclude Include="src\structs\statistic.h" />
     <ClInclude Include="src\tests\checkers.h" />
+    <ClInclude Include="src\tests\tests.h" />
     <ClInclude Include="src\utils\utils.h" />
     <ClInclude Include="third_party\json.hpp" />
   </ItemGroup>
