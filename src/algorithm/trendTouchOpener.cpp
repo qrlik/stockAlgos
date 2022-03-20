@@ -4,8 +4,8 @@
 using namespace algorithm;
 
 namespace {
-	double getOrderPrice(double aTrendActivation, double aOpen, moneyMaker::eState aState) {
-		if (aState == moneyMaker::eState::LONG) {
+	double getOrderPrice(double aTrendActivation, double aOpen, eState aState) {
+		if (aState == eState::LONG) {
 			if (aOpen < aTrendActivation) {
 				return aOpen;
 			}
@@ -30,16 +30,16 @@ bool trendTouchOpener::check() {
 	const auto& candle = mm->getCandle();
 	if (isTrendUp && candle.low <= trendActivation) {
 		if (!activationWaitMode) {
-			const auto orderPrice = getOrderPrice(trendActivation, candle.open, moneyMaker::eState::LONG);
-			mm->openOrder(moneyMaker::eState::LONG, orderPrice);
+			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::LONG);
+			mm->openOrder(eState::LONG, orderPrice);
 			return true;
 		}
 		mm->getActivationWaiter().start();
 	}
 	else if (!isTrendUp && candle.high >= trendActivation) {
 		if (!activationWaitMode) {
-			const auto orderPrice = getOrderPrice(trendActivation, candle.open, moneyMaker::eState::SHORT);
-			mm->openOrder(moneyMaker::eState::SHORT, orderPrice);
+			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::SHORT);
+			mm->openOrder(eState::SHORT, orderPrice);
 			return true;
 		}
 		mm->getActivationWaiter().start();

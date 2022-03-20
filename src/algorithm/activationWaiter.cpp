@@ -25,12 +25,12 @@ void activationWaiter::setCounter(int aAmount) {
 }
 
 void activationWaiter::onNewTrend() {
-	if (mm->getState() != moneyMaker::eState::ACTIVATION_WAIT) {
+	if (mm->getState() != eState::ACTIVATION_WAIT) {
 		return;
 	}
 	assert(activationWaitRange >= 0);
 	if (resetAllowed) {
-		mm->setState(moneyMaker::eState::NONE);
+		mm->setState(eState::NONE);
 		activationWaitCounter = 0;
 	}
 	else {
@@ -40,7 +40,7 @@ void activationWaiter::onNewTrend() {
 
 void activationWaiter::start() {
 	assert(activationWaitRange >= 0);
-	mm->setState(moneyMaker::eState::ACTIVATION_WAIT);
+	mm->setState(eState::ACTIVATION_WAIT);
 	activationWaitCounter = activationWaitRange;
 }
 
@@ -51,11 +51,11 @@ bool activationWaiter::check() {
 		const auto isTrendUp = mm->getIsTrendUp();
 		const auto& open = mm->getCandle().open;
 		if (isTrendUp && open > trendActivation) {
-			mm->openOrder(moneyMaker::eState::LONG, open);
+			mm->openOrder(eState::LONG, open);
 			return true;
 		}
 		else if (!isTrendUp && open < trendActivation) {
-			mm->openOrder(moneyMaker::eState::SHORT, open);
+			mm->openOrder(eState::SHORT, open);
 			return true;
 		}
 		activationWaitCounter = activationWaitRange;

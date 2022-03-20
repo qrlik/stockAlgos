@@ -41,6 +41,7 @@ void mmChecker::check() {
 		assert(*actualMoneyMaker == *testMoneyMaker);
 		actualIndex += 1;
 	}
+	// add full cash check
 	std::cout << "[OK] mmChecker - " + name + '\n';
 }
 
@@ -61,11 +62,11 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 			auto& order = testMoneyMaker->getOrder();
 			if (value.contains("lifeState")) {
 				value.erase("lifeState");
-				order = orderData{};
+				order.reset();
 			}
 			value.erase("type");
 			orderData::initOrderDataFromJson(order, value);
-			order.fullCheck = testMoneyMaker->fullCheck;
+			order.setFullCheck(testMoneyMaker->getFullCheck());
 		}
 		else if (key == "lastUpSuperTrend") {
 			testMoneyMaker->lastUpSuperTrend = value.get<double>();

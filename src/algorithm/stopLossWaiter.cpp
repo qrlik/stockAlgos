@@ -27,12 +27,12 @@ void stopLossWaiter::setCounter(int aAmount) {
 }
 
 void stopLossWaiter::onNewTrend() {
-	if (mm->getState() != moneyMaker::eState::STOP_LOSS_WAIT) {
+	if (mm->getState() != eState::STOP_LOSS_WAIT) {
 		return;
 	}
 	assert(stopLossWaitRange >= 0);
 	if (resetAllowed) {
-		mm->setState(moneyMaker::eState::NONE);
+		mm->setState(eState::NONE);
 		stopLossWaitCounter = 0;
 	}
 	else {
@@ -43,17 +43,17 @@ void stopLossWaiter::onNewTrend() {
 void stopLossWaiter::start() {
 	if (enabled) {
 		assert(stopLossWaitRange >= 0);
-		mm->setState(moneyMaker::eState::STOP_LOSS_WAIT);
+		mm->setState(eState::STOP_LOSS_WAIT);
 		stopLossWaitCounter = stopLossWaitRange;
 	}
 	else {
-		mm->setState(moneyMaker::eState::NONE);
+		mm->setState(eState::NONE);
 	}
 }
 
 bool stopLossWaiter::check() {
 	if (!enabled) {
-		mm->setState(moneyMaker::eState::NONE);
+		mm->setState(eState::NONE);
 		return true;
 	}
 	assert(stopLossWaitRange >= 0);
@@ -64,7 +64,7 @@ bool stopLossWaiter::check() {
 		const bool trendUpAndOpenSuccess = isTrendUp && open > trendActivation;
 		const bool trendDownAndOpenSuccess = !isTrendUp && open < trendActivation;
 		if (trendUpAndOpenSuccess || trendDownAndOpenSuccess) {
-			mm->setState(moneyMaker::eState::NONE);
+			mm->setState(eState::NONE);
 			return true;
 		}
 		stopLossWaitCounter = stopLossWaitRange;

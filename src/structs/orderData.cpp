@@ -1,4 +1,5 @@
 #include "orderData.h"
+#include "../algorithm/moneyMaker.h"
 #include "../market/marketRules.h"
 #include "../utils/utils.h"
 #include <sstream>
@@ -26,13 +27,7 @@ void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
     }
 }
 
-double orderData::getLiquidationPrice() const {
-    const auto& tierData = market::marketData::getInstance()->getTierData(notionalValue);
-    const auto sign = (true) ? 1 : -1;
-    const auto upper = margin + tierData.maintenanceAmount - sign * notionalValue;
-    const auto lower = quantity * tierData.maintenanceMarginRate - sign * quantity;
-    return upper / lower; // round precision
-}
+orderData::orderData() : state(algorithm::eState::NONE) {}
 
 std::string orderData::toString() const {
 	std::ostringstream ostr;
@@ -53,4 +48,63 @@ bool orderData::operator==(const orderData& aOther) {
         assert(notionalValue == aOther.notionalValue);
     }
     return true;
+}
+
+void orderData::reset() {
+    time.clear();
+    price = 0.0;
+    stopLoss = 0.0;
+    minimumProfit = 0.0;
+    margin = 0.0;
+    notionalValue = 0.0;
+    quantity = 0.0;
+    state = algorithm::eState::NONE;
+    fullCheck = false;
+}
+
+double orderData::calculateLiquidationPrice() const {
+    const auto& tierData = market::marketData::getInstance()->getTierData(notionalValue);
+    const auto sign = (state == algorithm::eState::LONG) ? 1 : -1;
+    const auto upper = margin + tierData.maintenanceAmount - sign * notionalValue;
+    const auto lower = quantity * tierData.maintenanceMarginRate - sign * quantity;
+    return upper / lower; // round precision
+}
+
+double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
+    const auto liqPrice = calculateLiquidationPrice();
+    auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
+    auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
+    return result;
+}
+
+double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const {
+    auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
+    auto result = price * (100.0 + minProfitSign * aMM.getMinimumProfitPercent()) / 100.0;
+    if (fullCheck) { // fix round later
+        //return (state == eState::LONG) ? utils::ceil(result, 2) : utils::floor(result, 2);
+    }
+    return result;
+}
+
+void orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
+    reset();
+    state = aMM.getState();
+    fullCheck = aMM.getFullCheck();
+    price = aPrice;
+    margin = aMM.getCash() * aMM.getDealPercent() / 100.0;
+    notionalValue = margin * aMM.getLeverage();
+    quantity = notionalValue / price; // add 0.001 BTC here check
+    if (fullCheck) {
+        margin = utils::floor(margin, 3); // fix later
+    }
+    minimumProfit = calculateMinimumProfit(aMM);
+    stopLoss = calculateStopLoss(aMM);
+    time = aMM.getCandle().time;
+}
+
+double orderData::getProfit() const {
+    const auto orderCloseSummary = quantity * stopLoss;
+    const auto orderCloseTax = orderCloseSummary * algorithmData::tax;
+    auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
+    return profitWithoutTax - orderCloseTax;
 }

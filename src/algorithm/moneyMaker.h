@@ -18,17 +18,18 @@ namespace calculation {
 }
 
 namespace algorithm {
+    enum class eState : unsigned char {
+        NONE = 0,
+        LONG = 1,
+        SHORT = 2,
+        STOP_LOSS_WAIT = 3,
+        ACTIVATION_WAIT = 4
+    };
+
     class moneyMaker {
         friend class tests::mmChecker;
         friend class calculation::calculationSystem;
     public:
-        enum class eState : unsigned char {
-            NONE = 0,
-            LONG = 1,
-            SHORT = 2,
-            STOP_LOSS_WAIT = 3,
-            ACTIVATION_WAIT = 4
-        };
         static std::string stateToString(eState aState);
         static eState stateFromString(const std::string& aStr);
 
@@ -36,21 +37,28 @@ namespace algorithm {
         void calculate(const std::vector<candle>& aCandles);
         bool operator==(const moneyMaker& aOther);
 
-        activationWaiter& getActivationWaiter();
-        stopLossWaiter& getStopLossWaiter();
-        orderData& getOrder();
-        const candle& getCandle() const;
-        double getLastUpSuperTrend() const;
-        double getLastDownSuperTrend() const;
+        activationWaiter& getActivationWaiter() { return activationWaiterModule; }
+        stopLossWaiter& getStopLossWaiter() { return stopLossWaiterModule; }
+        orderData& getOrder() { return order; }
+        const candle& getCandle() const { return curCandle; }
+        double getLastUpSuperTrend() const { return lastUpSuperTrend; }
+        double getLastDownSuperTrend() const { return lastDownSuperTrend; }
+        double getSuperTrend() const;
+        double getActualSuperTrend() const;
         double getFullCash() const;
-        eState getState() const;
+        double getCash() const { return cash; }
+        double getDealPercent() const { return dealPercent; }
+        double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
+        double getMinimumProfitPercent() const { return minimumProfitPercent; }
+        int getLeverage() const { return leverage; }
+        eState getState() const { return state; }
+        bool getIsTrendUp() const { return isTrendUp; }
+        bool getFullCheck() const { return fullCheck; }
+
         void setState(eState aState);
         void setWithLogs(bool aState);
         void setTest(bool aState);
-        bool getIsTrendUp() const;
 
-        double getSuperTrend() const;
-        double getActualSuperTrend() const;
         bool isNewTrendChanged();
 
         void openOrder(eState aState, double aPrice);

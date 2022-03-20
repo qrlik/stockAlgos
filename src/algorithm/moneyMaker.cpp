@@ -8,33 +8,33 @@ using namespace algorithm;
 
 std::string moneyMaker::stateToString(eState aState) {
 	switch (aState) {
-		case algorithm::moneyMaker::eState::LONG:
+		case algorithm::eState::LONG:
 			return "LONG";
-		case algorithm::moneyMaker::eState::SHORT:
+		case algorithm::eState::SHORT:
 			return "SHORT";
-		case algorithm::moneyMaker::eState::STOP_LOSS_WAIT:
+		case algorithm::eState::STOP_LOSS_WAIT:
 			return "STOP_LOSS_WAIT";
-		case algorithm::moneyMaker::eState::ACTIVATION_WAIT:
+		case algorithm::eState::ACTIVATION_WAIT:
 			return "ACTIVATION_WAIT";
 		default:
 			return "NONE";
 	}
 }
 
-moneyMaker::eState moneyMaker::stateFromString(const std::string& aStr) {
+eState moneyMaker::stateFromString(const std::string& aStr) {
 	if (aStr == "LONG") {
-		return moneyMaker::eState::LONG;
+		return eState::LONG;
 	}
 	else if (aStr == "SHORT") {
-		return moneyMaker::eState::SHORT;
+		return eState::SHORT;
 	}
 	else if (aStr == "STOP_LOSS_WAIT") {
-		return moneyMaker::eState::STOP_LOSS_WAIT;
+		return eState::STOP_LOSS_WAIT;
 	}
 	else if (aStr == "ACTIVATION_WAIT") {
-		return moneyMaker::eState::ACTIVATION_WAIT;
+		return eState::ACTIVATION_WAIT;
 	}
-	return moneyMaker::eState::NONE;
+	return eState::NONE;
 }
 
 moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
@@ -71,10 +71,6 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	return true;
 }
 
-moneyMaker::eState moneyMaker::getState() const {
-	return state;
-}
-
 void moneyMaker::setState(eState aState) {
 	state = aState;
 }
@@ -85,34 +81,6 @@ void moneyMaker::setWithLogs(bool aState) {
 
 void moneyMaker::setTest(bool aState) {
 	isTest = aState;
-}
-
-bool moneyMaker::getIsTrendUp() const {
-	return isTrendUp;
-}
-
-const candle& moneyMaker::getCandle() const {
-	return curCandle;
-}
-
-activationWaiter& moneyMaker::getActivationWaiter() {
-	return activationWaiterModule;
-}
-
-stopLossWaiter& moneyMaker::getStopLossWaiter() {
-	return stopLossWaiterModule;
-}
-
-orderData& moneyMaker::getOrder() {
-	return order;
-}
-
-double moneyMaker::getLastUpSuperTrend() const {
-	return lastUpSuperTrend;
-}
-
-double moneyMaker::getLastDownSuperTrend() const {
-	return lastDownSuperTrend;
 }
 
 double moneyMaker::getSuperTrend() const {
@@ -128,26 +96,10 @@ double moneyMaker::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double moneyMaker::getStopLossPrice() const { // move inside order
-	const auto liqPrice = order.getLiquidationPrice();
-	auto stopLossSign = (state == eState::LONG) ? 1 : -1;
-	auto result = liqPrice * (100 + stopLossSign * liquidationOffsetPercent) / 100.0;
-	return result;
-}
-
-double moneyMaker::getMinimumProfitPrice() const { // move inside order
-	auto minProfitSign = (state == eState::LONG) ? 1 : -1;
-	auto result = order.price * (100.0 + minProfitSign * minimumProfitPercent) / 100.0;
-	if (fullCheck) {
-		return (state == eState::LONG) ? utils::ceil(result, 2) : utils::floor(result, 2);
-	}
-	return result;
-}
-
 double moneyMaker::getFullCash() const {
 	auto curCash = cash;
-	if (!order.time.empty()) {
-		curCash += order.margin;
+	if (!order.getTime().empty()) {
+		curCash += order.getMargin() + order.getProfit();
 	}
 	return curCash;
 }
@@ -188,11 +140,11 @@ bool moneyMaker::doAction(const candle& aCandle) {
 
 bool moneyMaker::update() {
 	switch (state) {
-		case algorithm::moneyMaker::eState::NONE:
+		case algorithm::eState::NONE:
 			return checkTrend();
-		case algorithm::moneyMaker::eState::STOP_LOSS_WAIT:
+		case algorithm::eState::STOP_LOSS_WAIT:
 			return stopLossWaiterModule.check();
-		case algorithm::moneyMaker::eState::ACTIVATION_WAIT:
+		case algorithm::eState::ACTIVATION_WAIT:
 			return activationWaiterModule.check();
 		default:
 			return updateOrder();
@@ -238,13 +190,13 @@ bool moneyMaker::checkTrend() {
 
 bool moneyMaker::updateOrder() {
 	bool needReupdate = false;
-	if (state == eState::LONG && curCandle.low <= order.stopLoss) {
+	if (state == eState::LONG && curCandle.low <= order.getStopLoss()) {
 		closeOrder();
 	}
-	else if (state == eState::SHORT && curCandle.high >= order.stopLoss) {
+	else if (state == eState::SHORT && curCandle.high >= order.getStopLoss()) {
 		closeOrder();
 	}
-	else if (order.time != curCandle.time) {
+	else if (order.getTime() != curCandle.time) {
 		needReupdate = dynamicStopLossModule.check();
 	}
 	return needReupdate;
@@ -252,21 +204,10 @@ bool moneyMaker::updateOrder() {
 
 void moneyMaker::openOrder(eState aState, double aPrice) {
 	state = aState;
-	order = orderData{}; // move inside order
-	order.fullCheck = fullCheck;
-	order.price = aPrice;
-	order.minimumProfit = getMinimumProfitPrice();
-	order.margin = cash * dealPercent / 100.0;
-	order.notionalValue = order.margin * leverage;
-	order.quantity = order.notionalValue / order.price; // add 0.001 BTC here check
-	if (fullCheck) {
-		order.margin = utils::floor(order.margin, 3);
-	}
-	order.stopLoss = getStopLossPrice();
-	order.time = curCandle.time;
+	order.openOrder(*this, aPrice);
 
-	auto taxAmount = order.notionalValue * algorithmData::tax;
-	cash = cash - order.margin - taxAmount;
+	auto taxAmount = order.getNotionalValue() * algorithmData::tax;
+	cash = cash - order.getMargin() - taxAmount;
 	if (fullCheck) {
 		cash = utils::floor(cash, 2);
 	}
@@ -275,22 +216,19 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 }
 
 void moneyMaker::closeOrder() {
-	auto orderCloseSummary = order.notionalValue / order.price * order.stopLoss; // move inside order
-	auto orderCloseTax = orderCloseSummary * algorithmData::tax;
-	auto profitWithoutTax = (state == eState::LONG) ? orderCloseSummary - order.notionalValue : order.notionalValue - orderCloseSummary;
-	auto profit = profitWithoutTax - orderCloseTax;
+	const auto profit = order.getProfit();
 	if (profit < 0) {
 		stopLossWaiterModule.start();
 	}
 	else {
 		state = eState::NONE;
 	}
-	cash = cash + order.margin + profit;
-	if (fullCheck) {
+	cash = cash + order.getMargin() + profit;
+	if (fullCheck) { // fix later
 		cash = utils::floor(cash, 2);
 	}
-	order = orderData{};
-	order.fullCheck = fullCheck;
+	order.reset();
+	order.setFullCheck(fullCheck);
 	stats.onCloseOrder(cash, profit);
 	if (cash <= stopCash) {
 		stopCashBreak = true;
@@ -308,7 +246,7 @@ void moneyMaker::log() {
 	else if (state == eState::ACTIVATION_WAIT) {
 		output << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
 	}
-	else if (!order.time.empty()) {
+	else if (!order.getTime().empty()) {
 		output << order.toString();
 	}
 	output << std::endl;
