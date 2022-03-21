@@ -1,73 +1,73 @@
 {
-    "candlesFileName": "10000_5min",
-    "candlesAmount": 9500,
-    "algorithmData": {
-        "atrType": "RMA",
-        "atrSize": 14,
-        "stFactor": 5,
+	"candlesFileName": "10000_5min",
+	"candlesAmount": 9500,
+	"algorithmData": {
+		"atrType": "RMA",
+		"atrSize": 14,
+		"stFactor": 5,
 
-        "dealPercent": 5.0,
-        "leverage": 10,
+		"dealPercent": 5.0,
+		"leverage": 10,
 
-        "startCash": 100.0,
-        "stopCash": 40.0,
+		"startCash": 100.0,
+		"stopCash": 40.0,
 
-        "liquidationOffsetPercent": 0.1,
-        "minimumProfitPercent": 0.25,
+		"liquidationOffsetPercent": 0.1,
+		"minimumProfitPercent": 0.25,
 
-        "dynamicSLPercent": 0.25,
-        "dynamicSLTrendMode": null,
+		"dynamicSLPercent": 0.25,
+		"dynamicSLTrendMode": null,
 
-        "touchOpenerActivationWaitMode": false,
+		"touchOpenerActivationWaitMode": false,
 
-        "breakOpenerEnabled": true,
-        "breakOpenerActivationWaitMode": false,
-        "alwaysUseNewTrend": true,
+		"breakOpenerEnabled": true,
+		"breakOpenerActivationWaitMode": false,
+		"alwaysUseNewTrend": true,
 
-        "activationWaiterResetAllowed": null,
-        "activationWaiterRange": null,
-        "activationWaiterFullCandleCheck": null,
+		"activationWaiterResetAllowed": null,
+		"activationWaiterRange": null,
+		"activationWaiterFullCandleCheck": null,
 
-        "stopLossWaiterEnabled": true,
-        "stopLossWaiterResetAllowed": false,
-        "stopLossWaiterRange": 1,
-        "stopLossWaiterFullCandleCheck": true,
+		"stopLossWaiterEnabled": true,
+		"stopLossWaiterResetAllowed": false,
+		"stopLossWaiterRange": 1,
+		"stopLossWaiterFullCandleCheck": true,
 
-        "fullCheck": true
-    },
-    "testMoneyMakerData": [
-        {
-            "time": "16:35 09-01-2022",
-            "activationWaitCounter": 3,
-            "stopLossWaitCounter": 3,
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 12345.0,
-                "stopLoss": 54321.0,
-                "minimumProfit": 123456.0,
-                "margin": 5.0,
-                "notionalValue": 50.0,
-                "quantity": 0.005,
-                "time": "16:35 09-01-2022"
-            },
-            "stats": {
-                "maxLossHighCash": 1243.0,
-                "maxLossLowCash": 231.0,
-                "summaryLoss": 2311.0,
-                "profitableOrder": 5,
-                "unprofitableOrder": 3,
-                "touchTrendOrder": 4,
-                "breakTrendOrder": 4,
-                "profitableStreak": 2,
-                "unprofitableStreak": 1
-            },
-            "lastUpSuperTrend": 666.66,
-            "lastDownSuperTrend": -666.66,
-            "isTrendUp": true,
-            "isNewTrend": true,
-            "state": "SHORT",
-            "cash": 50
-        }
-    ]
+		"fullCheck": true
+	},
+	"testMoneyMakerData": [
+		{
+			"time": "16:35 09-01-2022",
+			"activationWaitCounter": 3,
+			"stopLossWaitCounter": 3,
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 12345.0,
+				"stopLoss": 54321.0,
+				"minimumProfit": 123456.0,
+				"margin": 5.0,
+				"notionalValue": 50.0,
+				"quantity": 0.005,
+				"time": "16:35 09-01-2022"
+			},
+			"stats": {
+				"maxLossHighCash": 1243.0,
+				"maxLossLowCash": 231.0,
+				"summaryLoss": 2311.0,
+				"profitableOrder": 5,
+				"unprofitableOrder": 3,
+				"touchTrendOrder": 4,
+				"breakTrendOrder": 4,
+				"profitableStreak": 2,
+				"unprofitableStreak": 1
+			},
+			"lastUpSuperTrend": 666.66,
+			"lastDownSuperTrend": -666.66,
+			"isTrendUp": true,
+			"isNewTrend": true,
+			"state": "SHORT",
+			"cash": 50
+		}
+	]
 }

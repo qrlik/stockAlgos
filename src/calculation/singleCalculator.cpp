@@ -9,45 +9,45 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-    data.atrType = market::eAtrType::SMA;
-    data.atrSize = 15;
-    data.stFactor = 3.0;
+	data.atrType = market::eAtrType::SMA;
+	data.atrSize = 15;
+	data.stFactor = 3.0;
 
-    data.dealPercent = 5.0;
-    data.leverage = 50;
+	data.dealPercent = 5.0;
+	data.leverage = 50;
 
-    data.startCash = 100.0;
-    data.stopCash = 40.0;
+	data.startCash = 100.0;
+	data.stopCash = 40.0;
 
-    data.liquidationOffsetPercent = 0.1;
-    data.minimumProfitPercent = 0.5;
+	data.liquidationOffsetPercent = 0.1;
+	data.minimumProfitPercent = 0.5;
 
-    data.dynamicSLPercent = 0.25;
-    data.dynamicSLTrendMode = false;
+	data.dynamicSLPercent = 0.25;
+	data.dynamicSLTrendMode = false;
 
-    data.touchOpenerActivationWaitMode = false;
+	data.touchOpenerActivationWaitMode = false;
 
-    data.breakOpenerEnabled = true;
-    data.breakOpenerActivationWaitMode = true;
-    data.alwaysUseNewTrend = true;
+	data.breakOpenerEnabled = true;
+	data.breakOpenerActivationWaitMode = true;
+	data.alwaysUseNewTrend = true;
 
-    data.activationWaiterResetAllowed = false;
-    data.activationWaiterRange = 2;
-    data.activationWaiterFullCandleCheck = false;
+	data.activationWaiterResetAllowed = false;
+	data.activationWaiterRange = 2;
+	data.activationWaiterFullCandleCheck = false;
 
-    data.stopLossWaiterEnabled = false;
-    data.stopLossWaiterResetAllowed = false;
-    data.stopLossWaiterRange = -1;
-    data.stopLossWaiterFullCandleCheck = false;
+	data.stopLossWaiterEnabled = false;
+	data.stopLossWaiterResetAllowed = false;
+	data.stopLossWaiterRange = -1;
+	data.stopLossWaiterFullCandleCheck = false;
 
-    auto json = utils::readFromJson("assets/candles/3year/1h");
-    auto candles = utils::parseCandles(json);
+	auto json = utils::readFromJson("assets/candles/3year/1h");
+	auto candles = utils::parseCandles(json);
 
-    auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
-    indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 1000);
+	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+	indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 1000);
 
-    auto mm = algorithm::moneyMaker(data);
-    mm.setWithLogs(true);
-    mm.calculate(candles);
-    std::cout << mm.getFullCash() << '\n';
+	auto mm = algorithm::moneyMaker(data);
+	mm.setWithLogs(true);
+	mm.calculate(candles);
+	std::cout << mm.getFullCash() << '\n';
 }

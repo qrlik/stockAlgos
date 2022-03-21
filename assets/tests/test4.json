@@ -1,536 +1,536 @@
 {
-    "candlesFileName": "1500_15m",
-    "candlesAmount": 1000,
-    "cash": 100,
-    "algorithmData": {
-        "atrType": "RMA",
-        "atrSize": 14,
-        "stFactor": 5,
+	"candlesFileName": "1500_15m",
+	"candlesAmount": 1000,
+	"cash": 100,
+	"algorithmData": {
+		"atrType": "RMA",
+		"atrSize": 14,
+		"stFactor": 5,
 
-        "dealPercent": 5,
-        "leverage": 10,
+		"dealPercent": 5,
+		"leverage": 10,
 
-        "liquidationOffsetPercent": 0.1,
-        "minimumProfitPercent": 1.0,
+		"liquidationOffsetPercent": 0.1,
+		"minimumProfitPercent": 1.0,
 
-        "dynamicSLPercent": 1.0,
-        "dynamicSLTrendMode": null,
+		"dynamicSLPercent": 1.0,
+		"dynamicSLTrendMode": null,
 
-        "touchOpenerActivationWaitMode": true,
+		"touchOpenerActivationWaitMode": true,
 
-        "breakOpenerEnabled": true,
-        "breakOpenerActivationWaitMode": true,
-        "alwaysUseNewTrend": true,
+		"breakOpenerEnabled": true,
+		"breakOpenerActivationWaitMode": true,
+		"alwaysUseNewTrend": true,
 
-        "activationWaiterResetAllowed": true,
-        "activationWaiterRange": 2,
-        "activationWaiterFullCandleCheck": true,
+		"activationWaiterResetAllowed": true,
+		"activationWaiterRange": 2,
+		"activationWaiterFullCandleCheck": true,
 
-        "stopLossWaiterEnabled": true,
-        "stopLossWaiterResetAllowed": true,
-        "stopLossWaiterRange": 2,
-        "stopLossWaiterFullCandleCheck": true
-    },
-    "testMoneyMakerData": [
-        {
-            "time": "11:15 31-12-2021",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isTrendUp": false
-        },
-        {
-            "time": "11:45 31-12-2021",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isNewTrend": true,
-            "isTrendUp": true
-        },
-        {
-            "time": "19:45 31-12-2021",
-            "isNewTrend": false
-        },
-        {
-            "time": "20:30 31-12-2021",
-            "state": "NONE",
-            "activationWaitCounter": 0,
-            "isTrendUp": false,
-            "isNewTrend": true
-        },
-        {
-            "time": "21:30 31-12-2021",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isTrendUp": false,
-            "isNewTrend": true
-        },
-        {
-            "time": "22:00 31-12-2021",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "22:15 31-12-2021",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "22:30 31-12-2021",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 46085.43,
-                "time": "22:30 31-12-2021"
-            },
-            "state": "SHORT",
-            "isNewTrend": false
-        },
-        {
-            "time": "04:15 01-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "08:30 01-01-2022",
-            "state": "NONE",
-            "stopLossWaitCounter": 0,
-            "isTrendUp": true,
-            "isNewTrend": true
-        },
-        {
-            "time": "13:30 01-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isNewTrend": false
-        },
-        {
-            "time": "13:45 01-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "14:00 01-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "14:15 01-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 46925.20,
-                "time": "14:15 01-01-2022"
-            },
-            "state": "LONG"
-        },
-        {
-            "time": "20:30 01-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "07:30 02-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "12:30 02-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "12:45 02-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "13:00 02-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 47273.23,
-                "time": "13:00 02-01-2022"
-            },
-            "state": "LONG"
-        },
-        {
-            "time": "06:45 03-01-2022",
-            "isNewTrend": true,
-            "isTrendUp": false
-        },
-        {
-            "time": "19:15 03-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "23:15 03-01-2022",
-            "stopLossWaitCounter": 1
-        },
-        {
-            "time": "23:30 03-01-2022",
-            "stopLossWaitCounter": 0
-        },
-        {
-            "time": "23:45 03-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "00:00 04-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "00:15 04-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "00:30 04-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 46023.51,
-                "time": "00:30 04-01-2022"
-            },
-            "state": "SHORT",
-            "isNewTrend": false
-        },
-        {
-            "time": "13:45 04-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "17:45 04-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "stopLossWaitCounter": 0,
-            "isNewTrend": true,
-            "isTrendUp": true
-        },
-        {
-            "time": "18:45 04-01-2022",
-            "isNewTrend": false
-        },
-        {
-            "time": "21:45 04-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "isNewTrend": true,
-            "isTrendUp": false
-        },
-        {
-            "time": "11:30 05-01-2022",
-            "isNewTrend": false
-        },
-        {
-            "time": "13:15 05-01-2022",
-            "state": "NONE",
-            "activationWaitCounter": 0,
-            "isNewTrend": true,
-            "isTrendUp": true
-        },
-        {
-            "time": "14:00 05-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isNewTrend": false
-        },
-        {
-            "time": "14:45 05-01-2022",
-            "state": "NONE",
-            "activationWaitCounter": 0,
-            "isNewTrend": true,
-            "isTrendUp": false
-        },
-        {
-            "time": "17:30 05-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2,
-            "isNewTrend": false
-        },
-        {
-            "time": "19:45 05-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "20:00 05-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "20:15 05-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 46357.07,
-                "time": "20:15 05-01-2022"
-            },
-            "state": "SHORT"
-        },
-        {
-            "time": "22:45 05-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "22:45 06-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "23:15 06-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "23:30 06-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "23:45 06-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 43227.06,
-                "time": "23:45 06-01-2022"
-            },
-            "state": "SHORT"
-        },
-        {
-            "time": "06:15 07-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "11:15 07-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "16:45 07-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "17:00 07-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "17:15 07-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 41720.73,
-                "time": "17:15 07-01-2022"
-            },
-            "state": "SHORT"
-        },
-        {
-            "time": "18:45 07-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "19:45 07-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "20:00 07-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "20:15 07-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "20:30 07-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 41913.25,
-                "time": "20:30 07-01-2022"
-            },
-            "state": "SHORT"
-        },
-        {
-            "time": "20:45 08-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "00:30 09-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "01:30 09-01-2022",
-            "isNewTrend": true,
-            "isTrendUp": true,
-            "state": "NONE",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "12:15 09-01-2022",
-            "isNewTrend": false,
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "13:45 09-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "14:00 09-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "14:15 09-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 41888.01,
-                "time": "14:15 09-01-2022"
-            },
-            "state": "LONG"
-        },
-        {
-            "time": "18:15 09-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "19:00 09-01-2022",
-            "stopLossWaitCounter": 1
-        },
-        {
-            "time": "19:15 09-01-2022",
-            "stopLossWaitCounter": 0
-        },
-        {
-            "time": "19:30 09-01-2022",
-            "state": "NONE"
-        },
-        {
-            "time": "02:00 10-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "07:15 10-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "07:30 10-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "07:45 10-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 42096.73,
-                "time": "07:45 10-01-2022"
-            },
-            "state": "LONG"
-        },
-        {
-            "time": "14:45 10-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "15:15 10-01-2022",
-            "isNewTrend": true,
-            "isTrendUp": false,
-            "state": "NONE",
-            "stopLossWaitCounter": 0
-        },
-        {
-            "time": "15:45 10-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "16:00 10-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "16:15 10-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "16:30 10-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 40854.45,
-                "time": "16:30 10-01-2022"
-            },
-            "state": "SHORT",
-            "isNewTrend": false
-        },
-        {
-            "time": "17:15 10-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE"
-        },
-        {
-            "time": "17:45 10-01-2022",
-            "state": "ACTIVATION_WAIT",
-            "activationWaitCounter": 2
-        },
-        {
-            "time": "18:00 10-01-2022",
-            "activationWaitCounter": 1
-        },
-        {
-            "time": "18:15 10-01-2022",
-            "activationWaitCounter": 0
-        },
-        {
-            "time": "18:30 10-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 40832.17,
-                "time": "18:30 10-01-2022"
-            },
-            "state": "SHORT",
-            "isNewTrend": false
-        },
-        {
-            "time": "19:15 10-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "STOP_LOSS_WAIT",
-            "stopLossWaitCounter": 2
-        },
-        {
-            "time": "19:30 10-01-2022",
-            "isNewTrend": true,
-            "isTrendUp": true,
-            "state": "ACTIVATION_WAIT",
-            "stopLossWaitCounter": 0,
-            "activationWaitCounter": 2
-        }
-    ]
+		"stopLossWaiterEnabled": true,
+		"stopLossWaiterResetAllowed": true,
+		"stopLossWaiterRange": 2,
+		"stopLossWaiterFullCandleCheck": true
+	},
+	"testMoneyMakerData": [
+		{
+			"time": "11:15 31-12-2021",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isTrendUp": false
+		},
+		{
+			"time": "11:45 31-12-2021",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isNewTrend": true,
+			"isTrendUp": true
+		},
+		{
+			"time": "19:45 31-12-2021",
+			"isNewTrend": false
+		},
+		{
+			"time": "20:30 31-12-2021",
+			"state": "NONE",
+			"activationWaitCounter": 0,
+			"isTrendUp": false,
+			"isNewTrend": true
+		},
+		{
+			"time": "21:30 31-12-2021",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isTrendUp": false,
+			"isNewTrend": true
+		},
+		{
+			"time": "22:00 31-12-2021",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "22:15 31-12-2021",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "22:30 31-12-2021",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 46085.43,
+				"time": "22:30 31-12-2021"
+			},
+			"state": "SHORT",
+			"isNewTrend": false
+		},
+		{
+			"time": "04:15 01-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "08:30 01-01-2022",
+			"state": "NONE",
+			"stopLossWaitCounter": 0,
+			"isTrendUp": true,
+			"isNewTrend": true
+		},
+		{
+			"time": "13:30 01-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isNewTrend": false
+		},
+		{
+			"time": "13:45 01-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "14:00 01-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "14:15 01-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 46925.20,
+				"time": "14:15 01-01-2022"
+			},
+			"state": "LONG"
+		},
+		{
+			"time": "20:30 01-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "07:30 02-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "12:30 02-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "12:45 02-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "13:00 02-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 47273.23,
+				"time": "13:00 02-01-2022"
+			},
+			"state": "LONG"
+		},
+		{
+			"time": "06:45 03-01-2022",
+			"isNewTrend": true,
+			"isTrendUp": false
+		},
+		{
+			"time": "19:15 03-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "23:15 03-01-2022",
+			"stopLossWaitCounter": 1
+		},
+		{
+			"time": "23:30 03-01-2022",
+			"stopLossWaitCounter": 0
+		},
+		{
+			"time": "23:45 03-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "00:00 04-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "00:15 04-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "00:30 04-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 46023.51,
+				"time": "00:30 04-01-2022"
+			},
+			"state": "SHORT",
+			"isNewTrend": false
+		},
+		{
+			"time": "13:45 04-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "17:45 04-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"stopLossWaitCounter": 0,
+			"isNewTrend": true,
+			"isTrendUp": true
+		},
+		{
+			"time": "18:45 04-01-2022",
+			"isNewTrend": false
+		},
+		{
+			"time": "21:45 04-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"isNewTrend": true,
+			"isTrendUp": false
+		},
+		{
+			"time": "11:30 05-01-2022",
+			"isNewTrend": false
+		},
+		{
+			"time": "13:15 05-01-2022",
+			"state": "NONE",
+			"activationWaitCounter": 0,
+			"isNewTrend": true,
+			"isTrendUp": true
+		},
+		{
+			"time": "14:00 05-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isNewTrend": false
+		},
+		{
+			"time": "14:45 05-01-2022",
+			"state": "NONE",
+			"activationWaitCounter": 0,
+			"isNewTrend": true,
+			"isTrendUp": false
+		},
+		{
+			"time": "17:30 05-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2,
+			"isNewTrend": false
+		},
+		{
+			"time": "19:45 05-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "20:00 05-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "20:15 05-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 46357.07,
+				"time": "20:15 05-01-2022"
+			},
+			"state": "SHORT"
+		},
+		{
+			"time": "22:45 05-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "22:45 06-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "23:15 06-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "23:30 06-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "23:45 06-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 43227.06,
+				"time": "23:45 06-01-2022"
+			},
+			"state": "SHORT"
+		},
+		{
+			"time": "06:15 07-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "11:15 07-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "16:45 07-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "17:00 07-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "17:15 07-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 41720.73,
+				"time": "17:15 07-01-2022"
+			},
+			"state": "SHORT"
+		},
+		{
+			"time": "18:45 07-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "19:45 07-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "20:00 07-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "20:15 07-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "20:30 07-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 41913.25,
+				"time": "20:30 07-01-2022"
+			},
+			"state": "SHORT"
+		},
+		{
+			"time": "20:45 08-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "00:30 09-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "01:30 09-01-2022",
+			"isNewTrend": true,
+			"isTrendUp": true,
+			"state": "NONE",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "12:15 09-01-2022",
+			"isNewTrend": false,
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "13:45 09-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "14:00 09-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "14:15 09-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 41888.01,
+				"time": "14:15 09-01-2022"
+			},
+			"state": "LONG"
+		},
+		{
+			"time": "18:15 09-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "19:00 09-01-2022",
+			"stopLossWaitCounter": 1
+		},
+		{
+			"time": "19:15 09-01-2022",
+			"stopLossWaitCounter": 0
+		},
+		{
+			"time": "19:30 09-01-2022",
+			"state": "NONE"
+		},
+		{
+			"time": "02:00 10-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "07:15 10-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "07:30 10-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "07:45 10-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 42096.73,
+				"time": "07:45 10-01-2022"
+			},
+			"state": "LONG"
+		},
+		{
+			"time": "14:45 10-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "15:15 10-01-2022",
+			"isNewTrend": true,
+			"isTrendUp": false,
+			"state": "NONE",
+			"stopLossWaitCounter": 0
+		},
+		{
+			"time": "15:45 10-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "16:00 10-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "16:15 10-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "16:30 10-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 40854.45,
+				"time": "16:30 10-01-2022"
+			},
+			"state": "SHORT",
+			"isNewTrend": false
+		},
+		{
+			"time": "17:15 10-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "17:45 10-01-2022",
+			"state": "ACTIVATION_WAIT",
+			"activationWaitCounter": 2
+		},
+		{
+			"time": "18:00 10-01-2022",
+			"activationWaitCounter": 1
+		},
+		{
+			"time": "18:15 10-01-2022",
+			"activationWaitCounter": 0
+		},
+		{
+			"time": "18:30 10-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 40832.17,
+				"time": "18:30 10-01-2022"
+			},
+			"state": "SHORT",
+			"isNewTrend": false
+		},
+		{
+			"time": "19:15 10-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "STOP_LOSS_WAIT",
+			"stopLossWaitCounter": 2
+		},
+		{
+			"time": "19:30 10-01-2022",
+			"isNewTrend": true,
+			"isTrendUp": true,
+			"state": "ACTIVATION_WAIT",
+			"stopLossWaitCounter": 0,
+			"activationWaitCounter": 2
+		}
+	]
 }

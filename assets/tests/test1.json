@@ -1,947 +1,947 @@
 {
-    "candlesFileName": "1500_15m",
-    "candlesAmount": 1000,
-    "cash": 100,
-    "algorithmData": {
-        "atrType": "RMA",
-        "atrSize": 14,
-        "stFactor": 5,
+	"candlesFileName": "1500_15m",
+	"candlesAmount": 1000,
+	"cash": 100,
+	"algorithmData": {
+		"atrType": "RMA",
+		"atrSize": 14,
+		"stFactor": 5,
 
-        "dealPercent": 5,
-        "leverage": 10,
+		"dealPercent": 5,
+		"leverage": 10,
 
-        "liquidationOffsetPercent": 0.1,
-        "minimumProfitPercent": 0.25,
+		"liquidationOffsetPercent": 0.1,
+		"minimumProfitPercent": 0.25,
 
-        "dynamicSLPercent": 1.0,
-        "dynamicSLTrendMode": null,
+		"dynamicSLPercent": 1.0,
+		"dynamicSLTrendMode": null,
 
-        "touchOpenerActivationWaitMode": false,
+		"touchOpenerActivationWaitMode": false,
 
-        "breakOpenerEnabled": false,
-        "breakOpenerActivationWaitMode": null,
-        "alwaysUseNewTrend": null,
+		"breakOpenerEnabled": false,
+		"breakOpenerActivationWaitMode": null,
+		"alwaysUseNewTrend": null,
 
-        "activationWaiterResetAllowed": null,
-        "activationWaiterRange": null,
-        "activationWaiterFullCandleCheck": null,
+		"activationWaiterResetAllowed": null,
+		"activationWaiterRange": null,
+		"activationWaiterFullCandleCheck": null,
 
-        "stopLossWaiterEnabled": false,
-        "stopLossWaiterResetAllowed": null,
-        "stopLossWaiterRange": null,
-        "stopLossWaiterFullCandleCheck": null,
+		"stopLossWaiterEnabled": false,
+		"stopLossWaiterResetAllowed": null,
+		"stopLossWaiterRange": null,
+		"stopLossWaiterFullCandleCheck": null,
 
-        "fullCheck": true
-    },
-    "testMoneyMakerData": [
-        {
-            "time": "11:15 31-12-2021",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 47809.60,
-                "stopLoss": 48407.22,
-                "minimumProfit": 47690.07,
-                "amount": 5,
-                "time": "11:15 31-12-2021"
-            },
-            "state": "SHORT",
-            "cash": 94.98,
-            "lastDownSuperTrend": 47929.43,
-            "isTrendUp": false
-        },
-        {
-            "time": "11:30 31-12-2021",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 99.33
-        },
-        {
-            "time": "11:45 31-12-2021",
-            "lastUpSuperTrend": 46827.20,
-            "isTrendUp": true
-        },
-        {
-            "time": "12:00 31-12-2021",
-            "lastUpSuperTrend": 47026.98
-        },
-        {
-            "time": "12:15 31-12-2021",
-            "lastUpSuperTrend": 47128.30
-        },
-        {
-            "time": "13:45 31-12-2021",
-            "lastUpSuperTrend": 47209.38
-        },
-        {
-            "time": "19:30 31-12-2021",
-            "lastUpSuperTrend": 47246.24
-        },
-        {
-            "time": "20:00 31-12-2021",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 47364.36,
-                "stopLoss": 46772.3,
-                "minimumProfit": 47482.78,
-                "amount": 4.966,
-                "time": "20:00 31-12-2021"
-            },
-            "state": "LONG",
-            "cash": 94.34
-        },
-        {
-            "time": "20:30 31-12-2021",
-            "lastDownSuperTrend": 48213.59,
-            "isTrendUp": false
-        },
-        {
-            "time": "20:45 31-12-2021",
-            "lastDownSuperTrend": 48037.20,
-            "isTrendUp": false
-        },
-        {
-            "time": "21:00 31-12-2021",
-            "lastDownSuperTrend": 48020.01
-        },
-        {
-            "time": "21:15 31-12-2021",
-            "lastDownSuperTrend": 47988.81
-        },
-        {
-            "time": "21:30 31-12-2021",
-            "order": {
-                "lifeState": false
-            },
-            "lastDownSuperTrend": 47953.63,
-            "state": "NONE",
-            "cash": 98.66
-        },
-        {
-            "time": "21:45 31-12-2021",
-            "lastDownSuperTrend": 47832.43
-        },
-        {
-            "time": "22:00 31-12-2021",
-            "lastDownSuperTrend": 47762.20
-        },
-        {
-            "time": "22:15 31-12-2021",
-            "lastDownSuperTrend": 47642.23
-        },
-        {
-            "time": "22:30 31-12-2021",
-            "lastDownSuperTrend": 47444.50
-        },
-        {
-            "time": "22:45 31-12-2021",
-            "lastDownSuperTrend": 47359.17
-        },
-        {
-            "time": "23:00 31-12-2021",
-            "lastDownSuperTrend": 47166.84
-        },
-        {
-            "time": "08:15 01-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 47048.92,
-                "stopLoss": 47637.04,
-                "minimumProfit": 46931.29,
-                "amount": 4.933,
-                "time": "08:15 01-01-2022"
-            },
-            "state": "SHORT",
-            "cash": 93.7
-        },
-        {
-            "time": "08:30 01-01-2022",
-            "lastUpSuperTrend": 46112.00,
-            "isTrendUp": true
-        },
-        {
-            "time": "08:45 01-01-2022",
-            "lastUpSuperTrend": 46326.91
-        },
-        {
-            "time": "18:45 01-01-2022",
-            "lastUpSuperTrend": 46329.21
-        },
-        {
-            "time": "19:15 01-01-2022",
-            "lastUpSuperTrend": 46340.17
-        },
-        {
-            "time": "19:30 01-01-2022",
-            "lastUpSuperTrend": 46455.56
-        },
-        {
-            "time": "19:45 01-01-2022",
-            "lastUpSuperTrend": 46483.70
-        },
-        {
-            "time": "20:30 01-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 97.99
-        },
-        {
-            "time": "20:45 01-01-2022",
-            "lastUpSuperTrend": 46559.35
-        },
-        {
-            "time": "21:00 01-01-2022",
-            "lastUpSuperTrend": 46734.13
-        },
-        {
-            "time": "03:00 02-01-2022",
-            "lastUpSuperTrend": 46743.31
-        },
-        {
-            "time": "07:45 02-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 46860.17,
-                "stopLoss": 46274.41,
-                "minimumProfit": 46977.33,
-                "amount": 4.899,
-                "time": "07:45 02-01-2022"
-            },
-            "state": "LONG",
-            "cash": 93.07
-        },
-        {
-            "time": "12:15 02-01-2022",
-            "order": {
-                "stopLoss": 47024.45
-            }
-        },
-        {
-            "time": "15:00 02-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 98.12
-        },
-        {
-            "time": "19:45 02-01-2022",
-            "lastUpSuperTrend": 46772.22
-        },
-        {
-            "time": "20:00 02-01-2022",
-            "lastUpSuperTrend": 46879.96
-        },
-        {
-            "time": "21:15 02-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 46997.16,
-                "stopLoss": 46409.69,
-                "minimumProfit": 47114.66,
-                "amount": 4.906,
-                "time": "21:15 02-01-2022"
-            },
-            "state": "LONG",
-            "cash": 93.19
-        },
-        {
-            "time": "06:45 03-01-2022",
-            "lastDownSuperTrend": 47628.16,
-            "isTrendUp": false
-        },
-        {
-            "time": "07:00 03-01-2022",
-            "lastDownSuperTrend": 47541.95
-        },
-        {
-            "time": "08:15 03-01-2022",
-            "lastDownSuperTrend": 47534.25
-        },
-        {
-            "time": "12:30 03-01-2022",
-            "lastDownSuperTrend": 47525.22
-        },
-        {
-            "time": "12:45 03-01-2022",
-            "lastDownSuperTrend": 47490.47
-        },
-        {
-            "time": "19:15 03-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 97.46
-        },
-        {
-            "time": "19:45 03-01-2022",
-            "lastDownSuperTrend": 47488.19
-        },
-        {
-            "time": "20:00 03-01-2022",
-            "lastDownSuperTrend": 47474.11
-        },
-        {
-            "time": "22:15 03-01-2022",
-            "lastDownSuperTrend": 47461.79
-        },
-        {
-            "time": "23:15 03-01-2022",
-            "lastDownSuperTrend": 47295.15
-        },
-        {
-            "time": "23:30 03-01-2022",
-            "lastDownSuperTrend": 47168.18
-        },
-        {
-            "time": "23:45 03-01-2022",
-            "lastDownSuperTrend": 46983.82
-        },
-        {
-            "time": "16:15 04-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 46866.36,
-                "stopLoss": 47452.19,
-                "minimumProfit": 46749.19,
-                "amount": 4.872,
-                "time": "16:15 04-01-2022"
-            },
-            "state": "SHORT",
-            "cash": 92.56
-        },
-        {
-            "time": "17:45 04-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "lastUpSuperTrend": 46076.71,
-            "isTrendUp": true,
-            "state": "NONE",
-            "cash": 96.8
-        },
-        {
-            "time": "18:00 04-01-2022",
-            "lastUpSuperTrend": 46287.87
-        },
-        {
-            "time": "18:15 04-01-2022",
-            "lastUpSuperTrend": 46427.27
-        },
-        {
-            "time": "20:45 04-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 46543.34,
-                "stopLoss": 45961.54,
-                "minimumProfit": 46659.70,
-                "amount": 4.84,
-                "time": "20:45 04-01-2022"
-            },
-            "state": "LONG",
-            "cash": 91.94
-        },
-        {
-            "time": "21:30 04-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 96.15
-        },
-        {
-            "time": "21:45 04-01-2022",
-            "lastDownSuperTrend": 47373.30,
-            "isTrendUp": false
-        },
-        {
-            "time": "22:00 04-01-2022",
-            "lastDownSuperTrend": 47038.53
-        },
-        {
-            "time": "03:00 05-01-2022",
-            "lastDownSuperTrend": 47035.92
-        },
-        {
-            "time": "08:30 05-01-2022",
-            "lastDownSuperTrend": 47012.95
-        },
-        {
-            "time": "08:45 05-01-2022",
-            "lastDownSuperTrend": 46981.60
-        },
-        {
-            "time": "09:00 05-01-2022",
-            "lastDownSuperTrend": 46973.17
-        },
-        {
-            "time": "11:30 05-01-2022",
-            "lastDownSuperTrend": 46915.92
-        },
-        {
-            "time": "12:15 05-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 46798.63,
-                "stopLoss": 47383.62,
-                "minimumProfit": 46681.63,
-                "amount": 4.807,
-                "time": "12:15 05-01-2022"
-            },
-            "state": "SHORT",
-            "cash": 91.32
-        },
-        {
-            "time": "13:15 05-01-2022",
-            "isTrendUp": true,
-            "lastUpSuperTrend": 46227.73
-        },
-        {
-            "time": "14:30 05-01-2022",
-            "order": {
-                "stopLoss": 46613.06
-            }
-        },
-        {
-            "time": "14:45 05-01-2022",
-            "order": {
-                "stopLoss": 46571.10
-            },
-            "isTrendUp": false,
-            "lastDownSuperTrend": 47232.89
-        },
-        {
-            "time": "15:00 05-01-2022",
-            "lastDownSuperTrend": 47092.19
-        },
-        {
-            "time": "15:15 05-01-2022",
-            "order": {
-                "stopLoss": 46413.17
-            }
-        },
-        {
-            "time": "15:30 05-01-2022",
-            "order": {
-                "stopLoss": 46261.71
-            },
-            "lastDownSuperTrend": 47050.89
-        },
-        {
-            "time": "15:45 05-01-2022",
-            "lastDownSuperTrend": 47006.62
-        },
-        {
-            "time": "16:00 05-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 96.65
-        },
-        {
-            "time": "23:00 05-01-2022",
-            "lastDownSuperTrend": 46911.68
-        },
-        {
-            "time": "23:15 05-01-2022",
-            "lastDownSuperTrend": 46423.82
-        },
-        {
-            "time": "23:30 05-01-2022",
-            "lastDownSuperTrend": 46363.01
-        },
-        {
-            "time": "23:45 05-01-2022",
-            "lastDownSuperTrend": 46333.05
-        },
-        {
-            "time": "00:00 06-01-2022",
-            "lastDownSuperTrend": 46195.05
-        },
-        {
-            "time": "00:30 06-01-2022",
-            "lastDownSuperTrend": 46111.27
-        },
-        {
-            "time": "00:45 06-01-2022",
-            "lastDownSuperTrend": 45858.61
-        },
-        {
-            "time": "01:15 06-01-2022",
-            "lastDownSuperTrend": 45733.01
-        },
-        {
-            "time": "01:30 06-01-2022",
-            "lastDownSuperTrend": 45466.77
-        },
-        {
-            "time": "01:45 06-01-2022",
-            "lastDownSuperTrend": 45461.56
-        },
-        {
-            "time": "04:45 06-01-2022",
-            "lastDownSuperTrend": 45335.22
-        },
-        {
-            "time": "05:00 06-01-2022",
-            "lastDownSuperTrend": 45238.39
-        },
-        {
-            "time": "05:15 06-01-2022",
-            "lastDownSuperTrend": 45209.52
-        },
-        {
-            "time": "05:30 06-01-2022",
-            "lastDownSuperTrend": 44987.07
-        },
-        {
-            "time": "05:45 06-01-2022",
-            "lastDownSuperTrend": 44949.75
-        },
-        {
-            "time": "06:00 06-01-2022",
-            "lastDownSuperTrend": 44940.63
-        },
-        {
-            "time": "06:15 06-01-2022",
-            "lastDownSuperTrend": 44773.96
-        },
-        {
-            "time": "06:30 06-01-2022",
-            "lastDownSuperTrend": 44699.55
-        },
-        {
-            "time": "06:45 06-01-2022",
-            "lastDownSuperTrend": 44601.11
-        },
-        {
-            "time": "07:00 06-01-2022",
-            "lastDownSuperTrend": 44478.62
-        },
-        {
-            "time": "07:15 06-01-2022",
-            "lastDownSuperTrend": 44421.19
-        },
-        {
-            "time": "07:45 06-01-2022",
-            "lastDownSuperTrend": 44351.36
-        },
-        {
-            "time": "11:45 06-01-2022",
-            "lastDownSuperTrend": 44278.66
-        },
-        {
-            "time": "12:00 06-01-2022",
-            "lastDownSuperTrend": 44247.82
-        },
-        {
-            "time": "12:15 06-01-2022",
-            "lastDownSuperTrend": 44208.59
-        },
-        {
-            "time": "12:30 06-01-2022",
-            "lastDownSuperTrend": 44092.58
-        },
-        {
-            "time": "12:45 06-01-2022",
-            "lastDownSuperTrend": 44007.78
-        },
-        {
-            "time": "15:30 06-01-2022",
-            "lastDownSuperTrend": 43967.35
-        },
-        {
-            "time": "15:45 06-01-2022",
-            "lastDownSuperTrend": 43942.40
-        },
-        {
-            "time": "02:30 07-01-2022",
-            "lastDownSuperTrend": 43909.94
-        },
-        {
-            "time": "03:15 07-01-2022",
-            "lastDownSuperTrend": 43844.54
-        },
-        {
-            "time": "03:30 07-01-2022",
-            "lastDownSuperTrend": 43745.97
-        },
-        {
-            "time": "03:45 07-01-2022",
-            "lastDownSuperTrend": 43677.53
-        },
-        {
-            "time": "04:00 07-01-2022",
-            "lastDownSuperTrend": 43642.79
-        },
-        {
-            "time": "06:00 07-01-2022",
-            "lastDownSuperTrend": 43601.06
-        },
-        {
-            "time": "06:15 07-01-2022",
-            "lastDownSuperTrend": 43526.58
-        },
-        {
-            "time": "06:30 07-01-2022",
-            "lastDownSuperTrend": 43444.46
-        },
-        {
-            "time": "06:45 07-01-2022",
-            "lastDownSuperTrend": 43162.74
-        },
-        {
-            "time": "07:00 07-01-2022",
-            "lastDownSuperTrend": 43075.13
-        },
-        {
-            "time": "07:15 07-01-2022",
-            "lastDownSuperTrend": 42980.10
-        },
-        {
-            "time": "07:30 07-01-2022",
-            "lastDownSuperTrend": 42810.71
-        },
-        {
-            "time": "07:45 07-01-2022",
-            "lastDownSuperTrend": 42626.35
-        },
-        {
-            "time": "11:15 07-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 42519.78,
-                "stopLoss": 43051.28,
-                "minimumProfit": 42413.48,
-                "amount": 4.832,
-                "time": "11:15 07-01-2022"
-            },
-            "state": "SHORT",
-            "cash": 91.79
-        },
-        {
-            "time": "16:30 07-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 97.63
-        },
-        {
-            "time": "02:30 08-01-2022",
-            "lastDownSuperTrend": 42576.64
-        },
-        {
-            "time": "03:00 08-01-2022",
-            "lastDownSuperTrend": 42564.15
-        },
-        {
-            "time": "09:45 08-01-2022",
-            "lastDownSuperTrend": 42560.66
-        },
-        {
-            "time": "18:15 08-01-2022",
-            "lastDownSuperTrend": 42462.67
-        },
-        {
-            "time": "18:45 08-01-2022",
-            "lastDownSuperTrend": 42461.70
-        },
-        {
-            "time": "19:45 08-01-2022",
-            "lastDownSuperTrend": 42346.75
-        },
-        {
-            "time": "20:15 08-01-2022",
-            "lastDownSuperTrend": 42251.89
-        },
-        {
-            "time": "20:45 08-01-2022",
-            "lastDownSuperTrend": 42149.72
-        },
-        {
-            "time": "21:15 08-01-2022",
-            "lastDownSuperTrend": 42073.12
-        },
-        {
-            "time": "00:30 09-01-2022",
-            "order": {
-                "type": "SHORT",
-                "lifeState": true,
-                "price": 41967.93,
-                "stopLoss": 42492.53,
-                "minimumProfit": 41863.01,
-                "amount": 4.881,
-                "time": "00:30 09-01-2022"
-            },
-            "state": "SHORT",
-            "cash": 92.72
-        },
-        {
-            "time": "01:30 09-01-2022",
-            "isTrendUp": true,
-            "lastUpSuperTrend": 40484.72
-        },
-        {
-            "time": "01:45 09-01-2022",
-            "lastUpSuperTrend": 40572.03
-        },
-        {
-            "time": "03:00 09-01-2022",
-            "order": {
-                "stopLoss": 41802.02
-            }
-        },
-        {
-            "time": "03:45 09-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 97.77
-        },
-        {
-            "time": "05:15 09-01-2022",
-            "lastUpSuperTrend": 40614.85
-        },
-        {
-            "time": "05:30 09-01-2022",
-            "lastUpSuperTrend": 40707.72
-        },
-        {
-            "time": "05:45 09-01-2022",
-            "lastUpSuperTrend": 40839.52
-        },
-        {
-            "time": "06:00 09-01-2022",
-            "lastUpSuperTrend": 40942.31
-        },
-        {
-            "time": "07:30 09-01-2022",
-            "lastUpSuperTrend": 40946.63
-        },
-        {
-            "time": "07:45 09-01-2022",
-            "lastUpSuperTrend": 41038.06
-        },
-        {
-            "time": "08:00 09-01-2022",
-            "lastUpSuperTrend": 41080.35
-        },
-        {
-            "time": "08:15 09-01-2022",
-            "lastUpSuperTrend": 41113.35
-        },
-        {
-            "time": "11:15 09-01-2022",
-            "lastUpSuperTrend": 41144.00
-        },
-        {
-            "time": "18:15 09-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 41246.86,
-                "stopLoss": 40731.27,
-                "minimumProfit": 41349.98,
-                "amount": 4.888,
-                "time": "18:15 09-01-2022"
-            },
-            "state": "LONG",
-            "cash": 92.86
-        },
-        {
-            "time": "19:15 09-01-2022",
-            "order": {
-                "stopLoss": 41351.8
-            }
-        },
-        {
-            "time": "19:30 09-01-2022",
-            "order": {
-                "stopLoss": 41433.37
-            }
-        },
-        {
-            "time": "19:45 09-01-2022",
-            "order": {
-                "stopLoss": 41724.78
-            }
-        },
-        {
-            "time": "20:00 09-01-2022",
-            "order": {
-                "stopLoss": 41778.00
-            }
-        },
-        {
-            "time": "21:15 09-01-2022",
-            "order": {
-                "stopLoss": 41856.21
-            }
-        },
-        {
-            "time": "21:30 09-01-2022",
-            "lastUpSuperTrend": 41163.22
-        },
-        {
-            "time": "22:15 09-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 98.9
-        },
-        {
-            "time": "22:30 09-01-2022",
-            "lastUpSuperTrend": 41195.56
-        },
-        {
-            "time": "22:45 09-01-2022",
-            "lastUpSuperTrend": 41420.89
-        },
-        {
-            "time": "23:00 09-01-2022",
-            "lastUpSuperTrend": 41436.82
-        },
-        {
-            "time": "23:15 09-01-2022",
-            "lastUpSuperTrend": 41499.56
-        },
-        {
-            "time": "01:30 10-01-2022",
-            "lastUpSuperTrend": 41534.04
-        },
-        {
-            "time": "03:45 10-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 41637.88,
-                "stopLoss": 41117.40,
-                "minimumProfit": 41741.98,
-                "amount": 4.945,
-                "time": "03:45 10-01-2022"
-            },
-            "state": "LONG",
-            "cash": 93.93
-        },
-        {
-            "time": "07:15 10-01-2022",
-            "order": {
-                "stopLoss": 41755.99
-            }
-        },
-        {
-            "time": "07:30 10-01-2022",
-            "order": {
-                "stopLoss": 41786.23
-            }
-        },
-        {
-            "time": "07:45 10-01-2022",
-            "order": {
-                "stopLoss": 41826.01
-            }
-        },
-        {
-            "time": "09:15 10-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 99.07
-        },
-        {
-            "time": "14:00 10-01-2022",
-            "order": {
-                "type": "LONG",
-                "lifeState": true,
-                "price": 41637.88,
-                "stopLoss": 41117.40,
-                "minimumProfit": 41741.98,
-                "amount": 4.953,
-                "time": "14:00 10-01-2022"
-            },
-            "state": "LONG",
-            "cash": 94.09
-        },
-        {
-            "time": "15:15 10-01-2022",
-            "isTrendUp": false,
-            "lastDownSuperTrend": 42299.41
-        },
-        {
-            "time": "15:30 10-01-2022",
-            "lastDownSuperTrend": 42215.80
-        },
-        {
-            "time": "15:45 10-01-2022",
-            "order": {
-                "lifeState": false
-            },
-            "state": "NONE",
-            "cash": 98.4,
-            "lastDownSuperTrend": 42204.4
-        },
-        {
-            "time": "16:00 10-01-2022",
-            "lastDownSuperTrend": 42044.00
-        },
-        {
-            "time": "16:15 10-01-2022",
-            "lastDownSuperTrend": 41894.52
-        },
-        {
-            "time": "16:30 10-01-2022",
-            "lastDownSuperTrend": 41801.63
-        },
-        {
-            "time": "17:00 10-01-2022",
-            "lastDownSuperTrend": 41736.58
-        },
-        {
-            "time": "17:15 10-01-2022",
-            "lastDownSuperTrend": 41635.55
-        },
-        {
-            "time": "17:30 10-01-2022",
-            "lastDownSuperTrend": 41483.89
-        },
-        {
-            "time": "19:15 10-01-2022",
-            "cash": 97.74
-        },
-        {
-            "time": "19:30 10-01-2022",
-            "isTrendUp": true,
-            "lastUpSuperTrend": 39515.06
-        },
-        {
-            "time": "19:45 10-01-2022",
-            "lastUpSuperTrend": 39766.74
-        },
-        {
-            "time": "20:00 10-01-2022",
-            "lastUpSuperTrend": 39794.34
-        },
-        {
-            "time": "20:15 10-01-2022",
-            "lastUpSuperTrend": 39885.50
-        }
-    ]
+		"fullCheck": true
+	},
+	"testMoneyMakerData": [
+		{
+			"time": "11:15 31-12-2021",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 47809.60,
+				"stopLoss": 48407.22,
+				"minimumProfit": 47690.07,
+				"amount": 5,
+				"time": "11:15 31-12-2021"
+			},
+			"state": "SHORT",
+			"cash": 94.98,
+			"lastDownSuperTrend": 47929.43,
+			"isTrendUp": false
+		},
+		{
+			"time": "11:30 31-12-2021",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 99.33
+		},
+		{
+			"time": "11:45 31-12-2021",
+			"lastUpSuperTrend": 46827.20,
+			"isTrendUp": true
+		},
+		{
+			"time": "12:00 31-12-2021",
+			"lastUpSuperTrend": 47026.98
+		},
+		{
+			"time": "12:15 31-12-2021",
+			"lastUpSuperTrend": 47128.30
+		},
+		{
+			"time": "13:45 31-12-2021",
+			"lastUpSuperTrend": 47209.38
+		},
+		{
+			"time": "19:30 31-12-2021",
+			"lastUpSuperTrend": 47246.24
+		},
+		{
+			"time": "20:00 31-12-2021",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 47364.36,
+				"stopLoss": 46772.3,
+				"minimumProfit": 47482.78,
+				"amount": 4.966,
+				"time": "20:00 31-12-2021"
+			},
+			"state": "LONG",
+			"cash": 94.34
+		},
+		{
+			"time": "20:30 31-12-2021",
+			"lastDownSuperTrend": 48213.59,
+			"isTrendUp": false
+		},
+		{
+			"time": "20:45 31-12-2021",
+			"lastDownSuperTrend": 48037.20,
+			"isTrendUp": false
+		},
+		{
+			"time": "21:00 31-12-2021",
+			"lastDownSuperTrend": 48020.01
+		},
+		{
+			"time": "21:15 31-12-2021",
+			"lastDownSuperTrend": 47988.81
+		},
+		{
+			"time": "21:30 31-12-2021",
+			"order": {
+				"lifeState": false
+			},
+			"lastDownSuperTrend": 47953.63,
+			"state": "NONE",
+			"cash": 98.66
+		},
+		{
+			"time": "21:45 31-12-2021",
+			"lastDownSuperTrend": 47832.43
+		},
+		{
+			"time": "22:00 31-12-2021",
+			"lastDownSuperTrend": 47762.20
+		},
+		{
+			"time": "22:15 31-12-2021",
+			"lastDownSuperTrend": 47642.23
+		},
+		{
+			"time": "22:30 31-12-2021",
+			"lastDownSuperTrend": 47444.50
+		},
+		{
+			"time": "22:45 31-12-2021",
+			"lastDownSuperTrend": 47359.17
+		},
+		{
+			"time": "23:00 31-12-2021",
+			"lastDownSuperTrend": 47166.84
+		},
+		{
+			"time": "08:15 01-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 47048.92,
+				"stopLoss": 47637.04,
+				"minimumProfit": 46931.29,
+				"amount": 4.933,
+				"time": "08:15 01-01-2022"
+			},
+			"state": "SHORT",
+			"cash": 93.7
+		},
+		{
+			"time": "08:30 01-01-2022",
+			"lastUpSuperTrend": 46112.00,
+			"isTrendUp": true
+		},
+		{
+			"time": "08:45 01-01-2022",
+			"lastUpSuperTrend": 46326.91
+		},
+		{
+			"time": "18:45 01-01-2022",
+			"lastUpSuperTrend": 46329.21
+		},
+		{
+			"time": "19:15 01-01-2022",
+			"lastUpSuperTrend": 46340.17
+		},
+		{
+			"time": "19:30 01-01-2022",
+			"lastUpSuperTrend": 46455.56
+		},
+		{
+			"time": "19:45 01-01-2022",
+			"lastUpSuperTrend": 46483.70
+		},
+		{
+			"time": "20:30 01-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 97.99
+		},
+		{
+			"time": "20:45 01-01-2022",
+			"lastUpSuperTrend": 46559.35
+		},
+		{
+			"time": "21:00 01-01-2022",
+			"lastUpSuperTrend": 46734.13
+		},
+		{
+			"time": "03:00 02-01-2022",
+			"lastUpSuperTrend": 46743.31
+		},
+		{
+			"time": "07:45 02-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 46860.17,
+				"stopLoss": 46274.41,
+				"minimumProfit": 46977.33,
+				"amount": 4.899,
+				"time": "07:45 02-01-2022"
+			},
+			"state": "LONG",
+			"cash": 93.07
+		},
+		{
+			"time": "12:15 02-01-2022",
+			"order": {
+				"stopLoss": 47024.45
+			}
+		},
+		{
+			"time": "15:00 02-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 98.12
+		},
+		{
+			"time": "19:45 02-01-2022",
+			"lastUpSuperTrend": 46772.22
+		},
+		{
+			"time": "20:00 02-01-2022",
+			"lastUpSuperTrend": 46879.96
+		},
+		{
+			"time": "21:15 02-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 46997.16,
+				"stopLoss": 46409.69,
+				"minimumProfit": 47114.66,
+				"amount": 4.906,
+				"time": "21:15 02-01-2022"
+			},
+			"state": "LONG",
+			"cash": 93.19
+		},
+		{
+			"time": "06:45 03-01-2022",
+			"lastDownSuperTrend": 47628.16,
+			"isTrendUp": false
+		},
+		{
+			"time": "07:00 03-01-2022",
+			"lastDownSuperTrend": 47541.95
+		},
+		{
+			"time": "08:15 03-01-2022",
+			"lastDownSuperTrend": 47534.25
+		},
+		{
+			"time": "12:30 03-01-2022",
+			"lastDownSuperTrend": 47525.22
+		},
+		{
+			"time": "12:45 03-01-2022",
+			"lastDownSuperTrend": 47490.47
+		},
+		{
+			"time": "19:15 03-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 97.46
+		},
+		{
+			"time": "19:45 03-01-2022",
+			"lastDownSuperTrend": 47488.19
+		},
+		{
+			"time": "20:00 03-01-2022",
+			"lastDownSuperTrend": 47474.11
+		},
+		{
+			"time": "22:15 03-01-2022",
+			"lastDownSuperTrend": 47461.79
+		},
+		{
+			"time": "23:15 03-01-2022",
+			"lastDownSuperTrend": 47295.15
+		},
+		{
+			"time": "23:30 03-01-2022",
+			"lastDownSuperTrend": 47168.18
+		},
+		{
+			"time": "23:45 03-01-2022",
+			"lastDownSuperTrend": 46983.82
+		},
+		{
+			"time": "16:15 04-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 46866.36,
+				"stopLoss": 47452.19,
+				"minimumProfit": 46749.19,
+				"amount": 4.872,
+				"time": "16:15 04-01-2022"
+			},
+			"state": "SHORT",
+			"cash": 92.56
+		},
+		{
+			"time": "17:45 04-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"lastUpSuperTrend": 46076.71,
+			"isTrendUp": true,
+			"state": "NONE",
+			"cash": 96.8
+		},
+		{
+			"time": "18:00 04-01-2022",
+			"lastUpSuperTrend": 46287.87
+		},
+		{
+			"time": "18:15 04-01-2022",
+			"lastUpSuperTrend": 46427.27
+		},
+		{
+			"time": "20:45 04-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 46543.34,
+				"stopLoss": 45961.54,
+				"minimumProfit": 46659.70,
+				"amount": 4.84,
+				"time": "20:45 04-01-2022"
+			},
+			"state": "LONG",
+			"cash": 91.94
+		},
+		{
+			"time": "21:30 04-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 96.15
+		},
+		{
+			"time": "21:45 04-01-2022",
+			"lastDownSuperTrend": 47373.30,
+			"isTrendUp": false
+		},
+		{
+			"time": "22:00 04-01-2022",
+			"lastDownSuperTrend": 47038.53
+		},
+		{
+			"time": "03:00 05-01-2022",
+			"lastDownSuperTrend": 47035.92
+		},
+		{
+			"time": "08:30 05-01-2022",
+			"lastDownSuperTrend": 47012.95
+		},
+		{
+			"time": "08:45 05-01-2022",
+			"lastDownSuperTrend": 46981.60
+		},
+		{
+			"time": "09:00 05-01-2022",
+			"lastDownSuperTrend": 46973.17
+		},
+		{
+			"time": "11:30 05-01-2022",
+			"lastDownSuperTrend": 46915.92
+		},
+		{
+			"time": "12:15 05-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 46798.63,
+				"stopLoss": 47383.62,
+				"minimumProfit": 46681.63,
+				"amount": 4.807,
+				"time": "12:15 05-01-2022"
+			},
+			"state": "SHORT",
+			"cash": 91.32
+		},
+		{
+			"time": "13:15 05-01-2022",
+			"isTrendUp": true,
+			"lastUpSuperTrend": 46227.73
+		},
+		{
+			"time": "14:30 05-01-2022",
+			"order": {
+				"stopLoss": 46613.06
+			}
+		},
+		{
+			"time": "14:45 05-01-2022",
+			"order": {
+				"stopLoss": 46571.10
+			},
+			"isTrendUp": false,
+			"lastDownSuperTrend": 47232.89
+		},
+		{
+			"time": "15:00 05-01-2022",
+			"lastDownSuperTrend": 47092.19
+		},
+		{
+			"time": "15:15 05-01-2022",
+			"order": {
+				"stopLoss": 46413.17
+			}
+		},
+		{
+			"time": "15:30 05-01-2022",
+			"order": {
+				"stopLoss": 46261.71
+			},
+			"lastDownSuperTrend": 47050.89
+		},
+		{
+			"time": "15:45 05-01-2022",
+			"lastDownSuperTrend": 47006.62
+		},
+		{
+			"time": "16:00 05-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 96.65
+		},
+		{
+			"time": "23:00 05-01-2022",
+			"lastDownSuperTrend": 46911.68
+		},
+		{
+			"time": "23:15 05-01-2022",
+			"lastDownSuperTrend": 46423.82
+		},
+		{
+			"time": "23:30 05-01-2022",
+			"lastDownSuperTrend": 46363.01
+		},
+		{
+			"time": "23:45 05-01-2022",
+			"lastDownSuperTrend": 46333.05
+		},
+		{
+			"time": "00:00 06-01-2022",
+			"lastDownSuperTrend": 46195.05
+		},
+		{
+			"time": "00:30 06-01-2022",
+			"lastDownSuperTrend": 46111.27
+		},
+		{
+			"time": "00:45 06-01-2022",
+			"lastDownSuperTrend": 45858.61
+		},
+		{
+			"time": "01:15 06-01-2022",
+			"lastDownSuperTrend": 45733.01
+		},
+		{
+			"time": "01:30 06-01-2022",
+			"lastDownSuperTrend": 45466.77
+		},
+		{
+			"time": "01:45 06-01-2022",
+			"lastDownSuperTrend": 45461.56
+		},
+		{
+			"time": "04:45 06-01-2022",
+			"lastDownSuperTrend": 45335.22
+		},
+		{
+			"time": "05:00 06-01-2022",
+			"lastDownSuperTrend": 45238.39
+		},
+		{
+			"time": "05:15 06-01-2022",
+			"lastDownSuperTrend": 45209.52
+		},
+		{
+			"time": "05:30 06-01-2022",
+			"lastDownSuperTrend": 44987.07
+		},
+		{
+			"time": "05:45 06-01-2022",
+			"lastDownSuperTrend": 44949.75
+		},
+		{
+			"time": "06:00 06-01-2022",
+			"lastDownSuperTrend": 44940.63
+		},
+		{
+			"time": "06:15 06-01-2022",
+			"lastDownSuperTrend": 44773.96
+		},
+		{
+			"time": "06:30 06-01-2022",
+			"lastDownSuperTrend": 44699.55
+		},
+		{
+			"time": "06:45 06-01-2022",
+			"lastDownSuperTrend": 44601.11
+		},
+		{
+			"time": "07:00 06-01-2022",
+			"lastDownSuperTrend": 44478.62
+		},
+		{
+			"time": "07:15 06-01-2022",
+			"lastDownSuperTrend": 44421.19
+		},
+		{
+			"time": "07:45 06-01-2022",
+			"lastDownSuperTrend": 44351.36
+		},
+		{
+			"time": "11:45 06-01-2022",
+			"lastDownSuperTrend": 44278.66
+		},
+		{
+			"time": "12:00 06-01-2022",
+			"lastDownSuperTrend": 44247.82
+		},
+		{
+			"time": "12:15 06-01-2022",
+			"lastDownSuperTrend": 44208.59
+		},
+		{
+			"time": "12:30 06-01-2022",
+			"lastDownSuperTrend": 44092.58
+		},
+		{
+			"time": "12:45 06-01-2022",
+			"lastDownSuperTrend": 44007.78
+		},
+		{
+			"time": "15:30 06-01-2022",
+			"lastDownSuperTrend": 43967.35
+		},
+		{
+			"time": "15:45 06-01-2022",
+			"lastDownSuperTrend": 43942.40
+		},
+		{
+			"time": "02:30 07-01-2022",
+			"lastDownSuperTrend": 43909.94
+		},
+		{
+			"time": "03:15 07-01-2022",
+			"lastDownSuperTrend": 43844.54
+		},
+		{
+			"time": "03:30 07-01-2022",
+			"lastDownSuperTrend": 43745.97
+		},
+		{
+			"time": "03:45 07-01-2022",
+			"lastDownSuperTrend": 43677.53
+		},
+		{
+			"time": "04:00 07-01-2022",
+			"lastDownSuperTrend": 43642.79
+		},
+		{
+			"time": "06:00 07-01-2022",
+			"lastDownSuperTrend": 43601.06
+		},
+		{
+			"time": "06:15 07-01-2022",
+			"lastDownSuperTrend": 43526.58
+		},
+		{
+			"time": "06:30 07-01-2022",
+			"lastDownSuperTrend": 43444.46
+		},
+		{
+			"time": "06:45 07-01-2022",
+			"lastDownSuperTrend": 43162.74
+		},
+		{
+			"time": "07:00 07-01-2022",
+			"lastDownSuperTrend": 43075.13
+		},
+		{
+			"time": "07:15 07-01-2022",
+			"lastDownSuperTrend": 42980.10
+		},
+		{
+			"time": "07:30 07-01-2022",
+			"lastDownSuperTrend": 42810.71
+		},
+		{
+			"time": "07:45 07-01-2022",
+			"lastDownSuperTrend": 42626.35
+		},
+		{
+			"time": "11:15 07-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 42519.78,
+				"stopLoss": 43051.28,
+				"minimumProfit": 42413.48,
+				"amount": 4.832,
+				"time": "11:15 07-01-2022"
+			},
+			"state": "SHORT",
+			"cash": 91.79
+		},
+		{
+			"time": "16:30 07-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 97.63
+		},
+		{
+			"time": "02:30 08-01-2022",
+			"lastDownSuperTrend": 42576.64
+		},
+		{
+			"time": "03:00 08-01-2022",
+			"lastDownSuperTrend": 42564.15
+		},
+		{
+			"time": "09:45 08-01-2022",
+			"lastDownSuperTrend": 42560.66
+		},
+		{
+			"time": "18:15 08-01-2022",
+			"lastDownSuperTrend": 42462.67
+		},
+		{
+			"time": "18:45 08-01-2022",
+			"lastDownSuperTrend": 42461.70
+		},
+		{
+			"time": "19:45 08-01-2022",
+			"lastDownSuperTrend": 42346.75
+		},
+		{
+			"time": "20:15 08-01-2022",
+			"lastDownSuperTrend": 42251.89
+		},
+		{
+			"time": "20:45 08-01-2022",
+			"lastDownSuperTrend": 42149.72
+		},
+		{
+			"time": "21:15 08-01-2022",
+			"lastDownSuperTrend": 42073.12
+		},
+		{
+			"time": "00:30 09-01-2022",
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 41967.93,
+				"stopLoss": 42492.53,
+				"minimumProfit": 41863.01,
+				"amount": 4.881,
+				"time": "00:30 09-01-2022"
+			},
+			"state": "SHORT",
+			"cash": 92.72
+		},
+		{
+			"time": "01:30 09-01-2022",
+			"isTrendUp": true,
+			"lastUpSuperTrend": 40484.72
+		},
+		{
+			"time": "01:45 09-01-2022",
+			"lastUpSuperTrend": 40572.03
+		},
+		{
+			"time": "03:00 09-01-2022",
+			"order": {
+				"stopLoss": 41802.02
+			}
+		},
+		{
+			"time": "03:45 09-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 97.77
+		},
+		{
+			"time": "05:15 09-01-2022",
+			"lastUpSuperTrend": 40614.85
+		},
+		{
+			"time": "05:30 09-01-2022",
+			"lastUpSuperTrend": 40707.72
+		},
+		{
+			"time": "05:45 09-01-2022",
+			"lastUpSuperTrend": 40839.52
+		},
+		{
+			"time": "06:00 09-01-2022",
+			"lastUpSuperTrend": 40942.31
+		},
+		{
+			"time": "07:30 09-01-2022",
+			"lastUpSuperTrend": 40946.63
+		},
+		{
+			"time": "07:45 09-01-2022",
+			"lastUpSuperTrend": 41038.06
+		},
+		{
+			"time": "08:00 09-01-2022",
+			"lastUpSuperTrend": 41080.35
+		},
+		{
+			"time": "08:15 09-01-2022",
+			"lastUpSuperTrend": 41113.35
+		},
+		{
+			"time": "11:15 09-01-2022",
+			"lastUpSuperTrend": 41144.00
+		},
+		{
+			"time": "18:15 09-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 41246.86,
+				"stopLoss": 40731.27,
+				"minimumProfit": 41349.98,
+				"amount": 4.888,
+				"time": "18:15 09-01-2022"
+			},
+			"state": "LONG",
+			"cash": 92.86
+		},
+		{
+			"time": "19:15 09-01-2022",
+			"order": {
+				"stopLoss": 41351.8
+			}
+		},
+		{
+			"time": "19:30 09-01-2022",
+			"order": {
+				"stopLoss": 41433.37
+			}
+		},
+		{
+			"time": "19:45 09-01-2022",
+			"order": {
+				"stopLoss": 41724.78
+			}
+		},
+		{
+			"time": "20:00 09-01-2022",
+			"order": {
+				"stopLoss": 41778.00
+			}
+		},
+		{
+			"time": "21:15 09-01-2022",
+			"order": {
+				"stopLoss": 41856.21
+			}
+		},
+		{
+			"time": "21:30 09-01-2022",
+			"lastUpSuperTrend": 41163.22
+		},
+		{
+			"time": "22:15 09-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 98.9
+		},
+		{
+			"time": "22:30 09-01-2022",
+			"lastUpSuperTrend": 41195.56
+		},
+		{
+			"time": "22:45 09-01-2022",
+			"lastUpSuperTrend": 41420.89
+		},
+		{
+			"time": "23:00 09-01-2022",
+			"lastUpSuperTrend": 41436.82
+		},
+		{
+			"time": "23:15 09-01-2022",
+			"lastUpSuperTrend": 41499.56
+		},
+		{
+			"time": "01:30 10-01-2022",
+			"lastUpSuperTrend": 41534.04
+		},
+		{
+			"time": "03:45 10-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 41637.88,
+				"stopLoss": 41117.40,
+				"minimumProfit": 41741.98,
+				"amount": 4.945,
+				"time": "03:45 10-01-2022"
+			},
+			"state": "LONG",
+			"cash": 93.93
+		},
+		{
+			"time": "07:15 10-01-2022",
+			"order": {
+				"stopLoss": 41755.99
+			}
+		},
+		{
+			"time": "07:30 10-01-2022",
+			"order": {
+				"stopLoss": 41786.23
+			}
+		},
+		{
+			"time": "07:45 10-01-2022",
+			"order": {
+				"stopLoss": 41826.01
+			}
+		},
+		{
+			"time": "09:15 10-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 99.07
+		},
+		{
+			"time": "14:00 10-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 41637.88,
+				"stopLoss": 41117.40,
+				"minimumProfit": 41741.98,
+				"amount": 4.953,
+				"time": "14:00 10-01-2022"
+			},
+			"state": "LONG",
+			"cash": 94.09
+		},
+		{
+			"time": "15:15 10-01-2022",
+			"isTrendUp": false,
+			"lastDownSuperTrend": 42299.41
+		},
+		{
+			"time": "15:30 10-01-2022",
+			"lastDownSuperTrend": 42215.80
+		},
+		{
+			"time": "15:45 10-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE",
+			"cash": 98.4,
+			"lastDownSuperTrend": 42204.4
+		},
+		{
+			"time": "16:00 10-01-2022",
+			"lastDownSuperTrend": 42044.00
+		},
+		{
+			"time": "16:15 10-01-2022",
+			"lastDownSuperTrend": 41894.52
+		},
+		{
+			"time": "16:30 10-01-2022",
+			"lastDownSuperTrend": 41801.63
+		},
+		{
+			"time": "17:00 10-01-2022",
+			"lastDownSuperTrend": 41736.58
+		},
+		{
+			"time": "17:15 10-01-2022",
+			"lastDownSuperTrend": 41635.55
+		},
+		{
+			"time": "17:30 10-01-2022",
+			"lastDownSuperTrend": 41483.89
+		},
+		{
+			"time": "19:15 10-01-2022",
+			"cash": 97.74
+		},
+		{
+			"time": "19:30 10-01-2022",
+			"isTrendUp": true,
+			"lastUpSuperTrend": 39515.06
+		},
+		{
+			"time": "19:45 10-01-2022",
+			"lastUpSuperTrend": 39766.74
+		},
+		{
+			"time": "20:00 10-01-2022",
+			"lastUpSuperTrend": 39794.34
+		},
+		{
+			"time": "20:15 10-01-2022",
+			"lastUpSuperTrend": 39885.50
+		}
+	]
 }

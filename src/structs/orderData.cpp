@@ -8,29 +8,29 @@
 #include <assert.h>
 
 void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
-    for (const auto& [field, value] : aJson.items()) {
-        if (field == "price") {
-            aData.price = value.get<double>();
-        }
-        else if (field == "stopLoss") {
-            aData.stopLoss = value.get<double>();
-        }
-        else if (field == "minimumProfit") {
-            aData.minimumProfit = value.get<double>();
-        }
-        else if (field == "margin") {
-            aData.margin = value.get<double>();
-        }
-        else if (field == "notionalValue") {
-            aData.notionalValue = value.get<double>();
-        }
-        else if (field == "quantity") {
-            aData.quantity = value.get<double>();
-        }
-        else if (field == "time") {
-            aData.time = value.get<std::string>();
-        }
-    }
+	for (const auto& [field, value] : aJson.items()) {
+		if (field == "price") {
+			aData.price = value.get<double>();
+		}
+		else if (field == "stopLoss") {
+			aData.stopLoss = value.get<double>();
+		}
+		else if (field == "minimumProfit") {
+			aData.minimumProfit = value.get<double>();
+		}
+		else if (field == "margin") {
+			aData.margin = value.get<double>();
+		}
+		else if (field == "notionalValue") {
+			aData.notionalValue = value.get<double>();
+		}
+		else if (field == "quantity") {
+			aData.quantity = value.get<double>();
+		}
+		else if (field == "time") {
+			aData.time = value.get<std::string>();
+		}
+	}
 }
 
 orderData::orderData() : state(algorithm::eState::NONE) {}
@@ -44,82 +44,82 @@ std::string orderData::toString() const {
 }
 
 bool orderData::operator==(const orderData& aOther) {
-    assert(fullCheck == aOther.fullCheck);
-    assert(price == aOther.price);
-    assert(time == aOther.time);
-    if (fullCheck) {
-        assert(stopLoss == aOther.stopLoss);
-        assert(minimumProfit == aOther.minimumProfit);
-        assert(margin == aOther.margin);
-        assert(notionalValue == aOther.notionalValue);
-        assert(quantity == aOther.quantity);
-    }
-    return true;
+	assert(fullCheck == aOther.fullCheck);
+	assert(price == aOther.price);
+	assert(time == aOther.time);
+	if (fullCheck) {
+		assert(stopLoss == aOther.stopLoss);
+		assert(minimumProfit == aOther.minimumProfit);
+		assert(margin == aOther.margin);
+		assert(notionalValue == aOther.notionalValue);
+		assert(quantity == aOther.quantity);
+	}
+	return true;
 }
 
 void orderData::reset() {
-    time.clear();
-    price = 0.0;
-    stopLoss = 0.0;
-    minimumProfit = 0.0;
-    margin = 0.0;
-    notionalValue = 0.0;
-    quantity = 0.0;
-    state = algorithm::eState::NONE;
-    fullCheck = false;
+	time.clear();
+	price = 0.0;
+	stopLoss = 0.0;
+	minimumProfit = 0.0;
+	margin = 0.0;
+	notionalValue = 0.0;
+	quantity = 0.0;
+	state = algorithm::eState::NONE;
+	fullCheck = false;
 }
 
 double orderData::calculateLiquidationPrice() const {
-    const auto& tierData = MARKET_DATA->getTierData(notionalValue);
-    const auto sign = (state == algorithm::eState::LONG) ? 1 : -1;
-    const auto upper = margin + tierData.maintenanceAmount - sign * notionalValue;
-    const auto lower = quantity * tierData.maintenanceMarginRate - sign * quantity;
-    if (state == algorithm::eState::LONG) {
-        return utils::ceil(upper / lower, MARKET_DATA->getPricePrecision());
-    }
-    return utils::floor(upper / lower, MARKET_DATA->getPricePrecision());
+	const auto& tierData = MARKET_DATA->getTierData(notionalValue);
+	const auto sign = (state == algorithm::eState::LONG) ? 1 : -1;
+	const auto upper = margin + tierData.maintenanceAmount - sign * notionalValue;
+	const auto lower = quantity * tierData.maintenanceMarginRate - sign * quantity;
+	if (state == algorithm::eState::LONG) {
+		return utils::ceil(upper / lower, MARKET_DATA->getPricePrecision());
+	}
+	return utils::floor(upper / lower, MARKET_DATA->getPricePrecision());
 }
 
 double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
-    const auto liqPrice = calculateLiquidationPrice();
-    auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
-    auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
-    return utils::round(result, MARKET_DATA->getPricePrecision());
+	const auto liqPrice = calculateLiquidationPrice();
+	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
+	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
+	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
 double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const {
-    auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
-    auto result = price * (100.0 + minProfitSign * aMM.getMinimumProfitPercent()) / 100.0;
-    return utils::round(result, MARKET_DATA->getPricePrecision());
+	auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
+	auto result = price * (100.0 + minProfitSign * aMM.getMinimumProfitPercent()) / 100.0;
+	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
 bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
-    reset();
-    const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
-    const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
-    const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getTradePrecision());
-    const auto calcNotionalValue = calcQuantity * aPrice;
-    if (calcQuantity < MARKET_DATA->getTradePrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
-        std::cout << "[WARNING] orderData::openOrder can't open order\n";
-        return false;
-    }
+	reset();
+	const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
+	const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
+	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getTradePrecision());
+	const auto calcNotionalValue = calcQuantity * aPrice;
+	if (calcQuantity < MARKET_DATA->getTradePrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
+		std::cout << "[WARNING] orderData::openOrder can't open order\n";
+		return false;
+	}
 
-    state = aMM.getState();
-    fullCheck = aMM.getFullCheck();
-    price = aPrice;
-    quantity = calcQuantity;
-    notionalValue = calcNotionalValue;
-    margin = notionalValue / aMM.getLeverage();
+	state = aMM.getState();
+	fullCheck = aMM.getFullCheck();
+	price = aPrice;
+	quantity = calcQuantity;
+	notionalValue = calcNotionalValue;
+	margin = notionalValue / aMM.getLeverage();
 
-    minimumProfit = calculateMinimumProfit(aMM);
-    stopLoss = calculateStopLoss(aMM);
-    time = aMM.getCandle().time;
-    return true;
+	minimumProfit = calculateMinimumProfit(aMM);
+	stopLoss = calculateStopLoss(aMM);
+	time = aMM.getCandle().time;
+	return true;
 }
 
 double orderData::getProfit() const {
-    const auto orderCloseSummary = quantity * stopLoss;
-    const auto orderCloseTax = orderCloseSummary * algorithmData::tax;
-    auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
-    return profitWithoutTax - orderCloseTax;
+	const auto orderCloseSummary = quantity * stopLoss;
+	const auto orderCloseTax = orderCloseSummary * algorithmData::tax;
+	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
+	return profitWithoutTax - orderCloseTax;
 }
