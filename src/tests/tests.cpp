@@ -19,7 +19,7 @@ namespace {
 	}
 
 	void marketDataTests() {
-		auto* md = market::marketData::getInstance();
+		auto* md = MARKET_DATA;
 		const auto& tiersData = md->getTiersData();
 		{ // getMaximumLeveragePosition
 			assert(md->getMaximumLeveragePosition(125) == tiersData[0].position);

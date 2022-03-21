@@ -27,17 +27,14 @@ std::vector<candle> utils::parseCandles(const Json& aJson) {
 	return result;
 }
 
-double utils::round(double aValue, int aSize) {
-	auto factor = static_cast<int>(std::pow(10, aSize));
-	return std::round(aValue * factor) / factor;
+double utils::round(double aValue, double aPrecision) {
+	return std::round(aValue / aPrecision) * aPrecision;
 }
 
-double utils::ceil(double aValue, int aSize) {
-	auto factor = static_cast<int>(std::pow(10, aSize));
-	return std::ceil(aValue * factor) / factor;
+double utils::floor(double aValue, double aPrecision) {
+	return std::floor(aValue / aPrecision) * aPrecision;
 }
 
-double utils::floor(double aValue, int aSize) {
-	auto factor = static_cast<int>(std::pow(10, aSize));
-	return std::floor(aValue * factor) / factor;
+double utils::ceil(double aValue, double aPrecision) {
+	return std::ceil(aValue / aPrecision) * aPrecision;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#define MARKET_DATA market::marketData::getInstance
+#define MARKET_DATA market::marketData::getInstance()
 
 namespace market {
 	struct tierData {
@@ -14,16 +14,21 @@ namespace market {
 	class marketData {
 	public:
 		static marketData* getInstance();
-		int getPrecision() const;
 		const tierData& getTierData(double aPosition) const;
 		const std::vector<tierData>& getTiersData() const;
 		double getMaximumLeveragePosition(int aLeverage) const;
+		double getTradePrecision() const;
+		double getPricePrecision() const;
+		double getMinNotionalValue() const;
 	private:
 		marketData();
 		void init();
 
 		static marketData* instance;
 		std::vector<tierData> tiersData;
-		int precision = 0;
+
+		double tradePrecision = 0.0;
+		double pricePrecision = 0.0;
+		double minNotionalValue = 0.0;
 	};
 }

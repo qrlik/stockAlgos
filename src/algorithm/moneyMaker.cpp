@@ -208,9 +208,6 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 
 	auto taxAmount = order.getNotionalValue() * algorithmData::tax;
 	cash = cash - order.getMargin() - taxAmount;
-	if (fullCheck) {
-		cash = utils::floor(cash, 2);
-	}
 	stats.onOpenOrder(isNewTrend);
 	isNewTrend = false;
 }
@@ -224,9 +221,6 @@ void moneyMaker::closeOrder() {
 		state = eState::NONE;
 	}
 	cash = cash + order.getMargin() + profit;
-	if (fullCheck) { // fix later
-		cash = utils::floor(cash, 2);
-	}
 	order.reset();
 	order.setFullCheck(fullCheck);
 	stats.onCloseOrder(cash, profit);

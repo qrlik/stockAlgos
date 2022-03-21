@@ -1,4 +1,5 @@
 #include "indicators.h"
+#include "../market/marketRules.h"
 #include "../utils/utils.h"
 #include <deque>
 
@@ -98,8 +99,9 @@ double indicatorSystem::calculateTrueRangeMA() {
 void indicatorSystem::calculateSuperTrend(candle& aCandle) {
     auto middlePrice = (aCandle.high + aCandle.low) / 2;
 
-    auto upperBand = utils::round(middlePrice + stFactor * aCandle.atr, 2);
-    auto lowerBand = utils::round(middlePrice - stFactor * aCandle.atr, 2);
+    const auto pricePrecision = MARKET_DATA->getPricePrecision();
+    auto upperBand = utils::round(middlePrice + stFactor * aCandle.atr, pricePrecision);
+    auto lowerBand = utils::round(middlePrice - stFactor * aCandle.atr, pricePrecision);
 
     upperBand = (upperBand < lastUpperBand || lastClose > lastUpperBand) ? upperBand : lastUpperBand;
     lowerBand = (lowerBand > lastLowerBand || lastClose < lastLowerBand) ? lowerBand : lastLowerBand;

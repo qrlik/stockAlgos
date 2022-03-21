@@ -7,7 +7,7 @@ namespace utils {
 	void saveToJson(const std::string& aPath, const Json& aData);
 	std::vector<candle> parseCandles(const Json& aJson);
 
-	double round(double aValue, int aSize);
-	double ceil(double aValue, int aSize);
-	double floor(double aValue, int aSize);
+	double round(double aValue, double aPrecision);
+	double floor(double aValue, double aPrecision);
+	double ceil(double aValue, double aPrecision);
 }

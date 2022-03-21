@@ -1,5 +1,7 @@
 {
-    "precision": 1,
+    "minTradeAmount": 0.001,
+    "minPriceMovement": 0.1,
+    "minNotionalValue": 5,
     "marginTiers": [
         {
             "position": 50000,

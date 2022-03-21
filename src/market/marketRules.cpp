@@ -15,7 +15,9 @@ marketData::marketData() {
 
 void marketData::init() {
 	auto tradingRules = utils::readFromJson("assets/market/tradingRules");
-	precision = tradingRules["precision"].get<int>();
+	tradePrecision = tradingRules["minTradeAmount"].get<double>();
+	pricePrecision = tradingRules["minPriceMovement"].get<double>();
+	minNotionalValue = tradingRules["minNotionalValue"].get<double>();
 	for (auto& tier : tradingRules["marginTiers"]) {
 		auto data = tierData{};
 		data.position = tier["position"].get<int>();
@@ -25,10 +27,6 @@ void marketData::init() {
 		tiersData.push_back(data);
 	}
 	std::sort(tiersData.begin(), tiersData.end(), [](const tierData& aLhs, const tierData& aRhs) { return aLhs.position < aRhs.position; });
-}
-
-int marketData::getPrecision() const {
-	return precision;
 }
 
 const std::vector<tierData>& marketData::getTiersData() const {
@@ -45,4 +43,16 @@ double marketData::getMaximumLeveragePosition(int aLeverage) const {
 	auto tier = std::upper_bound(tiersData.rbegin(), tiersData.rend(), aLeverage, 
 								 [](auto aLeverage, const tierData& aData) { return  aLeverage <= aData.maxLeverage; });
 	return tier->position;
+}
+
+double marketData::getTradePrecision() const {
+	return tradePrecision;
+}
+
+double marketData::getPricePrecision() const {
+	return pricePrecision;
+}
+
+double marketData::getMinNotionalValue() const {
+	return minNotionalValue;
 }

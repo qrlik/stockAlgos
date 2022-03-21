@@ -1,5 +1,6 @@
 #include "dynamicStopLoss.h"
 #include "moneyMaker.h"
+#include "../market/marketRules.h"
 #include "../utils/utils.h"
 
 using namespace algorithm;
@@ -12,14 +13,14 @@ dynamicStopLoss::dynamicStopLoss(moneyMaker* aMm, double aPercent, bool aTrendMo
 bool dynamicStopLoss::checkTrend() {
     auto& order = mm->getOrder();
     if (mm->getState() == eState::LONG) {
-        auto lastUpTrend = mm->getLastUpSuperTrend(); // move to order
+        auto lastUpTrend = mm->getLastUpSuperTrend();
         if (lastUpTrend >= order.getMinimumProfit() && lastUpTrend > order.getStopLoss()) {
             order.updateStopLoss(lastUpTrend);
             return true;
         }
     }
     else {
-        auto lastDownTrend = mm->getLastDownSuperTrend(); // move to order
+        auto lastDownTrend = mm->getLastDownSuperTrend();
         if (lastDownTrend <= order.getMinimumProfit() && lastDownTrend < order.getStopLoss()) {
             order.updateStopLoss(lastDownTrend);
             return true;
@@ -32,15 +33,16 @@ bool dynamicStopLoss::checkDynamic() {
     auto& order = mm->getOrder();
     const auto& candle = mm->getCandle();
     assert(dynamicSLPercent > 0.0);
-    if (mm->getState() == eState::LONG) { // move to order
-        auto dynamicStopLoss = utils::floor(candle.high * (100.0 - dynamicSLPercent) / 100.0, 2);
+    const auto pricePrecision = MARKET_DATA->getPricePrecision();
+    if (mm->getState() == eState::LONG) {
+        auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
         if (dynamicStopLoss >= order.getMinimumProfit() && dynamicStopLoss > order.getStopLoss()) {
             order.updateStopLoss(dynamicStopLoss);
             return true;
         }
     }
-    else { // move to order
-        auto dynamicStopLoss = utils::ceil(candle.low * (100.0 + dynamicSLPercent) / 100.0, 2);
+    else {
+        auto dynamicStopLoss = utils::round(candle.low * (100.0 + dynamicSLPercent) / 100.0, pricePrecision);
         if (dynamicStopLoss <= order.getMinimumProfit() && dynamicStopLoss < order.getStopLoss()) {
             order.updateStopLoss(dynamicStopLoss);
             return true;
