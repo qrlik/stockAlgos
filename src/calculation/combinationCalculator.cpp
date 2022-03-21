@@ -50,7 +50,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 			indicators.getProcessedCandles(candles, static_cast<int>(candlesSource.size()) - 1000);
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
-		auto moneyMaker = algorithm::moneyMaker(data, 100.0);
+		auto moneyMaker = algorithm::moneyMaker(data);
 		moneyMaker.calculate(candles);
 		threadInfo.finalData.push_back(getData(moneyMaker));
 		aFactory.incrementThreadIndex(aThread);

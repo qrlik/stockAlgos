@@ -20,6 +20,12 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 		else if (field == "leverage") {
 			result.leverage = value.get<int>();
 		}
+		else if (field == "startCash") {
+			result.startCash = value.get<double>();
+		}
+		else if (field == "stopCash") {
+			result.stopCash = value.get<double>();
+		}
 		else if (field == "liquidationOffsetPercent") {
 			result.liquidationOffsetPercent = value.get<double>();
 		}

@@ -9,10 +9,9 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 	assert(aData.stFactor > 0.0);
 	assert(aData.dealPercent > 0.0);
 	assert(aData.leverage > 0 && aData.leverage <= 125);
+	assert(aData.startCash > aData.stopCash);
 
-	const auto liquidationPercent = 100.0 / aData.leverage;
-	//assert(aData.stopLossPercent >= aData.activationPercent && aData.stopLossPercent <= liquidationPercent);
-	//add check for liq % range
+	//add check for liq % range liquidationOffsetPercent
 	assert(aData.minimumProfitPercent > 2 * algorithmData::tax);
 }
 
@@ -21,10 +20,8 @@ mmChecker::mmChecker(std::string aName) :
 {
 	auto json = utils::readFromJson("assets/tests/" + name);
 	auto data = algorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
-	actualMoneyMaker = std::make_unique<algorithm::moneyMaker>(data, json["cash"].get<double>());
-	testMoneyMaker = std::make_unique<algorithm::moneyMaker>(data, json["cash"].get<double>());
-	actualMoneyMaker->setTest(true);
-	testMoneyMaker->setTest(true);
+	actualMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
+	testMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
 	testMoneyMakerData = json["testMoneyMakerData"];
 	testNextTime = testMoneyMakerData[0]["time"].get<std::string>();
 

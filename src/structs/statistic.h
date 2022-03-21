@@ -4,6 +4,7 @@
 struct statistic {
 	void onOpenOrder(bool aIsBreak);
 	void onCloseOrder(double aCash, double aProfit);
+	bool operator==(const statistic& aOther);
 
 	double maxLossHighCash = 0.0;
 	double maxLossLowCash = 0.0;

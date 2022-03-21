@@ -16,6 +16,9 @@ void calculation::singleCalculation() {
     data.dealPercent = 5.0;
     data.leverage = 50;
 
+    data.startCash = 100.0;
+    data.stopCash = 40.0;
+
     data.liquidationOffsetPercent = 0.1;
     data.minimumProfitPercent = 0.5;
 
@@ -43,7 +46,7 @@ void calculation::singleCalculation() {
     auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
     indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 1000);
 
-    auto mm = algorithm::moneyMaker(data, 100.0);
+    auto mm = algorithm::moneyMaker(data);
     mm.setWithLogs(true);
     mm.calculate(candles);
     std::cout << mm.getFullCash() << '\n';

@@ -37,7 +37,7 @@ eState moneyMaker::stateFromString(const std::string& aStr) {
 	return eState::NONE;
 }
 
-moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
+moneyMaker::moneyMaker(const algorithmData& aData):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
 	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
 	dynamicStopLossModule(this, aData.dynamicSLPercent, aData.dynamicSLTrendMode),
@@ -51,9 +51,9 @@ moneyMaker::moneyMaker(const algorithmData& aData, double aCash):
 	dealPercent(aData.dealPercent),
 	leverage(aData.leverage),
 	fullCheck(aData.fullCheck),
-	startCash(aCash),
-	cash(aCash),
-	stopCash(aCash * 0.4) {}
+	startCash(aData.startCash),
+	cash(aData.startCash),
+	stopCash(aData.stopCash) {}
 
 bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(activationWaiterModule == aOther.activationWaiterModule);
@@ -64,6 +64,7 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(isTrendUp == aOther.isTrendUp);
 	assert(isNewTrend == aOther.isNewTrend);
 	if (fullCheck) {
+		assert(stats == aOther.stats);
 		assert(cash == aOther.cash);
 		assert(lastUpSuperTrend == aOther.lastUpSuperTrend);
 		assert(lastDownSuperTrend == aOther.lastDownSuperTrend);
@@ -77,10 +78,6 @@ void moneyMaker::setState(eState aState) {
 
 void moneyMaker::setWithLogs(bool aState) {
 	withLogs = aState;
-}
-
-void moneyMaker::setTest(bool aState) {
-	isTest = aState;
 }
 
 double moneyMaker::getSuperTrend() const {

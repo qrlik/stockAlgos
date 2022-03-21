@@ -42,3 +42,15 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 		summaryLoss += std::abs(aProfit);
 	}
 }
+
+bool statistic::operator==(const statistic& aOther) {
+	return maxLossHighCash == aOther.maxLossHighCash
+		&& maxLossLowCash == aOther.maxLossLowCash
+		&& summaryLoss == aOther.summaryLoss
+		&& profitableOrder == aOther.profitableOrder
+		&& unprofitableOrder == aOther.unprofitableOrder
+		&& touchTrendOrder == aOther.touchTrendOrder
+		&& breakTrendOrder == aOther.breakTrendOrder
+		&& profitableStreak == aOther.profitableStreak
+		&& unprofitableStreak == aOther.unprofitableStreak;
+}

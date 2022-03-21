@@ -33,7 +33,7 @@ namespace algorithm {
         static std::string stateToString(eState aState);
         static eState stateFromString(const std::string& aStr);
 
-        moneyMaker(const algorithmData& aData, double aCash);
+        moneyMaker(const algorithmData& aData);
         void calculate(const std::vector<candle>& aCandles);
         bool operator==(const moneyMaker& aOther);
 
@@ -57,7 +57,6 @@ namespace algorithm {
 
         void setState(eState aState);
         void setWithLogs(bool aState);
-        void setTest(bool aState);
 
         bool isNewTrendChanged();
 
@@ -96,8 +95,6 @@ namespace algorithm {
         const double liquidationOffsetPercent = 0.0;
         const double minimumProfitPercent = 0.0;
         const double dealPercent = 0.0;
-        const double mmb = 0.004;
-        const int cum = 0;
 
         const double startCash = 0.0;
         const double stopCash = 0.0;
@@ -106,7 +103,6 @@ namespace algorithm {
 
         bool stopCashBreak = false;
         bool fullCheck = false;
-        bool isTest = false;
         bool withLogs = false;
         bool inited = false;
     };

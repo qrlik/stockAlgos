@@ -1,14 +1,16 @@
 {
     "candlesFileName": "10000_5min",
     "candlesAmount": 9500,
-    "cash": 100,
     "algorithmData": {
         "atrType": "RMA",
         "atrSize": 14,
         "stFactor": 5,
 
-        "dealPercent": 5,
+        "dealPercent": 5.0,
         "leverage": 10,
+
+        "startCash": 100.0,
+        "stopCash": 40.0,
 
         "liquidationOffsetPercent": 0.1,
         "minimumProfitPercent": 0.25,

@@ -12,6 +12,9 @@ struct algorithmData {
     double dealPercent = -1.0;
     int leverage = -1;
 
+    double startCash = 0.0;
+    double stopCash = 0.0;
+
     double liquidationOffsetPercent = -1.0;
     double minimumProfitPercent = -1.0;
 
