@@ -18,13 +18,18 @@ void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
         else if (field == "minimumProfit") {
             aData.minimumProfit = value.get<double>();
         }
-        else if (field == "amount") {
+        else if (field == "margin") {
             aData.margin = value.get<double>();
+        }
+        else if (field == "notionalValue") {
+            aData.notionalValue = value.get<double>();
+        }
+        else if (field == "quantity") {
+            aData.quantity = value.get<double>();
         }
         else if (field == "time") {
             aData.time = value.get<std::string>();
         }
-        // check here later
     }
 }
 
@@ -47,6 +52,7 @@ bool orderData::operator==(const orderData& aOther) {
         assert(minimumProfit == aOther.minimumProfit);
         assert(margin == aOther.margin);
         assert(notionalValue == aOther.notionalValue);
+        assert(quantity == aOther.quantity);
     }
     return true;
 }

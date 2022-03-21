@@ -43,11 +43,24 @@
             "order": {
                 "type": "LONG",
                 "lifeState": true,
-                "price": 12345,
-                "stopLoss": 54321,
-                "minimumProfit": 123456,
-                "amount": 5,
+                "price": 12345.0,
+                "stopLoss": 54321.0,
+                "minimumProfit": 123456.0,
+                "margin": 5.0,
+                "notionalValue": 50.0,
+                "quantity": 0.005,
                 "time": "16:35 09-01-2022"
+            },
+            "stats": {
+                "maxLossHighCash": 1243.0,
+                "maxLossLowCash": 231.0,
+                "summaryLoss": 2311.0,
+                "profitableOrder": 5,
+                "unprofitableOrder": 3,
+                "touchTrendOrder": 4,
+                "breakTrendOrder": 4,
+                "profitableStreak": 2,
+                "unprofitableStreak": 1
             },
             "lastUpSuperTrend": 666.66,
             "lastDownSuperTrend": -666.66,

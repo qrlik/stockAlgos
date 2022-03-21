@@ -1,4 +1,5 @@
 #include "checkers.h"
+#include "../structs/statistic.h"
 #include "../utils/utils.h"
 #include <iostream>
 
@@ -64,6 +65,9 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 			value.erase("type");
 			orderData::initOrderDataFromJson(order, value);
 			order.setFullCheck(testMoneyMaker->getFullCheck());
+		}
+		else if (key == "stats") {
+			statistic::initStatisticFromJson(testMoneyMaker->stats, value);
 		}
 		else if (key == "lastUpSuperTrend") {
 			testMoneyMaker->lastUpSuperTrend = value.get<double>();

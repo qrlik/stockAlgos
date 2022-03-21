@@ -1,7 +1,10 @@
 #pragma once
+#include "../../third_party/json.hpp"
 #include <string>
 
 struct statistic {
+	static void initStatisticFromJson(statistic& aStats, const Json& aJson);
+
 	void onOpenOrder(bool aIsBreak);
 	void onCloseOrder(double aCash, double aProfit);
 	bool operator==(const statistic& aOther);
