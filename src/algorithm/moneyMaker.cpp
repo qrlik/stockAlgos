@@ -204,7 +204,10 @@ bool moneyMaker::updateOrder() {
 
 void moneyMaker::openOrder(eState aState, double aPrice) {
 	state = aState;
-	order.openOrder(*this, aPrice);
+	if (!order.openOrder(*this, aPrice)) {
+		state = eState::NONE;
+		return;
+	}
 
 	auto taxAmount = order.getNotionalValue() * algorithmData::tax;
 	cash = cash - order.getMargin() - taxAmount;

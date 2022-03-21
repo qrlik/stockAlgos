@@ -71,8 +71,6 @@ namespace algorithm {
         bool checkTrend();
         void closeOrder();
         void log();
-        double getStopLossPrice() const;
-        double getMinimumProfitPrice() const;
 
         activationWaiter activationWaiterModule;
         stopLossWaiter stopLossWaiterModule;

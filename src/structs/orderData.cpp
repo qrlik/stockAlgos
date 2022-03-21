@@ -4,6 +4,7 @@
 #include "../utils/utils.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 #include <assert.h>
 
 void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
@@ -86,21 +87,28 @@ double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const
     return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-void orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
+bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
     reset();
+    const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
+    const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
+    const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getTradePrecision());
+    const auto calcNotionalValue = calcQuantity * aPrice;
+    if (calcQuantity < MARKET_DATA->getTradePrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
+        std::cout << "[WARNING] orderData::openOrder can't open order\n";
+        return false;
+    }
+
     state = aMM.getState();
     fullCheck = aMM.getFullCheck();
     price = aPrice;
-
-    const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
-    const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
-    quantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getTradePrecision());
-    notionalValue = quantity * aPrice;
+    quantity = calcQuantity;
+    notionalValue = calcNotionalValue;
     margin = notionalValue / aMM.getLeverage();
 
     minimumProfit = calculateMinimumProfit(aMM);
     stopLoss = calculateStopLoss(aMM);
     time = aMM.getCandle().time;
+    return true;
 }
 
 double orderData::getProfit() const {

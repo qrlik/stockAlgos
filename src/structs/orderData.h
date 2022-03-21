@@ -13,7 +13,7 @@ public:
 
 	orderData();
 	bool operator==(const orderData& aOther);
-	void openOrder(const algorithm::moneyMaker& aMM, double aPrice);
+	bool openOrder(const algorithm::moneyMaker& aMM, double aPrice);
 	void reset();
 	std::string toString() const;
 
