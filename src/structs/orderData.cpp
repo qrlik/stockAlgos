@@ -69,19 +69,8 @@ void orderData::reset() {
 	fullCheck = false;
 }
 
-double orderData::calculateLiquidationPrice() const {
-	const auto& tierData = MARKET_DATA->getTierData(notionalValue);
-	const auto sign = (state == algorithm::eState::LONG) ? 1 : -1;
-	const auto upper = margin + tierData.maintenanceAmount - sign * notionalValue;
-	const auto lower = quantity * tierData.maintenanceMarginRate - sign * quantity;
-	if (state == algorithm::eState::LONG) {
-		return utils::ceil(upper / lower, MARKET_DATA->getPricePrecision());
-	}
-	return utils::floor(upper / lower, MARKET_DATA->getPricePrecision());
-}
-
 double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
-	const auto liqPrice = calculateLiquidationPrice();
+	const auto liqPrice = market::marketData::getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
@@ -97,9 +86,9 @@ bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 	reset();
 	const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
 	const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
-	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getTradePrecision());
+	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
 	const auto calcNotionalValue = calcQuantity * aPrice;
-	if (calcQuantity < MARKET_DATA->getTradePrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
+	if (calcQuantity < MARKET_DATA->getQuantityPrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
 		std::cout << "[WARNING] orderData::openOrder can't open order\n";
 		return false;
 	}

@@ -10,4 +10,5 @@ namespace utils {
 	double round(double aValue, double aPrecision);
 	double floor(double aValue, double aPrecision);
 	double ceil(double aValue, double aPrecision);
+	bool isEqual(double aLhs, double aRhs);
 }

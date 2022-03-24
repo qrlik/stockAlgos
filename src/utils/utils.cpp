@@ -38,3 +38,7 @@ double utils::floor(double aValue, double aPrecision) {
 double utils::ceil(double aValue, double aPrecision) {
 	return std::ceil(aValue / aPrecision) * aPrecision;
 }
+
+bool utils::isEqual(double aLhs, double aRhs) {
+	return std::fabs(aLhs - aRhs) <= std::min(std::fabs(aLhs), std::fabs(aRhs)) * std::numeric_limits<double>::epsilon();
+}

@@ -5,7 +5,8 @@
 
 namespace market {
 	struct tierData {
-		double position = 0;
+		double notionalCap = 0;
+		double notionalFloor = 0;
 		double maintenanceMarginRate = 0.0;
 		int maintenanceAmount = 0;
 		int maxLeverage = 0;
@@ -14,10 +15,14 @@ namespace market {
 	class marketData {
 	public:
 		static marketData* getInstance();
+		static double getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong);
+		static double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong);
+
 		const tierData& getTierData(double aPosition) const;
 		const std::vector<tierData>& getTiersData() const;
-		double getMaximumLeveragePosition(int aLeverage) const;
-		double getTradePrecision() const;
+		std::pair<double, double> getLeverageLiquidationRange(int aLeverage) const;
+		double getLeverageMaxPosition(int aLeverage) const;
+		double getQuantityPrecision() const;
 		double getPricePrecision() const;
 		double getMinNotionalValue() const;
 	private:
@@ -27,7 +32,7 @@ namespace market {
 		static marketData* instance;
 		std::vector<tierData> tiersData;
 
-		double tradePrecision = 0.0;
+		double quantityPrecision = 0.0;
 		double pricePrecision = 0.0;
 		double minNotionalValue = 0.0;
 	};

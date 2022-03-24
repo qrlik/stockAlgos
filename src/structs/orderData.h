@@ -28,7 +28,6 @@ public:
 	void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
 	void setFullCheck(bool aFullCheck) { fullCheck = aFullCheck; }
 private:
-	double calculateLiquidationPrice() const;
 	double calculateStopLoss(const algorithm::moneyMaker& aMM) const;
 	double calculateMinimumProfit(const algorithm::moneyMaker& aMM) const;
 

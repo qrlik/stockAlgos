@@ -1,0 +1,80 @@
+{
+    "symbol": "BTCUSDT",
+    "brackets": [
+        {
+            "maxLeverage": 125,
+            "notionalCap": 50000,
+            "notionalFloor": 0,
+            "maintenanceMarginRate": 0.004,
+            "maintenanceAmount": 0.0
+        },
+        {
+            "maxLeverage": 100,
+            "notionalCap": 250000,
+            "notionalFloor": 50000,
+            "maintenanceMarginRate": 0.005,
+            "maintenanceAmount": 50.0
+        },
+        {
+            "maxLeverage": 50,
+            "notionalCap": 1000000,
+            "notionalFloor": 250000,
+            "maintenanceMarginRate": 0.01,
+            "maintenanceAmount": 1300.0
+        },
+        {
+            "maxLeverage": 20,
+            "notionalCap": 7500000,
+            "notionalFloor": 1000000,
+            "maintenanceMarginRate": 0.025,
+            "maintenanceAmount": 16300.0
+        },
+        {
+            "maxLeverage": 10,
+            "notionalCap": 40000000,
+            "notionalFloor": 7500000,
+            "maintenanceMarginRate": 0.05,
+            "maintenanceAmount": 203800.0
+        },
+        {
+            "maxLeverage": 5,
+            "notionalCap": 100000000,
+            "notionalFloor": 40000000,
+            "maintenanceMarginRate": 0.1,
+            "maintenanceAmount": 2203800.0
+        },
+        {
+            "maxLeverage": 4,
+            "notionalCap": 200000000,
+            "notionalFloor": 100000000,
+            "maintenanceMarginRate": 0.125,
+            "maintenanceAmount": 4703800.0
+        },
+        {
+            "maxLeverage": 3,
+            "notionalCap": 400000000,
+            "notionalFloor": 200000000,
+            "maintenanceMarginRate": 0.15,
+            "maintenanceAmount": 9703800.0
+        },
+        {
+            "maxLeverage": 2,
+            "notionalCap": 600000000,
+            "notionalFloor": 400000000,
+            "maintenanceMarginRate": 0.25,
+            "maintenanceAmount": 49703800.0
+        },
+        {
+            "maxLeverage": 1,
+            "notionalCap": 1000000000,
+            "notionalFloor": 600000000,
+            "maintenanceMarginRate": 0.5,
+            "maintenanceAmount": 199703800.0
+        }
+    ],
+    "priceTick": 0.1,
+    "quantityStep": 0.001,
+    "maxLimitQuantity": 1000.0,
+    "maxMarketQuantity": 120.0,
+    "minNotionalValue": 5.0
+}
