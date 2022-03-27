@@ -1,4 +1,5 @@
 #include "combinationFactory.h"
+#include "../tests/checkers.h"
 #include <iostream>
 
 using namespace calculation;
@@ -187,5 +188,6 @@ void combinationFactory::generateStop() {
 
 void combinationFactory::onIterate() {
 	++combinations;
+	tests::checkAlgorithmData(tmpData);
 	tmpAllData.push_back(tmpData);
 }

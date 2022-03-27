@@ -2,6 +2,7 @@
 #include "../algorithm/moneyMaker.h"
 #include "../structs/algorithmData.h"
 #include "../market/indicators.h"
+#include "../tests/checkers.h"
 #include "../utils/utils.h"
 #include <iostream>
 
@@ -39,7 +40,7 @@ void calculation::singleCalculation() {
 	data.stopLossWaiterResetAllowed = false;
 	data.stopLossWaiterRange = -1;
 	data.stopLossWaiterFullCandleCheck = false;
-
+	tests::checkAlgorithmData(data);
 	auto json = utils::readFromJson("assets/candles/3year/1h");
 	auto candles = utils::parseCandles(json);
 

@@ -5,6 +5,8 @@ struct algorithmData {
 	static const double tax;
 	static algorithmData initAlgorithmDataFromJson(const Json& aData);
 
+	Json toJson() const;
+
 	market::eAtrType atrType = market::eAtrType::NONE;
 	int atrSize = -1;
 	double stFactor = -1.0;

@@ -77,3 +77,39 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 	}
 	return result;
 }
+
+Json algorithmData::toJson() const {
+	Json result;
+	result["atrType"] = market::atrTypeToString(atrType);
+	result["atrSize"] = atrSize;
+	result["stFactor"] = stFactor;
+
+	result["dealPercent"] = dealPercent;
+	result["leverage"] = leverage;
+
+	result["startCash"] = startCash;
+	result["stopCash"] = stopCash;
+
+	result["liquidationOffsetPercent"] = liquidationOffsetPercent;
+	result["minimumProfitPercent"] = minimumProfitPercent;
+
+	result["dynamicSLPercent"] = dynamicSLPercent;
+	result["dynamicSLTrendMode"] = dynamicSLTrendMode;
+
+	result["touchOpenerActivationWaitMode"] = touchOpenerActivationWaitMode;
+
+	result["breakOpenerEnabled"] = breakOpenerEnabled;
+	result["breakOpenerActivationWaitMode"] = breakOpenerActivationWaitMode;
+	result["alwaysUseNewTrend"] = alwaysUseNewTrend;
+
+	result["activationWaiterResetAllowed"] = activationWaiterResetAllowed;
+	result["activationWaiterRange"] = activationWaiterRange;
+	result["activationWaiterFullCandleCheck"] = activationWaiterFullCandleCheck;
+
+	result["stopLossWaiterEnabled"] = stopLossWaiterEnabled;
+	result["stopLossWaiterResetAllowed"] = stopLossWaiterResetAllowed;
+	result["stopLossWaiterRange"] = stopLossWaiterRange;
+	result["stopLossWaiterFullCandleCheck"] = stopLossWaiterFullCandleCheck;
+
+	return result;
+}

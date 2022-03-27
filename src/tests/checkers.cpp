@@ -1,19 +1,44 @@
 #include "checkers.h"
 #include "../structs/statistic.h"
 #include "../utils/utils.h"
+#include "../market/marketRules.h"
 #include <iostream>
 
 using namespace tests;
 
 void tests::checkAlgorithmData(const algorithmData& aData) {
-	assert(aData.atrType != market::eAtrType::NONE);
-	assert(aData.stFactor > 0.0);
-	assert(aData.dealPercent > 0.0);
-	assert(aData.leverage > 0 && aData.leverage <= 125);
-	assert(aData.startCash > aData.stopCash);
+	bool result = true;
+	result &= aData.atrType != market::eAtrType::NONE;
+	result &= aData.atrSize > 0;
+	result &= aData.stFactor > 0.0;
 
-	//add check for liq % range liquidationOffsetPercent
-	assert(aData.minimumProfitPercent > 2 * algorithmData::tax);
+	result &= aData.dealPercent > 0.0;
+	result &= aData.leverage > 0 && aData.leverage <= 125;
+
+	result &= aData.startCash > market::marketData::getInstance()->getMinNotionalValue() / aData.leverage;
+	result &= aData.startCash > aData.stopCash;
+
+	result &= aData.liquidationOffsetPercent < market::marketData::getInstance()->getLeverageLiquidationRange(aData.leverage).first;
+	result &= aData.minimumProfitPercent > 2 * algorithmData::tax;
+
+	result &= (utils::isEqual(aData.dynamicSLPercent, -1.0) && aData.dynamicSLTrendMode) || aData.dynamicSLPercent > 0.0;
+
+	auto waiter = aData.touchOpenerActivationWaitMode;
+	if (aData.breakOpenerEnabled) {
+		waiter &= aData.breakOpenerActivationWaitMode;
+	}
+	if (waiter) {
+		result &= aData.activationWaiterRange >= 0;
+	}
+	if (aData.stopLossWaiterEnabled) {
+		result &= aData.stopLossWaiterRange >= 0;
+	}
+
+	if (!result) {
+		assert("tests::checkAlgorithmData fail" && result);
+		std::cout << "[ERROR] tests::checkAlgorithmData fail\n";
+		std::cout << aData.toJson() << '\n';
+	}
 }
 
 mmChecker::mmChecker(std::string aName) :
@@ -21,6 +46,7 @@ mmChecker::mmChecker(std::string aName) :
 {
 	auto json = utils::readFromJson("assets/tests/" + name);
 	auto data = algorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
+	tests::checkAlgorithmData(data);
 	actualMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
 	testMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
 	testMoneyMakerData = json["testMoneyMakerData"];
