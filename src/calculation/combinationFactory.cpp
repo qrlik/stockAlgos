@@ -68,11 +68,14 @@ void combinationFactory::generateSuperTrend() {
 		return;
 	}
 	tmpData = algorithmData{};
+	tmpData.startCash = 100.0;
+	tmpData.stopCash = 40.0;
+
 	for (auto atrType : { market::eAtrType::RMA, market::eAtrType::EMA, market::eAtrType::WMA, market::eAtrType::SMA }) {
 		tmpData.atrType = atrType;
 		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + stepInt, stepInt)) {
 			tmpData.atrSize = atrSize;
-			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stepFloat, stepFloat)) {
+			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stepFloat, stFactorStep)) {
 				tmpData.stFactor = stFactor;
 				generateDeal();
 			}

@@ -31,8 +31,9 @@ namespace calculation {
 
 		const int minAtrSize = 15;
 		const int maxAtrSize = 15;
-		const double minStFactor = 3.0;
-		const double maxStFactor = 3.0;
+		const double minStFactor = 2.0;
+		const double maxStFactor = 5.0;
+		const double stFactorStep = 1.0;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
@@ -42,8 +43,8 @@ namespace calculation {
 		const double minMinProfitPercent = 0.25;
 		const double maxMinProfitPercent = 2.5;
 
-		const double minliquidationOffsetPercent = 0.1;
-		const double maxliquidationOffsetPercent = 0.1; // < liquidation
+		const double minliquidationOffsetPercent = 0.05;
+		const double maxliquidationOffsetPercent = 0.05; // < liquidation
 		const double minDynamicSLPercent = 0.25;
 		const double maxDynamicSLPercent = 1.0;
 
