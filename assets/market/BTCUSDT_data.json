@@ -72,6 +72,10 @@
             "maintenanceAmount": 199703800.0
         }
     ],
+    "baseAsset": "BTC",
+    "quoteAsset": "USDT",
+    "baseAssetPrecision": 8,
+    "quotePrecision": 8,
     "priceTick": 0.1,
     "quantityStep": 0.001,
     "maxLimitQuantity": 1000.0,

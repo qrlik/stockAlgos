@@ -66,7 +66,7 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(isNewTrend == aOther.isNewTrend);
 	if (fullCheck) {
 		assert(stats == aOther.stats);
-		assert(utils::isEqual(cash, aOther.cash));
+		assert(utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision()));
 		assert(utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend));
 		assert(utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend));
 	}
@@ -207,7 +207,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 		return;
 	}
 
-	auto taxAmount = order.getNotionalValue() * algorithmData::tax;
+	auto taxAmount = utils::round(order.getNotionalValue() * algorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - order.getMargin() - taxAmount;
 	stats.onOpenOrder(isNewTrend);
 	isNewTrend = false;

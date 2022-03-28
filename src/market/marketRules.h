@@ -8,7 +8,7 @@ namespace market {
 		double notionalCap = 0;
 		double notionalFloor = 0;
 		double maintenanceMarginRate = 0.0;
-		int maintenanceAmount = 0;
+		double maintenanceAmount = 0;
 		int maxLeverage = 0;
 	};
 
@@ -24,6 +24,7 @@ namespace market {
 		double getLeverageMaxPosition(int aLeverage) const;
 		double getQuantityPrecision() const;
 		double getPricePrecision() const;
+		double getQuotePrecision() const;
 		double getMinNotionalValue() const;
 	private:
 		marketData();
@@ -34,6 +35,7 @@ namespace market {
 
 		double quantityPrecision = 0.0;
 		double pricePrecision = 0.0;
+		double quotePrecision = 0.0;
 		double minNotionalValue = 0.0;
 	};
 }

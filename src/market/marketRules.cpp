@@ -17,6 +17,7 @@ void marketData::init() {
 	auto tradingRules = utils::readFromJson("assets/market/BTCUSDT_data");
 	quantityPrecision = tradingRules["quantityStep"].get<double>();
 	pricePrecision = tradingRules["priceTick"].get<double>();
+	quotePrecision = 1.0 / std::pow(10, tradingRules["quotePrecision"].get<int>());
 	minNotionalValue = tradingRules["minNotionalValue"].get<double>();
 	for (auto& tier : tradingRules["brackets"]) {
 		auto data = tierData{};
@@ -91,6 +92,10 @@ double marketData::getQuantityPrecision() const {
 
 double marketData::getPricePrecision() const {
 	return pricePrecision;
+}
+
+double marketData::getQuotePrecision() const {
+	return quotePrecision;
 }
 
 double marketData::getMinNotionalValue() const {

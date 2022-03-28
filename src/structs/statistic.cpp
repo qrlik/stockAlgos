@@ -1,4 +1,5 @@
 #include "statistic.h"
+#include "../market/marketRules.h"
 #include "../utils/utils.h"
 
 void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
@@ -81,9 +82,10 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 }
 
 bool statistic::operator==(const statistic& aOther) {
-	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash));
-	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash));
-	assert(utils::isEqual(summaryLoss, aOther.summaryLoss));
+	const auto precision = market::marketData::getInstance()->getQuotePrecision();
+	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, precision));
+	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, precision));
+	assert(utils::isEqual(summaryLoss, aOther.summaryLoss, precision));
 	assert(profitableOrder == aOther.profitableOrder);
 	assert(unprofitableOrder == aOther.unprofitableOrder);
 	assert(touchTrendOrder == aOther.touchTrendOrder);

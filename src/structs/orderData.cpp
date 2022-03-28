@@ -50,8 +50,9 @@ bool orderData::operator==(const orderData& aOther) {
 	if (fullCheck) {
 		assert(utils::isEqual(stopLoss, aOther.stopLoss));
 		assert(utils::isEqual(minimumProfit, aOther.minimumProfit));
-		assert(utils::isEqual(margin, aOther.margin));
-		assert(utils::isEqual(notionalValue, aOther.notionalValue));
+		const auto precision = market::marketData::getInstance()->getQuotePrecision();
+		assert(utils::isEqual(margin, aOther.margin, precision));
+		assert(utils::isEqual(notionalValue, aOther.notionalValue, precision));
 		assert(utils::isEqual(quantity, aOther.quantity));
 	}
 	return true;
@@ -84,10 +85,11 @@ double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const
 
 bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 	reset();
-	const auto allowedCash = aMM.getCash() * aMM.getDealPercent() / 100.0;
+	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
+	const auto allowedCash = utils::floor(aMM.getCash() * aMM.getDealPercent() / 100.0, quotePrecision);
 	const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
 	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
-	const auto calcNotionalValue = calcQuantity * aPrice;
+	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);
 	if (calcQuantity < MARKET_DATA->getQuantityPrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
 		std::cout << "[WARNING] orderData::openOrder can't open order\n";
 		return false;
@@ -98,7 +100,7 @@ bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 	price = aPrice;
 	quantity = calcQuantity;
 	notionalValue = calcNotionalValue;
-	margin = notionalValue / aMM.getLeverage();
+	margin = utils::round(notionalValue / aMM.getLeverage(), quotePrecision);
 
 	minimumProfit = calculateMinimumProfit(aMM);
 	stopLoss = calculateStopLoss(aMM);
@@ -107,8 +109,9 @@ bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 }
 
 double orderData::getProfit() const {
-	const auto orderCloseSummary = quantity * stopLoss;
-	const auto orderCloseTax = orderCloseSummary * algorithmData::tax;
+	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
+	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
+	const auto orderCloseTax = utils::round(orderCloseSummary * algorithmData::tax, quotePrecision);
 	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
 }
