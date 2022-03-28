@@ -53,7 +53,8 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	fullCheck(aData.fullCheck),
 	startCash(aData.startCash),
 	cash(aData.startCash),
-	stopCash(aData.stopCash) {}
+	stopCash(aData.stopCash),
+	stats(aData.startCash) {}
 
 bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(activationWaiterModule == aOther.activationWaiterModule);
@@ -65,9 +66,9 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(isNewTrend == aOther.isNewTrend);
 	if (fullCheck) {
 		assert(stats == aOther.stats);
-		assert(cash == aOther.cash);
-		assert(lastUpSuperTrend == aOther.lastUpSuperTrend);
-		assert(lastDownSuperTrend == aOther.lastDownSuperTrend);
+		assert(utils::isEqual(cash, aOther.cash));
+		assert(utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend));
+		assert(utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend));
 	}
 	return true;
 }

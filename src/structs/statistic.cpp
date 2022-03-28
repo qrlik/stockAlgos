@@ -1,4 +1,5 @@
 #include "statistic.h"
+#include "../utils/utils.h"
 
 void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
 	for (const auto& [field, value] : aJson.items()) {
@@ -31,6 +32,10 @@ void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
 		}
 	}
 }
+
+statistic::statistic(double aStartCash): 
+	currentLossHighCash(aStartCash),
+	currentLossLowCash(aStartCash) {}
 
 void statistic::onOpenOrder(bool aIsBreak) {
 	if (aIsBreak) {
@@ -76,13 +81,14 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 }
 
 bool statistic::operator==(const statistic& aOther) {
-	return maxLossHighCash == aOther.maxLossHighCash
-		&& maxLossLowCash == aOther.maxLossLowCash
-		&& summaryLoss == aOther.summaryLoss
-		&& profitableOrder == aOther.profitableOrder
-		&& unprofitableOrder == aOther.unprofitableOrder
-		&& touchTrendOrder == aOther.touchTrendOrder
-		&& breakTrendOrder == aOther.breakTrendOrder
-		&& profitableStreak == aOther.profitableStreak
-		&& unprofitableStreak == aOther.unprofitableStreak;
+	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash));
+	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash));
+	assert(utils::isEqual(summaryLoss, aOther.summaryLoss));
+	assert(profitableOrder == aOther.profitableOrder);
+	assert(unprofitableOrder == aOther.unprofitableOrder);
+	assert(touchTrendOrder == aOther.touchTrendOrder);
+	assert(breakTrendOrder == aOther.breakTrendOrder);
+	assert(profitableStreak == aOther.profitableStreak);
+	assert(unprofitableStreak == aOther.unprofitableStreak);
+	return true;
 }

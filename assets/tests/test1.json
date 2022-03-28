@@ -1,16 +1,18 @@
 {
 	"candlesFileName": "1500_15m",
 	"candlesAmount": 1000,
-	"cash": 100,
 	"algorithmData": {
 		"atrType": "RMA",
 		"atrSize": 14,
-		"stFactor": 5,
+		"stFactor": 3.0,
 
-		"dealPercent": 5,
-		"leverage": 10,
+		"dealPercent": 5.0,
+		"leverage": 50,
 
-		"liquidationOffsetPercent": 0.1,
+		"startCash": 100.0,
+		"stopCash": 40.0,
+
+		"liquidationOffsetPercent": 0.05,
 		"minimumProfitPercent": 0.25,
 
 		"dynamicSLPercent": 1.0,
@@ -39,15 +41,22 @@
 			"order": {
 				"type": "SHORT",
 				"lifeState": true,
-				"price": 47809.60,
-				"stopLoss": 48407.22,
-				"minimumProfit": 47690.07,
-				"amount": 5,
+				"price": 47560.3,
+				"stopLoss": 48294.0,
+				"minimumProfit": 47441.4,
+				"margin": 4.75603,
+				"notionalValue": 237.8015,
+				"quantity": 0.005,
 				"time": "11:15 31-12-2021"
 			},
+			"stats": {
+				"currentLossHighCash": 100.0,
+				"currentLossLowCash": 100.0,
+				"touchTrendOrder": 1
+			},
 			"state": "SHORT",
-			"cash": 94.98,
-			"lastDownSuperTrend": 47929.43,
+			"cash": 95.1488494,
+			"lastDownSuperTrend": 47560.3,
 			"isTrendUp": false
 		},
 		{
@@ -55,8 +64,17 @@
 			"order": {
 				"lifeState": false
 			},
+			"stats": {
+				"maxLossHighCash": 100.0,
+				"maxLossLowCash": 96.1397914,
+				"summaryLoss": 3.765088,
+				"unprofitableOrder": 1,
+				"unprofitableStreak": 1
+			},
 			"state": "NONE",
-			"cash": 99.33
+			"cash": 96.1397914,
+			"isTrendUp": true,
+			"lastUpSuperTrend": 46840.9
 		},
 		{
 			"time": "11:45 31-12-2021",

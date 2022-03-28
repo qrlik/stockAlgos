@@ -45,14 +45,14 @@ std::string orderData::toString() const {
 
 bool orderData::operator==(const orderData& aOther) {
 	assert(fullCheck == aOther.fullCheck);
-	assert(price == aOther.price);
+	assert(utils::isEqual(price, aOther.price));
 	assert(time == aOther.time);
 	if (fullCheck) {
-		assert(stopLoss == aOther.stopLoss);
-		assert(minimumProfit == aOther.minimumProfit);
-		assert(margin == aOther.margin);
-		assert(notionalValue == aOther.notionalValue);
-		assert(quantity == aOther.quantity);
+		assert(utils::isEqual(stopLoss, aOther.stopLoss));
+		assert(utils::isEqual(minimumProfit, aOther.minimumProfit));
+		assert(utils::isEqual(margin, aOther.margin));
+		assert(utils::isEqual(notionalValue, aOther.notionalValue));
+		assert(utils::isEqual(quantity, aOther.quantity));
 	}
 	return true;
 }

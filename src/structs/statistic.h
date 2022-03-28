@@ -5,6 +5,7 @@
 struct statistic {
 	static void initStatisticFromJson(statistic& aStats, const Json& aJson);
 
+	statistic(double aStartCash);
 	void onOpenOrder(bool aIsBreak);
 	void onCloseOrder(double aCash, double aProfit);
 	bool operator==(const statistic& aOther);

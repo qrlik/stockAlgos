@@ -130,5 +130,5 @@ namespace {
 
 void tests::runTests() {
 	marketDataTests();
-	//mmCheckerTests();
+	mmCheckerTests();
 }
