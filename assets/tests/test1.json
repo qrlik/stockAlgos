@@ -4,7 +4,7 @@
 	"algorithmData": {
 		"atrType": "RMA",
 		"atrSize": 14,
-		"stFactor": 3.0,
+		"stFactor": 5.0,
 
 		"dealPercent": 5.0,
 		"leverage": 50,
@@ -41,12 +41,12 @@
 			"order": {
 				"type": "SHORT",
 				"lifeState": true,
-				"price": 47560.3,
-				"stopLoss": 48294.0,
-				"minimumProfit": 47441.4,
-				"margin": 4.75603,
-				"notionalValue": 237.8015,
+				"price": 47943.5,
 				"quantity": 0.005,
+				"notionalValue": 239.7175,
+				"margin": 4.79435,
+				"stopLoss": 48683.1,
+				"minimumProfit": 47823.6,
 				"time": "11:15 31-12-2021"
 			},
 			"stats": {
@@ -55,126 +55,114 @@
 				"touchTrendOrder": 1
 			},
 			"state": "SHORT",
-			"cash": 95.1488494,
-			"lastDownSuperTrend": 47560.3,
+			"cash": 95.109763,
+			"lastDownSuperTrend": 47943.5,
 			"isTrendUp": false
 		},
 		{
-			"time": "11:30 31-12-2021",
-			"order": {
-				"lifeState": false
-			},
-			"stats": {
-				"maxLossHighCash": 100.0,
-				"maxLossLowCash": 96.1397914,
-				"summaryLoss": 3.765088,
-				"unprofitableOrder": 1,
-				"unprofitableStreak": 1
-			},
-			"state": "NONE",
-			"cash": 96.1397914,
-			"isTrendUp": true,
-			"lastUpSuperTrend": 46840.9
-		},
-		{
 			"time": "11:45 31-12-2021",
-			"lastUpSuperTrend": 46827.20,
+			"lastUpSuperTrend": 46795.8,
 			"isTrendUp": true
 		},
 		{
 			"time": "12:00 31-12-2021",
-			"lastUpSuperTrend": 47026.98
+			"lastUpSuperTrend": 46987.8
 		},
 		{
 			"time": "12:15 31-12-2021",
-			"lastUpSuperTrend": 47128.30
+			"lastUpSuperTrend": 47060.4
 		},
 		{
 			"time": "13:45 31-12-2021",
-			"lastUpSuperTrend": 47209.38
+			"lastUpSuperTrend": 47168.2
 		},
 		{
 			"time": "19:30 31-12-2021",
-			"lastUpSuperTrend": 47246.24
+			"lastUpSuperTrend": 47238.1
 		},
 		{
 			"time": "20:00 31-12-2021",
 			"order": {
-				"type": "LONG",
-				"lifeState": true,
-				"price": 47364.36,
-				"stopLoss": 46772.3,
-				"minimumProfit": 47482.78,
-				"amount": 4.966,
-				"time": "20:00 31-12-2021"
-			},
-			"state": "LONG",
-			"cash": 94.34
+				"stopLoss": 47678.1
+			}
+		},
+		{
+			"time": "20:15 31-12-2021",
+			"order": {
+				"stopLoss": 47386.2
+			}
 		},
 		{
 			"time": "20:30 31-12-2021",
-			"lastDownSuperTrend": 48213.59,
+			"order": {
+				"stopLoss": 47331.5
+			},
+			"lastDownSuperTrend": 48218.0,
 			"isTrendUp": false
 		},
 		{
 			"time": "20:45 31-12-2021",
-			"lastDownSuperTrend": 48037.20,
-			"isTrendUp": false
+			"lastDownSuperTrend": 48043.7
 		},
 		{
 			"time": "21:00 31-12-2021",
-			"lastDownSuperTrend": 48020.01
+			"lastDownSuperTrend": 48029.9
 		},
 		{
 			"time": "21:15 31-12-2021",
-			"lastDownSuperTrend": 47988.81
+			"lastDownSuperTrend": 47995.0
 		},
 		{
 			"time": "21:30 31-12-2021",
 			"order": {
 				"lifeState": false
 			},
-			"lastDownSuperTrend": 47953.63,
+			"stats": {
+				"profitableOrder": 1,
+				"profitableStreak": 1
+			},
 			"state": "NONE",
-			"cash": 98.66
+			"cash": 105.678073,
+			"lastDownSuperTrend": 47972.1
 		},
 		{
 			"time": "21:45 31-12-2021",
-			"lastDownSuperTrend": 47832.43
-		},
-		{
-			"time": "22:00 31-12-2021",
-			"lastDownSuperTrend": 47762.20
+			"lastDownSuperTrend": 47820.4
 		},
 		{
 			"time": "22:15 31-12-2021",
-			"lastDownSuperTrend": 47642.23
+			"lastDownSuperTrend": 47711.0
 		},
 		{
 			"time": "22:30 31-12-2021",
-			"lastDownSuperTrend": 47444.50
+			"lastDownSuperTrend": 47498.5
 		},
 		{
 			"time": "22:45 31-12-2021",
-			"lastDownSuperTrend": 47359.17
+			"lastDownSuperTrend": 47406.4
 		},
 		{
 			"time": "23:00 31-12-2021",
-			"lastDownSuperTrend": 47166.84
+			"lastDownSuperTrend": 47230.6
 		},
 		{
 			"time": "08:15 01-01-2022",
 			"order": {
 				"type": "SHORT",
 				"lifeState": true,
-				"price": 47048.92,
-				"stopLoss": 47637.04,
-				"minimumProfit": 46931.29,
-				"amount": 4.933,
+				"price": 47230.6,
+				"quantity": 0.005,
+				"notionalValue": 236.153,
+				"margin": 4.72306,
+				"stopLoss": 47959.2,
+				"minimumProfit": 47112.5,
 				"time": "08:15 01-01-2022"
 			},
+			"stats": {
+				"touchTrendOrder": 2
+			},
 			"state": "SHORT",
-			"cash": 93.7
+			"cash": 100.8605518
 		},
 		{
 			"time": "08:30 01-01-2022",

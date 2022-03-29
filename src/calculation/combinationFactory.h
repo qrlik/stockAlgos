@@ -32,7 +32,7 @@ namespace calculation {
 		const int minAtrSize = 15;
 		const int maxAtrSize = 15;
 		const double minStFactor = 2.0;
-		const double maxStFactor = 5.0;
+		const double maxStFactor = 10.0;
 		const double stFactorStep = 1.0;
 
 		const double minDealPercent = 5.0;

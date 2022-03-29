@@ -50,9 +50,8 @@ bool orderData::operator==(const orderData& aOther) {
 	if (fullCheck) {
 		assert(utils::isEqual(stopLoss, aOther.stopLoss));
 		assert(utils::isEqual(minimumProfit, aOther.minimumProfit));
-		const auto precision = market::marketData::getInstance()->getQuotePrecision();
-		assert(utils::isEqual(margin, aOther.margin, precision));
-		assert(utils::isEqual(notionalValue, aOther.notionalValue, precision));
+		assert(utils::isEqual(margin, aOther.margin));
+		assert(utils::isEqual(notionalValue, aOther.notionalValue));
 		assert(utils::isEqual(quantity, aOther.quantity));
 	}
 	return true;
@@ -71,6 +70,9 @@ void orderData::reset() {
 }
 
 double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
+	if (time == "08:15 01-01-2022") {
+		auto test = 5;
+	}
 	const auto liqPrice = market::marketData::getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
@@ -102,9 +104,9 @@ bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 	notionalValue = calcNotionalValue;
 	margin = utils::round(notionalValue / aMM.getLeverage(), quotePrecision);
 
+	time = aMM.getCandle().time;
 	minimumProfit = calculateMinimumProfit(aMM);
 	stopLoss = calculateStopLoss(aMM);
-	time = aMM.getCandle().time;
 	return true;
 }
 
