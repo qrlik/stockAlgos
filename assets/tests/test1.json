@@ -50,8 +50,6 @@
 				"time": "11:15 31-12-2021"
 			},
 			"stats": {
-				"currentLossHighCash": 100.0,
-				"currentLossLowCash": 100.0,
 				"touchTrendOrder": 1
 			},
 			"state": "SHORT",
@@ -166,85 +164,54 @@
 		},
 		{
 			"time": "08:30 01-01-2022",
-			"lastUpSuperTrend": 46112.00,
+			"lastUpSuperTrend": 46090.4,
 			"isTrendUp": true
 		},
 		{
 			"time": "08:45 01-01-2022",
-			"lastUpSuperTrend": 46326.91
-		},
-		{
-			"time": "18:45 01-01-2022",
-			"lastUpSuperTrend": 46329.21
-		},
-		{
-			"time": "19:15 01-01-2022",
-			"lastUpSuperTrend": 46340.17
+			"lastUpSuperTrend": 46314.0
 		},
 		{
 			"time": "19:30 01-01-2022",
-			"lastUpSuperTrend": 46455.56
+			"lastUpSuperTrend": 46393.7
 		},
 		{
 			"time": "19:45 01-01-2022",
-			"lastUpSuperTrend": 46483.70
-		},
-		{
-			"time": "20:30 01-01-2022",
-			"order": {
-				"lifeState": false
-			},
-			"state": "NONE",
-			"cash": 97.99
+			"lastUpSuperTrend": 46429.4
 		},
 		{
 			"time": "20:45 01-01-2022",
-			"lastUpSuperTrend": 46559.35
+			"lastUpSuperTrend": 46516.3
 		},
 		{
 			"time": "21:00 01-01-2022",
-			"lastUpSuperTrend": 46734.13
+			"lastUpSuperTrend": 46688.8
 		},
 		{
 			"time": "03:00 02-01-2022",
-			"lastUpSuperTrend": 46743.31
-		},
-		{
-			"time": "07:45 02-01-2022",
-			"order": {
-				"type": "LONG",
-				"lifeState": true,
-				"price": 46860.17,
-				"stopLoss": 46274.41,
-				"minimumProfit": 46977.33,
-				"amount": 4.899,
-				"time": "07:45 02-01-2022"
-			},
-			"state": "LONG",
-			"cash": 93.07
-		},
-		{
-			"time": "12:15 02-01-2022",
-			"order": {
-				"stopLoss": 47024.45
-			}
-		},
-		{
-			"time": "15:00 02-01-2022",
-			"order": {
-				"lifeState": false
-			},
-			"state": "NONE",
-			"cash": 98.12
+			"lastUpSuperTrend": 46713.7
 		},
 		{
 			"time": "19:45 02-01-2022",
-			"lastUpSuperTrend": 46772.22
+			"lastUpSuperTrend": 46744.4
 		},
 		{
 			"time": "20:00 02-01-2022",
-			"lastUpSuperTrend": 46879.96
+			"order": {
+				"lifeState": false
+			},
+			"stats": {
+				"maxLossHighCash": 105.678073,
+				"maxLossLowCash": 101.8446934,
+				"summaryLoss": 3.7389184,
+				"unprofitableOrder": 1,
+				"unprofitableStreak": 1
+			},
+			"state": "NONE",
+			"cash": 101.8446934,
+			"lastUpSuperTrend": 46847.2
 		},
+		//here
 		{
 			"time": "21:15 02-01-2022",
 			"order": {
