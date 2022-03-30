@@ -39,6 +39,9 @@ double utils::ceil(double aValue, double aPrecision) {
 	return std::ceil(aValue / aPrecision) * aPrecision;
 }
 
-bool utils::isEqual(double aLhs, double aRhs) {
-	return std::fabs(aLhs - aRhs) <= std::min(std::fabs(aLhs), std::fabs(aRhs)) * std::numeric_limits<double>::epsilon();
+bool utils::isEqual(double aLhs, double aRhs, double aPrecision) {
+	if (aPrecision == -1.0) {
+		return std::fabs(aLhs - aRhs) <= std::min(std::fabs(aLhs), std::fabs(aRhs)) * std::numeric_limits<double>::epsilon();
+	}
+	return std::fabs(aLhs - aRhs) <= aPrecision;
 }

@@ -66,7 +66,7 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(isNewTrend == aOther.isNewTrend);
 	if (fullCheck) {
 		assert(stats == aOther.stats);
-		assert(utils::isEqual(cash, aOther.cash));
+		assert(utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision()));
 		assert(utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend));
 		assert(utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend));
 	}

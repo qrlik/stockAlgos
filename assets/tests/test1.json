@@ -211,87 +211,144 @@
 			"cash": 101.8446934,
 			"lastUpSuperTrend": 46847.2
 		},
-		//here
 		{
-			"time": "21:15 02-01-2022",
+			"time": "21:30 02-01-2022",
 			"order": {
 				"type": "LONG",
 				"lifeState": true,
-				"price": 46997.16,
-				"stopLoss": 46409.69,
-				"minimumProfit": 47114.66,
-				"amount": 4.906,
-				"time": "21:15 02-01-2022"
+				"price": 46847.2,
+				"quantity": 0.005,
+				"notionalValue": 234.236,
+				"margin": 4.68472,
+				"stopLoss": 46117.7,
+				"minimumProfit": 46964.3,
+				"time": "21:30 02-01-2022"
+			},
+			"stats": {
+				"touchTrendOrder": 3
 			},
 			"state": "LONG",
-			"cash": 93.19
+			"cash": 97.066279
+		},
+		{
+			"time": "02:30 03-01-2022",
+			"order": {
+				"stopLoss": 46994.8
+			}
+		},
+		{
+			"time": "04:15 03-01-2022",
+			"order": {
+				"lifeState": false
+			},
+			"stats": {
+				"profitableOrder": 2
+			},
+			"state": "NONE",
+			"cash": 102.3950094
+		},
+		{
+			"time": "06:30 03-01-2022",
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 46847.2,
+				"quantity": 0.005,
+				"notionalValue": 234.236,
+				"margin": 4.68472,
+				"stopLoss": 46117.7,
+				"minimumProfit": 46964.3,
+				"time": "06:30 03-01-2022"
+			},
+			"stats": {
+				"touchTrendOrder": 4
+			},
+			"state": "LONG",
+			"cash": 97.616595
 		},
 		{
 			"time": "06:45 03-01-2022",
-			"lastDownSuperTrend": 47628.16,
+			"lastDownSuperTrend": 47654.8,
 			"isTrendUp": false
 		},
 		{
 			"time": "07:00 03-01-2022",
-			"lastDownSuperTrend": 47541.95
+			"lastDownSuperTrend": 47567.6
 		},
 		{
 			"time": "08:15 03-01-2022",
-			"lastDownSuperTrend": 47534.25
+			"lastDownSuperTrend": 47557.3
 		},
 		{
 			"time": "12:30 03-01-2022",
-			"lastDownSuperTrend": 47525.22
+			"lastDownSuperTrend": 47534.0
 		},
 		{
 			"time": "12:45 03-01-2022",
-			"lastDownSuperTrend": 47490.47
+			"lastDownSuperTrend": 47511.9
 		},
 		{
-			"time": "19:15 03-01-2022",
+			"time": "15:00 03-01-2022",
+			"order": {
+				"stopLoss": 47096.1
+			}
+		},
+		{
+			"time": "15:15 03-01-2022",
+			"order": {
+				"stopLoss": 47099.5
+			}
+		},
+		{
+			"time": "17:00 03-01-2022",
 			"order": {
 				"lifeState": false
 			},
+			"stats": {
+				"profitableOrder": 3,
+				"profitableStreak": 2
+			},
 			"state": "NONE",
-			"cash": 97.46
+			"cash": 103.468616
 		},
 		{
 			"time": "19:45 03-01-2022",
-			"lastDownSuperTrend": 47488.19
+			"lastDownSuperTrend": 47487.6
 		},
 		{
 			"time": "20:00 03-01-2022",
-			"lastDownSuperTrend": 47474.11
-		},
-		{
-			"time": "22:15 03-01-2022",
-			"lastDownSuperTrend": 47461.79
+			"lastDownSuperTrend": 47457.5
 		},
 		{
 			"time": "23:15 03-01-2022",
-			"lastDownSuperTrend": 47295.15
+			"lastDownSuperTrend": 47307.4
 		},
 		{
 			"time": "23:30 03-01-2022",
-			"lastDownSuperTrend": 47168.18
+			"lastDownSuperTrend": 47185.5
 		},
 		{
 			"time": "23:45 03-01-2022",
-			"lastDownSuperTrend": 46983.82
+			"lastDownSuperTrend": 46995.8
 		},
 		{
-			"time": "16:15 04-01-2022",
+			"time": "16:45 04-01-2022",
 			"order": {
 				"type": "SHORT",
 				"lifeState": true,
-				"price": 46866.36,
-				"stopLoss": 47452.19,
-				"minimumProfit": 46749.19,
-				"amount": 4.872,
-				"time": "16:15 04-01-2022"
+				"price": 46995.8,
+				"quantity": 0.005,
+				"notionalValue": 234.979,
+				"margin": 4.69958,
+				"stopLoss": 47720.8,
+				"minimumProfit": 46878.3,
+				"time": "16:45 04-01-2022"
+			},
+			"stats": {
+				"touchTrendOrder": 5
 			},
 			"state": "SHORT",
-			"cash": 92.56
+			"cash": 98.6750444
 		},
 		{
 			"time": "17:45 04-01-2022",
