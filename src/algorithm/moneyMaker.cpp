@@ -209,7 +209,7 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 
 	auto taxAmount = utils::round(order.getNotionalValue() * algorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - order.getMargin() - taxAmount;
-	stats.onOpenOrder(isNewTrend);
+	stats.onOpenOrder((state == eState::LONG), isNewTrend);
 	isNewTrend = false;
 }
 

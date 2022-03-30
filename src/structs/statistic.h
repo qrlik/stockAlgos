@@ -6,7 +6,7 @@ struct statistic {
 	static void initStatisticFromJson(statistic& aStats, const Json& aJson);
 
 	statistic(double aStartCash);
-	void onOpenOrder(bool aIsBreak);
+	void onOpenOrder(bool isLong, bool aIsBreak);
 	void onCloseOrder(double aCash, double aProfit);
 	bool operator==(const statistic& aOther);
 
@@ -18,6 +18,8 @@ struct statistic {
 	size_t unprofitableOrder = 0;
 	size_t touchTrendOrder = 0;
 	size_t breakTrendOrder = 0;
+	size_t longOrder = 0;
+	size_t shortOrder = 0;
 
 	size_t profitableStreak = 0;
 	size_t unprofitableStreak = 0;

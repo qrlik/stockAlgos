@@ -32,6 +32,8 @@ namespace calculation {
 			size_t unprofitableStreak;
 			size_t touchTrendOrder;
 			size_t breakTrendOrder;
+			size_t longOrder;
+			size_t shortOrder;
 			int atrSize;
 			int leverage;
 			int activationWaiterModuleActivationWaitRange;

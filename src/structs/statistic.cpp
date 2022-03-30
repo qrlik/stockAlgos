@@ -25,6 +25,12 @@ void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
 		else if (field == "breakTrendOrder") {
 			aStats.breakTrendOrder = value.get<size_t>();
 		}
+		else if (field == "longOrder") {
+			aStats.longOrder = value.get<size_t>();
+		}
+		else if (field == "shortOrder") {
+			aStats.shortOrder = value.get<size_t>();
+		}
 		else if (field == "profitableStreak") {
 			aStats.profitableStreak = value.get<size_t>();
 		}
@@ -38,12 +44,18 @@ statistic::statistic(double aStartCash):
 	currentLossHighCash(aStartCash),
 	currentLossLowCash(aStartCash) {}
 
-void statistic::onOpenOrder(bool aIsBreak) {
+void statistic::onOpenOrder(bool isLong, bool aIsBreak) {
 	if (aIsBreak) {
 		breakTrendOrder += 1;
 	}
 	else {
 		touchTrendOrder += 1;
+	}
+	if (isLong) {
+		longOrder += 1;
+	}
+	else {
+		shortOrder += 1;
 	}
 }
 
@@ -89,6 +101,8 @@ bool statistic::operator==(const statistic& aOther) {
 	assert(unprofitableOrder == aOther.unprofitableOrder);
 	assert(touchTrendOrder == aOther.touchTrendOrder);
 	assert(breakTrendOrder == aOther.breakTrendOrder);
+	assert(longOrder == aOther.longOrder);
+	assert(shortOrder == aOther.shortOrder);
 	assert(profitableStreak == aOther.profitableStreak);
 	assert(unprofitableStreak == aOther.unprofitableStreak);
 	return true;

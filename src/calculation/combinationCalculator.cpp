@@ -91,6 +91,8 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	}
 	result.touchTrendOrder = stats.touchTrendOrder;
 	result.breakTrendOrder = stats.breakTrendOrder;
+	result.longOrder = stats.longOrder;
+	result.shortOrder = stats.shortOrder;
 	result.atrType = market::atrTypeToString(aMM.atrType);
 	result.atrSize = aMM.atrSize;
 	result.stFactor = aMM.stFactor;
@@ -136,6 +138,8 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(12) << "RFSummary"
 		<< std::setw(8) << "TochOrd"
 		<< std::setw(8) << "BrekOrd"
+		<< std::setw(8) << "LongOrd"
+		<< std::setw(8) << "ShrtOrd"
 		<< std::setw(6) << "ATR T"
 		<< std::setw(6) << "ATR S"
 		<< std::setw(12) << "STFactor"
@@ -172,6 +176,8 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(12) << data.RFSummary
 			<< std::setw(8) << data.touchTrendOrder
 			<< std::setw(8) << data.breakTrendOrder
+			<< std::setw(8) << data.longOrder
+			<< std::setw(8) << data.shortOrder
 			<< std::setw(6) << data.atrType
 			<< std::setw(6) << data.atrSize
 			<< std::setw(12) << data.stFactor

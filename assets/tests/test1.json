@@ -50,7 +50,8 @@
 				"time": "11:15 31-12-2021"
 			},
 			"stats": {
-				"touchTrendOrder": 1
+				"touchTrendOrder": 1,
+				"shortOrder": 1
 			},
 			"state": "SHORT",
 			"cash": 95.109763,
@@ -157,7 +158,8 @@
 				"time": "08:15 01-01-2022"
 			},
 			"stats": {
-				"touchTrendOrder": 2
+				"touchTrendOrder": 2,
+				"shortOrder": 2
 			},
 			"state": "SHORT",
 			"cash": 100.8605518
@@ -225,7 +227,8 @@
 				"time": "21:30 02-01-2022"
 			},
 			"stats": {
-				"touchTrendOrder": 3
+				"touchTrendOrder": 3,
+				"longOrder": 1
 			},
 			"state": "LONG",
 			"cash": 97.066279
@@ -261,7 +264,8 @@
 				"time": "06:30 03-01-2022"
 			},
 			"stats": {
-				"touchTrendOrder": 4
+				"touchTrendOrder": 4,
+				"longOrder": 2
 			},
 			"state": "LONG",
 			"cash": 97.616595
@@ -345,7 +349,8 @@
 				"time": "16:45 04-01-2022"
 			},
 			"stats": {
-				"touchTrendOrder": 5
+				"touchTrendOrder": 5,
+				"shortOrder": 3
 			},
 			"state": "SHORT",
 			"cash": 98.6750444
