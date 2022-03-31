@@ -65,7 +65,7 @@ void mmChecker::check() {
 		assert(*actualMoneyMaker == *testMoneyMaker);
 		actualIndex += 1;
 	}
-	assert(utils::isEqual(actualMoneyMaker->getFullCash(), testMoneyMaker->getFullCash()));
+	assert(utils::isEqual(actualMoneyMaker->getFullCash(), testMoneyMaker->getFullCash(), market::marketData::getInstance()->getQuotePrecision()));
 	std::cout << "[OK] mmChecker - " + name + '\n';
 }
 

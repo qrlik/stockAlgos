@@ -70,9 +70,6 @@ void orderData::reset() {
 }
 
 double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
-	if (time == "12:45 05-01-2022") {
-		auto test = 5;
-	}
 	const auto liqPrice = market::marketData::getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;

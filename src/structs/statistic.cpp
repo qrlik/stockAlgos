@@ -94,9 +94,9 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 }
 
 bool statistic::operator==(const statistic& aOther) {
-	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash));
-	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash));
-	assert(utils::isEqual(summaryLoss, aOther.summaryLoss));
+	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, market::marketData::getInstance()->getQuotePrecision()));
+	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, market::marketData::getInstance()->getQuotePrecision()));
+	assert(utils::isEqual(summaryLoss, aOther.summaryLoss, market::marketData::getInstance()->getQuotePrecision()));
 	assert(profitableOrder == aOther.profitableOrder);
 	assert(unprofitableOrder == aOther.unprofitableOrder);
 	assert(touchTrendOrder == aOther.touchTrendOrder);

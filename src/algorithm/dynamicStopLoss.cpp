@@ -32,9 +32,6 @@ bool dynamicStopLoss::checkTrend() {
 bool dynamicStopLoss::checkDynamic() {
 	auto& order = mm->getOrder();
 	const auto& candle = mm->getCandle();
-	if (mm->getCandle().time == "15:15 03-01-2022") {
-		auto test = 5;
-	}
 	assert(dynamicSLPercent > 0.0);
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
 	if (mm->getState() == eState::LONG) {
