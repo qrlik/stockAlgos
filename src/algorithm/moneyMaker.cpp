@@ -201,6 +201,7 @@ bool moneyMaker::updateOrder() {
 }
 
 void moneyMaker::openOrder(eState aState, double aPrice) {
+	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
 	state = aState;
 	if (!order.openOrder(*this, aPrice)) {
 		state = eState::NONE;
