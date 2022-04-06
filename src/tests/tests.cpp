@@ -8,12 +8,12 @@ using namespace tests;
 
 namespace {
 	void mmCheckerTests() {
-		//auto checker1 = mmChecker("test1");
-		//checker1.check();
-		//auto checker2 = mmChecker("test2");
-		//checker2.check();
-		//auto checker3 = mmChecker("test3");
-		//checker3.check();
+		auto checker1 = mmChecker("test1");
+		checker1.check();
+		auto checker2 = mmChecker("test2");
+		checker2.check();
+		auto checker3 = mmChecker("test3");
+		checker3.check();
 		auto checker4 = mmChecker("test4");
 		checker4.check();
 		std::cout << "[OK] Money Maker Tests\n";
