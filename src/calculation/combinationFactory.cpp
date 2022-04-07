@@ -68,8 +68,6 @@ void combinationFactory::generateSuperTrend() {
 		return;
 	}
 	tmpData = algorithmData{};
-	tmpData.startCash = 100.0;
-	tmpData.stopCash = 40.0;
 
 	for (auto atrType : { market::eAtrType::RMA, market::eAtrType::EMA, market::eAtrType::WMA, market::eAtrType::SMA }) {
 		tmpData.atrType = atrType;
@@ -86,6 +84,8 @@ void combinationFactory::generateSuperTrend() {
 void combinationFactory::generateDeal() {
 	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + stepFloat, stepFloat)) {
 		tmpData.dealPercent = dealPercent;
+		tmpData.startCash = orderSize * 100.0 / dealPercent;
+		tmpData.stopCash = 0.4 * tmpData.startCash;
 		for (auto leverage : iotaWithStep(minLeverage, maxLeverage + stepInt, stepInt)) {
 			tmpData.leverage = leverage;
 			generatePercent();
