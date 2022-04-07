@@ -129,6 +129,9 @@ namespace {
 }
 
 void tests::runTests() {
+#ifdef NDEBUG
+	return;
+#endif
 	marketDataTests();
 	mmCheckerTests();
 }

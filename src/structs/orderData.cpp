@@ -85,7 +85,10 @@ double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const
 bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 	reset();
 	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
-	const auto allowedCash = utils::floor(aMM.getCash() * aMM.getDealPercent() / 100.0, quotePrecision);
+	auto allowedCash = utils::floor(aMM.getCash() * aMM.getDealPercent() / 100.0, quotePrecision);
+	if (const auto allowedCashBySize = utils::floor(aMM.getOrderSize(), quotePrecision); allowedCashBySize > 0.0) {
+		allowedCash = std::min(allowedCash, allowedCashBySize);
+	}
 	const auto allowedNotionalValue = allowedCash * aMM.getLeverage();
 	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
 	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);

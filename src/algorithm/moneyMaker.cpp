@@ -49,6 +49,7 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	liquidationOffsetPercent(aData.liquidationOffsetPercent),
 	minimumProfitPercent(aData.minimumProfitPercent),
 	dealPercent(aData.dealPercent),
+	orderSize(aData.orderSize),
 	leverage(aData.leverage),
 	fullCheck(aData.fullCheck),
 	startCash(aData.startCash),

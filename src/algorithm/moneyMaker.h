@@ -48,6 +48,7 @@ namespace algorithm {
 		double getFullCash() const;
 		double getCash() const { return cash; }
 		double getDealPercent() const { return dealPercent; }
+		double getOrderSize() const { return orderSize; }
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
 		double getMinimumProfitPercent() const { return minimumProfitPercent; }
 		int getLeverage() const { return leverage; }
@@ -95,6 +96,7 @@ namespace algorithm {
 		const double liquidationOffsetPercent = 0.0;
 		const double minimumProfitPercent = 0.0;
 		const double dealPercent = 0.0;
+		const double orderSize = -1.0;
 
 		const double startCash = 0.0;
 		const double stopCash = 0.0;

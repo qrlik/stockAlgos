@@ -145,8 +145,7 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(12) << "STFactor"
 		<< std::setw(12) << "Deal %"
 		<< std::setw(7) << "Level"
-		<< std::setw(12) << "Act %"
-		<< std::setw(12) << "SL %"
+		//<< std::setw(12) << "SL %"
 		<< std::setw(12) << "MinPrf %"
 		<< std::setw(12) << "DSL %"
 		<< std::setw(10) << "DSLTrend"
@@ -183,7 +182,7 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(12) << data.stFactor
 			<< std::setw(12) << data.dealPercent
 			<< std::setw(7) << data.leverage
-			<< std::setw(12) << data.liquidationOffsetPercent
+			//<< std::setw(12) << data.liquidationOffsetPercent
 			<< std::setw(12) << data.minimumProfitPercent
 			<< std::setw(12) << data.dynamicSLPercent
 			<< std::setw(10) << data.dynamicStopLossTrendMode

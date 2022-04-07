@@ -12,6 +12,7 @@ struct algorithmData {
 	double stFactor = -1.0;
 
 	double dealPercent = -1.0;
+	double orderSize = -1.0;
 	int leverage = -1;
 
 	double startCash = 0.0;
