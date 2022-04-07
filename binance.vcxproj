@@ -183,7 +183,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
     </ClCompile>
