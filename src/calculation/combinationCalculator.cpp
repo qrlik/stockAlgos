@@ -68,9 +68,10 @@ void calculationSystem::printProgress(size_t aIndex) {
 	}
 }
 
-calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
+finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
 	finalData result;
 	result.cash = aMM.getFullCash();
+	result.startCash = aMM.getStartCash();
 	const auto& stats = aMM.stats;
 	result.profitableOrder = stats.profitableOrder;
 	result.profitableStreak = stats.profitableStreak;
@@ -121,85 +122,147 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	return result;
 }
 
+namespace {
+	void addHeadlines(std::ofstream& aOutput) {
+		aOutput
+			<< std::setw(24) << "Cash $"
+			<< std::setw(8) << "PrOrd"
+			<< std::setw(8) << "PrStr"
+			<< std::setw(8) << "UnprOrd"
+			<< std::setw(8) << "UnprStr"
+			<< std::setw(21) << "MaxLoss %"
+			<< std::setw(28) << "SumLoss $"
+			<< std::setw(12) << "RFCommon"
+			<< std::setw(12) << "RFSummary"
+			<< std::setw(8) << "TochOrd"
+			<< std::setw(8) << "BrekOrd"
+			<< std::setw(8) << "LongOrd"
+			<< std::setw(8) << "ShrtOrd"
+			<< std::setw(6) << "ATR T"
+			<< std::setw(6) << "ATR S"
+			<< std::setw(12) << "STFactor"
+			<< std::setw(12) << "Deal %"
+			<< std::setw(7) << "Level"
+			<< std::setw(12) << "SL %"
+			<< std::setw(12) << "MinPrf %"
+			<< std::setw(12) << "DSL %"
+			<< std::setw(10) << "DSLTrend"
+			<< std::setw(10) << "Touch WM"
+			<< std::setw(10) << "Break En"
+			<< std::setw(10) << "Break WM"
+			<< std::setw(10) << "UseNewTr"
+			<< std::setw(10) << "ActResAl"
+			<< std::setw(10) << "ActRange"
+			<< std::setw(10) << "ActFCChk"
+			<< std::setw(10) << "SLWEnbld"
+			<< std::setw(10) << "SLWResAl"
+			<< std::setw(10) << "SLWRange"
+			<< std::setw(10) << "SLWFCChk\n";
+		aOutput << std::fixed;
+	}
+
+	void addData(std::ofstream& aOutput, const finalData& aData) {
+		aOutput
+			<< std::setw(24) << aData.cash
+			<< std::setw(8) << aData.profitableOrder
+			<< std::setw(8) << aData.profitableStreak
+			<< std::setw(8) << aData.unprofitableOrder
+			<< std::setw(8) << aData.unprofitableStreak
+			<< std::setw(21) << aData.maxLossPercent
+			<< std::setw(28) << aData.summaryLoss
+			<< std::setw(12) << aData.RFCommon
+			<< std::setw(12) << aData.RFSummary
+			<< std::setw(8) << aData.touchTrendOrder
+			<< std::setw(8) << aData.breakTrendOrder
+			<< std::setw(8) << aData.longOrder
+			<< std::setw(8) << aData.shortOrder
+			<< std::setw(6) << aData.atrType
+			<< std::setw(6) << aData.atrSize
+			<< std::setw(12) << aData.stFactor
+			<< std::setw(12) << aData.dealPercent
+			<< std::setw(7) << aData.leverage
+			<< std::setw(12) << aData.stopLossPercent
+			<< std::setw(12) << aData.minimumProfitPercent
+			<< std::setw(12) << aData.dynamicSLPercent
+			<< std::setw(10) << aData.dynamicStopLossTrendMode
+			<< std::setw(10) << aData.trendTouchOpenerModuleActivationWaitMode
+			<< std::setw(10) << aData.trendBreakOpenerModuleEnabled
+			<< std::setw(10) << aData.trendBreakOpenerModuleActivationWaitMode
+			<< std::setw(10) << aData.trendBreakOpenerModuleAlwaysUseNewTrend
+			<< std::setw(10) << aData.activationWaiterModuleResetAllowed
+			<< std::setw(10) << aData.activationWaiterModuleActivationWaitRange
+			<< std::setw(10) << aData.activationWaiterModuleFullCandleCheck
+			<< std::setw(10) << aData.stopLossWaiterModuleEnabled
+			<< std::setw(10) << aData.stopLossWaiterModuleResetAllowed
+			<< std::setw(10) << aData.stopLossWaiterModuleStopLossWaitRange
+			<< std::setw(10) << aData.stopLossWaiterModuleFullCandleCheck << '\n';
+	}
+
+	Json getJson(const finalData& aData) {
+		// TO DO make map with name + field offset + size of setw
+		Json result;
+		result["Cash $"] = aData.cash;
+		result["PrOrd"] = aData.profitableOrder;
+		result["PrStr"] = aData.profitableStreak;
+		result["UnprOrd"] = aData.unprofitableOrder;
+		result["UnprStr"] = aData.unprofitableStreak;
+		result["MaxLoss %"] = aData.maxLossPercent;
+		result["SumLoss $"] = aData.summaryLoss;
+		result["RFCommon"] = aData.RFCommon;
+		result["RFSummary"] = aData.RFSummary;
+		result["TochOrd"] = aData.touchTrendOrder;
+		result["BrekOrd"] = aData.breakTrendOrder;
+		result["LongOrd"] = aData.longOrder;
+		result["ShrtOrd"] = aData.shortOrder;
+		result["ATR T"] = aData.atrType;
+		result["ATR S"] = aData.atrSize;
+		result["STFactor"] = aData.stFactor;
+		result["Deal %"] = aData.dealPercent;
+		result["Level"] = aData.leverage;
+		result["SL %"] = aData.stopLossPercent;
+		result["MinPrf %"] = aData.minimumProfitPercent;
+		result["DSL %"] = aData.dynamicSLPercent;
+		result["DSLTrend"] = aData.dynamicStopLossTrendMode;
+		result["Touch WM"] = aData.trendTouchOpenerModuleActivationWaitMode;
+		result["Break En"] = aData.trendBreakOpenerModuleEnabled;
+		result["Break WM"] = aData.trendBreakOpenerModuleActivationWaitMode;
+		result["UseNewTr"] = aData.trendBreakOpenerModuleAlwaysUseNewTrend;
+		result["ActResAl"] = aData.activationWaiterModuleResetAllowed;
+		result["ActRange"] = aData.activationWaiterModuleActivationWaitRange;
+		result["ActFCChk"] = aData.activationWaiterModuleFullCandleCheck;
+		result["SLWEnbld"] = aData.stopLossWaiterModuleEnabled;
+		result["SLWResAl"] = aData.stopLossWaiterModuleResetAllowed;
+		result["SLWRange"] = aData.stopLossWaiterModuleStopLossWaitRange;
+		result["SLWFCChk"] = aData.stopLossWaiterModuleFullCandleCheck;
+		return result;
+	}
+}
+
 void calculationSystem::saveFinalData() {
-	std::vector<calculationSystem::finalData> finalVector;
+	std::vector<finalData> finalVector;
 	finalVector.reserve(combinations);
 	for (auto& threadData : threadsData) {
 		std::move(std::make_move_iterator(threadData.finalData.begin()), std::make_move_iterator(threadData.finalData.end()), std::back_inserter(finalVector));
 	}
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
+	auto positives = std::count_if(finalVector.cbegin(), finalVector.cend(), [](const auto& data) { return data.cash > data.startCash; });
+	const auto allowedOutput = positives / 4;
 
-	std::ofstream output("finalData.txt");
-	output
-		<< std::setw(24) << "Cash $"
-		<< std::setw(8) << "PrOrd"
-		<< std::setw(8) << "PrStr"
-		<< std::setw(8) << "UnprOrd"
-		<< std::setw(8) << "UnprStr"
-		<< std::setw(21) << "MaxLoss %"
-		<< std::setw(28) << "SumLoss $"
-		<< std::setw(12) << "RFCommon"
-		<< std::setw(12) << "RFSummary"
-		<< std::setw(8) << "TochOrd"
-		<< std::setw(8) << "BrekOrd"
-		<< std::setw(8) << "LongOrd"
-		<< std::setw(8) << "ShrtOrd"
-		<< std::setw(6) << "ATR T"
-		<< std::setw(6) << "ATR S"
-		<< std::setw(12) << "STFactor"
-		<< std::setw(12) << "Deal %"
-		<< std::setw(7) << "Level"
-		<< std::setw(12) << "SL %"
-		<< std::setw(12) << "MinPrf %"
-		<< std::setw(12) << "DSL %"
-		<< std::setw(10) << "DSLTrend"
-		<< std::setw(10) << "Touch WM"
-		<< std::setw(10) << "Break En"
-		<< std::setw(10) << "Break WM"
-		<< std::setw(10) << "UseNewTr"
-		<< std::setw(10) << "ActResAl"
-		<< std::setw(10) << "ActRange"
-		<< std::setw(10) << "ActFCChk"
-		<< std::setw(10) << "SLWEnbld"
-		<< std::setw(10) << "SLWResAl"
-		<< std::setw(10) << "SLWRange"
-		<< std::setw(10) << "SLWFCChk\n";
-	output << std::fixed;
+	std::ofstream fullOutput("fullData.txt");
+	addHeadlines(fullOutput);
+	std::ofstream positiveOutput("positiveData.txt");
+	addHeadlines(positiveOutput);
 
+	auto counter = 0;
+	Json jsonData;
 	for (const auto& data : finalVector) {
-		output
-			<< std::setw(24) << data.cash
-			<< std::setw(8) << data.profitableOrder
-			<< std::setw(8) << data.profitableStreak
-			<< std::setw(8) << data.unprofitableOrder
-			<< std::setw(8) << data.unprofitableStreak
-			<< std::setw(21) << data.maxLossPercent
-			<< std::setw(28) << data.summaryLoss
-			<< std::setw(12) << data.RFCommon
-			<< std::setw(12) << data.RFSummary
-			<< std::setw(8) << data.touchTrendOrder
-			<< std::setw(8) << data.breakTrendOrder
-			<< std::setw(8) << data.longOrder
-			<< std::setw(8) << data.shortOrder
-			<< std::setw(6) << data.atrType
-			<< std::setw(6) << data.atrSize
-			<< std::setw(12) << data.stFactor
-			<< std::setw(12) << data.dealPercent
-			<< std::setw(7) << data.leverage
-			<< std::setw(12) << data.stopLossPercent
-			<< std::setw(12) << data.minimumProfitPercent
-			<< std::setw(12) << data.dynamicSLPercent
-			<< std::setw(10) << data.dynamicStopLossTrendMode
-			<< std::setw(10) << data.trendTouchOpenerModuleActivationWaitMode
-			<< std::setw(10) << data.trendBreakOpenerModuleEnabled
-			<< std::setw(10) << data.trendBreakOpenerModuleActivationWaitMode
-			<< std::setw(10) << data.trendBreakOpenerModuleAlwaysUseNewTrend
-			<< std::setw(10) << data.activationWaiterModuleResetAllowed
-			<< std::setw(10) << data.activationWaiterModuleActivationWaitRange
-			<< std::setw(10) << data.activationWaiterModuleFullCandleCheck
-			<< std::setw(10) << data.stopLossWaiterModuleEnabled
-			<< std::setw(10) << data.stopLossWaiterModuleResetAllowed
-			<< std::setw(10) << data.stopLossWaiterModuleStopLossWaitRange
-			<< std::setw(10) << data.stopLossWaiterModuleFullCandleCheck << '\n';
+		addData(fullOutput, data);
+		if (counter < allowedOutput) {
+			addData(positiveOutput, data);
+			jsonData.push_back(getJson(data));
+			++counter;
+		}
 	}
+	std::ofstream jsonOutput("jsonData.json");
+	jsonOutput << jsonData;
 }

@@ -5,6 +5,7 @@
 #include <mutex>
 
 namespace calculation {
+	struct finalData;
 	class calculationSystem {
 	public:
 		calculationSystem(eCandleInterval aInterval);
@@ -14,41 +15,6 @@ namespace calculation {
 		void printProgress(size_t aIndex);
 		void saveFinalData();
 
-		struct finalData {
-			std::string atrType;
-			double cash;
-			double maxLossPercent;
-			double summaryLoss;
-			double RFCommon;
-			double RFSummary;
-			double stFactor;
-			double dealPercent;
-			double stopLossPercent;
-			double minimumProfitPercent;
-			double dynamicSLPercent;
-			size_t profitableOrder;
-			size_t profitableStreak;
-			size_t unprofitableOrder;
-			size_t unprofitableStreak;
-			size_t touchTrendOrder;
-			size_t breakTrendOrder;
-			size_t longOrder;
-			size_t shortOrder;
-			int atrSize;
-			int leverage;
-			int activationWaiterModuleActivationWaitRange;
-			int stopLossWaiterModuleStopLossWaitRange;
-			bool dynamicStopLossTrendMode;
-			bool trendTouchOpenerModuleActivationWaitMode;
-			bool trendBreakOpenerModuleEnabled;
-			bool trendBreakOpenerModuleActivationWaitMode;
-			bool trendBreakOpenerModuleAlwaysUseNewTrend;
-			bool activationWaiterModuleResetAllowed;
-			bool activationWaiterModuleFullCandleCheck;
-			bool stopLossWaiterModuleEnabled;
-			bool stopLossWaiterModuleResetAllowed;
-			bool stopLossWaiterModuleFullCandleCheck;
-		};
 		finalData getData(const algorithm::moneyMaker& aMM);
 
 		struct threadInfo {
@@ -68,5 +34,42 @@ namespace calculation {
 
 		double progress = 0.0;
 		size_t combinations = 0;
+	};
+
+	struct finalData {
+		std::string atrType;
+		double cash;
+		double startCash; // no output
+		double maxLossPercent;
+		double summaryLoss;
+		double RFCommon;
+		double RFSummary;
+		double stFactor;
+		double dealPercent;
+		double stopLossPercent;
+		double minimumProfitPercent;
+		double dynamicSLPercent;
+		size_t profitableOrder;
+		size_t profitableStreak;
+		size_t unprofitableOrder;
+		size_t unprofitableStreak;
+		size_t touchTrendOrder;
+		size_t breakTrendOrder;
+		size_t longOrder;
+		size_t shortOrder;
+		int atrSize;
+		int leverage;
+		int activationWaiterModuleActivationWaitRange;
+		int stopLossWaiterModuleStopLossWaitRange;
+		bool dynamicStopLossTrendMode;
+		bool trendTouchOpenerModuleActivationWaitMode;
+		bool trendBreakOpenerModuleEnabled;
+		bool trendBreakOpenerModuleActivationWaitMode;
+		bool trendBreakOpenerModuleAlwaysUseNewTrend;
+		bool activationWaiterModuleResetAllowed;
+		bool activationWaiterModuleFullCandleCheck;
+		bool stopLossWaiterModuleEnabled;
+		bool stopLossWaiterModuleResetAllowed;
+		bool stopLossWaiterModuleFullCandleCheck;
 	};
 }

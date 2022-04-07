@@ -47,6 +47,7 @@ namespace algorithm {
 		double getActualSuperTrend() const;
 		double getFullCash() const;
 		double getCash() const { return cash; }
+		double getStartCash() const { return startCash; }
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
