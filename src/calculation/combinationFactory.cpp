@@ -100,6 +100,7 @@ void combinationFactory::generateSuperTrend() {
 void combinationFactory::generateDeal() {
 	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + stepFloat, stepFloat)) {
 		tmpData.dealPercent = dealPercent;
+		tmpData.orderSize = orderSize;
 		tmpData.startCash = orderSize * 100.0 / dealPercent;
 		tmpData.stopCash = 0.4 * tmpData.startCash;
 		for (auto leverage : iotaWithStep(minLeverage, maxLeverage + stepInt, stepInt)) {
