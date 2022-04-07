@@ -37,15 +37,16 @@ namespace calculation {
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
-		const int minLeverage = 50;
-		const int maxLeverage = 50;
+		const int minLeverage = 100;
+		const int maxLeverage = 100;
 		const double orderSize = 2500.0;
+
+		const double minLiquidationOffsetPercent = 0.05;
+		const int offsetSteps = 0;
 
 		const double minMinProfitPercent = 0.25;
 		const double maxMinProfitPercent = 2.5;
 
-		const double minliquidationOffsetPercent = 0.05;
-		const double maxliquidationOffsetPercent = 0.05;
 		const double minDynamicSLPercent = 0.25;
 		const double maxDynamicSLPercent = 1.0;
 

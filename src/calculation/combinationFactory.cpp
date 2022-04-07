@@ -1,4 +1,5 @@
 #include "combinationFactory.h"
+#include "../market/marketRules.h"
 #include "../tests/checkers.h"
 #include <iostream>
 
@@ -15,6 +16,21 @@ namespace {
 		}
 		return result;
 	}
+
+	std::vector<double> getLiquidationRange(int aLeverage, double aMargin, int aSteps, double aMinOffset) {
+		std::vector<double> result;
+		auto liqPrice = market::marketData::getLiquidationPercent(aMargin, aLeverage);
+		if (aSteps > 0) {
+			auto stepSize = liqPrice / (aSteps + 1);
+			for (auto i = 0; i < aSteps; ++i) {
+				liqPrice -= stepSize;
+				result.push_back(liqPrice);
+			}
+		}
+		result.push_back(aMinOffset);
+		return result;
+	}
+
 	std::vector<algorithmData> tmpAllData;
 	algorithmData tmpData;
 }
@@ -94,7 +110,7 @@ void combinationFactory::generateDeal() {
 }
 
 void combinationFactory::generatePercent() {
-	for (auto liquidationOffsetPercent : iotaWithStep(minliquidationOffsetPercent, maxliquidationOffsetPercent + stepFloat, stepFloat)) {
+	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.leverage, orderSize, offsetSteps, minLiquidationOffsetPercent)) {
 		tmpData.liquidationOffsetPercent = liquidationOffsetPercent;
 		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
 			tmpData.minimumProfitPercent = minimumProfitPercent;
