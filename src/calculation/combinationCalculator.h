@@ -23,7 +23,7 @@ namespace calculation {
 			double RFSummary;
 			double stFactor;
 			double dealPercent;
-			double liquidationOffsetPercent;
+			double stopLossPercent;
 			double minimumProfitPercent;
 			double dynamicSLPercent;
 			size_t profitableOrder;

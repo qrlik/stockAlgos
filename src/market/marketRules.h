@@ -17,6 +17,7 @@ namespace market {
 		static marketData* getInstance();
 		static double getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong);
 		static double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong);
+		static double getLiquidationPercent(double aMargin, int aLeverage);
 
 		const tierData& getTierData(double aPosition) const;
 		const std::vector<tierData>& getTiersData() const;

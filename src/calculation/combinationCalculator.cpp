@@ -1,4 +1,5 @@
 #include "combinationCalculator.h"
+#include "../market/marketRules.h"
 #include "../structs/algorithmData.h"
 #include "../utils/utils.h"
 #include <execution>
@@ -98,7 +99,10 @@ calculationSystem::finalData calculationSystem::getData(const algorithm::moneyMa
 	result.stFactor = aMM.stFactor;
 	result.dealPercent = aMM.dealPercent;
 	result.leverage = aMM.leverage;
-	result.liquidationOffsetPercent = aMM.liquidationOffsetPercent;
+	const auto liqPercent = (aMM.orderSize > 0.0)
+		? market::marketData::getInstance()->getLiquidationPercent(aMM.orderSize, aMM.leverage)
+		: market::marketData::getInstance()->getLeverageLiquidationRange(aMM.leverage).first;
+	result.stopLossPercent = liqPercent - aMM.liquidationOffsetPercent;
 	result.minimumProfitPercent = aMM.minimumProfitPercent;
 	result.dynamicSLPercent = aMM.dynamicStopLossModule.dynamicSLPercent;
 	result.dynamicStopLossTrendMode = aMM.dynamicStopLossModule.trendMode;
@@ -145,7 +149,7 @@ void calculationSystem::saveFinalData() {
 		<< std::setw(12) << "STFactor"
 		<< std::setw(12) << "Deal %"
 		<< std::setw(7) << "Level"
-		//<< std::setw(12) << "SL %"
+		<< std::setw(12) << "SL %"
 		<< std::setw(12) << "MinPrf %"
 		<< std::setw(12) << "DSL %"
 		<< std::setw(10) << "DSLTrend"
@@ -182,7 +186,7 @@ void calculationSystem::saveFinalData() {
 			<< std::setw(12) << data.stFactor
 			<< std::setw(12) << data.dealPercent
 			<< std::setw(7) << data.leverage
-			//<< std::setw(12) << data.liquidationOffsetPercent
+			<< std::setw(12) << data.stopLossPercent
 			<< std::setw(12) << data.minimumProfitPercent
 			<< std::setw(12) << data.dynamicSLPercent
 			<< std::setw(10) << data.dynamicStopLossTrendMode
