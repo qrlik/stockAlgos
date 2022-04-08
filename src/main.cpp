@@ -6,10 +6,10 @@
 int main() {
 	tests::runTests();
 
-	//calculation::singleCalculation();
+	calculation::singleCalculation();
 
-	calculation::calculationSystem system(eCandleInterval::TWO_HOUR);
-	system.calculate();
+	//calculation::calculationSystem system(eCandleInterval::ONE_HOUR);
+	//system.calculate();
 
 	return 0;
 }

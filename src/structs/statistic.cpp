@@ -67,7 +67,8 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 	if (aCash < currentLossLowCash) {
 		currentLossLowCash = aCash;
 	}
-	if ((currentLossHighCash - currentLossLowCash) > (maxLossHighCash - maxLossLowCash)) {
+	if (utils::isEqual(maxLossHighCash, 0.0) && !utils::isEqual(currentLossHighCash, 0.0)
+		|| (currentLossLowCash / currentLossHighCash) < (maxLossLowCash / maxLossHighCash)) {
 		maxLossHighCash = currentLossHighCash;
 		maxLossLowCash = currentLossLowCash;
 	}

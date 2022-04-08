@@ -118,7 +118,9 @@
 			},
 			"stats": {
 				"profitableOrder": 1,
-				"profitableStreak": 1
+				"profitableStreak": 1,
+				"maxLossHighCash": 105.678073,
+				"maxLossLowCash": 105.678073
 			},
 			"state": "NONE",
 			"cash": 105.678073,
