@@ -87,9 +87,9 @@ void combinationFactory::generateSuperTrend() {
 
 	for (auto atrType : { market::eAtrType::RMA, market::eAtrType::EMA, market::eAtrType::WMA, market::eAtrType::SMA }) {
 		tmpData.atrType = atrType;
-		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + stepInt, stepInt)) {
+		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + atrSizeStep, atrSizeStep)) {
 			tmpData.atrSize = atrSize;
-			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stepFloat, stFactorStep)) {
+			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stFactorStep, stFactorStep)) {
 				tmpData.stFactor = stFactor;
 				generateDeal();
 			}
@@ -98,22 +98,20 @@ void combinationFactory::generateSuperTrend() {
 }
 
 void combinationFactory::generateDeal() {
-	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + stepFloat, stepFloat)) {
+	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + dealPercentStep, dealPercentStep)) {
 		tmpData.dealPercent = dealPercent;
 		tmpData.orderSize = orderSize;
 		tmpData.startCash = orderSize * 100.0 / dealPercent;
 		tmpData.stopCash = 0.4 * tmpData.startCash;
-		for (auto leverage : iotaWithStep(minLeverage, maxLeverage + stepInt, stepInt)) {
-			tmpData.leverage = leverage;
-			generatePercent();
-		}
+		tmpData.leverage = leverage;
+		generatePercent();
 	}
 }
 
 void combinationFactory::generatePercent() {
 	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.leverage, orderSize, offsetSteps, minLiquidationOffsetPercent)) {
 		tmpData.liquidationOffsetPercent = liquidationOffsetPercent;
-		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + stepFloat, stepFloat)) {
+		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + minProfitPercentStep, minProfitPercentStep)) {
 			tmpData.minimumProfitPercent = minimumProfitPercent;
 			generateDynamicSL();
 		}
@@ -121,12 +119,18 @@ void combinationFactory::generatePercent() {
 }
 
 void combinationFactory::generateDynamicSL() {
+	if (!useDynamicSLPercent) {
+		tmpData.dynamicSLTrendMode = true;
+		generateOpener();
+		return;
+	}
+
 	for (auto dynamicSLTrendMode : { true, false }) {
 		tmpData.dynamicSLTrendMode = dynamicSLTrendMode;
 		if (!dynamicSLTrendMode) {
 			const auto liquidationPercent = 100 / tmpData.leverage;
 			assert(maxDynamicSLPercent <= liquidationPercent);
-			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + stepFloat, stepFloat)) {
+			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + dynamicSLPercentStep, dynamicSLPercentStep)) {
 				tmpData.dynamicSLPercent = dynamicSLPercent;
 				generateOpener();
 			}

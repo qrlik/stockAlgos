@@ -78,7 +78,7 @@ finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
 	result.unprofitableOrder = stats.unprofitableOrder;
 	result.unprofitableStreak = stats.unprofitableStreak;
 	auto maxLoss = stats.maxLossHighCash - stats.maxLossLowCash;
-	auto maxLossPercent = maxLoss / stats.maxLossHighCash * 100;
+	auto maxLossPercent = (aMM.orderSize > 0.0) ? maxLoss / aMM.startCash * 100 : maxLoss / stats.maxLossHighCash * 100;
 	result.maxLossPercent = maxLossPercent;
 	result.summaryLoss = stats.summaryLoss;
 	if (result.cash > aMM.startCash) {

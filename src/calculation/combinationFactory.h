@@ -31,32 +31,35 @@ namespace calculation {
 
 		const int minAtrSize = 15;
 		const int maxAtrSize = 15;
-		const double minStFactor = 2.0;
-		const double maxStFactor = 10.0;
+		const int atrSizeStep = 5;
+
+		const double minStFactor = 1.0;
+		const double maxStFactor = 20.0;
 		const double stFactorStep = 1.0;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
-		const int minLeverage = 100;
-		const int maxLeverage = 100;
+		const double dealPercentStep = 0.25;
+
+		const int leverage = 100;
 		const double orderSize = 2500.0;
 
 		const double minLiquidationOffsetPercent = 0.05;
 		const int offsetSteps = 0;
 
-		const double minMinProfitPercent = 0.25;
-		const double maxMinProfitPercent = 2.5;
+		const double minMinProfitPercent = 1.0;
+		const double maxMinProfitPercent = 5.0;
+		const double minProfitPercentStep = 1.0;
 
-		const double minDynamicSLPercent = 0.25;
-		const double maxDynamicSLPercent = 1.0;
+		const double minDynamicSLPercent = 2.0;
+		const double maxDynamicSLPercent = 10.0;
+		const double dynamicSLPercentStep = 1.0;
+		const bool useDynamicSLPercent = true;
 
 		const int minTrendActivationWaitRange = 0;
 		const int maxTrendActivationWaitRange = 5;
 		const int minStopLossWaitRange = 0;
 		const int maxStopLossWaitRange = 5;
-
-		const double stepFloat = 0.25;
-		const int stepInt = 5;
 
 		bool inited = false;
 	};
