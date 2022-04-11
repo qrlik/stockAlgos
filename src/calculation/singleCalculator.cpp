@@ -10,9 +10,9 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-	data.atrType = market::eAtrType::SMA;
+	data.atrType = market::eAtrType::RMA;
 	data.atrSize = 15;
-	data.stFactor = 10.0;
+	data.stFactor = 18.0;
 
 	data.dealPercent = 5.0;
 	data.leverage = 100;
@@ -22,7 +22,7 @@ void calculation::singleCalculation() {
 	data.orderSize = 2500.0;
 
 	data.liquidationOffsetPercent = 0.05;
-	data.minimumProfitPercent = 2.5;
+	data.minimumProfitPercent = 0.5;
 
 	data.dynamicSLPercent = -1.0;
 	data.dynamicSLTrendMode = true;
@@ -30,20 +30,20 @@ void calculation::singleCalculation() {
 	data.touchOpenerActivationWaitMode = false;
 
 	data.breakOpenerEnabled = true;
-	data.breakOpenerActivationWaitMode = true;
+	data.breakOpenerActivationWaitMode = false;
 	data.alwaysUseNewTrend = true;
 
-	data.activationWaiterResetAllowed = true;
-	data.activationWaiterRange = 4;
+	data.activationWaiterResetAllowed = false;
+	data.activationWaiterRange = -1;
 	data.activationWaiterFullCandleCheck = false;
 
 	data.stopLossWaiterEnabled = true;
-	data.stopLossWaiterResetAllowed = false;
+	data.stopLossWaiterResetAllowed = true;
 	data.stopLossWaiterRange = 3;
 	data.stopLossWaiterFullCandleCheck = true;
 
 	tests::checkAlgorithmData(data);
-	auto json = utils::readFromJson("assets/candles/3year/1h");
+	auto json = utils::readFromJson("assets/candles/3year/2h");
 	auto candles = utils::parseCandles(json);
 
 	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);

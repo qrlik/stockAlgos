@@ -19,12 +19,12 @@ namespace {
 
 	std::vector<double> getLiquidationRange(int aLeverage, double aMargin, int aSteps, double aMinOffset) {
 		std::vector<double> result;
-		auto liqPrice = market::marketData::getLiquidationPercent(aMargin, aLeverage);
+		auto liqPercent = market::marketData::getLiquidationPercent(aMargin, aLeverage);
 		if (aSteps > 0) {
-			auto stepSize = liqPrice / (aSteps + 1);
+			auto stepSize = liqPercent / (aSteps + 1);
 			for (auto i = 0; i < aSteps; ++i) {
-				liqPrice -= stepSize;
-				result.push_back(liqPrice);
+				liqPercent -= stepSize;
+				result.push_back(liqPercent);
 			}
 		}
 		result.push_back(aMinOffset);
@@ -128,8 +128,6 @@ void combinationFactory::generateDynamicSL() {
 	for (auto dynamicSLTrendMode : { true, false }) {
 		tmpData.dynamicSLTrendMode = dynamicSLTrendMode;
 		if (!dynamicSLTrendMode) {
-			const auto liquidationPercent = 100 / tmpData.leverage;
-			assert(maxDynamicSLPercent <= liquidationPercent);
 			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + dynamicSLPercentStep, dynamicSLPercentStep)) {
 				tmpData.dynamicSLPercent = dynamicSLPercent;
 				generateOpener();
