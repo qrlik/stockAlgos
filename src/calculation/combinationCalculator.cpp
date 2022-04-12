@@ -161,6 +161,36 @@ namespace {
 		aOutput << std::fixed;
 	}
 
+	void addStats(Json& aStats, const finalData& aData) {
+		const auto incrementCb = [](Json& aJson) {
+			if (aJson.is_null()) {
+				aJson = 0;
+			}
+			aJson = aJson.get<int>() + 1;
+		};
+		incrementCb(aStats["atrType"][aData.atrType]);
+		incrementCb(aStats["maxLossPercent"][std::to_string(int(aData.maxLossPercent))]);
+		incrementCb(aStats["stFactor"][std::to_string(aData.stFactor)]);
+		incrementCb(aStats["dealPercent"][std::to_string(aData.dealPercent)]);
+		incrementCb(aStats["stopLossPercent"][std::to_string(aData.stopLossPercent)]);
+		incrementCb(aStats["minimumProfitPercent"][std::to_string(aData.minimumProfitPercent)]);
+		incrementCb(aStats["dynamicSLPercent"][std::to_string(aData.dynamicSLPercent)]);
+		incrementCb(aStats["atrSize"][std::to_string(aData.atrSize)]);
+		incrementCb(aStats["leverage"][std::to_string(aData.leverage)]);
+		incrementCb(aStats["activationWaiterModuleActivationWaitRange"][std::to_string(aData.activationWaiterModuleActivationWaitRange)]);
+		incrementCb(aStats["stopLossWaiterModuleStopLossWaitRange"][std::to_string(aData.stopLossWaiterModuleStopLossWaitRange)]);
+		incrementCb(aStats["dynamicStopLossTrendMode"][std::to_string(aData.dynamicStopLossTrendMode)]);
+		incrementCb(aStats["trendTouchOpenerModuleActivationWaitMode"][std::to_string(aData.trendTouchOpenerModuleActivationWaitMode)]);
+		incrementCb(aStats["trendBreakOpenerModuleEnabled"][std::to_string(aData.trendBreakOpenerModuleEnabled)]);
+		incrementCb(aStats["trendBreakOpenerModuleActivationWaitMode"][std::to_string(aData.trendBreakOpenerModuleActivationWaitMode)]);
+		incrementCb(aStats["trendBreakOpenerModuleAlwaysUseNewTrend"][std::to_string(aData.trendBreakOpenerModuleAlwaysUseNewTrend)]);
+		incrementCb(aStats["activationWaiterModuleResetAllowed"][std::to_string(aData.activationWaiterModuleResetAllowed)]);
+		incrementCb(aStats["activationWaiterModuleFullCandleCheck"][std::to_string(aData.activationWaiterModuleFullCandleCheck)]);
+		incrementCb(aStats["stopLossWaiterModuleEnabled"][std::to_string(aData.stopLossWaiterModuleEnabled)]);
+		incrementCb(aStats["stopLossWaiterModuleResetAllowed"][std::to_string(aData.stopLossWaiterModuleResetAllowed)]);
+		incrementCb(aStats["stopLossWaiterModuleFullCandleCheck"][std::to_string(aData.stopLossWaiterModuleFullCandleCheck)]);
+	}
+
 	void addData(std::ofstream& aOutput, const finalData& aData) {
 		aOutput
 			<< std::setw(24) << aData.cash
@@ -246,7 +276,7 @@ void calculationSystem::saveFinalData() {
 	}
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
 	auto positives = std::count_if(finalVector.cbegin(), finalVector.cend(), [](const auto& data) { return data.cash > data.startCash; });
-	const auto allowedOutput = positives / 4;
+	const auto allowedOutput = positives / 5;
 
 	std::ofstream fullOutput("fullData.txt");
 	addHeadlines(fullOutput);
@@ -255,14 +285,22 @@ void calculationSystem::saveFinalData() {
 
 	auto counter = 0;
 	Json jsonData;
+	Json stats;
 	for (const auto& data : finalVector) {
 		addData(fullOutput, data);
 		if (counter < allowedOutput) {
 			addData(positiveOutput, data);
+			addStats(stats, data);
 			jsonData.push_back(getJson(data));
 			++counter;
 		}
 	}
-	std::ofstream jsonOutput("jsonData.json");
-	jsonOutput << jsonData;
+	{
+		std::ofstream jsonOutput("jsonData.json");
+		jsonOutput << std::setw(4) << jsonData;
+	}
+	{
+		std::ofstream statsOutput("stats.json");
+		statsOutput << std::setw(4) << stats;
+	}
 }

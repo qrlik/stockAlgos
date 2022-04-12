@@ -101,8 +101,8 @@ void combinationFactory::generateDeal() {
 	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + dealPercentStep, dealPercentStep)) {
 		tmpData.dealPercent = dealPercent;
 		tmpData.orderSize = orderSize;
-		tmpData.startCash = orderSize * 100.0 / dealPercent;
-		tmpData.stopCash = 0.4 * tmpData.startCash;
+		tmpData.stopCash = orderSize * 100.0 / dealPercent;
+		tmpData.startCash = tmpData.stopCash / 0.4;
 		tmpData.leverage = leverage;
 		generatePercent();
 	}
