@@ -161,34 +161,40 @@ namespace {
 		aOutput << std::fixed;
 	}
 
-	void addStats(Json& aStats, const finalData& aData) {
-		const auto incrementCb = [](Json& aJson) {
-			if (aJson.is_null()) {
-				aJson = 0;
+	void addStats(Json& aStats, const finalData& aData, double aWeight) {
+		const auto incrementCb = [aWeight](Json& aJson, const std::string& aName) {
+			auto& counts = aJson["counts"][aName];
+			if (counts.is_null()) {
+				counts = 0;
 			}
-			aJson = aJson.get<int>() + 1;
+			counts = counts.get<int>() + 1;
+
+			auto& weight = aJson["weight"][aName];
+			if (weight.is_null()) {
+				weight = 0.0;
+			}
+			weight = weight.get<double>() + aWeight;
 		};
-		incrementCb(aStats["atrType"][aData.atrType]);
-		incrementCb(aStats["maxLossPercent"][std::to_string(int(aData.maxLossPercent))]);
-		incrementCb(aStats["stFactor"][std::to_string(aData.stFactor)]);
-		incrementCb(aStats["dealPercent"][std::to_string(aData.dealPercent)]);
-		incrementCb(aStats["stopLossPercent"][std::to_string(aData.stopLossPercent)]);
-		incrementCb(aStats["minimumProfitPercent"][std::to_string(aData.minimumProfitPercent)]);
-		incrementCb(aStats["dynamicSLPercent"][std::to_string(aData.dynamicSLPercent)]);
-		incrementCb(aStats["atrSize"][std::to_string(aData.atrSize)]);
-		incrementCb(aStats["leverage"][std::to_string(aData.leverage)]);
-		incrementCb(aStats["activationWaiterModuleActivationWaitRange"][std::to_string(aData.activationWaiterModuleActivationWaitRange)]);
-		incrementCb(aStats["stopLossWaiterModuleStopLossWaitRange"][std::to_string(aData.stopLossWaiterModuleStopLossWaitRange)]);
-		incrementCb(aStats["dynamicStopLossTrendMode"][std::to_string(aData.dynamicStopLossTrendMode)]);
-		incrementCb(aStats["trendTouchOpenerModuleActivationWaitMode"][std::to_string(aData.trendTouchOpenerModuleActivationWaitMode)]);
-		incrementCb(aStats["trendBreakOpenerModuleEnabled"][std::to_string(aData.trendBreakOpenerModuleEnabled)]);
-		incrementCb(aStats["trendBreakOpenerModuleActivationWaitMode"][std::to_string(aData.trendBreakOpenerModuleActivationWaitMode)]);
-		incrementCb(aStats["trendBreakOpenerModuleAlwaysUseNewTrend"][std::to_string(aData.trendBreakOpenerModuleAlwaysUseNewTrend)]);
-		incrementCb(aStats["activationWaiterModuleResetAllowed"][std::to_string(aData.activationWaiterModuleResetAllowed)]);
-		incrementCb(aStats["activationWaiterModuleFullCandleCheck"][std::to_string(aData.activationWaiterModuleFullCandleCheck)]);
-		incrementCb(aStats["stopLossWaiterModuleEnabled"][std::to_string(aData.stopLossWaiterModuleEnabled)]);
-		incrementCb(aStats["stopLossWaiterModuleResetAllowed"][std::to_string(aData.stopLossWaiterModuleResetAllowed)]);
-		incrementCb(aStats["stopLossWaiterModuleFullCandleCheck"][std::to_string(aData.stopLossWaiterModuleFullCandleCheck)]);
+		incrementCb(aStats["atrType"], aData.atrType);
+		incrementCb(aStats["stFactor"], std::to_string(aData.stFactor));
+		incrementCb(aStats["dealPercent"], std::to_string(aData.dealPercent));
+		incrementCb(aStats["stopLossPercent"], std::to_string(aData.stopLossPercent));
+		incrementCb(aStats["minimumProfitPercent"], std::to_string(aData.minimumProfitPercent));
+		incrementCb(aStats["dynamicSLPercent"], std::to_string(aData.dynamicSLPercent));
+		incrementCb(aStats["atrSize"], std::to_string(aData.atrSize));
+		incrementCb(aStats["leverage"], std::to_string(aData.leverage));
+		incrementCb(aStats["activationWaiterModuleActivationWaitRange"], std::to_string(aData.activationWaiterModuleActivationWaitRange));
+		incrementCb(aStats["stopLossWaiterModuleStopLossWaitRange"], std::to_string(aData.stopLossWaiterModuleStopLossWaitRange));
+		incrementCb(aStats["dynamicStopLossTrendMode"], std::to_string(aData.dynamicStopLossTrendMode));
+		incrementCb(aStats["trendTouchOpenerModuleActivationWaitMode"], std::to_string(aData.trendTouchOpenerModuleActivationWaitMode));
+		incrementCb(aStats["trendBreakOpenerModuleEnabled"], std::to_string(aData.trendBreakOpenerModuleEnabled));
+		incrementCb(aStats["trendBreakOpenerModuleActivationWaitMode"], std::to_string(aData.trendBreakOpenerModuleActivationWaitMode));
+		incrementCb(aStats["trendBreakOpenerModuleAlwaysUseNewTrend"], std::to_string(aData.trendBreakOpenerModuleAlwaysUseNewTrend));
+		incrementCb(aStats["activationWaiterModuleResetAllowed"], std::to_string(aData.activationWaiterModuleResetAllowed));
+		incrementCb(aStats["activationWaiterModuleFullCandleCheck"], std::to_string(aData.activationWaiterModuleFullCandleCheck));
+		incrementCb(aStats["stopLossWaiterModuleEnabled"], std::to_string(aData.stopLossWaiterModuleEnabled));
+		incrementCb(aStats["stopLossWaiterModuleResetAllowed"], std::to_string(aData.stopLossWaiterModuleResetAllowed));
+		incrementCb(aStats["stopLossWaiterModuleFullCandleCheck"], std::to_string(aData.stopLossWaiterModuleFullCandleCheck));
 	}
 
 	void addData(std::ofstream& aOutput, const finalData& aData) {
@@ -286,11 +292,12 @@ void calculationSystem::saveFinalData() {
 	auto counter = 0;
 	Json jsonData;
 	Json stats;
+	const auto maxProfit = finalVector[0].cash - finalVector[0].startCash;
 	for (const auto& data : finalVector) {
 		addData(fullOutput, data);
 		if (counter < allowedOutput) {
 			addData(positiveOutput, data);
-			addStats(stats, data);
+			addStats(stats, data, std::pow((data.cash - data.startCash) / maxProfit, 2));
 			jsonData.push_back(getJson(data));
 			++counter;
 		}
@@ -300,6 +307,24 @@ void calculationSystem::saveFinalData() {
 		jsonOutput << std::setw(4) << jsonData;
 	}
 	{
+		for (auto& var : stats) {
+			auto sum = 0.0;
+			for (auto& value : var["counts"]) {
+				sum += value.get<int>();
+			}
+			for (auto& value : var["counts"]) {
+				value = value.get<int>() / sum * 100.0;
+			}
+
+			sum = 0.0;
+			for (auto& value : var["weight"]) {
+				sum += value.get<double>();
+			}
+			for (auto& value : var["weight"]) {
+				value = value.get<double>() / sum * 100.0;
+			}
+		}
+
 		std::ofstream statsOutput("stats.json");
 		statsOutput << std::setw(4) << stats;
 	}
