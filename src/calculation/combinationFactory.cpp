@@ -102,7 +102,7 @@ void combinationFactory::generateDeal() {
 		tmpData.dealPercent = dealPercent;
 		tmpData.orderSize = orderSize;
 		tmpData.stopCash = orderSize * 100.0 / dealPercent;
-		tmpData.startCash = tmpData.stopCash / 0.4;
+		tmpData.startCash = tmpData.stopCash / stopCashFactor;
 		tmpData.leverage = leverage;
 		generatePercent();
 	}

@@ -31,6 +31,8 @@ namespace calculation {
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
 		const size_t threadsCount = 8;
+		const double profitFactor = 2.0;
+		const int parabolaDegree = 7;
 
 		double progress = 0.0;
 		size_t combinations = 0;

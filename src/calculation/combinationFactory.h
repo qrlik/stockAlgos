@@ -28,6 +28,7 @@ namespace calculation {
 		std::vector<size_t> indexes;
 		size_t combinations = 0;
 		const size_t threadsCount = 1;
+		const double stopCashFactor = 0.4;
 
 		const int minAtrSize = 15;
 		const int maxAtrSize = 15;
