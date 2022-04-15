@@ -2,6 +2,7 @@
 #include "../structs/algorithmData.h"
 #include <functional>
 #include <optional>
+#include <unordered_set>
 
 namespace calculation {
 
@@ -30,13 +31,13 @@ namespace calculation {
 		const size_t threadsCount = 1;
 		const double stopCashFactor = 0.4;
 
-		const int minAtrSize = 15;
-		const int maxAtrSize = 15;
+		const int minAtrSize = 50;
+		const int maxAtrSize = 50;
 		const int atrSizeStep = 5;
 
 		const double minStFactor = 1.0;
-		const double maxStFactor = 21.0;
-		const double stFactorStep = 2.0;
+		const double maxStFactor = 25.0;
+		const double stFactorStep = 0.25;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
@@ -49,13 +50,16 @@ namespace calculation {
 		const int offsetSteps = 0;
 
 		const double minMinProfitPercent = 1.0;
-		const double maxMinProfitPercent = 5.0;
+		const double maxMinProfitPercent = 1.0;
 		const double minProfitPercentStep = 1.0;
 
-		const double minDynamicSLPercent = 2.5;
-		const double maxDynamicSLPercent = 15.0;
-		const double dynamicSLPercentStep = 2.5;
-		const bool useDynamicSLPercent = true;
+		const double minDynamicSLPercent = 10.0;
+		const double maxDynamicSLPercent = 20.0;
+		const double dynamicSLPercentStep = 1.0;
+
+		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
+		const std::unordered_set<bool> dynamicSLTrendModeFlags = { true, false };
+		const std::unordered_set<bool> breakOpenerEnabledFlags = { true };
 
 		const int minTrendActivationWaitRange = 0;
 		const int maxTrendActivationWaitRange = 5;

@@ -119,13 +119,7 @@ void combinationFactory::generatePercent() {
 }
 
 void combinationFactory::generateDynamicSL() {
-	if (!useDynamicSLPercent) {
-		tmpData.dynamicSLTrendMode = true;
-		generateOpener();
-		return;
-	}
-
-	for (auto dynamicSLTrendMode : { true, false }) {
+	for (auto dynamicSLTrendMode : dynamicSLTrendModeFlags) {
 		tmpData.dynamicSLTrendMode = dynamicSLTrendMode;
 		if (!dynamicSLTrendMode) {
 			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + dynamicSLPercentStep, dynamicSLPercentStep)) {
@@ -143,7 +137,7 @@ void combinationFactory::generateDynamicSL() {
 void combinationFactory::generateOpener() {
 	for (auto touchOpenerActivationWaitMode : { true, false }) {
 		tmpData.touchOpenerActivationWaitMode = touchOpenerActivationWaitMode;
-		for (auto breakOpenerEnabled : { true, false }) {
+		for (auto breakOpenerEnabled : breakOpenerEnabledFlags) {
 			tmpData.breakOpenerEnabled = breakOpenerEnabled;
 			if (breakOpenerEnabled) {
 				for (auto breakOpenerActivationWaitMode : { true, false }) {
@@ -185,7 +179,7 @@ void combinationFactory::generateActivation() {
 }
 
 void combinationFactory::generateStop() {
-	for (auto stopLossWaiterEnabled : { true, false }) {
+	for (auto stopLossWaiterEnabled : stopLossWaiterEnabledFlags) {
 		tmpData.stopLossWaiterEnabled = stopLossWaiterEnabled;
 		if (stopLossWaiterEnabled) {
 			for (auto stopLossWaiterResetAllowed : { true, false }) {
