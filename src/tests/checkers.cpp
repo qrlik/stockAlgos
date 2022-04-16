@@ -16,7 +16,7 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 	result &= aData.leverage > 0 && aData.leverage <= 125;
 
 	result &= aData.startCash > market::marketData::getInstance()->getMinNotionalValue() / aData.leverage;
-	result &= aData.startCash > aData.stopCash;
+	result &= aData.startCash > aData.maxLossCash;
 
 	const auto minLiqPercent = (aData.orderSize > 0.0)
 		? market::marketData::getLiquidationPercent(aData.orderSize, aData.leverage) 

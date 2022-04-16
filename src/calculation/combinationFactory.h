@@ -59,9 +59,9 @@ namespace calculation {
 		const double maxDynamicSLPercent = 30.0;
 		const double dynamicSLPercentStep = 0.5;
 
-		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
-		const std::unordered_set<bool> breakOpenerEnabledFlags = { true };
-		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
+		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true, false }; // true
+		const std::unordered_set<bool> breakOpenerEnabledFlags = { true, false }; // true
+		const std::unordered_set<bool> dynamicSLTrendModeFlags = { true, false }; // false
 
 		const int minTrendActivationWaitRange = 0;
 		const int maxTrendActivationWaitRange = 5;

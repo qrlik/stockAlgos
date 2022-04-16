@@ -18,7 +18,7 @@ void calculation::singleCalculation() {
 	data.leverage = 100;
 
 	data.startCash = 50000.0;
-	data.stopCash = 20000.0;
+	data.maxLossPercent = 60.0;
 	data.orderSize = 2500.0;
 
 	data.liquidationOffsetPercent = 0.05;

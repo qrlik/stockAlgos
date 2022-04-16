@@ -31,7 +31,7 @@ namespace calculation {
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
 		const size_t threadsCount = 8;
-		const double weightPrecision = 0.01;
+		const double weightPrecision = 0.001;
 		const int parabolaDegree = 7;
 
 		double progress = 0.0;

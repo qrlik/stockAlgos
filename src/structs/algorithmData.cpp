@@ -91,7 +91,8 @@ Json algorithmData::toJson() const {
 	result["leverage"] = leverage;
 
 	result["startCash"] = startCash;
-	result["stopCash"] = stopCash;
+	result["maxLossPercent"] = maxLossPercent;
+	result["maxLossCash"] = maxLossCash;
 
 	result["liquidationOffsetPercent"] = liquidationOffsetPercent;
 	result["minimumProfitPercent"] = minimumProfitPercent;

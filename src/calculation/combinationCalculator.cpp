@@ -278,7 +278,7 @@ namespace {
 
 void calculationSystem::saveFinalData() {
 	std::vector<finalData> finalVector;
-	auto size = 0;
+	size_t size = 0;
 	for (auto& threadData : threadsData) {
 		size += threadData.finalData.size();
 	}
