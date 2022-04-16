@@ -285,6 +285,7 @@ void calculationSystem::saveFinalData() {
 	finalVector.reserve(size);
 	for (auto& threadData : threadsData) {
 		std::move(std::make_move_iterator(threadData.finalData.begin()), std::make_move_iterator(threadData.finalData.end()), std::back_inserter(finalVector));
+		threadData.finalData.clear();
 	}
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
 
