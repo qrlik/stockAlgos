@@ -43,7 +43,6 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	std::vector<candle> candles;
 	auto& threadInfo = threadsData[aThread];
 	const auto& threadData = aFactory.getThreadData(aThread);
-	threadInfo.finalData.reserve(threadData.size());
 	for (const auto& data : threadData) {
 		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
