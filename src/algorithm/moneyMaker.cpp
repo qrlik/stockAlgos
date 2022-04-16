@@ -113,12 +113,13 @@ bool moneyMaker::isNewTrendChanged() {
 	return false;
 }
 
-void moneyMaker::calculate(const std::vector<candle>& aCandles) {
+bool moneyMaker::calculate(const std::vector<candle>& aCandles) {
 	for (const auto& candle : aCandles) {
 		if (!doAction(candle)) {
-			break;
+			return false;
 		}
 	}
+	return true;
 }
 
 bool moneyMaker::doAction(const candle& aCandle) {

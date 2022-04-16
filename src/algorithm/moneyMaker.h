@@ -34,7 +34,7 @@ namespace algorithm {
 		static eState stateFromString(const std::string& aStr);
 
 		moneyMaker(const algorithmData& aData);
-		void calculate(const std::vector<candle>& aCandles);
+		bool calculate(const std::vector<candle>& aCandles);
 		bool operator==(const moneyMaker& aOther);
 
 		activationWaiter& getActivationWaiter() { return activationWaiterModule; }

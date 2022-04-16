@@ -52,8 +52,10 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(data);
-		moneyMaker.calculate(candles);
-		threadInfo.finalData.push_back(getData(moneyMaker));
+		const auto result = moneyMaker.calculate(candles);
+		if (result) {
+			threadInfo.finalData.push_back(getData(moneyMaker));
+		}
 		aFactory.incrementThreadIndex(aThread);
 		printProgress(aFactory.getCurrentIndex());
 	}
@@ -276,7 +278,11 @@ namespace {
 
 void calculationSystem::saveFinalData() {
 	std::vector<finalData> finalVector;
-	finalVector.reserve(combinations);
+	auto size = 0;
+	for (auto& threadData : threadsData) {
+		size += threadData.finalData.size();
+	}
+	finalVector.reserve(size);
 	for (auto& threadData : threadsData) {
 		std::move(std::make_move_iterator(threadData.finalData.begin()), std::make_move_iterator(threadData.finalData.end()), std::back_inserter(finalVector));
 	}
