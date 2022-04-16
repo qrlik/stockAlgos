@@ -10,22 +10,23 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-	data.atrType = market::eAtrType::RMA;
-	data.atrSize = 15;
-	data.stFactor = 18.0;
+	data.atrType = market::eAtrType::EMA;
+	data.atrSize = 50;
+	data.stFactor = 3.5;
 
 	data.dealPercent = 5.0;
 	data.leverage = 100;
 
-	data.startCash = 50000.0;
-	data.maxLossPercent = 60.0;
+	data.startCash = 75'000.0;
+	data.maxLossPercent = 35.0;
+	data.maxLossCash = 50'000.0;
 	data.orderSize = 2500.0;
 
 	data.liquidationOffsetPercent = 0.05;
-	data.minimumProfitPercent = 0.5;
+	data.minimumProfitPercent = 0.25;
 
-	data.dynamicSLPercent = -1.0;
-	data.dynamicSLTrendMode = true;
+	data.dynamicSLPercent = 32.0;
+	data.dynamicSLTrendMode = false;
 
 	data.touchOpenerActivationWaitMode = false;
 
@@ -38,9 +39,9 @@ void calculation::singleCalculation() {
 	data.activationWaiterFullCandleCheck = false;
 
 	data.stopLossWaiterEnabled = true;
-	data.stopLossWaiterResetAllowed = true;
-	data.stopLossWaiterRange = 3;
-	data.stopLossWaiterFullCandleCheck = true;
+	data.stopLossWaiterResetAllowed = false;
+	data.stopLossWaiterRange = 0;
+	data.stopLossWaiterFullCandleCheck = false;
 
 	tests::checkAlgorithmData(data);
 	auto json = utils::readFromJson("assets/candles/3year/2h");
