@@ -289,28 +289,30 @@ void calculationSystem::saveFinalData() {
 	}
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
 
-	std::ofstream positiveOutput("positiveData.txt");
-	addHeadlines(positiveOutput);
-
 	Json jsonData;
 	Json stats;
-	const auto maxProfit = finalVector[0].cash - finalVector[0].startCash;
-	for (const auto& data : finalVector) {
-		const auto profit = data.cash - data.startCash;
-		if (profit <= 0.0) {
-			break;
+	{
+		std::ofstream positiveOutput("positiveData.txt");
+		addHeadlines(positiveOutput);
+		const auto maxProfit = finalVector[0].cash - finalVector[0].startCash;
+		for (const auto& data : finalVector) {
+			const auto profit = data.cash - data.startCash;
+			if (profit <= 0.0) {
+				break;
+			}
+			const auto weight = std::pow(profit / maxProfit, parabolaDegree);
+			if (weight < weightPrecision) {
+				break;
+			}
+			addData(positiveOutput, data);
+			addStats(stats, data, weight);
+			jsonData.push_back(getJson(data));
 		}
-		const auto weight = std::pow(profit / maxProfit, parabolaDegree);
-		if (weight < weightPrecision) {
-			break;
-		}
-		addData(positiveOutput, data);
-		addStats(stats, data, weight);
-		jsonData.push_back(getJson(data));
 	}
 	{
 		std::ofstream jsonOutput("jsonData.json");
 		jsonOutput << jsonData;
+		jsonData.clear();
 	}
 	{
 		for (auto& var : stats) {
