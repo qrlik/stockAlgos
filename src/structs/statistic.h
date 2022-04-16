@@ -5,9 +5,9 @@
 struct statistic {
 	static void initStatisticFromJson(statistic& aStats, const Json& aJson);
 
-	statistic(double aStartCash);
+	statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash);
 	void onOpenOrder(bool isLong, bool aIsBreak);
-	void onCloseOrder(double aCash, double aProfit);
+	bool onCloseOrder(double aCash, double aProfit);
 	bool operator==(const statistic& aOther);
 
 	double maxLossHighCash = 0.0;
@@ -27,6 +27,8 @@ struct statistic {
 private:
 	double currentLossHighCash = 0.0;
 	double currentLossLowCash = 0.0;
+	double maxLossPercent = 0.0;
+	double maxLossCash = 0.0;
 	size_t currentStreak = 0;
 	bool lastOrderIsProfitable = false;
 	bool inited = false;

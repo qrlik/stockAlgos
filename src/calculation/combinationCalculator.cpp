@@ -289,14 +289,17 @@ void calculationSystem::saveFinalData() {
 	Json stats;
 	const auto maxProfit = finalVector[0].cash - finalVector[0].startCash;
 	for (const auto& data : finalVector) {
-		if (data.cash > data.startCash * profitFactor) {
-			addData(positiveOutput, data);
-			addStats(stats, data, std::pow((data.cash - data.startCash) / maxProfit, parabolaDegree));
-			jsonData.push_back(getJson(data));
-		}
-		else {
+		const auto profit = data.cash - data.startCash;
+		if (profit <= 0.0) {
 			break;
 		}
+		const auto weight = std::pow(profit / maxProfit, parabolaDegree);
+		if (weight < weightPrecision) {
+			break;
+		}
+		addData(positiveOutput, data);
+		addStats(stats, data, weight);
+		jsonData.push_back(getJson(data));
 	}
 	{
 		std::ofstream jsonOutput("jsonData.json");

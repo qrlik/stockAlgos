@@ -54,8 +54,7 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	fullCheck(aData.fullCheck),
 	startCash(aData.startCash),
 	cash(aData.startCash),
-	stopCash(aData.stopCash),
-	stats(aData.startCash) {}
+	stats(aData.startCash, aData.maxLossPercent, aData.maxLossCash) {}
 
 bool moneyMaker::operator==(const moneyMaker& aOther) {
 	assert(activationWaiterModule == aOther.activationWaiterModule);
@@ -226,8 +225,7 @@ void moneyMaker::closeOrder() {
 	cash = cash + order.getMargin() + profit;
 	order.reset();
 	order.setFullCheck(fullCheck);
-	stats.onCloseOrder(cash, profit);
-	if (cash <= stopCash) {
+	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 		stopCashBreak = true;
 	}
 }

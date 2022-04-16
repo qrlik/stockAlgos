@@ -100,7 +100,6 @@ namespace algorithm {
 		const double orderSize = -1.0;
 
 		const double startCash = 0.0;
-		const double stopCash = 0.0;
 		double cash = 0.0;
 		const int leverage = 0;
 

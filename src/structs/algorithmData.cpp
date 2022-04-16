@@ -23,8 +23,11 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 		else if (field == "startCash") {
 			result.startCash = value.get<double>();
 		}
-		else if (field == "stopCash") {
-			result.stopCash = value.get<double>();
+		else if (field == "maxLossPercent") {
+			result.maxLossPercent = value.get<double>();
+		}
+		else if (field == "maxLossCash") {
+			result.maxLossCash = value.get<double>();
 		}
 		else if (field == "liquidationOffsetPercent") {
 			result.liquidationOffsetPercent = value.get<double>();

@@ -29,15 +29,14 @@ namespace calculation {
 		std::vector<size_t> indexes;
 		size_t combinations = 0;
 		const size_t threadsCount = 1;
-		const double stopCashFactor = 0.4;
 
 		const int minAtrSize = 50;
 		const int maxAtrSize = 50;
 		const int atrSizeStep = 5;
 
-		const double minStFactor = 1.0;
-		const double maxStFactor = 25.0;
-		const double stFactorStep = 0.25;
+		const double minStFactor = 0.5;
+		const double maxStFactor = 20.0;
+		const double stFactorStep = 0.5;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
@@ -45,21 +44,24 @@ namespace calculation {
 
 		const int leverage = 100;
 		const double orderSize = 2500.0;
+		const double startCash = 75'000;
+		const double maxLossCash = 25'000;
+		const double maxLossPercent = 35;
 
 		const double minLiquidationOffsetPercent = 0.05;
 		const int offsetSteps = 0;
 
-		const double minMinProfitPercent = 1.0;
-		const double maxMinProfitPercent = 1.0;
-		const double minProfitPercentStep = 1.0;
+		const double minMinProfitPercent = 0.25;
+		const double maxMinProfitPercent = 0.25;
+		const double minProfitPercentStep = 0.25;
 
-		const double minDynamicSLPercent = 10.0;
-		const double maxDynamicSLPercent = 20.0;
-		const double dynamicSLPercentStep = 1.0;
+		const double minDynamicSLPercent = 0.5;
+		const double maxDynamicSLPercent = 30.0;
+		const double dynamicSLPercentStep = 0.5;
 
 		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
-		const std::unordered_set<bool> dynamicSLTrendModeFlags = { true, false };
 		const std::unordered_set<bool> breakOpenerEnabledFlags = { true };
+		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
 
 		const int minTrendActivationWaitRange = 0;
 		const int maxTrendActivationWaitRange = 5;

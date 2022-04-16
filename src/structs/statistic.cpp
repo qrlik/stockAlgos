@@ -40,9 +40,11 @@ void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
 	}
 }
 
-statistic::statistic(double aStartCash): 
+statistic::statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash):
 	currentLossHighCash(aStartCash),
-	currentLossLowCash(aStartCash) {}
+	currentLossLowCash(aStartCash),
+	maxLossPercent(aMaxLossPercent),
+	maxLossCash(aMaxLossCash) {}
 
 void statistic::onOpenOrder(bool isLong, bool aIsBreak) {
 	if (aIsBreak) {
@@ -59,7 +61,7 @@ void statistic::onOpenOrder(bool isLong, bool aIsBreak) {
 	}
 }
 
-void statistic::onCloseOrder(double aCash, double aProfit) {
+bool statistic::onCloseOrder(double aCash, double aProfit) {
 	if (aCash > currentLossHighCash) {
 		currentLossHighCash = aCash;
 		currentLossLowCash = aCash;
@@ -71,6 +73,12 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 		|| (currentLossLowCash / currentLossHighCash) < (maxLossLowCash / maxLossHighCash)) {
 		maxLossHighCash = currentLossHighCash;
 		maxLossLowCash = currentLossLowCash;
+	}
+
+	const auto curMaxLoss = maxLossHighCash - maxLossLowCash;
+	const auto curMaxLossPercent = curMaxLoss / maxLossHighCash * 100.0;
+	if (curMaxLossPercent > maxLossPercent || (maxLossCash > 0.0 && curMaxLoss > maxLossCash)) {
+		return true;
 	}
 
 	const bool isProfitable = aProfit > 0.0;
@@ -92,6 +100,7 @@ void statistic::onCloseOrder(double aCash, double aProfit) {
 		unprofitableStreak = std::max(unprofitableStreak, currentStreak);
 		summaryLoss += std::abs(aProfit);
 	}
+	return false;
 }
 
 bool statistic::operator==(const statistic& aOther) {

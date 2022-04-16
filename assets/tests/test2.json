@@ -10,7 +10,7 @@
 		"leverage": 100,
 
 		"startCash": 100.0,
-		"stopCash": 40.0,
+		"maxLossPercent": 60.0,
 
 		"liquidationOffsetPercent": 0.05,
 		"minimumProfitPercent": 0.1,
