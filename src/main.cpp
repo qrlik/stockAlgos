@@ -12,7 +12,7 @@ int main() {
 
 	auto start = std::chrono::steady_clock::now();
 
-	calculation::calculationSystem system(eCandleInterval::THIRTY_MIN);
+	calculation::calculationSystem system("BTCUSDT", eCandleInterval::TWO_HOUR);
 	system.calculate();
 
 	auto end = std::chrono::steady_clock::now();;

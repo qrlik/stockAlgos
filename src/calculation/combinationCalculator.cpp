@@ -9,8 +9,8 @@
 
 using namespace calculation;
 
-calculationSystem::calculationSystem(eCandleInterval aInterval) {
-	auto json = utils::readFromJson("assets/candles/3year/" + getCandleIntervalApiStr(aInterval));
+calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval aInterval) {
+	auto json = utils::readFromJson("assets/candles/" + aTicker + '/' + getCandleIntervalApiStr(aInterval));
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
@@ -275,6 +275,7 @@ void calculationSystem::saveFinalData() {
 	Json jsonData;
 	Json stats;
 	{
+		std::ofstream allData("allData.txt");
 		std::ofstream positiveOutput("positiveData.txt");
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
@@ -289,6 +290,7 @@ void calculationSystem::saveFinalData() {
 			if (maxProfit < 0.0) {
 				maxProfit = profit;
 			}
+			addData(allData, data);
 			const auto weight = std::pow(profit / maxProfit, parabolaDegree);
 			if (weight < weightPrecision) {
 				break;

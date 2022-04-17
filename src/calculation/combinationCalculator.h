@@ -8,7 +8,7 @@ namespace calculation {
 	struct finalData;
 	class calculationSystem {
 	public:
-		calculationSystem(eCandleInterval aInterval);
+		calculationSystem(const std::string& aTicker, eCandleInterval aInterval);
 		void calculate();
 	private:
 		void iterate(combinationFactory& aFactory, int aThread);
