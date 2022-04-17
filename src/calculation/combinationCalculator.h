@@ -31,7 +31,7 @@ namespace calculation {
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
 		const size_t threadsCount = 8;
-		const double weightPrecision = 0.001;
+		const double weightPrecision = 0.0001;
 		const int parabolaDegree = 7;
 
 		double progress = 0.0;
@@ -43,9 +43,7 @@ namespace calculation {
 		double cash;
 		double startCash; // no output
 		double maxLossPercent;
-		double summaryLoss;
-		double RFCommon;
-		double RFSummary;
+		double RF;
 		double stFactor;
 		double dealPercent;
 		double stopLossPercent;

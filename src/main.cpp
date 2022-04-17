@@ -12,11 +12,11 @@ int main() {
 
 	auto start = std::chrono::steady_clock::now();
 
-	calculation::calculationSystem system(eCandleInterval::TWO_HOUR);
+	calculation::calculationSystem system(eCandleInterval::THIRTY_MIN);
 	system.calculate();
 
 	auto end = std::chrono::steady_clock::now();;
-	std::cout << "CALCULATED TIME - [" << std::chrono::duration_cast<std::chrono::minutes>(end - start).count() << "] mins\n";
+	std::cout << "CALCULATED TIME - [" << std::chrono::duration_cast<std::chrono::minutes>(end - start).count() << "] mins\n\a";
 
 	return 0;
 }

@@ -81,17 +81,7 @@ finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
 	auto maxLoss = stats.maxLossHighCash - stats.maxLossLowCash;
 	auto maxLossPercent = (aMM.orderSize > 0.0) ? maxLoss / aMM.startCash * 100 : maxLoss / stats.maxLossHighCash * 100;
 	result.maxLossPercent = maxLossPercent;
-	result.summaryLoss = stats.summaryLoss;
-	if (result.cash > aMM.startCash) {
-		auto profit = result.cash - aMM.startCash;
-		auto profitPercent = profit / aMM.startCash * 100;
-		result.RFCommon = profitPercent / maxLossPercent;
-		result.RFSummary = profit / stats.summaryLoss;
-	}
-	else {
-		result.RFCommon = 0.0;
-		result.RFSummary = 0.0;
-	}
+	result.RF = result.cash - aMM.startCash / stats.summaryLoss;
 	result.touchTrendOrder = stats.touchTrendOrder;
 	result.breakTrendOrder = stats.breakTrendOrder;
 	result.longOrder = stats.longOrder;
@@ -132,9 +122,7 @@ namespace {
 			<< std::setw(8) << "UnprOrd"
 			<< std::setw(8) << "UnprStr"
 			<< std::setw(21) << "MaxLoss %"
-			<< std::setw(28) << "SumLoss $"
-			<< std::setw(12) << "RFCommon"
-			<< std::setw(12) << "RFSummary"
+			<< std::setw(12) << "RF"
 			<< std::setw(8) << "TochOrd"
 			<< std::setw(8) << "BrekOrd"
 			<< std::setw(8) << "LongOrd"
@@ -206,9 +194,7 @@ namespace {
 			<< std::setw(8) << aData.unprofitableOrder
 			<< std::setw(8) << aData.unprofitableStreak
 			<< std::setw(21) << aData.maxLossPercent
-			<< std::setw(28) << aData.summaryLoss
-			<< std::setw(12) << aData.RFCommon
-			<< std::setw(12) << aData.RFSummary
+			<< std::setw(12) << aData.RF
 			<< std::setw(8) << aData.touchTrendOrder
 			<< std::setw(8) << aData.breakTrendOrder
 			<< std::setw(8) << aData.longOrder
@@ -244,9 +230,7 @@ namespace {
 		result["UnprOrd"] = aData.unprofitableOrder;
 		result["UnprStr"] = aData.unprofitableStreak;
 		result["MaxLoss %"] = aData.maxLossPercent;
-		result["SumLoss $"] = aData.summaryLoss;
-		result["RFCommon"] = aData.RFCommon;
-		result["RFSummary"] = aData.RFSummary;
+		result["RF"] = aData.RF;
 		result["TochOrd"] = aData.touchTrendOrder;
 		result["BrekOrd"] = aData.breakTrendOrder;
 		result["LongOrd"] = aData.longOrder;
@@ -293,11 +277,17 @@ void calculationSystem::saveFinalData() {
 	{
 		std::ofstream positiveOutput("positiveData.txt");
 		addHeadlines(positiveOutput);
-		const auto maxProfit = finalVector[0].cash - finalVector[0].startCash;
+		auto maxProfit = -1.0;
 		for (const auto& data : finalVector) {
+			//if (data.unprofitableOrder / double(data.profitableOrder) > 5.0) {
+			//	continue;
+			//}
 			const auto profit = data.cash - data.startCash;
 			if (profit <= 0.0) {
 				break;
+			}
+			if (maxProfit < 0.0) {
+				maxProfit = profit;
 			}
 			const auto weight = std::pow(profit / maxProfit, parabolaDegree);
 			if (weight < weightPrecision) {
