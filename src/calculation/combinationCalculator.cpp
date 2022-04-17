@@ -281,9 +281,6 @@ void calculationSystem::saveFinalData() {
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
 		for (const auto& data : finalVector) {
-			//if (data.unprofitableOrder / double(data.profitableOrder) > 5.0) {
-			//	continue;
-			//}
 			const auto profit = data.cash - data.startCash;
 			if (profit <= 0.0) {
 				break;
@@ -292,6 +289,7 @@ void calculationSystem::saveFinalData() {
 				maxProfit = profit;
 			}
 			addData(allData, data);
+
 			const auto weight = std::pow(profit / maxProfit, parabolaDegree);
 			if (weight < weightPrecision) {
 				continue;
