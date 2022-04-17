@@ -277,6 +277,7 @@ void calculationSystem::saveFinalData() {
 	{
 		std::ofstream allData("allData.txt");
 		std::ofstream positiveOutput("positiveData.txt");
+		addHeadlines(allData);
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
 		for (const auto& data : finalVector) {
@@ -293,7 +294,7 @@ void calculationSystem::saveFinalData() {
 			addData(allData, data);
 			const auto weight = std::pow(profit / maxProfit, parabolaDegree);
 			if (weight < weightPrecision) {
-				break;
+				continue;
 			}
 			addData(positiveOutput, data);
 			addStats(stats, data, weight);
