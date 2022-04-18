@@ -32,7 +32,6 @@ namespace market {
 
 		std::deque<double> trList;
 		candle prevCandle;
-		double lastEma = 0.0;
 
 		double lastUpperBand = 0.0;
 		double lastLowerBand = 0.0;

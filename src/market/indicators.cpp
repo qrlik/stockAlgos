@@ -64,20 +64,10 @@ double indicatorSystem::calculateTrueRangeWMA() const {
 }
 
 double indicatorSystem::calculateTrueRangeEMA(double aAlpha) {
-	auto ema = 0.0;
-	if (lastEma == 0.0) {
-		lastEma = trList[0];
-		ema = lastEma;
-		for (auto it = trList.begin() + 1, ite = trList.end(); it != ite; ++it) {
-			ema = aAlpha * (*it) + (1 - aAlpha) * lastEma;
-			lastEma = ema;
-		}
+	if (prevCandle.time.empty()) {
+		return trList.back();
 	}
-	else {
-		ema = aAlpha * trList.back() + (1 - aAlpha) * lastEma;
-		lastEma = ema;
-	}
-	return ema;
+	return aAlpha * trList.back() + (1 - aAlpha) * prevCandle.atr;
 }
 
 double indicatorSystem::calculateTrueRangeMA() {
@@ -123,21 +113,18 @@ void indicatorSystem::calculateSuperTrend(candle& aCandle) {
 }
 
 void indicatorSystem::calculateRangeAtr(candle& aCandle) {
-	if (prevCandle.time.empty()) {
-		return;
-	}
-	auto currentTrueRange = calculateTrueRange(aCandle, prevCandle);
+	auto currentTrueRange = calculateTrueRange(aCandle, (prevCandle.time.empty() ? aCandle : prevCandle));
 	trList.push_back(currentTrueRange);
 	if (static_cast<int>(trList.size()) > atrSize) {
 		trList.pop_front();
 	}
 	aCandle.atr = calculateTrueRangeMA();
+	prevCandle = aCandle;
 }
 
 void indicatorSystem::processCandle(candle& aCandle) {
 	calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
-	prevCandle = aCandle;
 }
 
 void indicatorSystem::getProcessedCandles(std::vector<candle>& aCandles, int aAmount) {
