@@ -9,8 +9,10 @@
 
 using namespace calculation;
 
-calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval aInterval) {
-	auto json = utils::readFromJson("assets/candles/" + aTicker + '/' + getCandleIntervalApiStr(aInterval));
+calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval aInterval):
+	interval(aInterval)
+{
+	auto json = utils::readFromJson("assets/candles/" + aTicker + '/' + getCandleIntervalApiStr(interval));
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
@@ -279,8 +281,8 @@ void calculationSystem::saveFinalData() {
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream allData("positiveDataAll.txt");
-		std::ofstream positiveOutput("positiveData.txt");
+		std::ofstream allData("positiveDataAll_" + getCandleIntervalApiStr(interval) + ".txt");
+		std::ofstream positiveOutput("positiveData_" + getCandleIntervalApiStr(interval) + ".txt");
 		addHeadlines(allData);
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
@@ -304,7 +306,7 @@ void calculationSystem::saveFinalData() {
 		}
 	}
 	{
-		std::ofstream jsonOutput("jsonData.json");
+		std::ofstream jsonOutput("jsonData_" + getCandleIntervalApiStr(interval) + ".json");
 		jsonOutput << jsonData;
 		jsonData.clear();
 	}
@@ -327,7 +329,7 @@ void calculationSystem::saveFinalData() {
 			}
 		}
 
-		std::ofstream statsOutput("stats.json");
+		std::ofstream statsOutput("stats_" + getCandleIntervalApiStr(interval) + ".json");
 		statsOutput << std::setw(4) << stats;
 	}
 }

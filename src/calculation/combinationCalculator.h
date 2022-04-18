@@ -33,6 +33,7 @@ namespace calculation {
 		const size_t threadsCount = 8;
 		const double weightPrecision = 0.0001;
 		const int parabolaDegree = 7;
+		const eCandleInterval interval;
 
 		double progress = 0.0;
 		size_t combinations = 0;
