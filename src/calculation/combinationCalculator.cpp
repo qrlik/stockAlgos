@@ -271,11 +271,15 @@ void calculationSystem::saveFinalData() {
 		threadData.finalData.clear();
 	}
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const auto& lhs, const auto& rhs) { return lhs.cash > rhs.cash; });
+	std::cout << "calculationSystem::saveFinalData finalVector size - [" + std::to_string(finalVector.size()) + "]\n";
+	if (!finalVector.empty()) {
+		std::cout << "calculationSystem::saveFinalData maxCash - [" + std::to_string(finalVector[0].cash) + "]\n";
+	}
 
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream allData("allData.txt");
+		std::ofstream allData("positiveDataAll.txt");
 		std::ofstream positiveOutput("positiveData.txt");
 		addHeadlines(allData);
 		addHeadlines(positiveOutput);
