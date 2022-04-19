@@ -10,9 +10,10 @@
 using namespace calculation;
 
 calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval aInterval):
-	interval(aInterval)
+	interval(aInterval),
+	ticker(aTicker)
 {
-	auto json = utils::readFromJson("assets/candles/" + aTicker + '/' + getCandleIntervalApiStr(interval));
+	auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(interval));
 	candlesSource = utils::parseCandles(json);
 	threadsData = std::vector<threadInfo>(threadsCount);
 }
@@ -119,12 +120,12 @@ namespace {
 	void addHeadlines(std::ofstream& aOutput) {
 		aOutput
 			<< std::setw(24) << "Cash $"
-			<< std::setw(8) << "PrOrd"
+			<< std::setw(10) << "PrOrd"
 			<< std::setw(8) << "PrStr"
-			<< std::setw(8) << "UnprOrd"
+			<< std::setw(10) << "UnprOrd"
 			<< std::setw(8) << "UnprStr"
-			<< std::setw(21) << "MaxLoss %"
-			<< std::setw(12) << "RF"
+			<< std::setw(24) << "MaxLoss %"
+			<< std::setw(16) << "RF"
 			<< std::setw(8) << "TochOrd"
 			<< std::setw(8) << "BrekOrd"
 			<< std::setw(8) << "LongOrd"
@@ -191,12 +192,12 @@ namespace {
 	void addData(std::ofstream& aOutput, const finalData& aData) {
 		aOutput
 			<< std::setw(24) << aData.cash
-			<< std::setw(8) << aData.profitableOrder
+			<< std::setw(10) << aData.profitableOrder
 			<< std::setw(8) << aData.profitableStreak
-			<< std::setw(8) << aData.unprofitableOrder
+			<< std::setw(10) << aData.unprofitableOrder
 			<< std::setw(8) << aData.unprofitableStreak
-			<< std::setw(21) << aData.maxLossPercent
-			<< std::setw(12) << aData.RF
+			<< std::setw(24) << aData.maxLossPercent
+			<< std::setw(16) << aData.RF
 			<< std::setw(8) << aData.touchTrendOrder
 			<< std::setw(8) << aData.breakTrendOrder
 			<< std::setw(8) << aData.longOrder
@@ -281,8 +282,8 @@ void calculationSystem::saveFinalData() {
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream allData("positiveDataAll_" + getCandleIntervalApiStr(interval) + ".txt");
-		std::ofstream positiveOutput("positiveData_" + getCandleIntervalApiStr(interval) + ".txt");
+		std::ofstream allData("positiveDataAll_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".txt");
+		std::ofstream positiveOutput("positiveData_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".txt");
 		addHeadlines(allData);
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
@@ -306,7 +307,7 @@ void calculationSystem::saveFinalData() {
 		}
 	}
 	{
-		std::ofstream jsonOutput("jsonData_" + getCandleIntervalApiStr(interval) + ".json");
+		std::ofstream jsonOutput("jsonData_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".json");
 		jsonOutput << jsonData;
 		jsonData.clear();
 	}
@@ -329,7 +330,7 @@ void calculationSystem::saveFinalData() {
 			}
 		}
 
-		std::ofstream statsOutput("stats_" + getCandleIntervalApiStr(interval) + ".json");
+		std::ofstream statsOutput("stats_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".json");
 		statsOutput << std::setw(4) << stats;
 	}
 }

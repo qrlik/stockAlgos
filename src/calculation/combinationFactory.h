@@ -55,9 +55,9 @@ namespace calculation {
 		const double maxMinProfitPercent = 0.1;
 		const double minProfitPercentStep = 0.25;
 
-		const double minDynamicSLPercent = 1.0;
-		const double maxDynamicSLPercent = 40.0;
-		const double dynamicSLPercentStep = 1.0;
+		const double minDynamicSLPercent = 0.1;
+		const double maxDynamicSLPercent = 5.0;
+		const double dynamicSLPercentStep = 0.1;
 
 		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true, false }; // true
 		const std::unordered_set<bool> breakOpenerEnabledFlags = { true, false }; // true

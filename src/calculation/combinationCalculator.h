@@ -30,6 +30,7 @@ namespace calculation {
 		std::vector<threadInfo> threadsData;
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
+		const std::string ticker;
 		const size_t threadsCount = 8;
 		const double weightPrecision = 0.0001;
 		const int parabolaDegree = 7;

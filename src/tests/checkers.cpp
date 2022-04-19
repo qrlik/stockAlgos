@@ -22,7 +22,7 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 		? market::marketData::getLiquidationPercent(aData.orderSize, aData.leverage) 
 		: market::marketData::getInstance()->getLeverageLiquidationRange(aData.leverage).first;
 	result &= aData.liquidationOffsetPercent < minLiqPercent;
-	result &= aData.minimumProfitPercent > 2 * algorithmData::tax;
+	result &= aData.minimumProfitPercent > 2 * algorithmData::tax * 100.0;
 
 	result &= (utils::isEqual(aData.dynamicSLPercent, -1.0) && aData.dynamicSLTrendMode) || aData.dynamicSLPercent > 0.0;
 
