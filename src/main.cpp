@@ -5,18 +5,22 @@
 #include <chrono>
 #include <iostream>
 
+void calculate(const std::string& aTicker, eCandleInterval aInterval) {
+	auto start = std::chrono::steady_clock::now();
+
+	calculation::calculationSystem system(aTicker, aInterval);
+	system.calculate();
+
+	auto end = std::chrono::steady_clock::now();;
+	std::cout << "CALCULATED TIME - [" << std::chrono::duration_cast<std::chrono::minutes>(end - start).count() << "] mins\n\a";
+}
+
 int main() {
 	tests::runTests();
 
 	//calculation::singleCalculation();
 
-	auto start = std::chrono::steady_clock::now();
-
-	calculation::calculationSystem system("BTCUSDT", eCandleInterval::TWO_HOUR);
-	system.calculate();
-
-	auto end = std::chrono::steady_clock::now();;
-	std::cout << "CALCULATED TIME - [" << std::chrono::duration_cast<std::chrono::minutes>(end - start).count() << "] mins\n\a";
+	calculate("BTCUSDT", eCandleInterval::THREE_MIN);
 
 	return 0;
 }
