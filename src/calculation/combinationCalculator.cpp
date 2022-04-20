@@ -84,7 +84,7 @@ finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
 	auto maxLoss = stats.maxLossHighCash - stats.maxLossLowCash;
 	auto maxLossPercent = (aMM.orderSize > 0.0) ? maxLoss / aMM.startCash * 100 : maxLoss / stats.maxLossHighCash * 100;
 	result.maxLossPercent = maxLossPercent;
-	result.RF = result.cash - aMM.startCash / stats.summaryLoss;
+	result.RF = (result.cash - aMM.startCash) / stats.summaryLoss;
 	result.touchTrendOrder = stats.touchTrendOrder;
 	result.breakTrendOrder = stats.breakTrendOrder;
 	result.longOrder = stats.longOrder;
