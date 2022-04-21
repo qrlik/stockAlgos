@@ -12,6 +12,7 @@ namespace calculation {
 		combinationFactory(size_t aThreadsCount);
 		size_t getCombinationsAmount() const;
 		size_t getCurrentIndex() const;
+		int getMaxAtrSize() const { return maxAtrSize; }
 		const std::vector<algorithmData>& getThreadData(int aThread);
 		void incrementThreadIndex(int aThread);
 		void onFinish();
@@ -30,13 +31,13 @@ namespace calculation {
 		size_t combinations = 0;
 		const size_t threadsCount = 1;
 
-		const int minAtrSize = 50;
-		const int maxAtrSize = 50;
-		const int atrSizeStep = 5;
+		const int minAtrSize = 10;
+		const int maxAtrSize = 150;
+		const int atrSizeStep = 20;
 
-		const double minStFactor = 1.0;
-		const double maxStFactor = 20.0;
-		const double stFactorStep = 1.0;
+		const double minStFactor = 3.0;
+		const double maxStFactor = 41.0;
+		const double stFactorStep = 2.0;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
@@ -49,24 +50,24 @@ namespace calculation {
 		const double maxLossPercent = 35;
 
 		const double minLiquidationOffsetPercent = 0.05;
-		const int offsetSteps = 0;
+		const int offsetSteps = 2;
 
 		const double minMinProfitPercent = 0.1;
 		const double maxMinProfitPercent = 0.1;
-		const double minProfitPercentStep = 0.25;
+		const double minProfitPercentStep = 0.1;
 
-		const double minDynamicSLPercent = 0.1;
-		const double maxDynamicSLPercent = 5.0;
-		const double dynamicSLPercentStep = 0.1;
+		const double minDynamicSLPercent = 0.25;
+		const double maxDynamicSLPercent = 3.0;
+		const double dynamicSLPercentStep = 0.25;
 
-		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true, false }; // true
-		const std::unordered_set<bool> breakOpenerEnabledFlags = { true, false }; // true
-		const std::unordered_set<bool> dynamicSLTrendModeFlags = { true, false }; // false
+		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
+		const std::unordered_set<bool> breakOpenerEnabledFlags = { true, false };
+		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
 
 		const int minTrendActivationWaitRange = 0;
-		const int maxTrendActivationWaitRange = 5;
+		const int maxTrendActivationWaitRange = 3;
 		const int minStopLossWaitRange = 0;
-		const int maxStopLossWaitRange = 5;
+		const int maxStopLossWaitRange = 3;
 
 		bool inited = false;
 	};

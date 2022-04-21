@@ -50,7 +50,12 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
 			candles = candlesSource;
 			auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
-			indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 1000);
+			auto finalSize = static_cast<int>(candles.size()) - atrSizeDegree * aFactory.getMaxAtrSize();
+			if (finalSize <= 0) {
+				std::cout << "[ERROR] wrong atr size for candles amount\n";
+				finalSize = static_cast<int>(candles.size());
+			}
+			indicators.getProcessedCandles(candles, finalSize);
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
 		auto moneyMaker = algorithm::moneyMaker(data);

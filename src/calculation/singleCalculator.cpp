@@ -10,41 +10,41 @@ using namespace calculation;
 
 void calculation::singleCalculation() {
 	algorithmData data{};
-	data.atrType = market::eAtrType::EMA;
+	data.atrType = market::eAtrType::RMA;
 	data.atrSize = 50;
-	data.stFactor = 3.5;
+	data.stFactor = 14.0;
 
 	data.dealPercent = 5.0;
-	data.leverage = 100;
+	data.leverage = 50;
 
 	data.startCash = 75'000.0;
 	data.maxLossPercent = 35.0;
-	data.maxLossCash = 50'000.0;
+	data.maxLossCash = 25'000.0;
 	data.orderSize = 2500.0;
 
 	data.liquidationOffsetPercent = 0.05;
-	data.minimumProfitPercent = 0.25;
+	data.minimumProfitPercent = 0.1;
 
-	data.dynamicSLPercent = 32.0;
+	data.dynamicSLPercent = 0.5;
 	data.dynamicSLTrendMode = false;
 
-	data.touchOpenerActivationWaitMode = false;
+	data.touchOpenerActivationWaitMode = true;
 
 	data.breakOpenerEnabled = true;
 	data.breakOpenerActivationWaitMode = false;
-	data.alwaysUseNewTrend = true;
+	data.alwaysUseNewTrend = false;
 
 	data.activationWaiterResetAllowed = false;
-	data.activationWaiterRange = -1;
-	data.activationWaiterFullCandleCheck = false;
+	data.activationWaiterRange = 4;
+	data.activationWaiterFullCandleCheck = true;
 
 	data.stopLossWaiterEnabled = true;
 	data.stopLossWaiterResetAllowed = false;
-	data.stopLossWaiterRange = 0;
+	data.stopLossWaiterRange = 2;
 	data.stopLossWaiterFullCandleCheck = false;
 
 	tests::checkAlgorithmData(data);
-	auto json = utils::readFromJson("assets/candles/3year/2h");
+	auto json = utils::readFromJson("assets/candles/BTCUSDT/15m");
 	auto candles = utils::parseCandles(json);
 
 	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
