@@ -33,11 +33,11 @@ namespace calculation {
 
 		const int minAtrSize = 10;
 		const int maxAtrSize = 150;
-		const int atrSizeStep = 20;
+		const int atrSizeStep = 10;
 
 		const double minStFactor = 3.0;
-		const double maxStFactor = 41.0;
-		const double stFactorStep = 2.0;
+		const double maxStFactor = 40.0;
+		const double stFactorStep = 1.0;
 
 		const double minDealPercent = 5.0;
 		const double maxDealPercent = 5.0;
@@ -56,12 +56,12 @@ namespace calculation {
 		const double maxMinProfitPercent = 0.1;
 		const double minProfitPercentStep = 0.1;
 
-		const double minDynamicSLPercent = 0.25;
-		const double maxDynamicSLPercent = 3.0;
-		const double dynamicSLPercentStep = 0.25;
+		const double minDynamicSLPercent = 0.2;
+		const double maxDynamicSLPercent = 10.0;
+		const double dynamicSLPercentStep = 0.2;
 
 		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
-		const std::unordered_set<bool> breakOpenerEnabledFlags = { true, false };
+		const std::unordered_set<bool> breakOpenerEnabledFlags = { false };
 		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
 
 		const int minTrendActivationWaitRange = 0;

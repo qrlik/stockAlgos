@@ -20,7 +20,10 @@ int main() {
 
 	//calculation::singleCalculation();
 
+	calculate("BTCUSDT", eCandleInterval::ONE_MIN);
 	calculate("BTCUSDT", eCandleInterval::THREE_MIN);
+	calculate("BTCUSDT", eCandleInterval::FIVE_MIN);
+	calculate("BTCUSDT", eCandleInterval::FIFTEEN_MIN);
 
 	return 0;
 }
