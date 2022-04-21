@@ -11,8 +11,9 @@ namespace {
 		auto count = static_cast<int>(std::ceil((end - begin) / step));
 		std::vector<T> result;
 		result.reserve(count);
-		for (; begin < end; begin += step) {
+		for (auto i = 0; i < count; ++i) {
 			result.push_back(begin);
+			begin += step;
 		}
 		return result;
 	}
