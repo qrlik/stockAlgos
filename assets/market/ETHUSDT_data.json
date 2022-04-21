@@ -1,0 +1,84 @@
+{
+    "symbol": "ETHUSDT",
+    "brackets": [
+        {
+            "maxLeverage": 100,
+            "notionalCap": 10000,
+            "notionalFloor": 0,
+            "maintenanceMarginRate": 0.005,
+            "maintenanceAmount": 0.0
+        },
+        {
+            "maxLeverage": 75,
+            "notionalCap": 100000,
+            "notionalFloor": 10000,
+            "maintenanceMarginRate": 0.0065,
+            "maintenanceAmount": 15.0
+        },
+        {
+            "maxLeverage": 50,
+            "notionalCap": 500000,
+            "notionalFloor": 100000,
+            "maintenanceMarginRate": 0.01,
+            "maintenanceAmount": 365.0
+        },
+        {
+            "maxLeverage": 25,
+            "notionalCap": 1500000,
+            "notionalFloor": 500000,
+            "maintenanceMarginRate": 0.02,
+            "maintenanceAmount": 5365.0
+        },
+        {
+            "maxLeverage": 10,
+            "notionalCap": 4000000,
+            "notionalFloor": 1500000,
+            "maintenanceMarginRate": 0.05,
+            "maintenanceAmount": 50365.0
+        },
+        {
+            "maxLeverage": 5,
+            "notionalCap": 10000000,
+            "notionalFloor": 4000000,
+            "maintenanceMarginRate": 0.1,
+            "maintenanceAmount": 250365.0
+        },
+        {
+            "maxLeverage": 4,
+            "notionalCap": 20000000,
+            "notionalFloor": 10000000,
+            "maintenanceMarginRate": 0.125,
+            "maintenanceAmount": 500365.0
+        },
+        {
+            "maxLeverage": 3,
+            "notionalCap": 40000000,
+            "notionalFloor": 20000000,
+            "maintenanceMarginRate": 0.15,
+            "maintenanceAmount": 1000365.0
+        },
+        {
+            "maxLeverage": 2,
+            "notionalCap": 150000000,
+            "notionalFloor": 40000000,
+            "maintenanceMarginRate": 0.25,
+            "maintenanceAmount": 5000365.0
+        },
+        {
+            "maxLeverage": 1,
+            "notionalCap": 500000000,
+            "notionalFloor": 150000000,
+            "maintenanceMarginRate": 0.5,
+            "maintenanceAmount": 42500365.0
+        }
+    ],
+    "baseAsset": "ETH",
+    "quoteAsset": "USDT",
+    "baseAssetPrecision": 8,
+    "quotePrecision": 8,
+    "priceTick": 0.01,
+    "quantityStep": 0.001,
+    "maxLimitQuantity": 10000.0,
+    "maxMarketQuantity": 2000.0,
+    "minNotionalValue": 5.0
+}
