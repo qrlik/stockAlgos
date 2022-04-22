@@ -14,7 +14,7 @@ marketData::marketData() {
 }
 
 void marketData::init() {
-	auto tradingRules = utils::readFromJson("assets/market/BTCUSDT_data");
+	auto tradingRules = utils::readFromJson("assets/market/BTCUSDT_data"); // TO_DO make reupdate when ticker changed
 	quantityPrecision = tradingRules["quantityStep"].get<double>();
 	pricePrecision = tradingRules["priceTick"].get<double>();
 	quotePrecision = 1.0 / std::pow(10, tradingRules["quotePrecision"].get<int>());

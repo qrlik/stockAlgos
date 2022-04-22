@@ -1,6 +1,7 @@
 #include "combinationFactory.h"
 #include "../market/marketRules.h"
 #include "../tests/checkers.h"
+#include "../utils/utils.h"
 #include <iostream>
 
 using namespace calculation;
@@ -53,7 +54,7 @@ combinationFactory::combinationFactory(size_t aThreadsCount) :
 		tmpAllData.erase(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end());
 	}
 	if (!tmpAllData.empty()) {
-		std::cout << "[ERROR] combinationFactory tmpAllData not empty" << std::endl;
+		utils::logError("combinationFactory tmpAllData not empty");
 	}
 	inited = true;
 }
@@ -76,7 +77,7 @@ void combinationFactory::incrementThreadIndex(int aThread) {
 
 void combinationFactory::onFinish() {
 	if (std::accumulate(indexes.begin(), indexes.end(), size_t{ 0 }) != combinations) {
-		std::cout << "[ERROR] combinationFactory onFinish combinations not correct" << std::endl;
+		utils::logError("combinationFactory onFinish combinations not correct");
 	}
 }
 

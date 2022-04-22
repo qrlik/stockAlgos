@@ -52,7 +52,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 			auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
 			auto finalSize = static_cast<int>(candles.size()) - atrSizeDegree * aFactory.getMaxAtrSize();
 			if (finalSize <= 0) {
-				std::cout << "[ERROR] wrong atr size for candles amount\n";
+				utils::logError("wrong atr size for candles amount");
 				finalSize = static_cast<int>(candles.size());
 			}
 			indicators.getProcessedCandles(candles, finalSize);

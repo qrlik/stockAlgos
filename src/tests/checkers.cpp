@@ -39,7 +39,7 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 
 	if (!result) {
 		assert("tests::checkAlgorithmData fail" && result);
-		std::cout << "[ERROR] tests::checkAlgorithmData fail\n";
+		utils::logError("tests::checkAlgorithmData fail");
 		std::cout << aData.toJson() << '\n';
 	}
 }

@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <fstream>
+#include <iostream>
 
 using namespace utils;
 
@@ -25,6 +26,10 @@ std::vector<candle> utils::parseCandles(const Json& aJson) {
 		result.push_back(parseCandleFromJson(candle));
 	}
 	return result;
+}
+
+void utils::logError(const std::string& aStr) {
+	std::cout << "[ERROR]" + aStr + '\n';
 }
 
 double utils::round(double aValue, double aPrecision) {
