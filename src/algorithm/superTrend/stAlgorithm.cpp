@@ -1,4 +1,4 @@
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <iostream>
@@ -6,7 +6,7 @@
 
 using namespace algorithm;
 
-std::string moneyMaker::stateToString(eState aState) {
+std::string stAlgorithm::stateToString(eState aState) {
 	switch (aState) {
 		case algorithm::eState::LONG:
 			return "LONG";
@@ -21,7 +21,7 @@ std::string moneyMaker::stateToString(eState aState) {
 	}
 }
 
-eState moneyMaker::stateFromString(const std::string& aStr) {
+eState stAlgorithm::stateFromString(const std::string& aStr) {
 	if (aStr == "LONG") {
 		return eState::LONG;
 	}
@@ -37,7 +37,7 @@ eState moneyMaker::stateFromString(const std::string& aStr) {
 	return eState::NONE;
 }
 
-moneyMaker::moneyMaker(const algorithmData& aData):
+stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
 	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
 	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
 	dynamicStopLossModule(this, aData.dynamicSLPercent, aData.dynamicSLTrendMode),
@@ -56,7 +56,7 @@ moneyMaker::moneyMaker(const algorithmData& aData):
 	cash(aData.startCash),
 	stats(aData.startCash, aData.maxLossPercent, aData.maxLossCash) {}
 
-bool moneyMaker::operator==(const moneyMaker& aOther) {
+bool stAlgorithm::operator==(const stAlgorithm& aOther) {
 	assert(activationWaiterModule == aOther.activationWaiterModule);
 	assert(stopLossWaiterModule == aOther.stopLossWaiterModule);
 	assert(state == aOther.state);
@@ -73,19 +73,19 @@ bool moneyMaker::operator==(const moneyMaker& aOther) {
 	return true;
 }
 
-void moneyMaker::setState(eState aState) {
+void stAlgorithm::setState(eState aState) {
 	state = aState;
 }
 
-void moneyMaker::setWithLogs(bool aState) {
+void stAlgorithm::setWithLogs(bool aState) {
 	withLogs = aState;
 }
 
-double moneyMaker::getSuperTrend() const {
+double stAlgorithm::getSuperTrend() const {
 	return (isTrendUp) ? lastUpSuperTrend : lastDownSuperTrend;
 }
 
-double moneyMaker::getActualSuperTrend() const {
+double stAlgorithm::getActualSuperTrend() const {
 	if (isNewTrend) {
 		return (isTrendUp)
 			? std::max(lastDownSuperTrend, lastUpSuperTrend)
@@ -94,7 +94,7 @@ double moneyMaker::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double moneyMaker::getFullCash() const {
+double stAlgorithm::getFullCash() const {
 	auto curCash = cash;
 	if (!order.getTime().empty()) {
 		curCash += order.getMargin() + order.getProfit();
@@ -102,7 +102,7 @@ double moneyMaker::getFullCash() const {
 	return curCash;
 }
 
-bool moneyMaker::isNewTrendChanged() {
+bool stAlgorithm::isNewTrendChanged() {
 	if (!isNewTrend) {
 		return false;
 	}
@@ -113,7 +113,7 @@ bool moneyMaker::isNewTrendChanged() {
 	return false;
 }
 
-bool moneyMaker::calculate(const std::vector<candle>& aCandles) {
+bool stAlgorithm::calculate(const std::vector<candle>& aCandles) {
 	for (const auto& candle : aCandles) {
 		if (!doAction(candle)) {
 			return false;
@@ -122,7 +122,7 @@ bool moneyMaker::calculate(const std::vector<candle>& aCandles) {
 	return true;
 }
 
-bool moneyMaker::doAction(const candle& aCandle) {
+bool stAlgorithm::doAction(const candle& aCandle) {
 	if (stopCashBreak) {
 		return false;
 	}
@@ -137,7 +137,7 @@ bool moneyMaker::doAction(const candle& aCandle) {
 	return true;
 }
 
-bool moneyMaker::update() {
+bool stAlgorithm::update() {
 	switch (state) {
 		case algorithm::eState::NONE:
 			return checkTrend();
@@ -150,7 +150,7 @@ bool moneyMaker::update() {
 	}
 }
 
-bool moneyMaker::updateCandles(const candle& aCandle) {
+bool stAlgorithm::updateCandles(const candle& aCandle) {
 	if (curCandle.time.empty()) {
 		curCandle = aCandle;
 		return false;
@@ -160,7 +160,7 @@ bool moneyMaker::updateCandles(const candle& aCandle) {
 	return true;
 }
 
-void moneyMaker::updateTrends() {
+void stAlgorithm::updateTrends() {
 	if (prevCandle.trendIsUp) {
 		lastUpSuperTrend = prevCandle.superTrend;
 	}
@@ -180,14 +180,14 @@ void moneyMaker::updateTrends() {
 	}
 }
 
-bool moneyMaker::checkTrend() {
+bool stAlgorithm::checkTrend() {
 	if (isNewTrend) {
 		return trendBreakOpenerModule.check();
 	}
 	return trendTouchOpenerModule.check();
 }
 
-bool moneyMaker::updateOrder() {
+bool stAlgorithm::updateOrder() {
 	bool needReupdate = false;
 	if (state == eState::LONG && curCandle.low <= order.getStopLoss()) {
 		closeOrder();
@@ -201,7 +201,7 @@ bool moneyMaker::updateOrder() {
 	return needReupdate;
 }
 
-void moneyMaker::openOrder(eState aState, double aPrice) {
+void stAlgorithm::openOrder(eState aState, double aPrice) {
 	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
 	state = aState;
 	if (!order.openOrder(*this, aPrice)) {
@@ -209,13 +209,13 @@ void moneyMaker::openOrder(eState aState, double aPrice) {
 		return;
 	}
 
-	auto taxAmount = utils::round(order.getNotionalValue() * algorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
+	auto taxAmount = utils::round(order.getNotionalValue() * stAlgorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - order.getMargin() - taxAmount;
 	stats.onOpenOrder((state == eState::LONG), isNewTrend);
 	isNewTrend = false;
 }
 
-void moneyMaker::closeOrder() {
+void stAlgorithm::closeOrder() {
 	const auto profit = order.getProfit();
 	if (profit < 0) {
 		stopLossWaiterModule.start();
@@ -231,7 +231,7 @@ void moneyMaker::closeOrder() {
 	}
 }
 
-void moneyMaker::log() {
+void stAlgorithm::log() {
 	std::ofstream output("Logs.txt", std::ios::app);
 	output << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
 		<< std::setw(18) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)

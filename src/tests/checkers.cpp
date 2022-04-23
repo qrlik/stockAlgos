@@ -6,7 +6,7 @@
 
 using namespace tests;
 
-void tests::checkAlgorithmData(const algorithmData& aData) {
+void tests::checkAlgorithmData(const stAlgorithmData& aData) {
 	bool result = true;
 	result &= aData.atrType != market::eAtrType::NONE;
 	result &= aData.atrSize > 0;
@@ -22,7 +22,7 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 		? MARKET_DATA->getLiquidationPercent(aData.orderSize, aData.leverage)
 		: MARKET_DATA->getLeverageLiquidationRange(aData.leverage).first;
 	result &= aData.liquidationOffsetPercent < minLiqPercent;
-	result &= aData.minimumProfitPercent > 2 * algorithmData::tax * 100.0;
+	result &= aData.minimumProfitPercent > 2 * stAlgorithmData::tax * 100.0;
 
 	result &= (utils::isEqual(aData.dynamicSLPercent, -1.0) && aData.dynamicSLTrendMode) || aData.dynamicSLPercent > 0.0;
 
@@ -44,10 +44,10 @@ mmChecker::mmChecker(std::string aName) :
 	name(std::move(aName))
 {
 	auto json = utils::readFromJson("assets/tests/" + name);
-	auto data = algorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
+	auto data = stAlgorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
 	tests::checkAlgorithmData(data);
-	actualMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
-	testMoneyMaker = std::make_unique<algorithm::moneyMaker>(data);
+	actualMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);
+	testMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);
 	testMoneyMakerData = json["testMoneyMakerData"];
 	testNextTime = testMoneyMakerData[0]["time"].get<std::string>();
 
@@ -109,7 +109,7 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 			testMoneyMaker->isNewTrend = value.get<bool>();
 		}
 		else if (key == "state") {
-			testMoneyMaker->state = algorithm::moneyMaker::stateFromString(value.get<std::string>());
+			testMoneyMaker->state = algorithm::stAlgorithm::stateFromString(value.get<std::string>());
 		}
 		else if (key == "cash") {
 			testMoneyMaker->cash = value.get<double>();

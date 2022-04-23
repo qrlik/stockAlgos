@@ -1,9 +1,9 @@
 #include "activationWaiter.h"
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 
 using namespace algorithm;
 
-activationWaiter::activationWaiter(moneyMaker* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck)
+activationWaiter::activationWaiter(stAlgorithm* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck)
 	:mm(aMm),
 	activationWaitRange(aActivationWaitRange),
 	resetAllowed(aResetAllowed),

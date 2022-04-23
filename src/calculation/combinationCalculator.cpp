@@ -1,6 +1,5 @@
 #include "combinationCalculator.h"
 #include "market/marketRules.h"
-#include "structs/algorithmData.h"
 #include "utils/utils.h"
 #include <execution>
 #include <iostream>
@@ -58,7 +57,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 			indicators.getProcessedCandles(candles, finalSize);
 			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
 		}
-		auto moneyMaker = algorithm::moneyMaker(data);
+		auto moneyMaker = algorithm::stAlgorithm(data);
 		const auto result = moneyMaker.calculate(candles);
 		if (result) {
 			threadInfo.finalData.push_back(getData(moneyMaker));
@@ -77,7 +76,7 @@ void calculationSystem::printProgress(size_t aIndex) {
 	}
 }
 
-finalData calculationSystem::getData(const algorithm::moneyMaker& aMM) {
+finalData calculationSystem::getData(const algorithm::stAlgorithm& aMM) {
 	finalData result;
 	result.cash = aMM.getFullCash();
 	result.startCash = aMM.getStartCash();

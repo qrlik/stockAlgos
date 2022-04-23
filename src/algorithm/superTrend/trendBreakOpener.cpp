@@ -1,5 +1,5 @@
 #include "trendBreakOpener.h"
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 
 using namespace algorithm;
 
@@ -20,7 +20,7 @@ namespace {
 	}
 }
 
-trendBreakOpener::trendBreakOpener(moneyMaker* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend):
+trendBreakOpener::trendBreakOpener(stAlgorithm* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend):
 	mm(aMm),
 	enabled(aEnabled),
 	activationWaitMode(aActivationWaitMode),

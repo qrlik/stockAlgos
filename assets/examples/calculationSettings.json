@@ -2,5 +2,6 @@
 	"threadsAmount": 8,
 	"weightPrecision": 0.0001,
 	"parabolaDegree": 7,
-	"atrSizeDegree": 20
+	"atrSizeDegree": 20,
+	"algorithmType": "superTrend"
 }

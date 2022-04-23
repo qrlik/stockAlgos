@@ -1,6 +1,5 @@
 #include "singleCalculator.h"
-#include "algorithm/moneyMaker.h"
-#include "structs/algorithmData.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include "market/indicators.h"
 #include "tests/checkers.h"
 #include "utils/utils.h"
@@ -9,7 +8,7 @@
 using namespace calculation;
 
 void calculation::singleCalculation() {
-	algorithmData data{};
+	stAlgorithmData data{};
 	data.atrType = market::eAtrType::RMA;
 	data.atrSize = 30;
 	data.stFactor = 15.0;
@@ -50,7 +49,7 @@ void calculation::singleCalculation() {
 	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
 	indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 3000);
 
-	auto mm = algorithm::moneyMaker(data);
+	auto mm = algorithm::stAlgorithm(data);
 	mm.setWithLogs(true);
 	mm.calculate(candles);
 	std::cout << mm.getFullCash() << '\n';

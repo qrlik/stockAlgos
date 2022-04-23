@@ -5,18 +5,18 @@ namespace calculation {
 }
 
 namespace algorithm {
-	class moneyMaker;
+	class stAlgorithm;
 	class dynamicStopLoss {
-		friend class moneyMaker;
+		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		dynamicStopLoss(moneyMaker* aMm, double aPercent, bool aTrendMode);
+		dynamicStopLoss(stAlgorithm* aMm, double aPercent, bool aTrendMode);
 		bool check();
 	private:
 		bool checkTrend();
 		bool checkDynamic();
 
-		moneyMaker* mm = nullptr;
+		stAlgorithm* mm = nullptr;
 		const double dynamicSLPercent;
 		const bool trendMode;
 	};

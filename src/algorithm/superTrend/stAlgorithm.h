@@ -1,5 +1,6 @@
 #pragma once
-#include "structs/algorithmData.h"
+#include "algorithm/algorithmBase.h"
+#include "stAlgorithmData.h"
 #include "structs/candle.h"
 #include "structs/orderData.h"
 #include "structs/statistic.h"
@@ -26,16 +27,16 @@ namespace algorithm {
 		ACTIVATION_WAIT = 4
 	};
 
-	class moneyMaker {
+	class stAlgorithm : public algorithmBase {
 		friend class tests::mmChecker;
 		friend class calculation::calculationSystem;
 	public:
 		static std::string stateToString(eState aState);
 		static eState stateFromString(const std::string& aStr);
 
-		moneyMaker(const algorithmData& aData);
+		stAlgorithm(const stAlgorithmData& aData);
 		bool calculate(const std::vector<candle>& aCandles);
-		bool operator==(const moneyMaker& aOther);
+		bool operator==(const stAlgorithm& aOther);
 
 		activationWaiter& getActivationWaiter() { return activationWaiterModule; }
 		stopLossWaiter& getStopLossWaiter() { return stopLossWaiterModule; }

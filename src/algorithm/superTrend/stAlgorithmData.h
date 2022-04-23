@@ -1,9 +1,10 @@
 #pragma once
+#include "algorithm/algorithmDataBase.h"
 #include "market/indicators.h"
 
-struct algorithmData {
+struct stAlgorithmData : public algorithmDataBase {
 	static const double tax;
-	static algorithmData initAlgorithmDataFromJson(const Json& aData);
+	static stAlgorithmData initAlgorithmDataFromJson(const Json& aData);
 
 	Json toJson() const;
 

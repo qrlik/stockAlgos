@@ -1,5 +1,5 @@
 #include "orderData.h"
-#include "algorithm/moneyMaker.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <sstream>
@@ -69,20 +69,20 @@ void orderData::reset() {
 	fullCheck = false;
 }
 
-double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
+double orderData::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
 	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-double orderData::calculateMinimumProfit(const algorithm::moneyMaker& aMM) const {
+double orderData::calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const {
 	auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = price * (100.0 + minProfitSign * aMM.getMinimumProfitPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
+bool orderData::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 	reset();
 	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	auto allowedCash = utils::floor(aMM.getCash() * aMM.getDealPercent() / 100.0, quotePrecision);
@@ -113,7 +113,7 @@ bool orderData::openOrder(const algorithm::moneyMaker& aMM, double aPrice) {
 double orderData::getProfit() const {
 	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
-	const auto orderCloseTax = utils::round(orderCloseSummary * algorithmData::tax, quotePrecision);
+	const auto orderCloseTax = utils::round(orderCloseSummary * stAlgorithmData::tax, quotePrecision);
 	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
 }

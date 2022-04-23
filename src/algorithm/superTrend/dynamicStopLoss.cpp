@@ -1,11 +1,11 @@
 #include "dynamicStopLoss.h"
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
 using namespace algorithm;
 
-dynamicStopLoss::dynamicStopLoss(moneyMaker* aMm, double aPercent, bool aTrendMode): 
+dynamicStopLoss::dynamicStopLoss(stAlgorithm* aMm, double aPercent, bool aTrendMode):
 	mm(aMm),
 	dynamicSLPercent(aPercent),
 	trendMode(aTrendMode) {}

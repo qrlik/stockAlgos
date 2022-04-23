@@ -1,6 +1,6 @@
 #pragma once
 #include "combinationFactory.h"
-#include "algorithm/moneyMaker.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include "market/indicators.h"
 #include <mutex>
 
@@ -15,7 +15,7 @@ namespace calculation {
 		void printProgress(size_t aIndex);
 		void saveFinalData();
 
-		finalData getData(const algorithm::moneyMaker& aMM);
+		finalData getData(const algorithm::stAlgorithm& aMM);
 
 		struct threadInfo {
 			bool isCached(market::eAtrType aType, int aSize, double aFactor);

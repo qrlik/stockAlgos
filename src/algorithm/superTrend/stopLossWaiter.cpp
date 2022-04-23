@@ -1,9 +1,9 @@
 #include "stopLossWaiter.h"
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 
 using namespace algorithm;
 
-stopLossWaiter::stopLossWaiter(moneyMaker* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck):
+stopLossWaiter::stopLossWaiter(stAlgorithm* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck):
 	mm(aMm),
 	stopLossWaitRange(aStopLossWaitRange),
 	enabled(aEnabled),

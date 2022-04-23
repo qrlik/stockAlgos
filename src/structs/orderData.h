@@ -3,7 +3,7 @@
 #include <string>
 
 namespace algorithm {
-	class moneyMaker;
+	class stAlgorithm;
 	enum class eState : unsigned char;
 }
 
@@ -13,7 +13,7 @@ public:
 
 	orderData();
 	bool operator==(const orderData& aOther);
-	bool openOrder(const algorithm::moneyMaker& aMM, double aPrice);
+	bool openOrder(const algorithm::stAlgorithm& aMM, double aPrice);
 	void reset();
 	std::string toString() const;
 
@@ -28,8 +28,8 @@ public:
 	void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
 	void setFullCheck(bool aFullCheck) { fullCheck = aFullCheck; }
 private:
-	double calculateStopLoss(const algorithm::moneyMaker& aMM) const;
-	double calculateMinimumProfit(const algorithm::moneyMaker& aMM) const;
+	double calculateStopLoss(const algorithm::stAlgorithm& aMM) const;
+	double calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const;
 
 	std::string time;
 	double price = 0.0;

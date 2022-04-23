@@ -33,8 +33,8 @@ namespace {
 		return result;
 	}
 
-	std::vector<algorithmData> tmpAllData;
-	algorithmData tmpData;
+	std::vector<stAlgorithmData> tmpAllData;
+	stAlgorithmData tmpData;
 }
 
 combinationFactory::combinationFactory(size_t aThreadsAmount) :
@@ -70,7 +70,7 @@ size_t combinationFactory::getCurrentIndex() const {
 	return std::accumulate(indexes.cbegin(), indexes.cend(), size_t{ 0 });
 }
 
-const std::vector<algorithmData>& combinationFactory::getThreadData(int aThread) {
+const std::vector<stAlgorithmData>& combinationFactory::getThreadData(int aThread) {
 	return combinationsData[aThread];
 }
 
@@ -88,7 +88,7 @@ void combinationFactory::generateSuperTrend() {
 	if (inited) {
 		return;
 	}
-	tmpData = algorithmData{};
+	tmpData = stAlgorithmData{};
 
 	for (auto atrType : { market::eAtrType::RMA }) {
 		tmpData.atrType = atrType;

@@ -5,16 +5,16 @@ namespace calculation {
 }
 
 namespace algorithm {
-	class moneyMaker;
+	class stAlgorithm;
 	class trendBreakOpener {
-		friend class moneyMaker;
+		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		trendBreakOpener(moneyMaker* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend);
+		trendBreakOpener(stAlgorithm* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend);
 		bool isNewTrendAllowed();
 		bool check();
 	private:
-		moneyMaker* mm = nullptr;
+		stAlgorithm* mm = nullptr;
 		const bool enabled;
 		const bool activationWaitMode;
 		const bool alwaysUseNewTrend;

@@ -1,9 +1,9 @@
 #pragma once
-#include "algorithm/moneyMaker.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include <memory>
 
 namespace tests {
-	void checkAlgorithmData(const algorithmData& aData);
+	void checkAlgorithmData(const stAlgorithmData& aData);
 
 	class mmChecker {
 	public:
@@ -14,8 +14,8 @@ namespace tests {
 
 		std::vector<candle> candles;
 		Json testMoneyMakerData;
-		std::unique_ptr<algorithm::moneyMaker> actualMoneyMaker;
-		std::unique_ptr < algorithm::moneyMaker> testMoneyMaker;
+		std::unique_ptr<algorithm::stAlgorithm> actualMoneyMaker;
+		std::unique_ptr < algorithm::stAlgorithm> testMoneyMaker;
 
 		std::string name;
 		std::string testNextTime;

@@ -5,15 +5,15 @@ namespace calculation {
 }
 
 namespace algorithm {
-	class moneyMaker;
+	class stAlgorithm;
 	class trendTouchOpener {
-		friend class moneyMaker;
+		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		trendTouchOpener(moneyMaker* aMm, bool aActivationWaitMode);
+		trendTouchOpener(stAlgorithm* aMm, bool aActivationWaitMode);
 		bool check();
 	private:
-		moneyMaker* mm = nullptr;
+		stAlgorithm* mm = nullptr;
 		const bool activationWaitMode;
 	};
 }

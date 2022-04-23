@@ -1,5 +1,5 @@
 #include "trendTouchOpener.h"
-#include "moneyMaker.h"
+#include "stAlgorithm.h"
 
 using namespace algorithm;
 
@@ -20,7 +20,7 @@ namespace {
 	}
 }
 
-trendTouchOpener::trendTouchOpener(moneyMaker* aMm, bool aActivationWaitMode) :
+trendTouchOpener::trendTouchOpener(stAlgorithm* aMm, bool aActivationWaitMode) :
 	mm(aMm),
 	activationWaitMode(aActivationWaitMode) {}
 

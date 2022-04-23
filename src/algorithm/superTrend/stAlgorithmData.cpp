@@ -1,9 +1,9 @@
-#include "algorithmData.h"
+#include "stAlgorithmData.h"
 
-const double algorithmData::tax = 0.0004;
+const double stAlgorithmData::tax = 0.0004;
 
-algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
-	algorithmData result;
+stAlgorithmData stAlgorithmData::initAlgorithmDataFromJson(const Json& aData) {
+	stAlgorithmData result;
 	for (const auto& [field, value] : aData.items()) {
 		if (field == "atrType") {
 			result.atrType = market::atrTypeFromString(value.get<std::string>());
@@ -81,7 +81,7 @@ algorithmData algorithmData::initAlgorithmDataFromJson(const Json& aData) {
 	return result;
 }
 
-Json algorithmData::toJson() const {
+Json stAlgorithmData::toJson() const {
 	Json result;
 	result["atrType"] = market::atrTypeToString(atrType);
 	result["atrSize"] = atrSize;

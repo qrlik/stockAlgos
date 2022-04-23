@@ -5,12 +5,12 @@ namespace calculation {
 }
 
 namespace algorithm {
-	class moneyMaker;
+	class stAlgorithm;
 	class stopLossWaiter {
-		friend class moneyMaker;
+		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		stopLossWaiter(moneyMaker* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck);
+		stopLossWaiter(stAlgorithm* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck);
 		bool operator==(const stopLossWaiter& other);
 		void onNewTrend();
 		void start();
@@ -18,7 +18,7 @@ namespace algorithm {
 		int getCounter() const;
 		void setCounter(int aAmount);
 	private:
-		moneyMaker* mm = nullptr;
+		stAlgorithm* mm = nullptr;
 		const int stopLossWaitRange;
 		int stopLossWaitCounter = 0;
 		const bool enabled;
