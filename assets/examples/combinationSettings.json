@@ -1,164 +1,158 @@
-{
-	"threadsAmount": 8,
-	"weightPrecision": 0.0001,
-	"parabolaDegree": 7,
-	"atrSizeDegree": 20,
-	"factorySettings": [
-		{
-			"name": "atrType",
-			"value": "RMA"
-		},
-		{
-			"name": "atrSize",
-			"values": [ 10, 150 ],
-			"step": 10
-		},
-		{
-			"name": "stFactor",
-			"values": [ 3.0, 40.0 ],
-			"step": 1.0
-		},
-		{
-			"name": "dealPercent",
-			"value": 5
-		},
-		{
-			"name": "leverage",
-			"value": 100
-		},
-		{
-			"name": "startCash",
-			"value": 75000
-		},
-		{
-			"name": "orderSize",
-			"value": 25000
-		},
-		{
-			"name": "maxLossCash",
-			"value": 25000
-		},
-		{
-			"name": "maxLossPercent",
-			"value": 35
-		},
-		{
-			"name": "dataForCalculation",
-			"data": [
-				{
-					"name": "minLiquidationOffsetPercent",
-					"value": 0.05
-				},
-				{
-					"name": "liquidationOffsetSteps",
-					"value": 2
-				}
-			]
-		},
-		{
-			"name": "minimumProfitPercent",
-			"value": 0.1
-		},
-		{
-			"name": "dynamicSLTrendMode",
-			"values": [ false ]
-		},
-		{
-			"name": "dynamicSLPercent",
-			"values": [ 0.2, 10.0 ],
-			"step": 0.2,
-			"criteria": [
-				{
-					"name": "dynamicSLTrendMode",
-					"value": false
-				}
-			],
-			"otherwise": -1.0
-		},
-		{
-			"name": "touchOpenerActivationWaitMode",
-			"values": [ false, true ]
-		},
-		{
-			"name": "breakOpenerEnabled",
-			"values": [ false ]
-		},
-		{
-			"name": "breakOpenerActivationWaitMode",
-			"values": [ true, false ],
-			"criteria": [
-				{
-					"name": "breakOpenerEnabled",
-					"value": true
-				}
-			],
-			"otherwise": false
-		},
-		{
-			"name": "alwaysUseNewTrend",
-			"values": [ true, false ],
-			"criteria": [
-				{
-					"name": "breakOpenerEnabled",
-					"value": true
-				}
-			],
-			"otherwise": false
-		},
-		{
-			"name": "trendActivationWaitRange",
-			"values": [ 0, 3 ],
-			"step": 1,
-			"criteria": [
-				{
-					"name": "touchOpenerActivationWaitMode",
-					"value": true
-				},
-				{
-					"name": "breakOpenerActivationWaitMode",
-					"value": true
-				}
-			],
-			"criteriaOperand": "or",
-			"otherwise": -1
-		},
-		{
-			"name": "stopLossWaiterEnabled",
-			"values": [ true ]
-		},
-		{
-			"name": "stopLossWaiterResetAllowed",
-			"values": [ true, false ],
-			"criteria": [
-				{
-					"name": "stopLossWaiterEnabled",
-					"value": true
-				}
-			],
-			"otherwise": false
-		},
-		{
-			"name": "stopLossWaiterRange",
-			"values": [ 0, 3 ],
-			"step": 1,
-			"criteria": [
-				{
-					"name": "stopLossWaiterEnabled",
-					"value": true
-				}
-			],
-			"otherwise": -1
-		},
-		{
-			"name": "stopLossWaiterFullCandleCheck",
-			"values": [ true, false ],
-			"criteria": [
-				{
-					"name": "stopLossWaiterEnabled",
-					"value": true
-				}
-			],
-			"otherwise": false
-		}
-	]
-}
+[
+	{
+		"name": "atrType",
+		"value": "RMA"
+	},
+	{
+		"name": "atrSize",
+		"values": [ 10, 150 ],
+		"step": 10
+	},
+	{
+		"name": "stFactor",
+		"values": [ 3.0, 40.0 ],
+		"step": 1.0
+	},
+	{
+		"name": "dealPercent",
+		"value": 5
+	},
+	{
+		"name": "leverage",
+		"value": 100
+	},
+	{
+		"name": "startCash",
+		"value": 75000
+	},
+	{
+		"name": "orderSize",
+		"value": 25000
+	},
+	{
+		"name": "maxLossCash",
+		"value": 25000
+	},
+	{
+		"name": "maxLossPercent",
+		"value": 35
+	},
+	{
+		"name": "dataForCalculation",
+		"data": [
+			{
+				"name": "minLiquidationOffsetPercent",
+				"value": 0.05
+			},
+			{
+				"name": "liquidationOffsetSteps",
+				"value": 2
+			}
+		]
+	},
+	{
+		"name": "minimumProfitPercent",
+		"value": 0.1
+	},
+	{
+		"name": "dynamicSLTrendMode",
+		"values": [ false ]
+	},
+	{
+		"name": "dynamicSLPercent",
+		"values": [ 0.2, 10.0 ],
+		"step": 0.2,
+		"criteria": [
+			{
+				"name": "dynamicSLTrendMode",
+				"value": false
+			}
+		],
+		"otherwise": -1.0
+	},
+	{
+		"name": "touchOpenerActivationWaitMode",
+		"values": [ false, true ]
+	},
+	{
+		"name": "breakOpenerEnabled",
+		"values": [ false ]
+	},
+	{
+		"name": "breakOpenerActivationWaitMode",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "breakOpenerEnabled",
+				"value": true
+			}
+		],
+		"otherwise": false
+	},
+	{
+		"name": "alwaysUseNewTrend",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "breakOpenerEnabled",
+				"value": true
+			}
+		],
+		"otherwise": false
+	},
+	{
+		"name": "trendActivationWaitRange",
+		"values": [ 0, 3 ],
+		"step": 1,
+		"criteria": [
+			{
+				"name": "touchOpenerActivationWaitMode",
+				"value": true
+			},
+			{
+				"name": "breakOpenerActivationWaitMode",
+				"value": true
+			}
+		],
+		"criteriaOperand": "or",
+		"otherwise": -1
+	},
+	{
+		"name": "stopLossWaiterEnabled",
+		"values": [ true ]
+	},
+	{
+		"name": "stopLossWaiterResetAllowed",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "stopLossWaiterEnabled",
+				"value": true
+			}
+		],
+		"otherwise": false
+	},
+	{
+		"name": "stopLossWaiterRange",
+		"values": [ 0, 3 ],
+		"step": 1,
+		"criteria": [
+			{
+				"name": "stopLossWaiterEnabled",
+				"value": true
+			}
+		],
+		"otherwise": -1
+	},
+	{
+		"name": "stopLossWaiterFullCandleCheck",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "stopLossWaiterEnabled",
+				"value": true
+			}
+		],
+		"otherwise": false
+	}
+]
