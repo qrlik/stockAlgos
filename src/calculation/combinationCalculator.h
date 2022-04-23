@@ -31,10 +31,10 @@ namespace calculation {
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
 		const std::string ticker;
-		const size_t threadsCount = 8;
-		const double weightPrecision = 0.0001;
-		const int parabolaDegree = 7;
-		const int atrSizeDegree = 20;
+		const size_t threadsAmount = 0;
+		const double weightPrecision = 0.0;
+		const int parabolaDegree = 0;
+		const int atrSizeDegree = 0;
 		const eCandleInterval interval;
 
 		double progress = 0.0;

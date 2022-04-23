@@ -15,7 +15,7 @@ calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval
 {
 	auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(interval));
 	candlesSource = utils::parseCandles(json);
-	threadsData = std::vector<threadInfo>(threadsCount);
+	threadsData = std::vector<threadInfo>(threadsAmount);
 }
 
 bool calculationSystem::threadInfo::isCached(market::eAtrType aType, int aSize, double aFactor) {
@@ -30,9 +30,9 @@ void calculationSystem::threadInfo::saveCache(market::eAtrType aType, int aSize,
 
 void calculationSystem::calculate() {
 	std::vector<std::future<void>> futures;
-	auto factory = combinationFactory(threadsCount);
+	auto factory = combinationFactory(threadsAmount);
 	combinations = factory.getCombinationsAmount();
-	for (size_t i = 0; i < threadsCount; ++i) {
+	for (size_t i = 0; i < threadsAmount; ++i) {
 		futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
 	}
 	for (auto& future : futures) {

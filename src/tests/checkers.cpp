@@ -30,12 +30,8 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 	if (aData.breakOpenerEnabled) {
 		waiter &= aData.breakOpenerActivationWaitMode;
 	}
-	if (waiter) {
-		result &= aData.activationWaiterRange >= 0;
-	}
-	if (aData.stopLossWaiterEnabled) {
-		result &= aData.stopLossWaiterRange >= 0;
-	}
+	result &= (waiter) ? aData.activationWaiterRange >= 0 : aData.activationWaiterRange == -1;
+	result &= (aData.stopLossWaiterEnabled) ? aData.stopLossWaiterRange >= 0 : aData.stopLossWaiterRange == -1;
 
 	if (!result) {
 		assert("tests::checkAlgorithmData fail" && result);

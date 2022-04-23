@@ -37,17 +37,20 @@ namespace {
 	algorithmData tmpData;
 }
 
-combinationFactory::combinationFactory(size_t aThreadsCount) : 
-	threadsCount(aThreadsCount),
-	combinationsData(aThreadsCount),
-	indexes(aThreadsCount, 0)
+combinationFactory::combinationFactory(size_t aThreadsAmount) :
+	threadsAmount(aThreadsAmount),
+	combinationsData(aThreadsAmount),
+	indexes(aThreadsAmount, 0)
 {
+	if (threadsAmount == 0) {
+		return;
+	}
 	generateSuperTrend();
-	auto threadDataAmount = combinations / threadsCount;
-	auto lastThreadDataAmount = threadDataAmount + combinations % threadsCount;
-	for (size_t i = 0; i < threadsCount; ++i) {
+	auto threadDataAmount = combinations / threadsAmount;
+	auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
+	for (size_t i = 0; i < threadsAmount; ++i) {
 		const bool isLast = i == 0;
-		const auto index = threadsCount - 1 - i;
+		const auto index = threadsAmount - 1 - i;
 		const auto amount = (isLast) ? lastThreadDataAmount : threadDataAmount;
 		combinationsData[index].reserve(amount);
 		std::copy(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end(), std::back_inserter(combinationsData[index]));
@@ -112,7 +115,7 @@ void combinationFactory::generateDeal() {
 }
 
 void combinationFactory::generatePercent() {
-	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.leverage, orderSize, offsetSteps, minLiquidationOffsetPercent)) {
+	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.leverage, orderSize, liquidationOffsetSteps, minLiquidationOffsetPercent)) {
 		tmpData.liquidationOffsetPercent = liquidationOffsetPercent;
 		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + minProfitPercentStep, minProfitPercentStep)) {
 			tmpData.minimumProfitPercent = minimumProfitPercent;

@@ -9,7 +9,7 @@ namespace calculation {
 	class combinationFactory {
 	public:
 		using iterateCallback = std::function<void(const algorithmData&, size_t)>;
-		combinationFactory(size_t aThreadsCount);
+		combinationFactory(size_t aThreadsAmount);
 		size_t getCombinationsAmount() const;
 		size_t getCurrentIndex() const;
 		int getMaxAtrSize() const { return maxAtrSize; }
@@ -29,7 +29,7 @@ namespace calculation {
 		std::vector<std::vector<algorithmData>> combinationsData;
 		std::vector<size_t> indexes;
 		size_t combinations = 0;
-		const size_t threadsCount = 1;
+		const size_t threadsAmount = 0;
 
 		const int minAtrSize = 10;
 		const int maxAtrSize = 150;
@@ -50,7 +50,7 @@ namespace calculation {
 		const double maxLossPercent = 35;
 
 		const double minLiquidationOffsetPercent = 0.05;
-		const int offsetSteps = 2;
+		const int liquidationOffsetSteps = 2;
 
 		const double minMinProfitPercent = 0.1;
 		const double maxMinProfitPercent = 0.1;
