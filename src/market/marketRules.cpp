@@ -1,5 +1,5 @@
 #include "marketRules.h"
-#include "../utils/utils.h"
+#include "utils/utils.h"
 
 using namespace market;
 
@@ -41,14 +41,14 @@ const tierData& marketData::getTierData(double aPosition) const {
 	return *data;
 }
 
-double marketData::getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) {
+double marketData::getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const {
 	auto liqPrice = -1.0;
 	auto notional = -1.0;
-	auto* tierData = &MARKET_DATA->getTierData(aNotional);
+	auto* tierData = &getTierData(aNotional);
 
 	while ((aLong || utils::isEqual(notional, -1.0)) ? notional < tierData->notionalFloor : (notional > tierData->notionalCap && tierData->maxLeverage != 1)) {
 		if (notional > 0.0) {
-			tierData = &MARKET_DATA->getTierData(notional);
+			tierData = &getTierData(notional);
 		}
 
 		const auto sign = (aLong) ? 1 : -1;
@@ -64,15 +64,14 @@ double marketData::getLiquidationPrice(double aPrice, double aNotional, double a
 	return utils::floor(liqPrice, MARKET_DATA->getPricePrecision());
 }
 
-double marketData::getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) {
+double marketData::getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const {
 	return getLiquidationPrice(aPrice, aNotional, aLeverage, aQuantity, aLong) / aPrice * 100 - 100;
 }
 
-double marketData::getLiquidationPercent(double aMargin, int aLeverage) {
+double marketData::getLiquidationPercent(double aMargin, int aLeverage) const {
 	const auto price = 50'000.0;
-	const auto instance = getInstance();
 	auto pos = aMargin * aLeverage;
-	const auto maxPos = instance->getLeverageMaxPosition(aLeverage);
+	const auto maxPos = getLeverageMaxPosition(aLeverage);
 	pos = std::min(pos, maxPos);
 
 	return getLiquidationPercent(price, pos, aLeverage, utils::floor(pos / price, instance->quantityPrecision), false);

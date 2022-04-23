@@ -1,7 +1,7 @@
 #include "checkers.h"
-#include "../structs/statistic.h"
-#include "../utils/utils.h"
-#include "../market/marketRules.h"
+#include "structs/statistic.h"
+#include "utils/utils.h"
+#include "market/marketRules.h"
 #include <iostream>
 
 using namespace tests;
@@ -19,8 +19,8 @@ void tests::checkAlgorithmData(const algorithmData& aData) {
 	result &= aData.startCash > aData.maxLossCash;
 
 	const auto minLiqPercent = (aData.orderSize > 0.0)
-		? market::marketData::getLiquidationPercent(aData.orderSize, aData.leverage) 
-		: market::marketData::getInstance()->getLeverageLiquidationRange(aData.leverage).first;
+		? MARKET_DATA->getLiquidationPercent(aData.orderSize, aData.leverage)
+		: MARKET_DATA->getLeverageLiquidationRange(aData.leverage).first;
 	result &= aData.liquidationOffsetPercent < minLiqPercent;
 	result &= aData.minimumProfitPercent > 2 * algorithmData::tax * 100.0;
 

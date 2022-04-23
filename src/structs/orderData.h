@@ -1,5 +1,5 @@
 #pragma once
-#include "../../third_party/json.hpp"
+#include "json/json.hpp"
 #include <string>
 
 namespace algorithm {

@@ -28,6 +28,9 @@ file(GLOB_RECURSE SRC_UTILS
     "src/utils/*.cpp"
     "src/utils/*.h"
 )
+file(GLOB_RECURSE SRC_JSON
+    "src/json/*.hpp"
+)
 
 set(
     SOURCES
@@ -39,4 +42,5 @@ set(
     ${SRC_STRUCTS}
     ${SRC_TESTS}
     ${SRC_UTILS}
+    ${SRC_JSON}
 )

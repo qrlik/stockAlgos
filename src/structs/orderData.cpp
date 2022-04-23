@@ -1,7 +1,7 @@
 #include "orderData.h"
-#include "../algorithm/moneyMaker.h"
-#include "../market/marketRules.h"
-#include "../utils/utils.h"
+#include "algorithm/moneyMaker.h"
+#include "market/marketRules.h"
+#include "utils/utils.h"
 #include <sstream>
 #include <iomanip>
 #include <iostream>
@@ -70,7 +70,7 @@ void orderData::reset() {
 }
 
 double orderData::calculateStopLoss(const algorithm::moneyMaker& aMM) const {
-	const auto liqPrice = market::marketData::getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
+	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());

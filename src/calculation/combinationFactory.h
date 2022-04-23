@@ -1,5 +1,5 @@
 #pragma once
-#include "../structs/algorithmData.h"
+#include "structs/algorithmData.h"
 #include <functional>
 #include <optional>
 #include <unordered_set>

@@ -1,7 +1,7 @@
 #include "tests.h"
 #include "checkers.h"
-#include "../market/marketRules.h"
-#include "../utils/utils.h"
+#include "market/marketRules.h"
+#include "utils/utils.h"
 #include <iostream>
 
 using namespace tests;

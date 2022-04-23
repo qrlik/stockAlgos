@@ -1,6 +1,6 @@
 #include "statistic.h"
-#include "../market/marketRules.h"
-#include "../utils/utils.h"
+#include "market/marketRules.h"
+#include "utils/utils.h"
 
 void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
 	for (const auto& [field, value] : aJson.items()) {

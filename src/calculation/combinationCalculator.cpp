@@ -1,7 +1,7 @@
 #include "combinationCalculator.h"
-#include "../market/marketRules.h"
-#include "../structs/algorithmData.h"
-#include "../utils/utils.h"
+#include "market/marketRules.h"
+#include "structs/algorithmData.h"
+#include "utils/utils.h"
 #include <execution>
 #include <iostream>
 #include <fstream>
@@ -32,7 +32,7 @@ void calculationSystem::calculate() {
 	std::vector<std::future<void>> futures;
 	auto factory = combinationFactory(threadsCount);
 	combinations = factory.getCombinationsAmount();
-	for (auto i = 0; i < threadsCount; ++i) {
+	for (size_t i = 0; i < threadsCount; ++i) {
 		futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
 	}
 	for (auto& future : futures) {

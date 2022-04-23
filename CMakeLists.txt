@@ -13,7 +13,7 @@ GENERATE_SOURCE_GROUPS("${CMAKE_SOURCE_DIR}/src/" ${SOURCES})
 
 include_directories(src)
 
-set(CMAKE_CXX_FLAGS  "-W4" )
+set(CMAKE_CXX_FLAGS  "-W4 -EHsc" )
 set(CMAKE_CXX_FLAGS_RELEASE "-Ox -GL")
 add_executable(${PROJECT_NAME} ${SOURCES})
 

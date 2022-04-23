@@ -1,7 +1,7 @@
 #include "combinationFactory.h"
-#include "../market/marketRules.h"
-#include "../tests/checkers.h"
-#include "../utils/utils.h"
+#include "market/marketRules.h"
+#include "tests/checkers.h"
+#include "utils/utils.h"
 #include <iostream>
 
 using namespace calculation;
@@ -21,7 +21,7 @@ namespace {
 
 	std::vector<double> getLiquidationRange(int aLeverage, double aMargin, int aSteps, double aMinOffset) {
 		std::vector<double> result;
-		auto liqPercent = market::marketData::getLiquidationPercent(aMargin, aLeverage);
+		auto liqPercent = MARKET_DATA->getLiquidationPercent(aMargin, aLeverage);
 		if (aSteps > 0) {
 			auto stepSize = liqPercent / (aSteps + 1);
 			for (auto i = 0; i < aSteps; ++i) {

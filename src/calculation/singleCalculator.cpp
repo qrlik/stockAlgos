@@ -1,9 +1,9 @@
 #include "singleCalculator.h"
-#include "../algorithm/moneyMaker.h"
-#include "../structs/algorithmData.h"
-#include "../market/indicators.h"
-#include "../tests/checkers.h"
-#include "../utils/utils.h"
+#include "algorithm/moneyMaker.h"
+#include "structs/algorithmData.h"
+#include "market/indicators.h"
+#include "tests/checkers.h"
+#include "utils/utils.h"
 #include <iostream>
 
 using namespace calculation;

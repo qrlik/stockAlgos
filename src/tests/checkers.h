@@ -1,5 +1,5 @@
 #pragma once
-#include "../algorithm/moneyMaker.h"
+#include "algorithm/moneyMaker.h"
 #include <memory>
 
 namespace tests {

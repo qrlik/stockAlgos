@@ -1,5 +1,5 @@
 #include "candle.h"
-#include "../utils/utils.h"
+#include "utils/utils.h"
 
 namespace {
 	const std::unordered_map<eCandleInterval, std::string> candleIntervalToStr{

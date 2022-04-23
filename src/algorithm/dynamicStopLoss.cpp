@@ -1,7 +1,7 @@
 #include "dynamicStopLoss.h"
 #include "moneyMaker.h"
-#include "../market/marketRules.h"
-#include "../utils/utils.h"
+#include "market/marketRules.h"
+#include "utils/utils.h"
 
 using namespace algorithm;
 

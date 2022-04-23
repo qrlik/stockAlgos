@@ -1,5 +1,5 @@
 #pragma once
-#include "../market/indicators.h"
+#include "market/indicators.h"
 
 struct algorithmData {
 	static const double tax;
