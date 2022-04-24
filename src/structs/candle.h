@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 enum class eCandleInterval {
+	NONE = 0,
 	ONE_MIN = 60000,
 	THREE_MIN = 180000,
 	FIVE_MIN = 300000,
@@ -34,4 +35,5 @@ struct candle {
 };
 
 std::string getCandleIntervalApiStr(eCandleInterval aInterval);
+eCandleInterval getCandleIntervalFromStr(const std::string& aInterval);
 candle parseCandleFromJson(const Json& aJson);

@@ -1,4 +1,4 @@
-#include "combinationCalculator.h"
+#include "calculationSystem.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <execution>
@@ -8,13 +8,8 @@
 
 using namespace calculation;
 
-calculationSystem::calculationSystem(const std::string& aTicker, eCandleInterval aInterval):
-	interval(aInterval),
-	ticker(aTicker)
-{
-	auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(interval));
-	candlesSource = utils::parseCandles(json);
-	threadsData = std::vector<threadInfo>(threadsAmount);
+calculationSystem::calculationSystem() {
+	loadSettings();
 }
 
 bool calculationSystem::threadInfo::isCached(market::eAtrType aType, int aSize, double aFactor) {
@@ -27,18 +22,70 @@ void calculationSystem::threadInfo::saveCache(market::eAtrType aType, int aSize,
 	cachedStFactor = aFactor;
 }
 
+namespace {
+	bool checkSettingsJson(const Json& aSettigns) {
+		bool result = true;
+		result &= !aSettigns.is_null();
+		result &= aSettigns.is_object();
+		result &= aSettigns.contains("threadsAmount") && aSettigns["threadsAmount"].is_number_unsigned();
+		result &= aSettigns.contains("parabolaDegree") && aSettigns["parabolaDegree"].is_number_unsigned();
+		result &= aSettigns.contains("atrSizeDegree") && aSettigns["atrSizeDegree"].is_number_unsigned();
+		result &= aSettigns.contains("weightPrecision") && aSettigns["weightPrecision"].is_number_float();
+		result &= aSettigns.contains("algorithmType") && aSettigns["algorithmType"].is_string();
+		result &= aSettigns.contains("calculations") && aSettigns["calculations"].is_array();
+		if (result) {
+			for (const auto& calculation : aSettigns["calculations"]) {
+				result &= calculation.is_object();
+				result &= calculation.contains("ticker") && calculation["ticker"].is_string();
+				result &= calculation.contains("timeframe") && calculation["timeframe"].is_string();
+			}
+		}
+		return result;
+	}
+}
+
+void calculationSystem::loadSettings() {
+	const auto log = []() { utils::logError("calculationSystem::loadSettings parse error"); };
+	auto settings = utils::readFromJson("calculationSettings");
+	if (!checkSettingsJson(settings)) {
+		log();
+		return;
+	}
+	threadsAmount = settings["threadsAmount"].get<unsigned int>();
+	weightPrecision = settings["weightPrecision"].get<double>();
+	parabolaDegree = settings["parabolaDegree"].get<unsigned int>();
+	atrSizeDegree = settings["atrSizeDegree"].get<unsigned int>();
+	algorithmType = settings["algorithmType"].get<std::string>();
+	for (const auto& calculation : settings["calculations"]) {
+		auto ticker = calculation["ticker"].get<std::string>();
+		auto timeframe = getCandleIntervalFromStr(calculation["timeframe"].get<std::string>());
+		if (ticker.empty() || timeframe == eCandleInterval::NONE) {
+			log();
+		}
+		else {
+			calculations.emplace_back(std::move(ticker), timeframe);
+		}
+	}
+}
+
 void calculationSystem::calculate() {
-	std::vector<std::future<void>> futures;
-	auto factory = combinationFactory(threadsAmount);
-	combinations = factory.getCombinationsAmount();
-	for (size_t i = 0; i < threadsAmount; ++i) {
-		futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
+	for (const auto& [ticker, timeframe] : calculations) {
+		auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(timeframe));
+		candlesSource = utils::parseCandles(json);
+		threadsData = std::vector<threadInfo>(threadsAmount);
+
+		std::vector<std::future<void>> futures;
+		auto factory = combinationFactory(threadsAmount);
+		combinations = factory.getCombinationsAmount();
+		for (size_t i = 0; i < threadsAmount; ++i) {
+			futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
+		}
+		for (auto& future : futures) {
+			future.wait();
+		}
+		factory.onFinish();
+		saveFinalData(ticker, timeframe);
 	}
-	for (auto& future : futures) {
-		future.wait();
-	}
-	factory.onFinish();
-	saveFinalData();
 }
 
 void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
@@ -266,7 +313,7 @@ namespace {
 	}
 }
 
-void calculationSystem::saveFinalData() {
+void calculationSystem::saveFinalData(const std::string& aTicker, eCandleInterval aInterval) {
 	std::vector<finalData> finalVector;
 	size_t size = 0;
 	for (auto& threadData : threadsData) {
@@ -286,8 +333,8 @@ void calculationSystem::saveFinalData() {
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream allData("positiveDataAll_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".txt");
-		std::ofstream positiveOutput("positiveData_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".txt");
+		std::ofstream allData("positiveDataAll_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".txt");
+		std::ofstream positiveOutput("positiveData_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".txt");
 		addHeadlines(allData);
 		addHeadlines(positiveOutput);
 		auto maxProfit = -1.0;
@@ -311,7 +358,7 @@ void calculationSystem::saveFinalData() {
 		}
 	}
 	{
-		std::ofstream jsonOutput("jsonData_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".json");
+		std::ofstream jsonOutput("jsonData_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".json");
 		jsonOutput << jsonData;
 		jsonData.clear();
 	}
@@ -334,7 +381,7 @@ void calculationSystem::saveFinalData() {
 			}
 		}
 
-		std::ofstream statsOutput("stats_" + ticker + '_' + getCandleIntervalApiStr(interval) + ".json");
+		std::ofstream statsOutput("stats_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".json");
 		statsOutput << std::setw(4) << stats;
 	}
 }

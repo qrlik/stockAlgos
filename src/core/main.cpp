@@ -1,14 +1,14 @@
 #include "tests/tests.h"
 #include "calculation/singleCalculator.h"
-#include "calculation/combinationCalculator.h"
+#include "calculation/calculationSystem.h"
 #include "utils/utils.h"
 #include <chrono>
 #include <iostream>
 
-void calculate(const std::string& aTicker, eCandleInterval aInterval) {
+void calculate() {
 	auto start = std::chrono::steady_clock::now();
 
-	calculation::calculationSystem system(aTicker, aInterval);
+	calculation::calculationSystem system;
 	system.calculate();
 
 	auto end = std::chrono::steady_clock::now();;
@@ -20,7 +20,7 @@ int main() {
 
 	//calculation::singleCalculation();
 
-	calculate("BTCUSDT", eCandleInterval::FIFTEEN_MIN);
+	calculate();
 
 	return 0;
 }

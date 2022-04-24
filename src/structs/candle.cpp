@@ -2,7 +2,8 @@
 #include "utils/utils.h"
 
 namespace {
-	const std::unordered_map<eCandleInterval, std::string> candleIntervalToStr{
+	const std::unordered_map<eCandleInterval, std::string> candleIntervalToStr {
+		{ eCandleInterval::NONE, "" },
 		{ eCandleInterval::ONE_MIN, "1m" },
 		{ eCandleInterval::THREE_MIN, "3m" },
 		{ eCandleInterval::FIVE_MIN, "5m" },
@@ -25,6 +26,15 @@ std::string getCandleIntervalApiStr(eCandleInterval aInterval) {
 		return it->second;
 	}
 	return "";
+}
+
+eCandleInterval getCandleIntervalFromStr(const std::string& aInterval) {
+	for (const auto& [interval, str] : candleIntervalToStr) {
+		if (str == aInterval) {
+			return interval;
+		}
+	}
+	return eCandleInterval::NONE;
 }
 
 candle parseCandleFromJson(const Json& aJson) {

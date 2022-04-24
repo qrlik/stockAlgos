@@ -8,12 +8,13 @@ namespace calculation {
 	struct finalData;
 	class calculationSystem {
 	public:
-		calculationSystem(const std::string& aTicker, eCandleInterval aInterval);
+		calculationSystem();
 		void calculate();
 	private:
+		void loadSettings();
 		void iterate(combinationFactory& aFactory, int aThread);
 		void printProgress(size_t aIndex);
-		void saveFinalData();
+		void saveFinalData(const std::string& aTicker, eCandleInterval aInterval);
 
 		finalData getData(const algorithm::stAlgorithm& aMM);
 
@@ -30,12 +31,13 @@ namespace calculation {
 		std::vector<threadInfo> threadsData;
 		std::vector<candle> candlesSource;
 		std::mutex printMutex;
-		const std::string ticker;
-		const size_t threadsAmount = 0;
-		const double weightPrecision = 0.0;
-		const int parabolaDegree = 0;
-		const int atrSizeDegree = 0;
-		const eCandleInterval interval;
+		
+		std::string algorithmType;
+		std::vector<std::pair<std::string, eCandleInterval>> calculations;
+		size_t threadsAmount = 0;
+		double weightPrecision = 0.0;
+		int parabolaDegree = 0;
+		int atrSizeDegree = 0;
 
 		double progress = 0.0;
 		size_t combinations = 0;
