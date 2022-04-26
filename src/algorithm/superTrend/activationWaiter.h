@@ -10,18 +10,15 @@ namespace algorithm {
 		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		activationWaiter(stAlgorithm* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck);
+		activationWaiter(stAlgorithm& aAlgorithm);
 		bool operator==(const activationWaiter& other);
 		void onNewTrend();
 		void start();
 		bool check();
-		int getCounter() const;
-		void setCounter(int aAmount);
+		int getCounter() const { return activationWaitCounter; }
+		void setCounter(int aCounter) { activationWaitCounter = aCounter; } // TO DO make private later
 	private:
-		stAlgorithm* mm = nullptr;
-		const int activationWaitRange;
+		stAlgorithm& algorithm;
 		int activationWaitCounter = 0;
-		const bool resetAllowed;
-		const bool fullCandleCheck;
 	};
 }

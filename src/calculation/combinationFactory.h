@@ -8,12 +8,12 @@ namespace calculation {
 
 	class combinationFactory {
 	public:
-		using iterateCallback = std::function<void(const stAlgorithmData&, size_t)>;
+		using iterateCallback = std::function<void(const algorithm::stAlgorithmData&, size_t)>;
 		combinationFactory(size_t aThreadsAmount);
 		size_t getCombinationsAmount() const;
 		size_t getCurrentIndex() const;
 		int getMaxAtrSize() const { return maxAtrSize; }
-		const std::vector<stAlgorithmData>& getThreadData(int aThread);
+		const std::vector<algorithm::stAlgorithmData>& getThreadData(int aThread);
 		void incrementThreadIndex(int aThread);
 		void onFinish();
 	private:
@@ -26,7 +26,7 @@ namespace calculation {
 		void generateStop();
 		void onIterate();
 
-		std::vector<std::vector<stAlgorithmData>> combinationsData;
+		std::vector<std::vector<algorithm::stAlgorithmData>> combinationsData;
 		std::vector<size_t> indexes;
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;

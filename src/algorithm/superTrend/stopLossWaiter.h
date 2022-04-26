@@ -10,19 +10,15 @@ namespace algorithm {
 		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		stopLossWaiter(stAlgorithm* aMm, int aStopLossWaitRange, bool aEnabled, bool aResetAllowed, bool aFullCandleCheck);
-		bool operator==(const stopLossWaiter& other);
+		stopLossWaiter(stAlgorithm& aAlgorithm);
+		bool operator==(const stopLossWaiter& aOther);
 		void onNewTrend();
 		void start();
 		bool check();
 		int getCounter() const;
-		void setCounter(int aAmount);
+		void setCounter(int aCounter) { stopLossWaitCounter = aCounter; } // TO DO make private later
 	private:
-		stAlgorithm* mm = nullptr;
-		const int stopLossWaitRange;
+		stAlgorithm& algorithm;
 		int stopLossWaitCounter = 0;
-		const bool enabled;
-		const bool resetAllowed;
-		const bool fullCandleCheck;
 	};
 }

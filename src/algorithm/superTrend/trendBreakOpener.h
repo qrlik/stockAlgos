@@ -8,15 +8,12 @@ namespace algorithm {
 	class stAlgorithm;
 	class trendBreakOpener {
 		friend class stAlgorithm;
-		friend class calculation::calculationSystem;
+		friend class calculation::calculationSystem; // TO DO fix this everywhere;
 	public:
-		trendBreakOpener(stAlgorithm* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend);
+		trendBreakOpener(stAlgorithm& aAlgorithm);
 		bool isNewTrendAllowed();
 		bool check();
 	private:
-		stAlgorithm* mm = nullptr;
-		const bool enabled;
-		const bool activationWaitMode;
-		const bool alwaysUseNewTrend;
+		stAlgorithm& algorithm;
 	};
 }

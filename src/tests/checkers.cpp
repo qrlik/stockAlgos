@@ -6,32 +6,32 @@
 
 using namespace tests;
 
-void tests::checkAlgorithmData(const stAlgorithmData& aData) {
+void tests::checkAlgorithmData(const algorithm::stAlgorithmData& aData) {
 	bool result = true;
-	result &= aData.atrType != market::eAtrType::NONE;
-	result &= aData.atrSize > 0;
-	result &= aData.stFactor > 0.0;
+	result &= aData.getAtrType() != market::eAtrType::NONE;
+	result &= aData.getAtrSize() > 0;
+	result &= aData.getStFactor() > 0.0;
 
-	result &= aData.dealPercent > 0.0;
-	result &= aData.leverage > 0 && aData.leverage <= 125;
+	result &= aData.getDealPercent() > 0.0;
+	result &= aData.getLeverage() > 0 && aData.getLeverage() <= 125;
 
-	result &= aData.startCash > market::marketData::getInstance()->getMinNotionalValue() / aData.leverage;
-	result &= aData.startCash > aData.maxLossCash;
+	result &= aData.getStartCash() > market::marketData::getInstance()->getMinNotionalValue() / aData.getLeverage();
+	result &= aData.getStartCash() > aData.getMaxLossCash();
 
-	const auto minLiqPercent = (aData.orderSize > 0.0)
-		? MARKET_DATA->getLiquidationPercent(aData.orderSize, aData.leverage)
-		: MARKET_DATA->getLeverageLiquidationRange(aData.leverage).first;
-	result &= aData.liquidationOffsetPercent < minLiqPercent;
-	result &= aData.minimumProfitPercent > 2 * stAlgorithmData::tax * 100.0;
+	const auto minLiqPercent = (aData.getOrderSize() > 0.0)
+		? MARKET_DATA->getLiquidationPercent(aData.getOrderSize(), aData.getLeverage())
+		: MARKET_DATA->getLeverageLiquidationRange(aData.getLeverage()).first;
+	result &= aData.getLiquidationOffsetPercent() < minLiqPercent;
+	result &= aData.getMinimumProfitPercent() > 2 * algorithm::stAlgorithmData::tax * 100.0;
 
-	result &= (utils::isEqual(aData.dynamicSLPercent, -1.0) && aData.dynamicSLTrendMode) || aData.dynamicSLPercent > 0.0;
+	result &= (utils::isEqual(aData.getDynamicSLPercent(), -1.0) && aData.getDynamicSLTrendMode()) || aData.getDynamicSLPercent() > 0.0;
 
-	auto waiter = aData.touchOpenerActivationWaitMode;
-	if (aData.breakOpenerEnabled) {
-		waiter &= aData.breakOpenerActivationWaitMode;
+	auto waiter = aData.getTouchOpenerActivationWaitMode();
+	if (aData.getBreakOpenerEnabled()) {
+		waiter &= aData.getBreakOpenerActivationWaitMode();
 	}
-	result &= (waiter) ? aData.activationWaiterRange >= 0 : aData.activationWaiterRange == -1;
-	result &= (aData.stopLossWaiterEnabled) ? aData.stopLossWaiterRange >= 0 : aData.stopLossWaiterRange == -1;
+	result &= (waiter) ? aData.getActivationWaiterRange() >= 0 : aData.getActivationWaiterRange() == -1;
+	result &= (aData.getStopLossWaiterEnabled()) ? aData.getStopLossWaiterRange() >= 0 : aData.getStopLossWaiterRange() == -1;
 
 	if (!result) {
 		assert("tests::checkAlgorithmData fail" && result);
@@ -44,7 +44,7 @@ mmChecker::mmChecker(std::string aName) :
 	name(std::move(aName))
 {
 	auto json = utils::readFromJson("assets/tests/" + name);
-	auto data = stAlgorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
+	auto data = algorithm::stAlgorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
 	tests::checkAlgorithmData(data);
 	actualMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);
 	testMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);
@@ -53,7 +53,7 @@ mmChecker::mmChecker(std::string aName) :
 
 	auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
 	candles = utils::parseCandles(jsonCandles);
-	auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+	auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
 	indicators.getProcessedCandles(candles, json["candlesAmount"].get<int>());
 }
 

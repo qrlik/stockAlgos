@@ -93,16 +93,16 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	auto& threadInfo = threadsData[aThread];
 	const auto& threadData = aFactory.getThreadData(aThread);
 	for (const auto& data : threadData) {
-		if (!threadInfo.isCached(data.atrType, data.atrSize, data.stFactor)) {
+		if (!threadInfo.isCached(data.getAtrType(), data.getAtrSize(), data.getStFactor())) {
 			candles = candlesSource;
-			auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
+			auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
 			auto finalSize = static_cast<int>(candles.size()) - atrSizeDegree * aFactory.getMaxAtrSize();
 			if (finalSize <= 0) {
 				utils::logError("wrong atr size for candles amount");
 				finalSize = static_cast<int>(candles.size());
 			}
 			indicators.getProcessedCandles(candles, finalSize);
-			threadInfo.saveCache(data.atrType, data.atrSize, data.stFactor);
+			threadInfo.saveCache(data.getAtrType(), data.getAtrSize(), data.getStFactor());
 		}
 		auto moneyMaker = algorithm::stAlgorithm(data);
 		const auto result = moneyMaker.calculate(candles);
@@ -150,19 +150,19 @@ finalData calculationSystem::getData(const algorithm::stAlgorithm& aMM) {
 		: market::marketData::getInstance()->getLeverageLiquidationRange(aMM.leverage).first;
 	result.stopLossPercent = liqPercent - aMM.liquidationOffsetPercent;
 	result.minimumProfitPercent = aMM.minimumProfitPercent;
-	result.dynamicSLPercent = aMM.dynamicStopLossModule.dynamicSLPercent;
-	result.dynamicStopLossTrendMode = aMM.dynamicStopLossModule.trendMode;
-	result.trendTouchOpenerModuleActivationWaitMode = aMM.trendTouchOpenerModule.activationWaitMode;
-	result.trendBreakOpenerModuleEnabled = aMM.trendBreakOpenerModule.enabled;
-	result.trendBreakOpenerModuleActivationWaitMode = aMM.trendBreakOpenerModule.activationWaitMode;
-	result.trendBreakOpenerModuleAlwaysUseNewTrend = aMM.trendBreakOpenerModule.alwaysUseNewTrend;
-	result.activationWaiterModuleResetAllowed = aMM.activationWaiterModule.resetAllowed;
-	result.activationWaiterModuleActivationWaitRange = aMM.activationWaiterModule.activationWaitRange;
-	result.activationWaiterModuleFullCandleCheck = aMM.activationWaiterModule.fullCandleCheck;
-	result.stopLossWaiterModuleEnabled = aMM.stopLossWaiterModule.enabled;
-	result.stopLossWaiterModuleResetAllowed = aMM.stopLossWaiterModule.resetAllowed;
-	result.stopLossWaiterModuleStopLossWaitRange = aMM.stopLossWaiterModule.stopLossWaitRange;
-	result.stopLossWaiterModuleFullCandleCheck = aMM.stopLossWaiterModule.fullCandleCheck;
+	result.dynamicSLPercent = aMM.getData().getDynamicSLPercent();
+	result.dynamicStopLossTrendMode = aMM.getData().getDynamicSLTrendMode();
+	result.trendTouchOpenerModuleActivationWaitMode = aMM.getData().getTouchOpenerActivationWaitMode();
+	result.trendBreakOpenerModuleEnabled = aMM.getData().getBreakOpenerEnabled();
+	result.trendBreakOpenerModuleActivationWaitMode = aMM.getData().getBreakOpenerActivationWaitMode();
+	result.trendBreakOpenerModuleAlwaysUseNewTrend = aMM.getData().getAlwaysUseNewTrend();
+	result.activationWaiterModuleResetAllowed = aMM.getData().getActivationWaiterResetAllowed();
+	result.activationWaiterModuleActivationWaitRange = aMM.getData().getActivationWaiterRange();
+	result.activationWaiterModuleFullCandleCheck = aMM.getData().getActivationWaiterFullCandleCheck();
+	result.stopLossWaiterModuleEnabled = aMM.getData().getStopLossWaiterEnabled();
+	result.stopLossWaiterModuleResetAllowed = aMM.getData().getStopLossWaiterResetAllowed();
+	result.stopLossWaiterModuleStopLossWaitRange = aMM.getData().getStopLossWaiterRange();
+	result.stopLossWaiterModuleFullCandleCheck = aMM.getData().getStopLossWaiterFullCandleCheck();
 
 	return result;
 }

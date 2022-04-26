@@ -1,79 +1,72 @@
 #include "activationWaiter.h"
 #include "stAlgorithm.h"
+#include "utils/utils.h"
 
 using namespace algorithm;
 
-activationWaiter::activationWaiter(stAlgorithm* aMm, int aActivationWaitRange, bool aResetAllowed, bool aFullCandleCheck)
-	:mm(aMm),
-	activationWaitRange(aActivationWaitRange),
-	resetAllowed(aResetAllowed),
-	fullCandleCheck(aFullCandleCheck) {}
+activationWaiter::activationWaiter(stAlgorithm& aAlgorithm)
+	:algorithm(aAlgorithm) {}
 
 bool activationWaiter::operator==(const activationWaiter& other) {
-	return activationWaitRange == other.activationWaitRange
-		&& activationWaitCounter == other.activationWaitCounter
-		&& resetAllowed == other.resetAllowed
-		&& fullCandleCheck == other.fullCandleCheck;
-}
-
-int activationWaiter::getCounter() const {
-	return activationWaitCounter;
-}
-
-void activationWaiter::setCounter(int aAmount) {
-	activationWaitCounter = aAmount;
+	return activationWaitCounter == other.activationWaitCounter;
 }
 
 void activationWaiter::onNewTrend() {
-	if (mm->getState() != eState::ACTIVATION_WAIT) {
+	if (algorithm.getState() != eState::ACTIVATION_WAIT) {
 		return;
 	}
-	assert(activationWaitRange >= 0);
-	if (resetAllowed) {
-		mm->setState(eState::NONE);
+	if (algorithm.getData().getActivationWaiterResetAllowed()) {
+		algorithm.setState(eState::NONE);
 		activationWaitCounter = 0;
 	}
 	else {
-		activationWaitCounter = activationWaitRange;
+		activationWaitCounter = algorithm.getData().getActivationWaiterRange();
 	}
 }
 
 void activationWaiter::start() {
-	assert(activationWaitRange >= 0);
-	mm->setState(eState::ACTIVATION_WAIT);
-	activationWaitCounter = activationWaitRange;
+	if (const auto range = algorithm.getData().getActivationWaiterRange(); range >= 0) {
+		algorithm.setState(eState::ACTIVATION_WAIT);
+		activationWaitCounter = algorithm.getData().getActivationWaiterRange();
+	}
+	else {
+		utils::logError("activationWaiter::start wrong range");
+	}
 }
 
 bool activationWaiter::check() {
-	assert(activationWaitRange >= 0);
-	const auto trendActivation = mm->getActualSuperTrend();
+	if (algorithm.getState() != eState::ACTIVATION_WAIT) {
+		return false;
+	}
+	const auto trendActivation = algorithm.getActualSuperTrend();
 	if (activationWaitCounter == 0) {
-		const auto isTrendUp = mm->getIsTrendUp();
-		const auto& open = mm->getCandle().open;
+		const auto isTrendUp = algorithm.getIsTrendUp();
+		const auto& open = algorithm.getCandle().open;
 		if (isTrendUp && open > trendActivation) {
-			mm->openOrder(eState::LONG, open);
+			algorithm.openOrder(eState::LONG, open);
 			return true;
 		}
 		else if (!isTrendUp && open < trendActivation) {
-			mm->openOrder(eState::SHORT, open);
+			algorithm.openOrder(eState::SHORT, open);
 			return true;
 		}
-		activationWaitCounter = activationWaitRange;
+		activationWaitCounter = algorithm.getData().getActivationWaiterRange();
 	}
 	else {
-		const auto& candle = mm->getCandle();
+		const auto& candle = algorithm.getCandle();
+		const auto fullCandleCheck = algorithm.getData().getActivationWaiterFullCandleCheck();
 		auto minimum = (fullCandleCheck) ? candle.low : std::min(candle.open, candle.close);
 		auto maximum = (fullCandleCheck) ? candle.high : std::max(candle.open, candle.close);
-		const auto isTrendUp = mm->getIsTrendUp();
+		const auto isTrendUp = algorithm.getIsTrendUp();
 		if ((isTrendUp && minimum > trendActivation) || (!isTrendUp && maximum < trendActivation)) {
 			activationWaitCounter -= 1;
 		}
 		else {
-			activationWaitCounter = activationWaitRange;
+			activationWaitCounter = algorithm.getData().getActivationWaiterRange();
 		}
 	}
-	if (mm->isNewTrendChanged()) {
-		activationWaitCounter = activationWaitRange;
+	if (algorithm.isNewTrendChanged()) {
+		activationWaitCounter = algorithm.getData().getActivationWaiterRange();
 	}
 	return false;
 }

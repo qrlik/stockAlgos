@@ -1,5 +1,7 @@
 #include "stAlgorithmData.h"
 
+using namespace algorithm;
+
 const double stAlgorithmData::tax = 0.0004;
 
 stAlgorithmData stAlgorithmData::initAlgorithmDataFromJson(const Json& aData) {
@@ -15,25 +17,25 @@ stAlgorithmData stAlgorithmData::initAlgorithmDataFromJson(const Json& aData) {
 			result.stFactor = value.get<double>();
 		}
 		else if (field == "dealPercent") {
-			result.dealPercent = value.get<double>();
+			result.setDealPercent(value.get<double>());
 		}
 		else if (field == "leverage") {
-			result.leverage = value.get<int>();
+			result.setLeverage(value.get<int>());
 		}
 		else if (field == "startCash") {
-			result.startCash = value.get<double>();
+			result.setStartCash(value.get<double>());
 		}
 		else if (field == "maxLossPercent") {
-			result.maxLossPercent = value.get<double>();
+			result.setMaxLossPercent(value.get<double>());
 		}
 		else if (field == "maxLossCash") {
-			result.maxLossCash = value.get<double>();
+			result.setMaxLossCash(value.get<double>());
 		}
 		else if (field == "liquidationOffsetPercent") {
-			result.liquidationOffsetPercent = value.get<double>();
+			result.setLiquidationOffsetPercent(value.get<double>());
 		}
 		else if (field == "minimumProfitPercent") {
-			result.minimumProfitPercent = value.get<double>();
+			result.setMinimumProfitPercent(value.get<double>());
 		}
 		else if (field == "dynamicSLPercent" && !value.is_null()) {
 			result.dynamicSLPercent = value.get<double>();
@@ -75,7 +77,7 @@ stAlgorithmData stAlgorithmData::initAlgorithmDataFromJson(const Json& aData) {
 			result.stopLossWaiterFullCandleCheck = value.get<bool>();
 		}
 		else if (field == "fullCheck") {
-			result.fullCheck = value.get<bool>();
+			result.setFullCheck(value.get<bool>());
 		}
 	}
 	return result;
@@ -87,15 +89,15 @@ Json stAlgorithmData::toJson() const {
 	result["atrSize"] = atrSize;
 	result["stFactor"] = stFactor;
 
-	result["dealPercent"] = dealPercent;
-	result["leverage"] = leverage;
+	result["dealPercent"] = getDealPercent();
+	result["leverage"] = getLeverage();
 
-	result["startCash"] = startCash;
-	result["maxLossPercent"] = maxLossPercent;
-	result["maxLossCash"] = maxLossCash;
+	result["startCash"] = getStartCash();
+	result["maxLossPercent"] = getMaxLossPercent();
+	result["maxLossCash"] = getMaxLossCash();
 
-	result["liquidationOffsetPercent"] = liquidationOffsetPercent;
-	result["minimumProfitPercent"] = minimumProfitPercent;
+	result["liquidationOffsetPercent"] = getLiquidationOffsetPercent();
+	result["minimumProfitPercent"] = getMinimumProfitPercent();
 
 	result["dynamicSLPercent"] = dynamicSLPercent;
 	result["dynamicSLTrendMode"] = dynamicSLTrendMode;
@@ -116,4 +118,8 @@ Json stAlgorithmData::toJson() const {
 	result["stopLossWaiterFullCandleCheck"] = stopLossWaiterFullCandleCheck;
 
 	return result;
+}
+
+void stAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
+
 }

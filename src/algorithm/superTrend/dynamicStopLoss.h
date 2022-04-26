@@ -10,14 +10,12 @@ namespace algorithm {
 		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		dynamicStopLoss(stAlgorithm* aMm, double aPercent, bool aTrendMode);
+		dynamicStopLoss(stAlgorithm& aAlgorithm);
 		bool check();
 	private:
 		bool checkTrend();
 		bool checkDynamic();
 
-		stAlgorithm* mm = nullptr;
-		const double dynamicSLPercent;
-		const bool trendMode;
+		stAlgorithm& algorithm;
 	};
 }

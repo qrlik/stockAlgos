@@ -20,20 +20,17 @@ namespace {
 	}
 }
 
-trendBreakOpener::trendBreakOpener(stAlgorithm* aMm, bool aEnabled, bool aActivationWaitMode, bool aAlwaysUseNewTrend):
-	mm(aMm),
-	enabled(aEnabled),
-	activationWaitMode(aActivationWaitMode),
-	alwaysUseNewTrend(aAlwaysUseNewTrend) {}
+trendBreakOpener::trendBreakOpener(stAlgorithm& aAlgorithm):
+	algorithm(aAlgorithm) {}
 
 bool trendBreakOpener::isNewTrendAllowed() {
-	if (!enabled) {
+	if (!algorithm.getData().getBreakOpenerEnabled()) {
 		return false;
 	}
-	if (alwaysUseNewTrend) {
+	if (algorithm.getData().getAlwaysUseNewTrend()) {
 		return true;
 	}
-	const auto state = mm->getState();
+	const auto state = algorithm.getState();
 	if (state != eState::LONG && state != eState::SHORT) {
 		return true;
 	}
@@ -41,26 +38,29 @@ bool trendBreakOpener::isNewTrendAllowed() {
 }
 
 bool trendBreakOpener::check() {
-	const auto trendActivation = mm->getActualSuperTrend();
-	const auto isTrendUp = mm->getIsTrendUp();
-	const auto& candle = mm->getCandle();
+	if (!algorithm.getData().getBreakOpenerEnabled()) {
+		return false;
+	}
+	const auto trendActivation = algorithm.getActualSuperTrend();
+	const auto isTrendUp = algorithm.getIsTrendUp();
+	const auto& candle = algorithm.getCandle();
 	if (isTrendUp && candle.high >= trendActivation) {
-		if (!activationWaitMode) {
+		if (!algorithm.getData().getBreakOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::LONG);
-			mm->openOrder(eState::LONG, orderPrice);
+			algorithm.openOrder(eState::LONG, orderPrice);
 			return true;
 		}
-		mm->getActivationWaiter().start();
+		algorithm.getActivationWaiter().start();
 	}
 	else if (!isTrendUp && candle.low <= trendActivation) {
-		if (!activationWaitMode) {
+		if (!algorithm.getData().getBreakOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::SHORT);
-			mm->openOrder(eState::SHORT, orderPrice);
+			algorithm.openOrder(eState::SHORT, orderPrice);
 			return true;
 		}
-		mm->getActivationWaiter().start();
+		algorithm.getActivationWaiter().start();
 	}
-	if (mm->isNewTrendChanged()) {
+	if (algorithm.isNewTrendChanged()) {
 		return true;
 	}
 	return false;

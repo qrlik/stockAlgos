@@ -20,29 +20,28 @@ namespace {
 	}
 }
 
-trendTouchOpener::trendTouchOpener(stAlgorithm* aMm, bool aActivationWaitMode) :
-	mm(aMm),
-	activationWaitMode(aActivationWaitMode) {}
+trendTouchOpener::trendTouchOpener(stAlgorithm& aAlgorithm) :
+	algorithm(aAlgorithm) {}
 
 bool trendTouchOpener::check() {
-	const auto trendActivation = mm->getSuperTrend();
-	const auto isTrendUp = mm->getIsTrendUp();
-	const auto& candle = mm->getCandle();
+	const auto trendActivation = algorithm.getSuperTrend();
+	const auto isTrendUp = algorithm.getIsTrendUp();
+	const auto& candle = algorithm.getCandle();
 	if (isTrendUp && candle.low <= trendActivation) {
-		if (!activationWaitMode) {
+		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::LONG);
-			mm->openOrder(eState::LONG, orderPrice);
+			algorithm.openOrder(eState::LONG, orderPrice);
 			return true;
 		}
-		mm->getActivationWaiter().start();
+		algorithm.getActivationWaiter().start();
 	}
 	else if (!isTrendUp && candle.high >= trendActivation) {
-		if (!activationWaitMode) {
+		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::SHORT);
-			mm->openOrder(eState::SHORT, orderPrice);
+			algorithm.openOrder(eState::SHORT, orderPrice);
 			return true;
 		}
-		mm->getActivationWaiter().start();
+		algorithm.getActivationWaiter().start();
 	}
 	return false;
 }

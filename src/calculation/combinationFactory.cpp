@@ -33,8 +33,8 @@ namespace {
 		return result;
 	}
 
-	std::vector<stAlgorithmData> tmpAllData;
-	stAlgorithmData tmpData;
+	std::vector<algorithm::stAlgorithmData> tmpAllData;
+	algorithm::stAlgorithmData tmpData;
 }
 
 combinationFactory::combinationFactory(size_t aThreadsAmount) :
@@ -70,7 +70,7 @@ size_t combinationFactory::getCurrentIndex() const {
 	return std::accumulate(indexes.cbegin(), indexes.cend(), size_t{ 0 });
 }
 
-const std::vector<stAlgorithmData>& combinationFactory::getThreadData(int aThread) {
+const std::vector<algorithm::stAlgorithmData>& combinationFactory::getThreadData(int aThread) {
 	return combinationsData[aThread];
 }
 
@@ -88,14 +88,14 @@ void combinationFactory::generateSuperTrend() {
 	if (inited) {
 		return;
 	}
-	tmpData = stAlgorithmData{};
+	tmpData = algorithm::stAlgorithmData{};
 
 	for (auto atrType : { market::eAtrType::RMA }) {
-		tmpData.atrType = atrType;
+		tmpData.setAtrType(atrType);
 		for (auto atrSize : iotaWithStep(minAtrSize, maxAtrSize + atrSizeStep, atrSizeStep)) {
-			tmpData.atrSize = atrSize;
+			tmpData.setAtrSize(atrSize);
 			for (auto stFactor : iotaWithStep(minStFactor, maxStFactor + stFactorStep, stFactorStep)) {
-				tmpData.stFactor = stFactor;
+				tmpData.setStFactor(stFactor);
 				generateDeal();
 			}
 		}
@@ -104,21 +104,21 @@ void combinationFactory::generateSuperTrend() {
 
 void combinationFactory::generateDeal() {
 	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + dealPercentStep, dealPercentStep)) {
-		tmpData.dealPercent = dealPercent;
-		tmpData.orderSize = orderSize;
-		tmpData.startCash = startCash;
-		tmpData.maxLossCash = maxLossCash;
-		tmpData.maxLossPercent = maxLossPercent;
-		tmpData.leverage = leverage;
+		tmpData.setDealPercent(dealPercent);
+		tmpData.setOrderSize(orderSize);
+		tmpData.setStartCash(startCash);
+		tmpData.setMaxLossCash(maxLossCash);
+		tmpData.setMaxLossPercent(maxLossPercent);
+		tmpData.setLeverage(leverage);
 		generatePercent();
 	}
 }
 
 void combinationFactory::generatePercent() {
-	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.leverage, orderSize, liquidationOffsetSteps, minLiquidationOffsetPercent)) {
-		tmpData.liquidationOffsetPercent = liquidationOffsetPercent;
+	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.getLeverage(), orderSize, liquidationOffsetSteps, minLiquidationOffsetPercent)) {
+		tmpData.setLiquidationOffsetPercent(liquidationOffsetPercent);
 		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + minProfitPercentStep, minProfitPercentStep)) {
-			tmpData.minimumProfitPercent = minimumProfitPercent;
+			tmpData.setMinimumProfitPercent(minimumProfitPercent);
 			generateDynamicSL();
 		}
 	}
@@ -126,15 +126,15 @@ void combinationFactory::generatePercent() {
 
 void combinationFactory::generateDynamicSL() {
 	for (auto dynamicSLTrendMode : dynamicSLTrendModeFlags) {
-		tmpData.dynamicSLTrendMode = dynamicSLTrendMode;
+		tmpData.setDynamicSLTrendMode(dynamicSLTrendMode);
 		if (!dynamicSLTrendMode) {
 			for (auto dynamicSLPercent : iotaWithStep(minDynamicSLPercent, maxDynamicSLPercent + dynamicSLPercentStep, dynamicSLPercentStep)) {
-				tmpData.dynamicSLPercent = dynamicSLPercent;
+				tmpData.setDynamicSLPercent(dynamicSLPercent);
 				generateOpener();
 			}
 		}
 		else {
-			tmpData.dynamicSLPercent = -1.0;
+			tmpData.setDynamicSLPercent(-1.0);
 			generateOpener();
 		}
 	}
@@ -142,21 +142,21 @@ void combinationFactory::generateDynamicSL() {
 
 void combinationFactory::generateOpener() {
 	for (auto touchOpenerActivationWaitMode : { true, false }) {
-		tmpData.touchOpenerActivationWaitMode = touchOpenerActivationWaitMode;
+		tmpData.setTouchOpenerActivationWaitMode(touchOpenerActivationWaitMode);
 		for (auto breakOpenerEnabled : breakOpenerEnabledFlags) {
-			tmpData.breakOpenerEnabled = breakOpenerEnabled;
+			tmpData.setBreakOpenerEnabled(breakOpenerEnabled);
 			if (breakOpenerEnabled) {
 				for (auto breakOpenerActivationWaitMode : { true, false }) {
-					tmpData.breakOpenerActivationWaitMode = breakOpenerActivationWaitMode;
+					tmpData.setBreakOpenerActivationWaitMode(breakOpenerActivationWaitMode);
 					for (auto alwaysUseNewTrend : { true, false }) {
-						tmpData.alwaysUseNewTrend = alwaysUseNewTrend;
+						tmpData.setAlwaysUseNewTrend(alwaysUseNewTrend);
 						generateActivation();
 					}
 				}
 			}
 			else {
-				tmpData.breakOpenerActivationWaitMode = false;
-				tmpData.alwaysUseNewTrend = false;
+				tmpData.setBreakOpenerActivationWaitMode(false);
+				tmpData.setAlwaysUseNewTrend(false);
 				generateActivation();
 			}
 		}
@@ -164,45 +164,45 @@ void combinationFactory::generateOpener() {
 }
 
 void combinationFactory::generateActivation() {
-	if (tmpData.breakOpenerActivationWaitMode || tmpData.touchOpenerActivationWaitMode) {
+	if (tmpData.getBreakOpenerActivationWaitMode() || tmpData.getTouchOpenerActivationWaitMode()) {
 		for (auto activationWaiterResetAllowed : { true, false }) {
-			tmpData.activationWaiterResetAllowed = activationWaiterResetAllowed;
+			tmpData.setActivationWaiterResetAllowed(activationWaiterResetAllowed);
 			for (auto activationWaiterRange : iotaWithStep(minTrendActivationWaitRange, maxTrendActivationWaitRange + 1, 1)) {
-				tmpData.activationWaiterRange = activationWaiterRange;
+				tmpData.setActivationWaiterRange(activationWaiterRange);
 				for (auto activationWaiterFullCandleCheck : { true, false }) {
-					tmpData.activationWaiterFullCandleCheck = activationWaiterFullCandleCheck;
+					tmpData.setActivationWaiterFullCandleCheck(activationWaiterFullCandleCheck);
 					generateStop();
 				}
 			}
 		}
 	}
 	else {
-		tmpData.activationWaiterResetAllowed = false;
-		tmpData.activationWaiterRange = -1;
-		tmpData.activationWaiterFullCandleCheck = false;
+		tmpData.setActivationWaiterResetAllowed(false);
+		tmpData.setActivationWaiterRange(-1);
+		tmpData.setActivationWaiterFullCandleCheck(false);
 		generateStop();
 	}
 }
 
 void combinationFactory::generateStop() {
 	for (auto stopLossWaiterEnabled : stopLossWaiterEnabledFlags) {
-		tmpData.stopLossWaiterEnabled = stopLossWaiterEnabled;
+		tmpData.setStopLossWaiterEnabled(stopLossWaiterEnabled);
 		if (stopLossWaiterEnabled) {
 			for (auto stopLossWaiterResetAllowed : { true, false }) {
-				tmpData.stopLossWaiterResetAllowed = stopLossWaiterResetAllowed;
+				tmpData.setStopLossWaiterResetAllowed(stopLossWaiterResetAllowed);
 				for (auto stopLossWaiterRange : iotaWithStep(minStopLossWaitRange, maxStopLossWaitRange + 1, 1)) {
-					tmpData.stopLossWaiterRange = stopLossWaiterRange;
+					tmpData.setStopLossWaiterRange(stopLossWaiterRange);
 					for (auto stopLossWaiterFullCandleCheck : { true, false }) {
-						tmpData.stopLossWaiterFullCandleCheck = stopLossWaiterFullCandleCheck;
+						tmpData.setStopLossWaiterFullCandleCheck(stopLossWaiterFullCandleCheck);
 						onIterate();
 					}
 				}
 			}
 		}
 		else {
-			tmpData.stopLossWaiterResetAllowed = false;
-			tmpData.stopLossWaiterRange = -1;
-			tmpData.stopLossWaiterFullCandleCheck = false;
+			tmpData.setStopLossWaiterResetAllowed(false);
+			tmpData.setStopLossWaiterRange(-1);
+			tmpData.setStopLossWaiterFullCandleCheck(false);
 			onIterate();
 		}
 	}

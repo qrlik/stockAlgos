@@ -10,10 +10,9 @@ namespace algorithm {
 		friend class stAlgorithm;
 		friend class calculation::calculationSystem;
 	public:
-		trendTouchOpener(stAlgorithm* aMm, bool aActivationWaitMode);
+		trendTouchOpener(stAlgorithm& aAlgorithm);
 		bool check();
 	private:
-		stAlgorithm* mm = nullptr;
-		const bool activationWaitMode;
+		stAlgorithm& algorithm;
 	};
 }

@@ -38,25 +38,27 @@ eState stAlgorithm::stateFromString(const std::string& aStr) {
 }
 
 stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
-	activationWaiterModule(this, aData.activationWaiterRange, aData.activationWaiterResetAllowed, aData.activationWaiterFullCandleCheck),
-	stopLossWaiterModule(this, aData.stopLossWaiterRange, aData.stopLossWaiterEnabled, aData.stopLossWaiterResetAllowed, aData.stopLossWaiterFullCandleCheck),
-	dynamicStopLossModule(this, aData.dynamicSLPercent, aData.dynamicSLTrendMode),
-	trendTouchOpenerModule(this, aData.touchOpenerActivationWaitMode),
-	trendBreakOpenerModule(this, aData.breakOpenerEnabled, aData.breakOpenerActivationWaitMode, aData.alwaysUseNewTrend),
-	stFactor(aData.stFactor),
-	atrSize(aData.atrSize),
-	atrType(aData.atrType),
-	liquidationOffsetPercent(aData.liquidationOffsetPercent),
-	minimumProfitPercent(aData.minimumProfitPercent),
-	dealPercent(aData.dealPercent),
-	orderSize(aData.orderSize),
-	leverage(aData.leverage),
-	fullCheck(aData.fullCheck),
-	startCash(aData.startCash),
-	cash(aData.startCash),
-	stats(aData.startCash, aData.maxLossPercent, aData.maxLossCash) {}
+	baseClass(aData),
+	activationWaiterModule(*this),
+	stopLossWaiterModule(*this),
+	dynamicStopLossModule(*this),
+	trendTouchOpenerModule(*this),
+	trendBreakOpenerModule(*this),
+	stFactor(aData.getStFactor()), // TO DO delete all below
+	atrSize(aData.getAtrSize()),
+	atrType(aData.getAtrType()),
+	liquidationOffsetPercent(aData.getLiquidationOffsetPercent()),
+	minimumProfitPercent(aData.getMinimumProfitPercent()),
+	dealPercent(aData.getDealPercent()),
+	orderSize(aData.getOrderSize()),
+	leverage(aData.getLeverage()),
+	fullCheck(aData.getFullCheck()),
+	startCash(aData.getStartCash()),
+	cash(aData.getStartCash()),
+	stats(aData.getStartCash(), aData.getMaxLossPercent(), aData.getMaxLossCash()) {}
 
 bool stAlgorithm::operator==(const stAlgorithm& aOther) {
+	// add data == data;
 	assert(activationWaiterModule == aOther.activationWaiterModule);
 	assert(stopLossWaiterModule == aOther.stopLossWaiterModule);
 	assert(state == aOther.state);

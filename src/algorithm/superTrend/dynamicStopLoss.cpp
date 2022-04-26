@@ -5,22 +5,20 @@
 
 using namespace algorithm;
 
-dynamicStopLoss::dynamicStopLoss(stAlgorithm* aMm, double aPercent, bool aTrendMode):
-	mm(aMm),
-	dynamicSLPercent(aPercent),
-	trendMode(aTrendMode) {}
+dynamicStopLoss::dynamicStopLoss(stAlgorithm& aAlgorithm):
+	algorithm(aAlgorithm) {}
 
 bool dynamicStopLoss::checkTrend() {
-	auto& order = mm->getOrder();
-	if (mm->getState() == eState::LONG) {
-		auto lastUpTrend = mm->getLastUpSuperTrend();
+	auto& order = algorithm.getOrder();
+	if (algorithm.getState() == eState::LONG) {
+		auto lastUpTrend = algorithm.getLastUpSuperTrend();
 		if (lastUpTrend >= order.getMinimumProfit() && lastUpTrend > order.getStopLoss()) {
 			order.updateStopLoss(lastUpTrend);
 			return true;
 		}
 	}
 	else {
-		auto lastDownTrend = mm->getLastDownSuperTrend();
+		auto lastDownTrend = algorithm.getLastDownSuperTrend();
 		if (lastDownTrend <= order.getMinimumProfit() && lastDownTrend < order.getStopLoss()) {
 			order.updateStopLoss(lastDownTrend);
 			return true;
@@ -30,11 +28,15 @@ bool dynamicStopLoss::checkTrend() {
 }
 
 bool dynamicStopLoss::checkDynamic() {
-	auto& order = mm->getOrder();
-	const auto& candle = mm->getCandle();
-	assert(dynamicSLPercent > 0.0);
+	const auto dynamicSLPercent = algorithm.getData().getDynamicSLPercent();
+	if (dynamicSLPercent < 0.0 || utils::isEqual(dynamicSLPercent, 0.0)) {
+		utils::logError("dynamicStopLoss::checkDynamic wrong percent");
+		return false;
+	}
+	auto& order = algorithm.getOrder();
+	const auto& candle = algorithm.getCandle();
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
-	if (mm->getState() == eState::LONG) {
+	if (algorithm.getState() == eState::LONG) {
 		auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
 		if (dynamicStopLoss >= order.getMinimumProfit() && dynamicStopLoss > order.getStopLoss()) {
 			order.updateStopLoss(dynamicStopLoss);
@@ -52,7 +54,7 @@ bool dynamicStopLoss::checkDynamic() {
 }
 
 bool dynamicStopLoss::check() {
-	if (trendMode) {
+	if (algorithm.getData().getDynamicSLTrendMode()) {
 		return checkTrend();
 	}
 	return checkDynamic();

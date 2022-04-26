@@ -27,12 +27,13 @@ namespace algorithm {
 		ACTIVATION_WAIT = 4
 	};
 
-	class stAlgorithm : public algorithmBase {
+	class stAlgorithm final : public algorithmBase<stAlgorithmData> {
 		friend class tests::mmChecker;
 		friend class calculation::calculationSystem;
 	public:
-		static std::string stateToString(eState aState);
-		static eState stateFromString(const std::string& aStr);
+		using baseClass = algorithmBase<stAlgorithmData>;
+		static std::string stateToString(eState aState); // TO DO look
+		static eState stateFromString(const std::string& aStr); // TO DO look
 
 		stAlgorithm(const stAlgorithmData& aData);
 		bool calculate(const std::vector<candle>& aCandles);

@@ -3,7 +3,7 @@
 #include <memory>
 
 namespace tests {
-	void checkAlgorithmData(const stAlgorithmData& aData);
+	void checkAlgorithmData(const algorithm::stAlgorithmData& aData);
 
 	class mmChecker {
 	public:

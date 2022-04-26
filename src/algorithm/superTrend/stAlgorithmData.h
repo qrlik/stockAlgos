@@ -2,44 +2,76 @@
 #include "algorithm/algorithmDataBase.h"
 #include "market/indicators.h"
 
-struct stAlgorithmData : public algorithmDataBase {
-	static const double tax;
-	static stAlgorithmData initAlgorithmDataFromJson(const Json& aData);
+namespace algorithm {
+	class stAlgorithmData final : public algorithmDataBase {
+	public:
+		static const double tax; // TO DO - delete from here
 
-	Json toJson() const;
+		static stAlgorithmData initAlgorithmDataFromJson(const Json& aData);
+		Json toJson() const;
 
-	market::eAtrType atrType = market::eAtrType::NONE;
-	int atrSize = -1;
-	double stFactor = -1.0;
+		market::eAtrType getAtrType() const { return atrType; }
+		int getAtrSize() const { return atrSize; }
+		double getStFactor() const { return stFactor; }
+		
+		double getDynamicSLPercent() const { return dynamicSLPercent; }
+		bool getDynamicSLTrendMode() const { return dynamicSLTrendMode; }
 
-	double dealPercent = -1.0;
-	double orderSize = -1.0;
-	int leverage = -1;
+		bool getTouchOpenerActivationWaitMode() const { return touchOpenerActivationWaitMode; }
 
-	double startCash = 0.0;
-	double maxLossPercent = 0.0;
-	double maxLossCash = -1.0;
+		bool getBreakOpenerEnabled() const { return breakOpenerEnabled; }
+		bool getBreakOpenerActivationWaitMode() const { return breakOpenerActivationWaitMode; }
+		bool getAlwaysUseNewTrend() const { return alwaysUseNewTrend; }
 
-	double liquidationOffsetPercent = -1.0;
-	double minimumProfitPercent = -1.0;
+		bool getActivationWaiterResetAllowed() const { return activationWaiterResetAllowed; }
+		int getActivationWaiterRange() const { return activationWaiterRange; }
+		bool getActivationWaiterFullCandleCheck() const { return activationWaiterFullCandleCheck; }
 
-	double dynamicSLPercent = -1.0;
-	bool dynamicSLTrendMode = false;
+		bool getStopLossWaiterEnabled() const { return stopLossWaiterEnabled; }
+		bool getStopLossWaiterResetAllowed() const { return stopLossWaiterResetAllowed; }
+		int getStopLossWaiterRange() const { return stopLossWaiterRange; }
+		bool getStopLossWaiterFullCandleCheck() const { return stopLossWaiterFullCandleCheck; }
 
-	bool touchOpenerActivationWaitMode = false;
+		// TO DO delete setters
+		void setAtrType(market::eAtrType aAtrType) { atrType = aAtrType; }
+		void setAtrSize(int aAtrSize) { atrSize = aAtrSize; }
+		void setStFactor(double aStFactor) { stFactor = aStFactor; }
+		void setDynamicSLPercent(double aDynamicSLPercent) { dynamicSLPercent = aDynamicSLPercent; }
+		void setDynamicSLTrendMode(bool aDynamicSLTrendMode) { dynamicSLTrendMode = aDynamicSLTrendMode; }
+		void setTouchOpenerActivationWaitMode(bool aState) { touchOpenerActivationWaitMode = aState; }
+		void setBreakOpenerEnabled(bool aState) { breakOpenerEnabled = aState; }
+		void setBreakOpenerActivationWaitMode(bool aState) { breakOpenerActivationWaitMode = aState; }
+		void setAlwaysUseNewTrend(bool aState) { alwaysUseNewTrend = aState; }
+		void setActivationWaiterResetAllowed(bool aState) { activationWaiterResetAllowed = aState; }
+		void setActivationWaiterRange(int aRange) { activationWaiterRange = aRange; }
+		void setActivationWaiterFullCandleCheck(bool aState) { activationWaiterFullCandleCheck = aState; }
+		void setStopLossWaiterEnabled(bool aState) { stopLossWaiterEnabled = aState; }
+		void setStopLossWaiterResetAllowed(bool aState) { stopLossWaiterResetAllowed = aState; }
+		void setStopLossWaiterRange(int aRange) { stopLossWaiterRange = aRange; }
+		void setStopLossWaiterFullCandleCheck(bool aState) { stopLossWaiterFullCandleCheck = aState; }
+	protected:
+		void initDataFieldInternal(const std::string& aName, const Json& aValue) override final;
+	private:
+		market::eAtrType atrType = market::eAtrType::NONE;
+		int atrSize = -1;
+		double stFactor = -1.0;
 
-	bool breakOpenerEnabled = false;
-	bool breakOpenerActivationWaitMode = false;
-	bool alwaysUseNewTrend = false;
+		double dynamicSLPercent = -1.0;
+		bool dynamicSLTrendMode = false;
 
-	bool activationWaiterResetAllowed = false;
-	int activationWaiterRange = -1;
-	bool activationWaiterFullCandleCheck = false;
+		bool touchOpenerActivationWaitMode = false;
 
-	bool stopLossWaiterEnabled = false;
-	bool stopLossWaiterResetAllowed = false;
-	int stopLossWaiterRange = -1;
-	bool stopLossWaiterFullCandleCheck = false;
+		bool breakOpenerEnabled = false;
+		bool breakOpenerActivationWaitMode = false;
+		bool alwaysUseNewTrend = false;
 
-	bool fullCheck = false;
-};
+		bool activationWaiterResetAllowed = false;
+		int activationWaiterRange = -1;
+		bool activationWaiterFullCandleCheck = false;
+
+		bool stopLossWaiterEnabled = false;
+		bool stopLossWaiterResetAllowed = false;
+		int stopLossWaiterRange = -1;
+		bool stopLossWaiterFullCandleCheck = false;
+	};
+}
