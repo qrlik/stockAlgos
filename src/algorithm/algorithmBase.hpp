@@ -36,6 +36,42 @@ namespace algorithm {
 		}
 		double getCash() const { return cash; }
 
+		bool doAction(const candle& aCandle) {
+			if (getStopCashBreak()) {
+				return false;
+			}
+			if (!updateCandles(aCandle)) {
+				return true;
+			}
+			preLoop();
+			while (loop()) {}
+			if (getWithLogs()) {
+				log();
+			}
+			return true;
+		}
+		void initFromJson(const Json& aValue) {
+			if (aValue.is_null()) {
+				return;
+			}
+			for (const auto& [key, value] : aValue.items()) {
+				if (key == "order") {
+					if (value.contains("lifeState")) {
+						order.reset();
+					}
+					orderData::initOrderData(data, order, value);
+				}
+				else if (key == "stats") {
+					statistic::initStatisticFromJson(stats, value);
+				}
+				else if (key == "cash") {
+					cash = value.get<double>();
+				}
+				else {
+					initDataFieldInternal(key, value);
+				}
+			}
+		}
 	protected:
 		bool updateCandles(const candle& aCandle) {
 			if (curCandle.time.empty()) {
@@ -46,6 +82,10 @@ namespace algorithm {
 			curCandle = aCandle;
 			return true;
 		}
+		virtual void preLoop() = 0;
+		virtual bool loop() = 0;
+		virtual void log() const = 0; // TO DO add impl
+		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }

@@ -99,35 +99,7 @@ bool stAlgorithm::calculate(const std::vector<candle>& aCandles) {
 	return true;
 }
 
-bool stAlgorithm::doAction(const candle& aCandle) {
-	if (getStopCashBreak()) {
-		return false;
-	}
-	if (!updateCandles(aCandle)) {
-		return true;
-	}
-	updateTrends();
-	while (update()) {}
-	if (getWithLogs()) {
-		log();
-	}
-	return true;
-}
-
-bool stAlgorithm::update() {
-	switch (state) {
-		case algorithm::eState::NONE:
-			return checkTrend();
-		case algorithm::eState::STOP_LOSS_WAIT:
-			return stopLossWaiterModule.check();
-		case algorithm::eState::ACTIVATION_WAIT:
-			return activationWaiterModule.check();
-		default:
-			return updateOrder();
-	}
-}
-
-void stAlgorithm::updateTrends() {
+void stAlgorithm::preLoop() {
 	if (getPrevCandle().trendIsUp) {
 		lastUpSuperTrend = getPrevCandle().superTrend;
 	}
@@ -144,6 +116,19 @@ void stAlgorithm::updateTrends() {
 		isNewTrend = trendBreakOpenerModule.isNewTrendAllowed();
 		stopLossWaiterModule.onNewTrend();
 		activationWaiterModule.onNewTrend();
+	}
+}
+
+bool stAlgorithm::loop() {
+	switch (state) {
+	case algorithm::eState::NONE:
+		return checkTrend();
+	case algorithm::eState::STOP_LOSS_WAIT:
+		return stopLossWaiterModule.check();
+	case algorithm::eState::ACTIVATION_WAIT:
+		return activationWaiterModule.check();
+	default:
+		return updateOrder();
 	}
 }
 
@@ -194,6 +179,33 @@ void stAlgorithm::closeOrder() {
 	getOrder().reset();
 	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 		stopCashBreak = true;
+	}
+}
+
+void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
+	if (aValue.is_null()) {
+		return;
+	}
+	if (aName == "activationWaitCounter") {
+		getActivationWaiter().setCounter(aValue.get<int>());
+	}
+	else if (aName == "stopLossWaitCounter") {
+		getStopLossWaiter().setCounter(aValue.get<int>());
+	}
+	else if (aName == "lastUpSuperTrend") {
+		lastUpSuperTrend = aValue.get<double>();
+	}
+	else if (aName == "lastDownSuperTrend") {
+		lastDownSuperTrend = aValue.get<double>();
+	}
+	else if (aName == "isTrendUp") {
+		isTrendUp = aValue.get<bool>();
+	}
+	else if (aName == "isNewTrend") {
+		isNewTrend = aValue.get<bool>();
+	}
+	else if (aName == "state") {
+		state = algorithm::stAlgorithm::stateFromString(aValue.get<std::string>());
 	}
 }
 

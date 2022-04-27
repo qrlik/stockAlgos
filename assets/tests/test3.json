@@ -33,7 +33,7 @@
 		"stopLossWaiterRange": 1,
 		"stopLossWaiterFullCandleCheck": false
 	},
-	"testMoneyMakerData": [
+	"testAlgorithmData": [
 		{
 			"time": "11:15 31-12-2021",
 			"state": "ACTIVATION_WAIT",

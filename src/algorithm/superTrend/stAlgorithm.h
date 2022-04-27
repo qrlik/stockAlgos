@@ -25,8 +25,7 @@ namespace algorithm {
 	};
 
 	class stAlgorithm final : public algorithmBase<stAlgorithmData> {
-		friend class tests::mmChecker;
-		friend class calculation::calculationSystem;
+		friend class calculation::calculationSystem; // TO DO delete
 	public:
 		using baseClass = algorithmBase<stAlgorithmData>;
 		static std::string stateToString(eState aState); // TO DO look
@@ -50,14 +49,14 @@ namespace algorithm {
 		bool isNewTrendChanged();
 
 		void openOrder(eState aState, double aPrice);
-		bool doAction(const candle& aCandle);
 	private:
-		bool update();
-		void updateTrends();
+		void preLoop() override;
+		bool loop() override;
+		void log() const override;
+		void initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool updateOrder();
 		bool checkTrend();
 		void closeOrder();
-		void log() const;
 
 		activationWaiter activationWaiterModule;
 		stopLossWaiter stopLossWaiterModule;

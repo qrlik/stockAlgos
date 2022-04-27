@@ -29,39 +29,32 @@ void algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 	}
 	if (aName == "dealPercent") {
 		dealPercent = aValue.get<double>();
-		return;
 	}
 	else if (aName == "orderSize") {
 		orderSize = aValue.get<double>();
-		return;
 	}
 	else if (aName == "leverage") {
 		leverage = aValue.get<int>();
-		return;
 	}
 	else if (aName == "startCash") {
 		startCash = aValue.get<double>();
-		return;
 	}
 	else if (aName == "maxLossPercent") {
 		maxLossPercent = aValue.get<double>();
-		return;
 	}
 	else if (aName == "maxLossCash") {
 		maxLossCash = aValue.get<double>();
-		return;
 	}
 	else if (aName == "liquidationOffsetPercent") {
 		liquidationOffsetPercent = aValue.get<double>();
-		return;
 	}
 	else if (aName == "minimumProfitPercent") {
 		minimumProfitPercent = aValue.get<double>();
-		return;
 	}
 	else if (aName == "fullCheck") {
 		fullCheck = aValue.get<bool>();
-		return;
 	}
-	initDataFieldInternal(aName, aValue);
+	else {
+		initDataFieldInternal(aName, aValue);
+	}
 }

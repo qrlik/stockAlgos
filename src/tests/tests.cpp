@@ -1,4 +1,5 @@
 #include "tests.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include "checkers.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
@@ -8,13 +9,13 @@ using namespace tests;
 
 namespace {
 	void mmCheckerTests() {
-		auto checker1 = mmChecker("test1");
+		auto checker1 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test1");
 		checker1.check();
-		auto checker2 = mmChecker("test2");
+		auto checker2 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test2");
 		checker2.check();
-		auto checker3 = mmChecker("test3");
+		auto checker3 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test3");
 		checker3.check();
-		auto checker4 = mmChecker("test4");
+		auto checker4 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test4");
 		checker4.check();
 		std::cout << "[OK] Money Maker Tests\n";
 	}

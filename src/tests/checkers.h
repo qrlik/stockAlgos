@@ -1,21 +1,54 @@
 #pragma once
-#include "algorithm/superTrend/stAlgorithm.h"
+#include "algorithm/algorithmBase.hpp"
+#include "algorithm/superTrend/stAlgorithmData.h"
 #include <memory>
 
 namespace tests {
-	void checkAlgorithmData(const algorithm::stAlgorithmData& aData);
+	void checkAlgorithmData(const algorithm::stAlgorithmData& aData); // TO DO fix
 
-	class mmChecker {
+	template<typename AlgType,
+		typename AlgDataType,
+		typename = typename std::enable_if_t<std::is_base_of_v<algorithm::algorithmBase<AlgDataType>, AlgType>>>
+	class algorithmChecker final {
 	public:
-		mmChecker(std::string aName);
-		void check();
+		algorithmChecker(std::string aName) : name(std::move(aName)) {
+			auto json = utils::readFromJson("assets/tests/" + name);
+			AlgDataType data(json["algorithmData"]);
+			tests::checkAlgorithmData(data);
+			actualAlgorithm = std::make_unique<AlgType>(data);
+			testAlgorithm = std::make_unique<AlgType>(data);
+			testAlgorithmData = json["testAlgorithmData"];
+			testNextTime = testAlgorithmData[0]["time"].get<std::string>();
+
+			auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
+			candles = utils::parseCandles(jsonCandles);
+			auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
+			indicators.getProcessedCandles(candles, json["candlesAmount"].get<int>());
+		}
+		void check() {
+			for (const auto& candle : candles) {
+				actualAlgorithm->doAction(candle);
+				updateTestAlgorithm(candle.time);
+				assert(*actualAlgorithm == *testAlgorithm);
+				actualIndex += 1;
+			}
+			std::cout << "[OK] algorithmChecker - " + name + '\n';
+		}
 	private:
-		void updateTestMoneyMaker(const std::string& aTime);
+		void updateTestAlgorithm(const std::string& aTime) {
+			if (aTime != testNextTime) {
+				return;
+			}
+			Json data = testAlgorithmData[testIndex];
+			testAlgorithm->initFromJson(data);
+			testIndex += 1;
+			testNextTime = (testIndex < static_cast<int>(testAlgorithmData.size())) ? testAlgorithmData[testIndex]["time"].get<std::string>() : "ENDED";
+		}
 
 		std::vector<candle> candles;
-		Json testMoneyMakerData;
-		std::unique_ptr<algorithm::stAlgorithm> actualMoneyMaker;
-		std::unique_ptr < algorithm::stAlgorithm> testMoneyMaker;
+		Json testAlgorithmData;
+		std::unique_ptr<AlgType> actualAlgorithm;
+		std::unique_ptr<AlgType> testAlgorithm;
 
 		std::string name;
 		std::string testNextTime;
