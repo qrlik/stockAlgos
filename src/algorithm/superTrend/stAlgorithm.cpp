@@ -156,7 +156,7 @@ bool stAlgorithm::updateOrder() {
 void stAlgorithm::openOrder(eState aState, double aPrice) {
 	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
 	state = aState;
-	if (!getOrder().openOrder(*this, aPrice)) {
+	if (!order.openOrder(*this, aPrice)) {
 		state = eState::NONE;
 		return;
 	}
@@ -176,10 +176,14 @@ void stAlgorithm::closeOrder() {
 		state = eState::NONE;
 	}
 	cash = cash + getOrder().getMargin() + profit;
-	getOrder().reset();
+	order.reset();
 	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 		stopCashBreak = true;
 	}
+}
+
+void stAlgorithm::updateOrderStopLoss(double aStopLoss) {
+	order.updateStopLoss(aStopLoss);
 }
 
 void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {

@@ -9,18 +9,18 @@ dynamicStopLoss::dynamicStopLoss(stAlgorithm& aAlgorithm):
 	algorithm(aAlgorithm) {}
 
 bool dynamicStopLoss::checkTrend() {
-	auto& order = algorithm.getOrder();
+	const auto& order = algorithm.getOrder();
 	if (algorithm.getState() == eState::LONG) {
 		auto lastUpTrend = algorithm.getLastUpSuperTrend();
 		if (lastUpTrend >= order.getMinimumProfit() && lastUpTrend > order.getStopLoss()) {
-			order.updateStopLoss(lastUpTrend);
+			algorithm.updateOrderStopLoss(lastUpTrend);
 			return true;
 		}
 	}
 	else {
 		auto lastDownTrend = algorithm.getLastDownSuperTrend();
 		if (lastDownTrend <= order.getMinimumProfit() && lastDownTrend < order.getStopLoss()) {
-			order.updateStopLoss(lastDownTrend);
+			algorithm.updateOrderStopLoss(lastDownTrend);
 			return true;
 		}
 	}
@@ -39,14 +39,14 @@ bool dynamicStopLoss::checkDynamic() {
 	if (algorithm.getState() == eState::LONG) {
 		auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
 		if (dynamicStopLoss >= order.getMinimumProfit() && dynamicStopLoss > order.getStopLoss()) {
-			order.updateStopLoss(dynamicStopLoss);
+			algorithm.updateOrderStopLoss(dynamicStopLoss);
 			return true;
 		}
 	}
 	else {
 		auto dynamicStopLoss = utils::round(candle.low * (100.0 + dynamicSLPercent) / 100.0, pricePrecision);
 		if (dynamicStopLoss <= order.getMinimumProfit() && dynamicStopLoss < order.getStopLoss()) {
-			order.updateStopLoss(dynamicStopLoss);
+			algorithm.updateOrderStopLoss(dynamicStopLoss);
 			return true;
 		}
 	}

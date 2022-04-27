@@ -25,7 +25,6 @@ namespace algorithm {
 		}
 		const dataType& getData() const { return data; }
 		const order& getOrder() const { return order; }
-		order& getOrder() { return order; } // TO DO delete
 		const candle& getCandle() const { return curCandle; }
 		double getFullCash() const {
 			auto curCash = cash;
@@ -94,10 +93,11 @@ namespace algorithm {
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const candle& getPrevCandle() const { return prevCandle; }
 		void setWithLogs(bool aState) { withLogs = aState; }
+
+		order order;
 	private:
 		const dataType data;
 
-		order order;
 		candle curCandle;
 		candle prevCandle;
 
