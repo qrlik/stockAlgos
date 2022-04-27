@@ -64,7 +64,7 @@ void mmChecker::check() {
 		assert(*actualMoneyMaker == *testMoneyMaker);
 		actualIndex += 1;
 	}
-	if (testMoneyMaker->getFullCheck()) {
+	if (testMoneyMaker->getData().getFullCheck()) {
 		assert(utils::isEqual(actualMoneyMaker->getFullCash(), testMoneyMaker->getFullCash(), market::marketData::getInstance()->getQuotePrecision()));
 	}
 	std::cout << "[OK] mmChecker - " + name + '\n';
@@ -90,8 +90,7 @@ void mmChecker::updateTestMoneyMaker(const std::string& aTime) {
 				order.reset();
 			}
 			value.erase("type");
-			orderData::initOrderDataFromJson(order, value);
-			order.setFullCheck(testMoneyMaker->getFullCheck());
+			orderData::initOrderData(testMoneyMaker->getData(), order, value);
 		}
 		else if (key == "stats") {
 			statistic::initStatisticFromJson(testMoneyMaker->stats, value);

@@ -4,12 +4,13 @@
 
 namespace algorithm {
 	class stAlgorithm;
+	class algorithmDataBase;
 	enum class eState : unsigned char;
 }
 
 class orderData {
 public:
-	static void initOrderDataFromJson(orderData& aData, const Json& aJson);
+	static void initOrderData(const algorithm::algorithmDataBase& aAlgorithm, orderData& aData, const Json& aJson);
 
 	orderData();
 	bool operator==(const orderData& aOther) const;
@@ -26,7 +27,6 @@ public:
 	double getQuantity() const { return quantity; }
 	double getProfit() const;
 	void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
-	void setFullCheck(bool aFullCheck) { fullCheck = aFullCheck; }
 private:
 	double calculateStopLoss(const algorithm::stAlgorithm& aMM) const;
 	double calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const;

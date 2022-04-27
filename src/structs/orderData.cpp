@@ -7,32 +7,6 @@
 #include <iostream>
 #include <assert.h>
 
-void orderData::initOrderDataFromJson(orderData& aData, const Json& aJson) {
-	for (const auto& [field, value] : aJson.items()) {
-		if (field == "price") {
-			aData.price = value.get<double>();
-		}
-		else if (field == "stopLoss") {
-			aData.stopLoss = value.get<double>();
-		}
-		else if (field == "minimumProfit") {
-			aData.minimumProfit = value.get<double>();
-		}
-		else if (field == "margin") {
-			aData.margin = value.get<double>();
-		}
-		else if (field == "notionalValue") {
-			aData.notionalValue = value.get<double>();
-		}
-		else if (field == "quantity") {
-			aData.quantity = value.get<double>();
-		}
-		else if (field == "time") {
-			aData.time = value.get<std::string>();
-		}
-	}
-}
-
 orderData::orderData() : state(algorithm::eState::NONE) {}
 
 std::string orderData::toString() const {
@@ -67,7 +41,6 @@ void orderData::reset() {
 	notionalValue = 0.0;
 	quantity = 0.0;
 	state = algorithm::eState::NONE;
-	fullCheck = false;
 }
 
 double orderData::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
@@ -99,7 +72,7 @@ bool orderData::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 	}
 
 	state = aMM.getState();
-	fullCheck = aMM.getFullCheck();
+	fullCheck = aMM.getData().getFullCheck();
 	price = aPrice;
 	quantity = calcQuantity;
 	notionalValue = calcNotionalValue;
@@ -117,4 +90,34 @@ double orderData::getProfit() const {
 	const auto orderCloseTax = utils::round(orderCloseSummary * algorithm::stAlgorithmData::tax, quotePrecision);
 	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
+}
+
+void orderData::initOrderData(const algorithm::algorithmDataBase& aAlgData, orderData& aData, const Json& aJson) {
+	aData.fullCheck = aAlgData.getFullCheck();
+	for (const auto& [field, value] : aJson.items()) {
+		if (value.is_null()) {
+			continue;
+		}
+		if (field == "price") {
+			aData.price = value.get<double>();
+		}
+		else if (field == "stopLoss") {
+			aData.stopLoss = value.get<double>();
+		}
+		else if (field == "minimumProfit") {
+			aData.minimumProfit = value.get<double>();
+		}
+		else if (field == "margin") {
+			aData.margin = value.get<double>();
+		}
+		else if (field == "notionalValue") {
+			aData.notionalValue = value.get<double>();
+		}
+		else if (field == "quantity") {
+			aData.quantity = value.get<double>();
+		}
+		else if (field == "time") {
+			aData.time = value.get<std::string>();
+		}
+	}
 }

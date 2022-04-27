@@ -17,15 +17,14 @@ namespace algorithm {
 			auto result = true;
 			result &= data == aOther.data;
 			result &= order == aOther.order;
-			result &= fullCheck == aOther.fullCheck;
-			if (fullCheck) {
+			if (data.getFullCheck()) {
 				result &= stats == aOther.stats;
 				result &= utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision());
 			}
 			return result;
 		}
 		const dataType& getData() const { return data; }
-		const orderData& getOrder() const { return order; } // TO DO delete
+		const orderData& getOrder() const { return order; }
 		orderData& getOrder() { return order; } // TO DO delete
 		const candle& getCandle() const { return curCandle; }
 		double getFullCash() const {
@@ -36,7 +35,6 @@ namespace algorithm {
 			return curCash;
 		}
 		double getCash() const { return cash; }
-		bool getFullCheck() const { return fullCheck; } // tmp
 
 	protected:
 		bool updateCandles(const candle& aCandle) {
@@ -52,8 +50,6 @@ namespace algorithm {
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const candle& getPrevCandle() const { return prevCandle; }
-
-		// TO DO delte setters
 		void setWithLogs(bool aState) { withLogs = aState; }
 	private:
 		const dataType data;
@@ -62,8 +58,6 @@ namespace algorithm {
 		candle curCandle;
 		candle prevCandle;
 
-
-		bool fullCheck = false;
 		bool withLogs = false;
 	protected: // tmp
 		statistic stats;

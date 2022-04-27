@@ -55,7 +55,7 @@ bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 	result &= state == aOther.state;
 	result &= isTrendUp == aOther.isTrendUp;
 	result &= isNewTrend == aOther.isNewTrend;
-	if (getFullCheck()) {
+	if (getData().getFullCheck()) {
 		result &= utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend);
 		result &= utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend);
 	}
@@ -192,7 +192,6 @@ void stAlgorithm::closeOrder() {
 	}
 	cash = cash + getOrder().getMargin() + profit;
 	getOrder().reset();
-	getOrder().setFullCheck(getFullCheck());
 	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 		stopCashBreak = true;
 	}
