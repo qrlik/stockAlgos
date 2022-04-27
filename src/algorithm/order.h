@@ -8,12 +8,11 @@ namespace algorithm {
 	enum class eState : unsigned char;
 }
 
-class orderData {
+class order {
 public:
-	static void initOrderData(const algorithm::algorithmDataBase& aAlgorithm, orderData& aData, const Json& aJson);
-
-	orderData();
-	bool operator==(const orderData& aOther) const;
+	order();
+	void initFromJson(const algorithm::algorithmDataBase& aAlgorithm, const Json& aJson);
+	bool operator==(const order& aOther) const;
 	bool openOrder(const algorithm::stAlgorithm& aMM, double aPrice);
 	void reset();
 	std::string toString() const;

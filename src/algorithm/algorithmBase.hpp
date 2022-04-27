@@ -1,6 +1,6 @@
 #pragma once
 #include "market/candle.h"
-#include "orderData.h"
+#include "order.h"
 #include "statistic.h"
 #include <type_traits>
 
@@ -24,8 +24,8 @@ namespace algorithm {
 			return result;
 		}
 		const dataType& getData() const { return data; }
-		const orderData& getOrder() const { return order; }
-		orderData& getOrder() { return order; } // TO DO delete
+		const order& getOrder() const { return order; }
+		order& getOrder() { return order; } // TO DO delete
 		const candle& getCandle() const { return curCandle; }
 		double getFullCash() const {
 			auto curCash = cash;
@@ -62,10 +62,10 @@ namespace algorithm {
 					if (value.contains("lifeState")) {
 						order.reset();
 					}
-					orderData::initOrderData(data, order, value);
+					order.initFromJson(data, value);
 				}
 				else if (key == "stats") {
-					statistic::initStatisticFromJson(stats, value);
+					stats.initFromJson(value);
 				}
 				else if (key == "cash") {
 					cash = value.get<double>();
@@ -97,7 +97,7 @@ namespace algorithm {
 	private:
 		const dataType data;
 
-		orderData order;
+		order order;
 		candle curCandle;
 		candle prevCandle;
 

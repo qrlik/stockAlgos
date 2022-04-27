@@ -1,4 +1,4 @@
-#include "orderData.h"
+#include "order.h"
 #include "algorithm/superTrend/stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
@@ -7,9 +7,9 @@
 #include <iostream>
 #include <assert.h>
 
-orderData::orderData() : state(algorithm::eState::NONE) {}
+order::order() : state(algorithm::eState::NONE) {}
 
-std::string orderData::toString() const {
+std::string order::toString() const {
 	std::ostringstream ostr;
 	ostr << std::setw(6) << "p: " << std::setw(12) << std::to_string(price)
 		<< std::setw(6) << "s: " << std::setw(12) << std::to_string(stopLoss)
@@ -17,7 +17,7 @@ std::string orderData::toString() const {
 	return ostr.str();
 }
 
-bool orderData::operator==(const orderData& aOther) const {
+bool order::operator==(const order& aOther) const {
 	bool result = true;
 	result &= fullCheck == aOther.fullCheck;
 	result &= utils::isEqual(price, aOther.price);
@@ -32,7 +32,7 @@ bool orderData::operator==(const orderData& aOther) const {
 	return result;
 }
 
-void orderData::reset() {
+void order::reset() {
 	time.clear();
 	price = 0.0;
 	stopLoss = 0.0;
@@ -43,20 +43,20 @@ void orderData::reset() {
 	state = algorithm::eState::NONE;
 }
 
-double orderData::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
+double order::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
 	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getData().getLeverage(), quantity, state == algorithm::eState::LONG);
 	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getData().getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-double orderData::calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const {
+double order::calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const {
 	auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
 	auto result = price * (100.0 + minProfitSign * aMM.getData().getMinimumProfitPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-bool orderData::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
+bool order::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 	reset();
 	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	auto allowedCash = utils::floor(aMM.getCash() * aMM.getData().getDealPercent() / 100.0, quotePrecision);
@@ -84,7 +84,7 @@ bool orderData::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 	return true;
 }
 
-double orderData::getProfit() const {
+double order::getProfit() const {
 	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
 	const auto orderCloseTax = utils::round(orderCloseSummary * algorithm::stAlgorithmData::tax, quotePrecision);
@@ -92,32 +92,32 @@ double orderData::getProfit() const {
 	return profitWithoutTax - orderCloseTax;
 }
 
-void orderData::initOrderData(const algorithm::algorithmDataBase& aAlgData, orderData& aData, const Json& aJson) {
-	aData.fullCheck = aAlgData.getFullCheck();
+void order::initFromJson(const algorithm::algorithmDataBase& aAlgData, const Json& aJson) {
+	fullCheck = aAlgData.getFullCheck();
 	for (const auto& [field, value] : aJson.items()) {
 		if (value.is_null()) {
 			continue;
 		}
 		if (field == "price") {
-			aData.price = value.get<double>();
+			price = value.get<double>();
 		}
 		else if (field == "stopLoss") {
-			aData.stopLoss = value.get<double>();
+			stopLoss = value.get<double>();
 		}
 		else if (field == "minimumProfit") {
-			aData.minimumProfit = value.get<double>();
+			minimumProfit = value.get<double>();
 		}
 		else if (field == "margin") {
-			aData.margin = value.get<double>();
+			margin = value.get<double>();
 		}
 		else if (field == "notionalValue") {
-			aData.notionalValue = value.get<double>();
+			notionalValue = value.get<double>();
 		}
 		else if (field == "quantity") {
-			aData.quantity = value.get<double>();
+			quantity = value.get<double>();
 		}
 		else if (field == "time") {
-			aData.time = value.get<std::string>();
+			time = value.get<std::string>();
 		}
 	}
 }

@@ -2,44 +2,6 @@
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
-void statistic::initStatisticFromJson(statistic& aStats, const Json& aJson) {
-	for (const auto& [field, value] : aJson.items()) {
-		if (field == "maxLossHighCash") {
-			aStats.maxLossHighCash = value.get<double>();
-		}
-		else if (field == "maxLossLowCash") {
-			aStats.maxLossLowCash = value.get<double>();
-		}
-		else if (field == "summaryLoss") {
-			aStats.summaryLoss = value.get<double>();
-		}
-		else if (field == "profitableOrder") {
-			aStats.profitableOrder = value.get<size_t>();
-		}
-		else if (field == "unprofitableOrder") {
-			aStats.unprofitableOrder = value.get<size_t>();
-		}
-		else if (field == "touchTrendOrder") {
-			aStats.touchTrendOrder = value.get<size_t>();
-		}
-		else if (field == "breakTrendOrder") {
-			aStats.breakTrendOrder = value.get<size_t>();
-		}
-		else if (field == "longOrder") {
-			aStats.longOrder = value.get<size_t>();
-		}
-		else if (field == "shortOrder") {
-			aStats.shortOrder = value.get<size_t>();
-		}
-		else if (field == "profitableStreak") {
-			aStats.profitableStreak = value.get<size_t>();
-		}
-		else if (field == "unprofitableStreak") {
-			aStats.unprofitableStreak = value.get<size_t>();
-		}
-	}
-}
-
 statistic::statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash):
 	currentLossHighCash(aStartCash),
 	currentLossLowCash(aStartCash),
@@ -118,4 +80,42 @@ bool statistic::operator==(const statistic& aOther) const {
 	result &= profitableStreak == aOther.profitableStreak;
 	result &= unprofitableStreak == aOther.unprofitableStreak;
 	return result;
+}
+
+void statistic::initFromJson(const Json& aJson) {
+	for (const auto& [field, value] : aJson.items()) {
+		if (field == "maxLossHighCash") {
+			maxLossHighCash = value.get<double>();
+		}
+		else if (field == "maxLossLowCash") {
+			maxLossLowCash = value.get<double>();
+		}
+		else if (field == "summaryLoss") {
+			summaryLoss = value.get<double>();
+		}
+		else if (field == "profitableOrder") {
+			profitableOrder = value.get<size_t>();
+		}
+		else if (field == "unprofitableOrder") {
+			unprofitableOrder = value.get<size_t>();
+		}
+		else if (field == "touchTrendOrder") {
+			touchTrendOrder = value.get<size_t>();
+		}
+		else if (field == "breakTrendOrder") {
+			breakTrendOrder = value.get<size_t>();
+		}
+		else if (field == "longOrder") {
+			longOrder = value.get<size_t>();
+		}
+		else if (field == "shortOrder") {
+			shortOrder = value.get<size_t>();
+		}
+		else if (field == "profitableStreak") {
+			profitableStreak = value.get<size_t>();
+		}
+		else if (field == "unprofitableStreak") {
+			unprofitableStreak = value.get<size_t>();
+		}
+	}
 }

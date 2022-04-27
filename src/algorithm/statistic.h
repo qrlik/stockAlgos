@@ -3,12 +3,12 @@
 #include <string>
 
 struct statistic {
-	static void initStatisticFromJson(statistic& aStats, const Json& aJson);
 
 	statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash);
 	void onOpenOrder(bool isLong, bool aIsBreak);
 	bool onCloseOrder(double aCash, double aProfit);
 	bool operator==(const statistic& aOther) const;
+	void initFromJson(const Json& aJson);
 
 	double maxLossHighCash = 0.0;
 	double maxLossLowCash = 0.0;
