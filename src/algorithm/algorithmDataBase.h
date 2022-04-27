@@ -4,6 +4,7 @@
 namespace algorithm {
 	class algorithmDataBase {
 	public:
+		bool operator==(const algorithmDataBase& aOther) const;
 		void initDataField(const std::string& aName, const Json& aValue);
 
 		double getDealPercent() const { return dealPercent; }

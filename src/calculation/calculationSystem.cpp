@@ -78,7 +78,7 @@ void calculationSystem::calculate() {
 		auto factory = combinationFactory(threadsAmount);
 		combinations = factory.getCombinationsAmount();
 		for (size_t i = 0; i < threadsAmount; ++i) {
-			futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, i); }));
+			futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, static_cast<int>(i)); }));
 		}
 		for (auto& future : futures) {
 			future.wait();
@@ -126,16 +126,16 @@ void calculationSystem::printProgress(size_t aIndex) {
 finalData calculationSystem::getData(const algorithm::stAlgorithm& aMM) {
 	finalData result;
 	result.cash = aMM.getFullCash();
-	result.startCash = aMM.getStartCash();
+	result.startCash = aMM.getData().getStartCash();
 	const auto& stats = aMM.stats;
 	result.profitableOrder = stats.profitableOrder;
 	result.profitableStreak = stats.profitableStreak;
 	result.unprofitableOrder = stats.unprofitableOrder;
 	result.unprofitableStreak = stats.unprofitableStreak;
 	auto maxLoss = stats.maxLossHighCash - stats.maxLossLowCash;
-	auto maxLossPercent = (aMM.orderSize > 0.0) ? maxLoss / aMM.startCash * 100 : maxLoss / stats.maxLossHighCash * 100;
+	auto maxLossPercent = (aMM.getData().getOrderSize() > 0.0) ? maxLoss / aMM.getData().getStartCash() * 100 : maxLoss / stats.maxLossHighCash * 100;
 	result.maxLossPercent = maxLossPercent;
-	result.RF = (result.cash - aMM.startCash) / stats.summaryLoss;
+	result.RF = (result.cash - aMM.getData().getStartCash()) / stats.summaryLoss;
 	result.touchTrendOrder = stats.touchTrendOrder;
 	result.breakTrendOrder = stats.breakTrendOrder;
 	result.longOrder = stats.longOrder;
@@ -143,13 +143,13 @@ finalData calculationSystem::getData(const algorithm::stAlgorithm& aMM) {
 	result.atrType = market::atrTypeToString(aMM.atrType);
 	result.atrSize = aMM.atrSize;
 	result.stFactor = aMM.stFactor;
-	result.dealPercent = aMM.dealPercent;
-	result.leverage = aMM.leverage;
-	const auto liqPercent = (aMM.orderSize > 0.0)
-		? market::marketData::getInstance()->getLiquidationPercent(aMM.orderSize, aMM.leverage)
-		: market::marketData::getInstance()->getLeverageLiquidationRange(aMM.leverage).first;
-	result.stopLossPercent = liqPercent - aMM.liquidationOffsetPercent;
-	result.minimumProfitPercent = aMM.minimumProfitPercent;
+	result.dealPercent = aMM.getData().getDealPercent();
+	result.leverage = aMM.getData().getLeverage();
+	const auto liqPercent = (aMM.getData().getOrderSize() > 0.0)
+		? market::marketData::getInstance()->getLiquidationPercent(aMM.getData().getOrderSize(), aMM.getData().getLeverage())
+		: market::marketData::getInstance()->getLeverageLiquidationRange(aMM.getData().getLeverage()).first;
+	result.stopLossPercent = liqPercent - aMM.getData().getLiquidationOffsetPercent();
+	result.minimumProfitPercent = aMM.getData().getMinimumProfitPercent();
 	result.dynamicSLPercent = aMM.getData().getDynamicSLPercent();
 	result.dynamicStopLossTrendMode = aMM.getData().getDynamicSLTrendMode();
 	result.trendTouchOpenerModuleActivationWaitMode = aMM.getData().getTouchOpenerActivationWaitMode();

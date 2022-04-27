@@ -46,41 +46,24 @@ stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
 	trendBreakOpenerModule(*this),
 	stFactor(aData.getStFactor()), // TO DO delete all below
 	atrSize(aData.getAtrSize()),
-	atrType(aData.getAtrType()),
-	liquidationOffsetPercent(aData.getLiquidationOffsetPercent()),
-	minimumProfitPercent(aData.getMinimumProfitPercent()),
-	dealPercent(aData.getDealPercent()),
-	orderSize(aData.getOrderSize()),
-	leverage(aData.getLeverage()),
-	fullCheck(aData.getFullCheck()),
-	startCash(aData.getStartCash()),
-	cash(aData.getStartCash()),
-	stats(aData.getStartCash(), aData.getMaxLossPercent(), aData.getMaxLossCash()) {}
+	atrType(aData.getAtrType()) {}
 
-bool stAlgorithm::operator==(const stAlgorithm& aOther) {
-	// add data == data;
-	assert(activationWaiterModule == aOther.activationWaiterModule);
-	assert(stopLossWaiterModule == aOther.stopLossWaiterModule);
-	assert(state == aOther.state);
-	assert(order == aOther.order);
-	assert(fullCheck == aOther.fullCheck);
-	assert(isTrendUp == aOther.isTrendUp);
-	assert(isNewTrend == aOther.isNewTrend);
-	if (fullCheck) {
-		assert(stats == aOther.stats);
-		assert(utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision()));
-		assert(utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend));
-		assert(utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend));
+bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
+	auto result = baseClass::operator==(aOther);
+	result &= activationWaiterModule == aOther.activationWaiterModule;
+	result &= stopLossWaiterModule == aOther.stopLossWaiterModule;
+	result &= state == aOther.state;
+	result &= isTrendUp == aOther.isTrendUp;
+	result &= isNewTrend == aOther.isNewTrend;
+	if (getFullCheck()) {
+		result &= utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend);
+		result &= utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend);
 	}
-	return true;
+	return result;
 }
 
 void stAlgorithm::setState(eState aState) {
 	state = aState;
-}
-
-void stAlgorithm::setWithLogs(bool aState) {
-	withLogs = aState;
 }
 
 double stAlgorithm::getSuperTrend() const {
@@ -96,19 +79,11 @@ double stAlgorithm::getActualSuperTrend() const {
 	return getSuperTrend();
 }
 
-double stAlgorithm::getFullCash() const {
-	auto curCash = cash;
-	if (!order.getTime().empty()) {
-		curCash += order.getMargin() + order.getProfit();
-	}
-	return curCash;
-}
-
 bool stAlgorithm::isNewTrendChanged() {
 	if (!isNewTrend) {
 		return false;
 	}
-	if ((isTrendUp && curCandle.low <= getSuperTrend()) || (!isTrendUp && curCandle.high >= getSuperTrend())) {
+	if ((isTrendUp && getCandle().low <= getSuperTrend()) || (!isTrendUp && getCandle().high >= getSuperTrend())) {
 		isNewTrend = false;
 		return true;
 	}
@@ -125,7 +100,7 @@ bool stAlgorithm::calculate(const std::vector<candle>& aCandles) {
 }
 
 bool stAlgorithm::doAction(const candle& aCandle) {
-	if (stopCashBreak) {
+	if (getStopCashBreak()) {
 		return false;
 	}
 	if (!updateCandles(aCandle)) {
@@ -133,7 +108,7 @@ bool stAlgorithm::doAction(const candle& aCandle) {
 	}
 	updateTrends();
 	while (update()) {}
-	if (withLogs) {
+	if (getWithLogs()) {
 		log();
 	}
 	return true;
@@ -152,30 +127,20 @@ bool stAlgorithm::update() {
 	}
 }
 
-bool stAlgorithm::updateCandles(const candle& aCandle) {
-	if (curCandle.time.empty()) {
-		curCandle = aCandle;
-		return false;
-	}
-	prevCandle = std::move(curCandle);
-	curCandle = aCandle;
-	return true;
-}
-
 void stAlgorithm::updateTrends() {
-	if (prevCandle.trendIsUp) {
-		lastUpSuperTrend = prevCandle.superTrend;
+	if (getPrevCandle().trendIsUp) {
+		lastUpSuperTrend = getPrevCandle().superTrend;
 	}
 	else {
-		lastDownSuperTrend = prevCandle.superTrend;
+		lastDownSuperTrend = getPrevCandle().superTrend;
 	}
 
 	if (!inited) {
-		isTrendUp = prevCandle.trendIsUp;
+		isTrendUp = getPrevCandle().trendIsUp;
 		inited = true;
 	}
-	else if (isTrendUp != prevCandle.trendIsUp) {
-		isTrendUp = prevCandle.trendIsUp;
+	else if (isTrendUp != getPrevCandle().trendIsUp) {
+		isTrendUp = getPrevCandle().trendIsUp;
 		isNewTrend = trendBreakOpenerModule.isNewTrendAllowed();
 		stopLossWaiterModule.onNewTrend();
 		activationWaiterModule.onNewTrend();
@@ -191,13 +156,13 @@ bool stAlgorithm::checkTrend() {
 
 bool stAlgorithm::updateOrder() {
 	bool needReupdate = false;
-	if (state == eState::LONG && curCandle.low <= order.getStopLoss()) {
+	if (state == eState::LONG && getCandle().low <= getOrder().getStopLoss()) {
 		closeOrder();
 	}
-	else if (state == eState::SHORT && curCandle.high >= order.getStopLoss()) {
+	else if (state == eState::SHORT && getCandle().high >= getOrder().getStopLoss()) {
 		closeOrder();
 	}
-	else if (order.getTime() != curCandle.time) {
+	else if (getOrder().getTime() != getCandle().time) {
 		needReupdate = dynamicStopLossModule.check();
 	}
 	return needReupdate;
@@ -206,36 +171,36 @@ bool stAlgorithm::updateOrder() {
 void stAlgorithm::openOrder(eState aState, double aPrice) {
 	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
 	state = aState;
-	if (!order.openOrder(*this, aPrice)) {
+	if (!getOrder().openOrder(*this, aPrice)) {
 		state = eState::NONE;
 		return;
 	}
 
-	auto taxAmount = utils::round(order.getNotionalValue() * stAlgorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
-	cash = cash - order.getMargin() - taxAmount;
+	auto taxAmount = utils::round(getOrder().getNotionalValue() * stAlgorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
+	cash = cash - getOrder().getMargin() - taxAmount;
 	stats.onOpenOrder((state == eState::LONG), isNewTrend);
 	isNewTrend = false;
 }
 
 void stAlgorithm::closeOrder() {
-	const auto profit = order.getProfit();
+	const auto profit = getOrder().getProfit();
 	if (profit < 0) {
 		stopLossWaiterModule.start();
 	}
 	else {
 		state = eState::NONE;
 	}
-	cash = cash + order.getMargin() + profit;
-	order.reset();
-	order.setFullCheck(fullCheck);
+	cash = cash + getOrder().getMargin() + profit;
+	getOrder().reset();
+	getOrder().setFullCheck(getFullCheck());
 	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 		stopCashBreak = true;
 	}
 }
 
-void stAlgorithm::log() {
+void stAlgorithm::log() const {
 	std::ofstream output("Logs.txt", std::ios::app);
-	output << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
+	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(cash)
 		<< std::setw(18) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
 		<< std::setw(4) << std::to_string(isNewTrend);
 	if (state == eState::STOP_LOSS_WAIT) {
@@ -244,8 +209,8 @@ void stAlgorithm::log() {
 	else if (state == eState::ACTIVATION_WAIT) {
 		output << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
 	}
-	else if (!order.getTime().empty()) {
-		output << order.toString();
+	else if (!getOrder().getTime().empty()) {
+		output << getOrder().toString();
 	}
 	output << std::endl;
 }

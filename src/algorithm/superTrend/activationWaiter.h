@@ -11,7 +11,7 @@ namespace algorithm {
 		friend class calculation::calculationSystem;
 	public:
 		activationWaiter(stAlgorithm& aAlgorithm);
-		bool operator==(const activationWaiter& other);
+		bool operator==(const activationWaiter& other) const;
 		void onNewTrend();
 		void start();
 		bool check();

@@ -104,17 +104,18 @@ bool statistic::onCloseOrder(double aCash, double aProfit) {
 	return false;
 }
 
-bool statistic::operator==(const statistic& aOther) {
-	assert(utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, market::marketData::getInstance()->getQuotePrecision()));
-	assert(utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, market::marketData::getInstance()->getQuotePrecision()));
-	assert(utils::isEqual(summaryLoss, aOther.summaryLoss, market::marketData::getInstance()->getQuotePrecision()));
-	assert(profitableOrder == aOther.profitableOrder);
-	assert(unprofitableOrder == aOther.unprofitableOrder);
-	assert(touchTrendOrder == aOther.touchTrendOrder);
-	assert(breakTrendOrder == aOther.breakTrendOrder);
-	assert(longOrder == aOther.longOrder);
-	assert(shortOrder == aOther.shortOrder);
-	assert(profitableStreak == aOther.profitableStreak);
-	assert(unprofitableStreak == aOther.unprofitableStreak);
-	return true;
+bool statistic::operator==(const statistic& aOther) const {
+	bool result = true;
+	result &= utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, market::marketData::getInstance()->getQuotePrecision());
+	result &= utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, market::marketData::getInstance()->getQuotePrecision());
+	result &= utils::isEqual(summaryLoss, aOther.summaryLoss, market::marketData::getInstance()->getQuotePrecision());
+	result &= profitableOrder == aOther.profitableOrder;
+	result &= unprofitableOrder == aOther.unprofitableOrder;
+	result &= touchTrendOrder == aOther.touchTrendOrder;
+	result &= breakTrendOrder == aOther.breakTrendOrder;
+	result &= longOrder == aOther.longOrder;
+	result &= shortOrder == aOther.shortOrder;
+	result &= profitableStreak == aOther.profitableStreak;
+	result &= unprofitableStreak == aOther.unprofitableStreak;
+	return result;
 }

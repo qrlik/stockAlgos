@@ -3,6 +3,7 @@ include (FindPackageHandleStandardArgs)
 file(GLOB_RECURSE SRC_ALGORITHM
     "src/algorithm/*.cpp"
     "src/algorithm/*.h"
+    "src/algorithm/*.hpp"
     "src/algorithm/superTrend/*.cpp"
     "src/algorithm/superTrend/*.h"
 )

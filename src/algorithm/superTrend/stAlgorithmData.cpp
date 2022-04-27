@@ -1,4 +1,5 @@
 #include "stAlgorithmData.h"
+#include "utils/utils.h"
 
 using namespace algorithm;
 
@@ -80,6 +81,27 @@ stAlgorithmData stAlgorithmData::initAlgorithmDataFromJson(const Json& aData) {
 			result.setFullCheck(value.get<bool>());
 		}
 	}
+	return result;
+}
+
+bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
+	bool result = baseClass::operator==(aOther);
+	result &= atrType == aOther.atrType;
+	result &= atrSize == aOther.atrSize;
+	result &= utils::isEqual(stFactor, aOther.stFactor);
+	result &= dynamicSLTrendMode == aOther.dynamicSLTrendMode;
+	result &= utils::isEqual(dynamicSLPercent, aOther.dynamicSLPercent);
+	result &= touchOpenerActivationWaitMode == aOther.touchOpenerActivationWaitMode;
+	result &= breakOpenerEnabled == aOther.breakOpenerEnabled;
+	result &= breakOpenerActivationWaitMode == aOther.breakOpenerActivationWaitMode;
+	result &= alwaysUseNewTrend == aOther.alwaysUseNewTrend;
+	result &= activationWaiterResetAllowed == aOther.activationWaiterResetAllowed;
+	result &= activationWaiterRange == aOther.activationWaiterRange;
+	result &= activationWaiterFullCandleCheck == aOther.activationWaiterFullCandleCheck;
+	result &= stopLossWaiterEnabled == aOther.stopLossWaiterEnabled;
+	result &= stopLossWaiterResetAllowed == aOther.stopLossWaiterResetAllowed;
+	result &= stopLossWaiterRange == aOther.stopLossWaiterRange;
+	result &= stopLossWaiterFullCandleCheck == aOther.stopLossWaiterFullCandleCheck;
 	return result;
 }
 

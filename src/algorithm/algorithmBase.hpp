@@ -1,0 +1,74 @@
+#pragma once
+#include "structs/candle.h"
+#include "structs/orderData.h"
+#include "structs/statistic.h"
+#include <type_traits>
+
+namespace algorithm {
+	class algorithmDataBase;
+	template<typename dataType, typename = typename std::enable_if_t<std::is_base_of_v<algorithmDataBase, dataType>>>
+	class algorithmBase {
+	public:
+		algorithmBase(const dataType& aData) : 
+			data(aData), stats(data.getStartCash(),
+			data.getMaxLossPercent(), data.getMaxLossCash()),
+			cash(data.getStartCash()){}
+		bool operator==(const algorithmBase<dataType>& aOther) const {
+			auto result = true;
+			result &= data == aOther.data;
+			result &= order == aOther.order;
+			result &= fullCheck == aOther.fullCheck;
+			if (fullCheck) {
+				result &= stats == aOther.stats;
+				result &= utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision());
+			}
+			return result;
+		}
+		const dataType& getData() const { return data; }
+		const orderData& getOrder() const { return order; } // TO DO delete
+		orderData& getOrder() { return order; } // TO DO delete
+		const candle& getCandle() const { return curCandle; }
+		double getFullCash() const {
+			auto curCash = cash;
+			if (!order.getTime().empty()) {
+				curCash += order.getMargin() + order.getProfit();
+			}
+			return curCash;
+		}
+		double getCash() const { return cash; }
+		bool getFullCheck() const { return fullCheck; } // tmp
+
+	protected:
+		bool updateCandles(const candle& aCandle) {
+			if (curCandle.time.empty()) {
+				curCandle = aCandle;
+				return false;
+			}
+			prevCandle = std::move(curCandle);
+			curCandle = aCandle;
+			return true;
+		}
+
+		bool getWithLogs() const { return withLogs; }
+		bool getStopCashBreak() const { return stopCashBreak; }
+		const candle& getPrevCandle() const { return prevCandle; }
+
+		// TO DO delte setters
+		void setWithLogs(bool aState) { withLogs = aState; }
+	private:
+		const dataType data;
+
+		orderData order;
+		candle curCandle;
+		candle prevCandle;
+
+
+		bool fullCheck = false;
+		bool withLogs = false;
+	protected: // tmp
+		statistic stats;
+		double cash = 0.0;
+		bool inited = false;
+		bool stopCashBreak = false;
+	};
+}

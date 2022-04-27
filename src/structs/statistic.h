@@ -8,7 +8,7 @@ struct statistic {
 	statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash);
 	void onOpenOrder(bool isLong, bool aIsBreak);
 	bool onCloseOrder(double aCash, double aProfit);
-	bool operator==(const statistic& aOther);
+	bool operator==(const statistic& aOther) const;
 
 	double maxLossHighCash = 0.0;
 	double maxLossLowCash = 0.0;

@@ -7,7 +7,7 @@ using namespace algorithm;
 stopLossWaiter::stopLossWaiter(stAlgorithm& aAlgorithm):
 	algorithm(aAlgorithm) {}
 
-bool stopLossWaiter::operator==(const stopLossWaiter& aOther) {
+bool stopLossWaiter::operator==(const stopLossWaiter& aOther) const {
 	return stopLossWaitCounter == aOther.stopLossWaitCounter;
 }
 

@@ -11,7 +11,7 @@ namespace algorithm {
 		friend class calculation::calculationSystem;
 	public:
 		stopLossWaiter(stAlgorithm& aAlgorithm);
-		bool operator==(const stopLossWaiter& aOther);
+		bool operator==(const stopLossWaiter& aOther) const;
 		void onNewTrend();
 		void start();
 		bool check();

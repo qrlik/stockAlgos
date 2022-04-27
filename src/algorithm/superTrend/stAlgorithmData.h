@@ -5,9 +5,11 @@
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
+		using baseClass = algorithmDataBase;
 		static const double tax; // TO DO - delete from here
 
 		static stAlgorithmData initAlgorithmDataFromJson(const Json& aData);
+		bool operator==(const stAlgorithmData& aOther) const;
 		Json toJson() const;
 
 		market::eAtrType getAtrType() const { return atrType; }

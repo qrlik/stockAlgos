@@ -12,7 +12,7 @@ public:
 	static void initOrderDataFromJson(orderData& aData, const Json& aJson);
 
 	orderData();
-	bool operator==(const orderData& aOther);
+	bool operator==(const orderData& aOther) const;
 	bool openOrder(const algorithm::stAlgorithm& aMM, double aPrice);
 	void reset();
 	std::string toString() const;

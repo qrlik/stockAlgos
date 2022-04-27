@@ -7,7 +7,7 @@ using namespace algorithm;
 activationWaiter::activationWaiter(stAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
-bool activationWaiter::operator==(const activationWaiter& other) {
+bool activationWaiter::operator==(const activationWaiter& other) const {
 	return activationWaitCounter == other.activationWaitCounter;
 }
 
