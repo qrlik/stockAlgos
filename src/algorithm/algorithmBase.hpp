@@ -55,6 +55,9 @@ namespace algorithm {
 				return;
 			}
 			for (const auto& [key, value] : aValue.items()) {
+				if (value.is_null()) {
+					continue;
+				}
 				if (key == "order") {
 					if (value.contains("lifeState")) {
 						order.reset();

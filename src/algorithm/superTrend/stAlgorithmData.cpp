@@ -6,9 +6,7 @@ using namespace algorithm;
 const double stAlgorithmData::tax = 0.0004;
 
 stAlgorithmData::stAlgorithmData(const Json& aValue) {
-	for (const auto& [field, value] : aValue.items()) {
-		initDataField(field, value);
-	}
+	initFromJson(aValue);
 }
 
 bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {

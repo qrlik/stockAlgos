@@ -5,8 +5,6 @@ namespace algorithm {
 	class algorithmDataBase {
 	public:
 		algorithmDataBase() = default;
-		algorithmDataBase(const Json& aValue);
-		void initDataField(const std::string & aName, const Json & aValue);
 		bool operator==(const algorithmDataBase& aOther) const;
 
 		double getDealPercent() const { return dealPercent; }
@@ -32,6 +30,7 @@ namespace algorithm {
 		void setMinimumProfitPercent(double aPercent) { minimumProfitPercent = aPercent; }
 		void setFullCheck(bool aState) { fullCheck = aState; }
 	protected:
+		void initFromJson(const Json& aValue);
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 	private:
 		double dealPercent = -1.0;

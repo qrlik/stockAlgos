@@ -3,12 +3,6 @@
 
 using namespace algorithm;
 
-algorithmDataBase::algorithmDataBase(const Json& aValue) {
-	for (const auto& [field, value] : aValue.items()) {
-		initDataField(field, value);
-	}
-}
-
 bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	bool result = true;
 	result &= utils::isEqual(dealPercent, aOther.dealPercent);
@@ -23,38 +17,43 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	return result;
 }
 
-void algorithmDataBase::initDataField(const std::string& aName, const Json& aValue) {
+void algorithmDataBase::initFromJson(const Json& aValue) {
 	if (aValue.is_null()) {
 		return;
 	}
-	if (aName == "dealPercent") {
-		dealPercent = aValue.get<double>();
-	}
-	else if (aName == "orderSize") {
-		orderSize = aValue.get<double>();
-	}
-	else if (aName == "leverage") {
-		leverage = aValue.get<int>();
-	}
-	else if (aName == "startCash") {
-		startCash = aValue.get<double>();
-	}
-	else if (aName == "maxLossPercent") {
-		maxLossPercent = aValue.get<double>();
-	}
-	else if (aName == "maxLossCash") {
-		maxLossCash = aValue.get<double>();
-	}
-	else if (aName == "liquidationOffsetPercent") {
-		liquidationOffsetPercent = aValue.get<double>();
-	}
-	else if (aName == "minimumProfitPercent") {
-		minimumProfitPercent = aValue.get<double>();
-	}
-	else if (aName == "fullCheck") {
-		fullCheck = aValue.get<bool>();
-	}
-	else {
-		initDataFieldInternal(aName, aValue);
+	for (const auto& [key, value] : aValue.items()) {
+		if (value.is_null()) {
+			continue;
+		}
+		if (key == "dealPercent") {
+			dealPercent = value.get<double>();
+		}
+		else if (key == "orderSize") {
+			orderSize = value.get<double>();
+		}
+		else if (key == "leverage") {
+			leverage = value.get<int>();
+		}
+		else if (key == "startCash") {
+			startCash = value.get<double>();
+		}
+		else if (key == "maxLossPercent") {
+			maxLossPercent = value.get<double>();
+		}
+		else if (key == "maxLossCash") {
+			maxLossCash = value.get<double>();
+		}
+		else if (key == "liquidationOffsetPercent") {
+			liquidationOffsetPercent = value.get<double>();
+		}
+		else if (key == "minimumProfitPercent") {
+			minimumProfitPercent = value.get<double>();
+		}
+		else if (key == "fullCheck") {
+			fullCheck = value.get<bool>();
+		}
+		else {
+			initDataFieldInternal(key, value);
+		}
 	}
 }
