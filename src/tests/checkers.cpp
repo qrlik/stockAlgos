@@ -1,5 +1,5 @@
 #include "checkers.h"
-#include "structs/statistic.h"
+#include "algorithm/statistic.h"
 #include "utils/utils.h"
 #include "market/marketRules.h"
 #include <iostream>

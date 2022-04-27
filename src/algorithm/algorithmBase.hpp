@@ -1,7 +1,7 @@
 #pragma once
-#include "structs/candle.h"
-#include "structs/orderData.h"
-#include "structs/statistic.h"
+#include "market/candle.h"
+#include "orderData.h"
+#include "statistic.h"
 #include <type_traits>
 
 namespace algorithm {

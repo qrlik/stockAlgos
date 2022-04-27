@@ -1,5 +1,5 @@
 #pragma once
-#include "structs/candle.h"
+#include "candle.h"
 #include <vector>
 #include <deque>
 
