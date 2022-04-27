@@ -44,7 +44,7 @@ mmChecker::mmChecker(std::string aName) :
 	name(std::move(aName))
 {
 	auto json = utils::readFromJson("assets/tests/" + name);
-	auto data = algorithm::stAlgorithmData::initAlgorithmDataFromJson(json["algorithmData"]);
+	algorithm::stAlgorithmData data(json["algorithmData"]);
 	tests::checkAlgorithmData(data);
 	actualMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);
 	testMoneyMaker = std::make_unique<algorithm::stAlgorithm>(data);

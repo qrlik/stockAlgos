@@ -3,6 +3,12 @@
 
 using namespace algorithm;
 
+algorithmDataBase::algorithmDataBase(const Json& aValue) {
+	for (const auto& [field, value] : aValue.items()) {
+		initDataField(field, value);
+	}
+}
+
 bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	bool result = true;
 	result &= utils::isEqual(dealPercent, aOther.dealPercent);
@@ -18,6 +24,44 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 }
 
 void algorithmDataBase::initDataField(const std::string& aName, const Json& aValue) {
-	//impl;
+	if (aValue.is_null()) {
+		return;
+	}
+	if (aName == "dealPercent") {
+		dealPercent = aValue.get<double>();
+		return;
+	}
+	else if (aName == "orderSize") {
+		orderSize = aValue.get<double>();
+		return;
+	}
+	else if (aName == "leverage") {
+		leverage = aValue.get<int>();
+		return;
+	}
+	else if (aName == "startCash") {
+		startCash = aValue.get<double>();
+		return;
+	}
+	else if (aName == "maxLossPercent") {
+		maxLossPercent = aValue.get<double>();
+		return;
+	}
+	else if (aName == "maxLossCash") {
+		maxLossCash = aValue.get<double>();
+		return;
+	}
+	else if (aName == "liquidationOffsetPercent") {
+		liquidationOffsetPercent = aValue.get<double>();
+		return;
+	}
+	else if (aName == "minimumProfitPercent") {
+		minimumProfitPercent = aValue.get<double>();
+		return;
+	}
+	else if (aName == "fullCheck") {
+		fullCheck = aValue.get<bool>();
+		return;
+	}
 	initDataFieldInternal(aName, aValue);
 }

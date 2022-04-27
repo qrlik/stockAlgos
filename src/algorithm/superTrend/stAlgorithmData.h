@@ -5,10 +5,11 @@
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
-		using baseClass = algorithmDataBase;
 		static const double tax; // TO DO - delete from here
 
-		static stAlgorithmData initAlgorithmDataFromJson(const Json& aData);
+		using baseClass = algorithmDataBase;
+		stAlgorithmData() = default;
+		stAlgorithmData(const Json& aValue);
 		bool operator==(const stAlgorithmData& aOther) const;
 		Json toJson() const;
 

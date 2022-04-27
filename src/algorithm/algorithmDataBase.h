@@ -4,8 +4,10 @@
 namespace algorithm {
 	class algorithmDataBase {
 	public:
+		algorithmDataBase() = default;
+		algorithmDataBase(const Json& aValue);
+		void initDataField(const std::string & aName, const Json & aValue);
 		bool operator==(const algorithmDataBase& aOther) const;
-		void initDataField(const std::string& aName, const Json& aValue);
 
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
