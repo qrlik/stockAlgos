@@ -4,8 +4,6 @@
 #include <memory>
 
 namespace tests {
-	void checkAlgorithmData(const algorithm::stAlgorithmData& aData); // TO DO fix
-
 	template<typename AlgType,
 		typename AlgDataType,
 		typename = typename std::enable_if_t<std::is_base_of_v<algorithm::algorithmBase<AlgDataType>, AlgType>>>
@@ -14,7 +12,10 @@ namespace tests {
 		algorithmChecker(std::string aName) : name(std::move(aName)) {
 			auto json = utils::readFromJson("assets/tests/" + name);
 			AlgDataType data(json["algorithmData"]);
-			tests::checkAlgorithmData(data);
+			if (!data.isValid()) {
+				utils::logError("algorithmChecker - " + name + " invalid algorithm data");
+				assert(false && "!data.isValid()");
+			}
 			actualAlgorithm = std::make_unique<AlgType>(data);
 			testAlgorithm = std::make_unique<AlgType>(data);
 			testAlgorithmData = json["testAlgorithmData"];

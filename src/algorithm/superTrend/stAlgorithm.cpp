@@ -161,7 +161,7 @@ void stAlgorithm::openOrder(eState aState, double aPrice) {
 		return;
 	}
 
-	auto taxAmount = utils::round(getOrder().getNotionalValue() * stAlgorithmData::tax, market::marketData::getInstance()->getQuotePrecision());
+	auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - getOrder().getMargin() - taxAmount;
 	stats.onOpenOrder((state == eState::LONG), isNewTrend);
 	isNewTrend = false;

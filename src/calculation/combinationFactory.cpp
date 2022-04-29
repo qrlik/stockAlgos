@@ -1,6 +1,6 @@
 #include "combinationFactory.h"
 #include "market/marketRules.h"
-#include "tests/checkers.h"
+#include "tests/checkers.hpp"
 #include "utils/utils.h"
 #include <iostream>
 
@@ -42,10 +42,14 @@ combinationFactory::combinationFactory(size_t aThreadsAmount) :
 	combinationsData(aThreadsAmount),
 	indexes(aThreadsAmount, 0)
 {
-	if (threadsAmount == 0) {
+	settings = utils::readFromJson("combinationSettings");
+	if (threadsAmount == 0 || settings.empty()) {
 		return;
 	}
-	generateSuperTrend();
+
+	checkNewCode();
+	//generateCombinations(0);
+	utils::log("combinationFactory combinations - " + std::to_string(combinations));
 	auto threadDataAmount = combinations / threadsAmount;
 	auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
 	for (size_t i = 0; i < threadsAmount; ++i) {
@@ -59,7 +63,130 @@ combinationFactory::combinationFactory(size_t aThreadsAmount) :
 	if (!tmpAllData.empty()) {
 		utils::logError("combinationFactory tmpAllData not empty");
 	}
-	inited = true;
+}
+
+void combinationFactory::checkNewCode() {
+	generateSuperTrend();
+	const auto size1 = tmpAllData.size();
+	//const auto datas = std::move(tmpAllData);
+	tmpAllData.clear();
+	tmpData = algorithm::stAlgorithmData{};
+	combinations = 0;
+	generateCombinations(0);
+	if (size1 != tmpAllData.size()) {
+		assert(false && "size1 != tmpAllData.size()");
+		utils::log("combinationFactory::checkNewCode size1 != tmpAllData.size()");
+	}
+}
+
+namespace {
+	bool checkData(const Json& aData) {
+		auto result = true;
+		result &= aData.contains("name") && aData["name"].is_string();
+		result &= aData.contains("value") || aData.contains("values");
+		if (aData.contains("values")) {
+			auto size = 1;
+			if (aData.contains("step")) {
+				size = 2;
+				result &= aData["step"].is_number();
+			}
+			result &= aData["values"].is_array() && aData["values"].size() >= size;
+			if (aData.contains("step")) {
+				for (const auto& value : aData["values"]) {
+					result &= value.is_number();
+				}
+			}
+		}
+
+		if (aData.contains("criteria")) {
+			result &= aData["criteria"].is_array() && aData.contains("otherwise");
+			for (const auto& crit : aData["criteria"]) {
+				result &= checkData(crit);
+			}
+			if (aData["criteria"].size() > 1) {
+				result &= aData.contains("criteriaOperand") && aData["criteriaOperand"].is_string();
+			}
+		}
+		return result;
+	}
+
+	bool checkCriteria(const Json& aData, const Json& aOperand) {
+		auto result = true;
+		const std::string operand = (aOperand.is_string()) ? aOperand.get<std::string>() : "";
+		if (operand == "or") {
+			result = false;
+		}
+		else if (!operand.empty() && operand != "and") {
+			utils::logError("checkCriteria wrond operand");
+		}
+		for (const auto& criteria : aData) {
+			if (operand == "or") {
+				result |= tmpData.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
+			}
+			else {
+				result &= tmpData.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
+			}
+		}
+		return result;
+	}
+}
+
+void combinationFactory::iterateCombination(size_t aIndex, const std::string& aName, const Json& aValue) {
+	if (tmpData.initDataField(aName, aValue)) {
+		generateCombinations(aIndex + 1);
+	}
+	else {
+		utils::logError("combinationFactory::iterateCombination wrong data field");
+	}
+}
+
+void combinationFactory::generateCombinations(size_t aIndex) {
+	if (aIndex >= settings.size()) {
+		onIterate();
+		return;
+	}
+	auto iterationData = settings[aIndex];
+	if (!checkData(iterationData)) {
+		utils::logError("combinationFactory::generateCombinations wrong data");
+		assert(false && "!checkData(iterationData)");
+		return;
+	}
+	const auto name = iterationData["name"].get<std::string>();
+	if (iterationData.contains("value")) {
+		iterateCombination(aIndex, name, iterationData["value"]);
+	}
+	else {
+		auto& values = iterationData["values"];
+		bool criteriaCheck = true;
+		if (iterationData.contains("criteria")) {
+			criteriaCheck = checkCriteria(iterationData["criteria"], iterationData["criteriaOperand"]);
+		}
+		if (criteriaCheck) {
+			if (iterationData.contains("step")) {
+				auto step = iterationData["step"];
+				if (step.is_number_float()) {
+					const auto stepValue = step.get<double>();
+					for (const auto& value : iotaWithStep(values.front().get<double>(), values.back().get<double>() + stepValue, stepValue)) {
+						iterateCombination(aIndex, name, value);
+					}
+				}
+				else {
+					const auto stepValue = step.get<int>();
+					for (const auto& value : iotaWithStep(values.front().get<int>(), values.back().get<int>() + stepValue, stepValue)) {
+						iterateCombination(aIndex, name, value);
+					}
+				}
+			}
+			else {
+				for (const auto& value : values) {
+					iterateCombination(aIndex, name, value);
+				}
+			}
+		}
+		else {
+			iterateCombination(aIndex, name, iterationData["otherwise"]);
+		}
+	}
 }
 
 size_t combinationFactory::getCombinationsAmount() const {
@@ -84,10 +211,16 @@ void combinationFactory::onFinish() {
 	}
 }
 
-void combinationFactory::generateSuperTrend() {
-	if (inited) {
-		return;
+void combinationFactory::onIterate() {
+	++combinations;
+	if (!tmpData.isValid()) {
+		assert(false && "!tmpData.isValid()");
+		utils::logError("combinationFactory invalid algorithm data");
 	}
+	tmpAllData.push_back(tmpData);
+}
+
+void combinationFactory::generateSuperTrend() {
 	tmpData = algorithm::stAlgorithmData{};
 
 	for (auto atrType : { market::eAtrType::RMA }) {
@@ -103,24 +236,20 @@ void combinationFactory::generateSuperTrend() {
 }
 
 void combinationFactory::generateDeal() {
-	for (auto dealPercent : iotaWithStep(minDealPercent, maxDealPercent + dealPercentStep, dealPercentStep)) {
-		tmpData.setDealPercent(dealPercent);
-		tmpData.setOrderSize(orderSize);
-		tmpData.setStartCash(startCash);
-		tmpData.setMaxLossCash(maxLossCash);
-		tmpData.setMaxLossPercent(maxLossPercent);
-		tmpData.setLeverage(leverage);
-		generatePercent();
-	}
+	tmpData.setDealPercent(dealPercent);
+	tmpData.setOrderSize(orderSize);
+	tmpData.setStartCash(startCash);
+	tmpData.setMaxLossCash(maxLossCash);
+	tmpData.setMaxLossPercent(maxLossPercent);
+	tmpData.setLeverage(leverage);
+	generatePercent();
 }
 
 void combinationFactory::generatePercent() {
 	for (auto liquidationOffsetPercent : getLiquidationRange(tmpData.getLeverage(), orderSize, liquidationOffsetSteps, minLiquidationOffsetPercent)) {
 		tmpData.setLiquidationOffsetPercent(liquidationOffsetPercent);
-		for (auto minimumProfitPercent : iotaWithStep(minMinProfitPercent, maxMinProfitPercent + minProfitPercentStep, minProfitPercentStep)) {
-			tmpData.setMinimumProfitPercent(minimumProfitPercent);
-			generateDynamicSL();
-		}
+		tmpData.setMinimumProfitPercent(minProfitPercent);
+		generateDynamicSL();
 	}
 }
 
@@ -141,14 +270,14 @@ void combinationFactory::generateDynamicSL() {
 }
 
 void combinationFactory::generateOpener() {
-	for (auto touchOpenerActivationWaitMode : { true, false }) {
+	for (auto touchOpenerActivationWaitMode : touchOpenerActivationWaitModeFlags) {
 		tmpData.setTouchOpenerActivationWaitMode(touchOpenerActivationWaitMode);
 		for (auto breakOpenerEnabled : breakOpenerEnabledFlags) {
 			tmpData.setBreakOpenerEnabled(breakOpenerEnabled);
 			if (breakOpenerEnabled) {
-				for (auto breakOpenerActivationWaitMode : { true, false }) {
+				for (auto breakOpenerActivationWaitMode : breakOpenerActivationWaitModeFlags) {
 					tmpData.setBreakOpenerActivationWaitMode(breakOpenerActivationWaitMode);
-					for (auto alwaysUseNewTrend : { true, false }) {
+					for (auto alwaysUseNewTrend : alwaysUseNewTrendFlags) {
 						tmpData.setAlwaysUseNewTrend(alwaysUseNewTrend);
 						generateActivation();
 					}
@@ -165,11 +294,11 @@ void combinationFactory::generateOpener() {
 
 void combinationFactory::generateActivation() {
 	if (tmpData.getBreakOpenerActivationWaitMode() || tmpData.getTouchOpenerActivationWaitMode()) {
-		for (auto activationWaiterResetAllowed : { true, false }) {
+		for (auto activationWaiterResetAllowed : activationWaiterResetAllowedFlags) {
 			tmpData.setActivationWaiterResetAllowed(activationWaiterResetAllowed);
 			for (auto activationWaiterRange : iotaWithStep(minTrendActivationWaitRange, maxTrendActivationWaitRange + 1, 1)) {
 				tmpData.setActivationWaiterRange(activationWaiterRange);
-				for (auto activationWaiterFullCandleCheck : { true, false }) {
+				for (auto activationWaiterFullCandleCheck : activationWaiterFullCandleCheckFlags) {
 					tmpData.setActivationWaiterFullCandleCheck(activationWaiterFullCandleCheck);
 					generateStop();
 				}
@@ -188,11 +317,11 @@ void combinationFactory::generateStop() {
 	for (auto stopLossWaiterEnabled : stopLossWaiterEnabledFlags) {
 		tmpData.setStopLossWaiterEnabled(stopLossWaiterEnabled);
 		if (stopLossWaiterEnabled) {
-			for (auto stopLossWaiterResetAllowed : { true, false }) {
+			for (auto stopLossWaiterResetAllowed : stopLossWaiterResetAllowedFlags) {
 				tmpData.setStopLossWaiterResetAllowed(stopLossWaiterResetAllowed);
 				for (auto stopLossWaiterRange : iotaWithStep(minStopLossWaitRange, maxStopLossWaitRange + 1, 1)) {
 					tmpData.setStopLossWaiterRange(stopLossWaiterRange);
-					for (auto stopLossWaiterFullCandleCheck : { true, false }) {
+					for (auto stopLossWaiterFullCandleCheck : stopLossWaiterFullCandleCheckFlags) {
 						tmpData.setStopLossWaiterFullCandleCheck(stopLossWaiterFullCandleCheck);
 						onIterate();
 					}
@@ -206,10 +335,4 @@ void combinationFactory::generateStop() {
 			onIterate();
 		}
 	}
-}
-
-void combinationFactory::onIterate() {
-	++combinations;
-	tests::checkAlgorithmData(tmpData);
-	tmpAllData.push_back(tmpData);
 }

@@ -1,7 +1,7 @@
 #include "singleCalculator.h"
 #include "algorithm/superTrend/stAlgorithm.h"
 #include "market/indicators.h"
-#include "tests/checkers.h"
+#include "tests/checkers.hpp"
 #include "utils/utils.h"
 #include <iostream>
 

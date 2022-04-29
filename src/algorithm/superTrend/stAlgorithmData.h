@@ -5,8 +5,6 @@
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
-		static const double tax; // TO DO - delete from here
-
 		using baseClass = algorithmDataBase;
 		stAlgorithmData() = default;
 		stAlgorithmData(const Json& aValue);
@@ -53,7 +51,9 @@ namespace algorithm {
 		void setStopLossWaiterRange(int aRange) { stopLossWaiterRange = aRange; }
 		void setStopLossWaiterFullCandleCheck(bool aState) { stopLossWaiterFullCandleCheck = aState; }
 	protected:
-		void initDataFieldInternal(const std::string& aName, const Json& aValue) override final;
+		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
+		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;
+		bool isValidInternal() const override;
 	private:
 		market::eAtrType atrType = market::eAtrType::NONE;
 		int atrSize = -1;

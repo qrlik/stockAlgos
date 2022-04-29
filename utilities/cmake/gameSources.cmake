@@ -6,30 +6,37 @@ file(GLOB_RECURSE SRC_ALGORITHM
     "src/algorithm/*.hpp"
     "src/algorithm/superTrend/*.cpp"
     "src/algorithm/superTrend/*.h"
+    "src/algorithm/superTrend/*.hpp"
 )
 file(GLOB_RECURSE SRC_CALCULATION
     "src/calculation/*.cpp"
     "src/calculation/*.h"
+    "src/calculation/*.hpp"
 )
 file(GLOB_RECURSE SRC_CORE
     "src/core/*.cpp"
     "src/core/*.h"
+    "src/core/*.hpp"
 )
 file(GLOB_RECURSE SRC_MARKET
     "src/market/*.cpp"
     "src/market/*.h"
+    "src/market/*.hpp"
 )
 file(GLOB_RECURSE SRC_STRUCTS
     "src/structs/*.cpp"
     "src/structs/*.h"
+    "src/structs/*.hpp"
 )
 file(GLOB_RECURSE SRC_TESTS
     "src/tests/*.cpp"
     "src/tests/*.h"
+    "src/tests/*.hpp"
 )
 file(GLOB_RECURSE SRC_UTILS
     "src/utils/*.cpp"
     "src/utils/*.h"
+    "src/utils/*.hpp"
 )
 file(GLOB_RECURSE SRC_JSON
     "src/json/*.hpp"

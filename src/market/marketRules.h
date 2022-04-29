@@ -27,6 +27,7 @@ namespace market {
 		double getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aMargin, int aLeverage) const;
+		double getTaxFactor() const;
 	private:
 		marketData();
 		void init();
@@ -38,5 +39,6 @@ namespace market {
 		double pricePrecision = 0.0;
 		double quotePrecision = 0.0;
 		double minNotionalValue = 0.0;
+		const double tax = 0.0004; // to do move to json and max leverage too
 	};
 }

@@ -110,3 +110,7 @@ double marketData::getQuotePrecision() const {
 double marketData::getMinNotionalValue() const {
 	return minNotionalValue;
 }
+
+double marketData::getTaxFactor() const {
+	return tax;
+}

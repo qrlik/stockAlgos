@@ -6,6 +6,10 @@ namespace algorithm {
 	public:
 		algorithmDataBase() = default;
 		bool operator==(const algorithmDataBase& aOther) const;
+		bool initFromJson(const Json& aValue);
+		bool initDataField(const std::string& aName, const Json& aValue);
+		bool checkCriteria(const std::string& aName, const Json& aValue) const;
+		bool isValid() const;
 
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
@@ -30,8 +34,9 @@ namespace algorithm {
 		void setMinimumProfitPercent(double aPercent) { minimumProfitPercent = aPercent; }
 		void setFullCheck(bool aState) { fullCheck = aState; }
 	protected:
-		void initFromJson(const Json& aValue);
-		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
+		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
+		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
+		virtual bool isValidInternal() const = 0;
 	private:
 		double dealPercent = -1.0;
 		double orderSize = -1.0;

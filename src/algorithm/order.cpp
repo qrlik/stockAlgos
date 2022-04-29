@@ -87,7 +87,7 @@ bool order::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 double order::getProfit() const {
 	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
-	const auto orderCloseTax = utils::round(orderCloseSummary * algorithm::stAlgorithmData::tax, quotePrecision);
+	const auto orderCloseTax = utils::round(orderCloseSummary * MARKET_DATA->getTaxFactor(), quotePrecision);
 	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
 }

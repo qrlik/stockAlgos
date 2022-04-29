@@ -31,6 +31,10 @@ std::vector<candle> utils::parseCandles(const Json& aJson) {
 	return result;
 }
 
+void utils::log(const std::string& aStr) {
+	std::cout << aStr + '\n';
+}
+
 void utils::logError(const std::string& aStr) {
 	std::cout << "[ERROR]" + aStr + '\n';
 }

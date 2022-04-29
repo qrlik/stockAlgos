@@ -17,6 +17,11 @@ namespace calculation {
 		void incrementThreadIndex(int aThread);
 		void onFinish();
 	private:
+		void generateCombinations(size_t aIndex);
+		void iterateCombination(size_t aIndex, const std::string& aName, const Json& aValue);
+		void onIterate();
+
+		void checkNewCode();
 		void generateSuperTrend();
 		void generateDeal();
 		void generatePercent();
@@ -24,25 +29,22 @@ namespace calculation {
 		void generateOpener();
 		void generateActivation();
 		void generateStop();
-		void onIterate();
 
+		Json settings;
 		std::vector<std::vector<algorithm::stAlgorithmData>> combinationsData;
 		std::vector<size_t> indexes;
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;
 
-		const int minAtrSize = 10;
-		const int maxAtrSize = 150;
+		const int minAtrSize = 20;
+		const int maxAtrSize = 110;
 		const int atrSizeStep = 10;
 
-		const double minStFactor = 3.0;
-		const double maxStFactor = 40.0;
+		const double minStFactor = 10.0;
+		const double maxStFactor = 20.0;
 		const double stFactorStep = 1.0;
 
-		const double minDealPercent = 5.0;
-		const double maxDealPercent = 5.0;
-		const double dealPercentStep = 0.25;
-
+		const double dealPercent = 5.0;
 		const int leverage = 100;
 		const double orderSize = 2500.0;
 		const double startCash = 75'000;
@@ -50,25 +52,30 @@ namespace calculation {
 		const double maxLossPercent = 35;
 
 		const double minLiquidationOffsetPercent = 0.05;
-		const int liquidationOffsetSteps = 2;
+		const int liquidationOffsetSteps = 0;
+		const double minProfitPercent = 0.1;
 
-		const double minMinProfitPercent = 0.1;
-		const double maxMinProfitPercent = 0.1;
-		const double minProfitPercentStep = 0.1;
-
-		const double minDynamicSLPercent = 0.2;
-		const double maxDynamicSLPercent = 10.0;
-		const double dynamicSLPercentStep = 0.2;
-
-		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
-		const std::unordered_set<bool> breakOpenerEnabledFlags = { false };
-		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
+		const double minDynamicSLPercent = 7.0;
+		const double maxDynamicSLPercent = 12.0;
+		const double dynamicSLPercentStep = 1.0;
 
 		const int minTrendActivationWaitRange = 0;
 		const int maxTrendActivationWaitRange = 3;
 		const int minStopLossWaitRange = 0;
 		const int maxStopLossWaitRange = 3;
 
-		bool inited = false;
+		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
+		const std::unordered_set<bool> touchOpenerActivationWaitModeFlags = { true, false };
+
+		const std::unordered_set<bool> breakOpenerEnabledFlags = { false };
+		const std::unordered_set<bool> breakOpenerActivationWaitModeFlags = { true, false };
+		const std::unordered_set<bool> alwaysUseNewTrendFlags = { true, false };
+
+		const std::unordered_set<bool> activationWaiterResetAllowedFlags = { true, false };
+		const std::unordered_set<bool> activationWaiterFullCandleCheckFlags = { true, false };
+
+		const std::unordered_set<bool> stopLossWaiterEnabledFlags = { true };
+		const std::unordered_set<bool> stopLossWaiterResetAllowedFlags = { true, false };
+		const std::unordered_set<bool> stopLossWaiterFullCandleCheckFlags = { true, false };
 	};
 }
