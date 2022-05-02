@@ -217,7 +217,9 @@ void combinationFactory::onIterate() {
 		assert(false && "!tmpData.isValid()");
 		utils::logError("combinationFactory invalid algorithm data");
 	}
-	tmpAllData.push_back(tmpData);
+	else {
+		tmpAllData.push_back(tmpData);
+	}
 }
 
 void combinationFactory::generateSuperTrend() {
