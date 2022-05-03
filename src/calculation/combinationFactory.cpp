@@ -67,15 +67,14 @@ combinationFactory::combinationFactory(size_t aThreadsAmount) :
 
 void combinationFactory::checkNewCode() {
 	generateSuperTrend();
-	const auto size1 = tmpAllData.size();
-	//const auto datas = std::move(tmpAllData);
-	tmpAllData.clear();
+	const auto oldMethod = std::move(tmpAllData);
+
 	tmpData = algorithm::stAlgorithmData{};
 	combinations = 0;
 	generateCombinations(0);
-	if (size1 != tmpAllData.size()) {
+	if (oldMethod != tmpAllData) {
 		assert(false && "size1 != tmpAllData.size()");
-		utils::log("combinationFactory::checkNewCode size1 != tmpAllData.size()");
+		utils::logError("combinationFactory::checkNewCode size1 != tmpAllData.size()");
 	}
 }
 

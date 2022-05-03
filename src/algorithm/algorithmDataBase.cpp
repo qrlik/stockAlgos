@@ -126,3 +126,15 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 	}
 	return checkCriteriaInternal(aName, aValue);
 }
+
+void algorithmDataBase::addJsonData(Json& aData) const {
+	aData["dealPercent"] = dealPercent;
+	aData["orderSize"] = orderSize;
+	aData["leverage"] = leverage;
+	aData["startCash"] = startCash;
+	aData["maxLossPercent"] = maxLossPercent;
+	aData["maxLossCash"] = maxLossCash;
+	aData["liquidationOffsetPercent"] = liquidationOffsetPercent;
+	aData["minimumProfitPercent"] = minimumProfitPercent;
+	addJsonDataInternal(aData);
+}

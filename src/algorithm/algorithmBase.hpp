@@ -9,6 +9,7 @@ namespace algorithm {
 	template<typename dataType, typename = typename std::enable_if_t<std::is_base_of_v<algorithmDataBase, dataType>>>
 	class algorithmBase {
 	public:
+		using algorithmDataType = dataType;
 		algorithmBase(const dataType& aData) : 
 			data(aData), stats(data.getStartCash(),
 			data.getMaxLossPercent(), data.getMaxLossCash()),
@@ -73,6 +74,14 @@ namespace algorithm {
 					initDataFieldInternal(key, value);
 				}
 			}
+		}
+
+		Json getJsonData() const {
+			Json result;
+			result["cash"] = utils::round(getFullCash(), 2);
+			stats.addJsonData(result["stats"], getData(), cash);
+			data.addJsonData(result["data"]);
+			return result;
 		}
 	protected:
 		bool updateCandles(const candle& aCandle) {

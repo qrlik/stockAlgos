@@ -38,7 +38,7 @@ bool stAlgorithmData::isValidInternal() const {
 
 	auto waiter = touchOpenerActivationWaitMode;
 	if (breakOpenerEnabled) {
-		waiter &= breakOpenerActivationWaitMode;
+		waiter |= breakOpenerActivationWaitMode;
 	}
 	else {
 		result &= !breakOpenerActivationWaitMode;
@@ -218,4 +218,23 @@ bool stAlgorithmData::checkCriteriaInternal(const std::string& aName, const Json
 		return stopLossWaiterFullCandleCheck == aValue.get<bool>();
 	}
 	return false;
+}
+
+void stAlgorithmData::addJsonDataInternal(Json& aData) const {
+	aData["atrType"] = market::atrTypeToString(atrType);
+	aData["atrSize"] = atrSize;
+	aData["stFactor"] = stFactor;
+	aData["dynamicSLPercent"] = dynamicSLPercent;
+	aData["dynamicSLTrendMode"] = dynamicSLTrendMode;
+	aData["touchOpenerActivationWaitMode"] = touchOpenerActivationWaitMode;
+	aData["breakOpenerEnabled"] = breakOpenerEnabled;
+	aData["breakOpenerActivationWaitMode"] = breakOpenerActivationWaitMode;
+	aData["alwaysUseNewTrend"] = alwaysUseNewTrend;
+	aData["activationWaiterResetAllowed"] = activationWaiterResetAllowed;
+	aData["activationWaiterRange"] = activationWaiterRange;
+	aData["activationWaiterFullCandleCheck"] = activationWaiterFullCandleCheck;
+	aData["stopLossWaiterEnabled"] = stopLossWaiterEnabled;
+	aData["stopLossWaiterResetAllowed"] = stopLossWaiterResetAllowed;
+	aData["stopLossWaiterRange"] = stopLossWaiterRange;
+	aData["stopLossWaiterFullCandleCheck"] = stopLossWaiterFullCandleCheck;
 }

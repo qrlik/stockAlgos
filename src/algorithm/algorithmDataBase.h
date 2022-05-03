@@ -6,6 +6,7 @@ namespace algorithm {
 	public:
 		algorithmDataBase() = default;
 		bool operator==(const algorithmDataBase& aOther) const;
+		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
 		bool checkCriteria(const std::string& aName, const Json& aValue) const;
@@ -37,6 +38,7 @@ namespace algorithm {
 		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
 		virtual bool isValidInternal() const = 0;
+		virtual void addJsonDataInternal(Json& aData) const = 0;
 	private:
 		double dealPercent = -1.0;
 		double orderSize = -1.0;

@@ -36,13 +36,13 @@ namespace calculation {
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;
 
-		const int minAtrSize = 20;
-		const int maxAtrSize = 110;
-		const int atrSizeStep = 10;
+		const int minAtrSize = 50;
+		const int maxAtrSize = 100;
+		const int atrSizeStep = 25;
 
 		const double minStFactor = 10.0;
 		const double maxStFactor = 20.0;
-		const double stFactorStep = 1.0;
+		const double stFactorStep = 5.0;
 
 		const double dealPercent = 5.0;
 		const int leverage = 100;
@@ -57,12 +57,12 @@ namespace calculation {
 
 		const double minDynamicSLPercent = 7.0;
 		const double maxDynamicSLPercent = 12.0;
-		const double dynamicSLPercentStep = 1.0;
+		const double dynamicSLPercentStep = 2.5;
 
 		const int minTrendActivationWaitRange = 0;
-		const int maxTrendActivationWaitRange = 3;
+		const int maxTrendActivationWaitRange = 1;
 		const int minStopLossWaitRange = 0;
-		const int maxStopLossWaitRange = 3;
+		const int maxStopLossWaitRange = 1;
 
 		const std::unordered_set<bool> dynamicSLTrendModeFlags = { false };
 		const std::unordered_set<bool> touchOpenerActivationWaitModeFlags = { true, false };

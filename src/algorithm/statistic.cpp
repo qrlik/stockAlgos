@@ -1,6 +1,9 @@
 #include "statistic.h"
+#include "algorithmDataBase.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
+
+using namespace algorithm;
 
 statistic::statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash):
 	currentLossHighCash(aStartCash),
@@ -118,4 +121,20 @@ void statistic::initFromJson(const Json& aJson) {
 			unprofitableStreak = value.get<size_t>();
 		}
 	}
+}
+
+void statistic::addJsonData(Json& aJson, const algorithmDataBase& aData, double aCash) const {
+	aJson["orderProfit"] = profitableOrder;
+	aJson["orderProfitStreak"] = profitableStreak;
+	aJson["orderUnprofit"] = unprofitableOrder;
+	aJson["orderUnprofitStreak"] = unprofitableStreak;
+	auto maxLoss = maxLossHighCash - maxLossLowCash;
+	auto maxLossPercentActual = (aData.getOrderSize() > 0.0) ? maxLoss / aData.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
+	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 2);
+	const auto recoveryFactor = (aCash - aData.getStartCash()) / summaryLoss;
+	aJson["recoveryFactor"] = utils::round(recoveryFactor, 2);
+	aJson["trendTouchOrder"] = touchTrendOrder;
+	aJson["trendBreakOrder"] = breakTrendOrder;
+	aJson["tLong"] = longOrder;
+	aJson["tShort"] = shortOrder;
 }

@@ -43,10 +43,7 @@ stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
 	stopLossWaiterModule(*this),
 	dynamicStopLossModule(*this),
 	trendTouchOpenerModule(*this),
-	trendBreakOpenerModule(*this),
-	stFactor(aData.getStFactor()), // TO DO delete all below
-	atrSize(aData.getAtrSize()),
-	atrType(aData.getAtrType()) {}
+	trendBreakOpenerModule(*this) {}
 
 bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 	auto result = baseClass::operator==(aOther);

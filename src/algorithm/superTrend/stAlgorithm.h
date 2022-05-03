@@ -70,9 +70,5 @@ namespace algorithm {
 		bool isTrendUp = false;
 		bool isNewTrend = false;
 		eState state = eState::NONE;
-
-		const double stFactor = 0.0;
-		const int atrSize = 0;
-		const market::eAtrType atrType = market::eAtrType::NONE;
 	};
 }
