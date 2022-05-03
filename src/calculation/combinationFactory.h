@@ -45,7 +45,7 @@ namespace calculation {
 		const double stFactorStep = 5.0;
 
 		const double dealPercent = 5.0;
-		const int leverage = 100;
+		const int leverage = 50;
 		const double orderSize = 2500.0;
 		const double startCash = 75'000;
 		const double maxLossCash = 25'000;

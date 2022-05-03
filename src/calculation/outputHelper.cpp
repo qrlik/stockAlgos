@@ -7,6 +7,7 @@ namespace {
 	const auto intWidth = 10;
 	const auto boolWidth = 8;
 	const auto spaceWidth = 4;
+	const auto floatPrecision = 2;
 
 	int getWidth(const std::string& aName, const Json& aValue) {
 		auto width = static_cast<int>(aName.length()) + spaceWidth;
@@ -24,7 +25,12 @@ namespace {
 
 	std::string getStrFromJson(const Json& aValue) {
 		std::ostringstream os;
-		os << aValue;
+		if (aValue.is_number_float()) {
+			os << std::fixed << std::setprecision(floatPrecision) << aValue.get<double>();
+		}
+		else {
+			os << aValue;
+		}
 		return os.str();
 	}
 }

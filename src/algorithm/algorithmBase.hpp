@@ -78,7 +78,7 @@ namespace algorithm {
 
 		Json getJsonData() const {
 			Json result;
-			result["cash"] = utils::round(getFullCash(), 2);
+			result["cash"] = utils::round(getFullCash(), 0.01);
 			stats.addJsonData(result["stats"], getData(), cash);
 			data.addJsonData(result["data"]);
 			return result;

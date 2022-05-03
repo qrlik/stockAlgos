@@ -105,7 +105,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 }
 
 void calculationSystem::printProgress(size_t aIndex) {
-	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 1);
+	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 0.1);
 	if (newProgress > progress) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;

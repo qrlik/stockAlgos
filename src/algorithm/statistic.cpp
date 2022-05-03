@@ -130,9 +130,9 @@ void statistic::addJsonData(Json& aJson, const algorithmDataBase& aData, double 
 	aJson["orderUnprofitStreak"] = unprofitableStreak;
 	auto maxLoss = maxLossHighCash - maxLossLowCash;
 	auto maxLossPercentActual = (aData.getOrderSize() > 0.0) ? maxLoss / aData.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
-	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 2);
+	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 0.01);
 	const auto recoveryFactor = (aCash - aData.getStartCash()) / summaryLoss;
-	aJson["recoveryFactor"] = utils::round(recoveryFactor, 2);
+	aJson["recoveryFactor"] = utils::round(recoveryFactor, 0.01);
 	aJson["trendTouchOrder"] = touchTrendOrder;
 	aJson["trendBreakOrder"] = breakTrendOrder;
 	aJson["tLong"] = longOrder;
