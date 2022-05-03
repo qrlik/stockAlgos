@@ -17,10 +17,14 @@ namespace calculation {
 		void generateCombinations(size_t aIndex);
 		void iterateCombination(size_t aIndex, const std::string& aName, const Json& aValue);
 		void onIterate();
+		bool checkCriteria(const Json& aData, const Json& aOperand);
 
 		Json settings;
 		std::vector<std::vector<algorithm::stAlgorithmData>> combinationsData;
+		std::vector<algorithm::stAlgorithmData> allData;
+		algorithm::stAlgorithmData data;
 		std::vector<size_t> indexes;
+
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;
 	};

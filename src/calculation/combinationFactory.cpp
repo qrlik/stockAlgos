@@ -34,9 +34,6 @@ namespace {
 		result.push_back(aMinOffset);
 		return result;
 	}
-
-	std::vector<algorithm::stAlgorithmData> tmpAllData;
-	algorithm::stAlgorithmData tmpData;
 }
 
 combinationFactory::combinationFactory(size_t aThreadsAmount) :
@@ -53,16 +50,16 @@ combinationFactory::combinationFactory(size_t aThreadsAmount) :
 	utils::log("combinationFactory combinations - " + std::to_string(combinations));
 	auto threadDataAmount = combinations / threadsAmount;
 	auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
-	std::shuffle(tmpAllData.begin(), tmpAllData.end(), std::default_random_engine{});
+	std::shuffle(allData.begin(), allData.end(), std::default_random_engine{});
 	for (size_t i = 0; i < threadsAmount; ++i) {
 		const bool isLast = i == 0;
 		const auto index = threadsAmount - 1 - i;
 		const auto amount = (isLast) ? lastThreadDataAmount : threadDataAmount;
 		combinationsData[index].reserve(amount);
-		std::copy(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end(), std::back_inserter(combinationsData[index]));
-		tmpAllData.erase(tmpAllData.begin() + (tmpAllData.size() - amount), tmpAllData.end());
+		std::copy(allData.begin() + (allData.size() - amount), allData.end(), std::back_inserter(combinationsData[index]));
+		allData.erase(allData.begin() + (allData.size() - amount), allData.end());
 	}
-	if (!tmpAllData.empty()) {
+	if (!allData.empty()) {
 		utils::logError("combinationFactory tmpAllData not empty");
 	}
 }
@@ -97,30 +94,30 @@ namespace {
 		}
 		return result;
 	}
+}
 
-	bool checkCriteria(const Json& aData, const Json& aOperand) {
-		auto result = true;
-		const std::string operand = (aOperand.is_string()) ? aOperand.get<std::string>() : "";
-		if (operand == "or") {
-			result = false;
-		}
-		else if (!operand.empty() && operand != "and") {
-			utils::logError("checkCriteria wrond operand");
-		}
-		for (const auto& criteria : aData) {
-			if (operand == "or") {
-				result |= tmpData.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
-			}
-			else {
-				result &= tmpData.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
-			}
-		}
-		return result;
+bool combinationFactory::checkCriteria(const Json& aData, const Json& aOperand) {
+	auto result = true;
+	const std::string operand = (aOperand.is_string()) ? aOperand.get<std::string>() : "";
+	if (operand == "or") {
+		result = false;
 	}
+	else if (!operand.empty() && operand != "and") {
+		utils::logError("checkCriteria wrond operand");
+	}
+	for (const auto& criteria : aData) {
+		if (operand == "or") {
+			result |= data.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
+		}
+		else {
+			result &= data.checkCriteria(criteria["name"].get<std::string>(), criteria["value"]);
+		}
+	}
+	return result;
 }
 
 void combinationFactory::iterateCombination(size_t aIndex, const std::string& aName, const Json& aValue) {
-	if (tmpData.initDataField(aName, aValue)) {
+	if (data.initDataField(aName, aValue)) {
 		generateCombinations(aIndex + 1);
 	}
 	else {
@@ -201,12 +198,12 @@ void combinationFactory::onFinish() {
 
 void combinationFactory::onIterate() {
 	++combinations;
-	if (!tmpData.isValid()) {
+	if (!data.isValid()) {
 		assert(false && "!tmpData.isValid()");
 		utils::logError("combinationFactory invalid algorithm data");
 	}
 	else {
-		tmpAllData.push_back(tmpData);
+		allData.push_back(data);
 	}
 }
 
