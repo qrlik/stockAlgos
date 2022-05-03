@@ -85,7 +85,7 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	for (const auto& data : threadData) {
 		candles = candlesSource; // TO DO FIX THIS
 		auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
-		auto finalSize = static_cast<int>(candles.size()) - 150;
+		auto finalSize = static_cast<int>(candles.size()) - 150; // TO DO FIX THIS
 		if (finalSize <= 0) {
 			utils::logError("wrong atr size for candles amount");
 			finalSize = static_cast<int>(candles.size());

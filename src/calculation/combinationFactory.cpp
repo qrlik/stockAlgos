@@ -2,6 +2,8 @@
 #include "market/marketRules.h"
 #include "tests/checkers.hpp"
 #include "utils/utils.h"
+#include <algorithm>
+#include <random>
 #include <iostream>
 
 using namespace calculation;
@@ -51,6 +53,7 @@ combinationFactory::combinationFactory(size_t aThreadsAmount) :
 	utils::log("combinationFactory combinations - " + std::to_string(combinations));
 	auto threadDataAmount = combinations / threadsAmount;
 	auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
+	std::shuffle(tmpAllData.begin(), tmpAllData.end(), std::default_random_engine{});
 	for (size_t i = 0; i < threadsAmount; ++i) {
 		const bool isLast = i == 0;
 		const auto index = threadsAmount - 1 - i;
