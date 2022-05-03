@@ -45,7 +45,6 @@ void calculationSystem::loadSettings() {
 	threadsAmount = settings["threadsAmount"].get<unsigned int>();
 	weightPrecision = settings["weightPrecision"].get<double>();
 	parabolaDegree = settings["parabolaDegree"].get<unsigned int>();
-	atrSizeDegree = settings["atrSizeDegree"].get<unsigned int>();
 	algorithmType = settings["algorithmType"].get<std::string>();
 	for (const auto& calculation : settings["calculations"]) {
 		auto ticker = calculation["ticker"].get<std::string>();
@@ -84,10 +83,9 @@ void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
 	auto& threadResults = threadsData[aThread];
 	const auto& threadData = aFactory.getThreadData(aThread);
 	for (const auto& data : threadData) {
-
 		candles = candlesSource; // TO DO FIX THIS
 		auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
-		auto finalSize = static_cast<int>(candles.size()) - atrSizeDegree * aFactory.getMaxAtrSize();
+		auto finalSize = static_cast<int>(candles.size()) - 150;
 		if (finalSize <= 0) {
 			utils::logError("wrong atr size for candles amount");
 			finalSize = static_cast<int>(candles.size());

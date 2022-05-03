@@ -24,7 +24,6 @@ namespace calculation {
 		size_t threadsAmount = 0;
 		double weightPrecision = 0.0;
 		int parabolaDegree = 0;
-		int atrSizeDegree = 0; // TO DO move it in indicator system inside algorithmn
 
 		double progress = 0.0;
 		size_t combinations = 0;
