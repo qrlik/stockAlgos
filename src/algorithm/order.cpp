@@ -2,10 +2,6 @@
 #include "algorithm/superTrend/stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
-#include <sstream>
-#include <iomanip>
-#include <iostream>
-#include <assert.h>
 
 order::order() : state(algorithm::eState::NONE) {}
 

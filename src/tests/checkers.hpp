@@ -1,23 +1,18 @@
 #pragma once
-#include "algorithm/algorithmBase.hpp"
-#include "algorithm/superTrend/stAlgorithmData.h"
-#include <memory>
 
 namespace tests {
-	template<typename AlgType,
-		typename AlgDataType,
-		typename = typename std::enable_if_t<std::is_base_of_v<algorithm::algorithmBase<AlgDataType>, AlgType>>>
+	template<typename algorithmType>
 	class algorithmChecker final {
 	public:
 		algorithmChecker(std::string aName) : name(std::move(aName)) {
 			auto json = utils::readFromJson("assets/tests/" + name);
-			AlgDataType data(json["algorithmData"]);
+			algorithmType::algorithmDataType data(json["algorithmData"]);
 			if (!data.isValid()) {
 				utils::logError("algorithmChecker - " + name + " invalid algorithm data");
 				assert(false && "!data.isValid()");
 			}
-			actualAlgorithm = std::make_unique<AlgType>(data);
-			testAlgorithm = std::make_unique<AlgType>(data);
+			actualAlgorithm = std::make_unique<algorithmType>(data);
+			testAlgorithm = std::make_unique<algorithmType>(data);
 			testAlgorithmData = json["testAlgorithmData"];
 			testNextTime = testAlgorithmData[0]["time"].get<std::string>();
 
@@ -33,7 +28,7 @@ namespace tests {
 				assert(*actualAlgorithm == *testAlgorithm);
 				actualIndex += 1;
 			}
-			std::cout << "[OK] algorithmChecker - " + name + '\n';
+			utils::log("[OK] algorithmChecker - " + name);
 		}
 	private:
 		void updateTestAlgorithm(const std::string& aTime) {
@@ -48,8 +43,8 @@ namespace tests {
 
 		std::vector<candle> candles;
 		Json testAlgorithmData;
-		std::unique_ptr<AlgType> actualAlgorithm;
-		std::unique_ptr<AlgType> testAlgorithm;
+		std::unique_ptr<algorithmType> actualAlgorithm;
+		std::unique_ptr<algorithmType> testAlgorithm;
 
 		std::string name;
 		std::string testNextTime;

@@ -1,14 +1,9 @@
 #include "singleCalculator.h"
-#include "algorithm/superTrend/stAlgorithm.h"
-#include "market/indicators.h"
-#include "tests/checkers.hpp"
-#include "utils/utils.h"
-#include <iostream>
 
 using namespace calculation;
 
 void calculation::singleCalculation() {
-	algorithm::stAlgorithmData data{};
+	//algorithm::stAlgorithmData data{};
 	// TO DO make from json
 	//data.atrType = market::eAtrType::RMA;
 	//data.atrSize = 30;

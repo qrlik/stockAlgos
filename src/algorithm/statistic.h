@@ -1,6 +1,5 @@
 #pragma once
 #include "json/json.hpp"
-#include <string>
 
 namespace algorithm {
 	class algorithmDataBase;

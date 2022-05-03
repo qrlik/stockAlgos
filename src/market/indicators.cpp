@@ -1,7 +1,6 @@
 #include "indicators.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
-#include <deque>
 
 using namespace market;
 

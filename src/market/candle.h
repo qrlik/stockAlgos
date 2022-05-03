@@ -1,7 +1,6 @@
 #pragma once
 #include "json/json.hpp"
 #include <string>
-#include <unordered_map>
 
 enum class eCandleInterval {
 	NONE = 0,

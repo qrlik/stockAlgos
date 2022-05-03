@@ -3,21 +3,20 @@
 #include "checkers.hpp"
 #include "market/marketRules.h"
 #include "utils/utils.h"
-#include <iostream>
 
 using namespace tests;
 
 namespace {
 	void mmCheckerTests() {
-		auto checker1 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test1");
+		auto checker1 = algorithmChecker<algorithm::stAlgorithm>("test1");
 		checker1.check();
-		auto checker2 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test2");
+		auto checker2 = algorithmChecker<algorithm::stAlgorithm>("test2");
 		checker2.check();
-		auto checker3 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test3");
+		auto checker3 = algorithmChecker<algorithm::stAlgorithm>("test3");
 		checker3.check();
-		auto checker4 = algorithmChecker<algorithm::stAlgorithm, algorithm::stAlgorithmData>("test4");
+		auto checker4 = algorithmChecker<algorithm::stAlgorithm>("test4");
 		checker4.check();
-		std::cout << "[OK] Money Maker Tests\n";
+		utils::log("[OK] Money Maker Tests");
 	}
 
 	void marketDataTests() {
@@ -125,7 +124,7 @@ namespace {
 			assert(utils::isEqual(md->getLiquidationPrice(aPrice, 50, 1, 0.001, false), 99'601.5));
 			assert(utils::isEqual(md->getLiquidationPrice(aPrice, 1'000'000'000, 1, 20000, false), 73'323.4));
 		}
-		std::cout << "[OK] Market Data Tests\n";
+		utils::log("[OK] Market Data Tests");
 	}
 }
 

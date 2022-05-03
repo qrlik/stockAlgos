@@ -1,7 +1,6 @@
 #pragma once
-#include "algorithm/algorithmDataBase.h"
+#include "json/json.hpp"
 #include <algorithm>
-#include <functional>
 #include <random>
 
 namespace {
@@ -49,7 +48,7 @@ namespace {
 }
 
 namespace calculation {
-	template<typename algorithmDataType, typename = typename std::enable_if_t<std::is_base_of_v<algorithm::algorithmDataBase, algorithmDataType>>>
+	template<typename algorithmDataType>
 	class combinationFactory {
 	public:
 		combinationFactory(size_t aThreadsAmount) :

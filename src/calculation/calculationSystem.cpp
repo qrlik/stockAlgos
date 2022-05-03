@@ -4,8 +4,6 @@
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <execution>
-#include <iostream>
-#include <fstream>
 #include <future>
 
 using namespace calculation;
@@ -68,11 +66,11 @@ void calculationSystem::calculate() {
 }
 
 void calculationSystem::printProgress(size_t aIndex) {
-	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 0.1);
+	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 1);
 	if (newProgress > progress) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;
-		std::cout << std::to_string(progress) + "%\n";
+		utils::log(std::to_string(progress) + '%');
 	}
 }
 

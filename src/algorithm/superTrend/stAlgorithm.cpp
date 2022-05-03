@@ -1,7 +1,6 @@
 #include "stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
-#include <iostream>
 #include <fstream>
 
 using namespace algorithm;
