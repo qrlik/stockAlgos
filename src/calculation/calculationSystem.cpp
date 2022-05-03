@@ -1,4 +1,5 @@
 #include "calculationSystem.h"
+#include "algorithm/superTrend/stAlgorithm.h"
 #include "outputHelper.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
@@ -20,7 +21,6 @@ namespace {
 		result &= aSettigns.is_object();
 		result &= aSettigns.contains("threadsAmount") && aSettigns["threadsAmount"].is_number_unsigned();
 		result &= aSettigns.contains("parabolaDegree") && aSettigns["parabolaDegree"].is_number_unsigned();
-		result &= aSettigns.contains("atrSizeDegree") && aSettigns["atrSizeDegree"].is_number_unsigned();
 		result &= aSettigns.contains("weightPrecision") && aSettigns["weightPrecision"].is_number_float();
 		result &= aSettigns.contains("algorithmType") && aSettigns["algorithmType"].is_string();
 		result &= aSettigns.contains("calculations") && aSettigns["calculations"].is_array();
@@ -59,46 +59,11 @@ void calculationSystem::loadSettings() {
 }
 
 void calculationSystem::calculate() {
-	for (const auto& [ticker, timeframe] : calculations) {
-		auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(timeframe));
-		candlesSource = utils::parseCandles(json);
-		threadsData.resize(threadsAmount);
-
-		std::vector<std::future<void>> futures;
-		auto factory = combinationFactory(threadsAmount);
-		combinations = factory.getCombinationsAmount();
-		for (size_t i = 0; i < threadsAmount; ++i) {
-			futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate(factory, static_cast<int>(i)); }));
-		}
-		for (auto& future : futures) {
-			future.wait();
-		}
-		factory.onFinish();
-		saveFinalData(ticker, timeframe);
+	if (algorithmType == "superTrend") {
+		calculateInternal<algorithm::stAlgorithm>();
 	}
-}
-
-void calculationSystem::iterate(combinationFactory& aFactory, int aThread) {
-	std::vector<candle> candles;
-	auto& threadResults = threadsData[aThread];
-	const auto& threadData = aFactory.getThreadData(aThread);
-	for (const auto& data : threadData) {
-		candles = candlesSource; // TO DO FIX THIS
-		auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
-		auto finalSize = static_cast<int>(candles.size()) - 150; // TO DO FIX THIS
-		if (finalSize <= 0) {
-			utils::logError("wrong atr size for candles amount");
-			finalSize = static_cast<int>(candles.size());
-		}
-		indicators.getProcessedCandles(candles, finalSize);
-
-		auto moneyMaker = algorithm::stAlgorithm(data);
-		const auto result = moneyMaker.calculate(candles);
-		if (result) {
-			threadResults.push_back(moneyMaker.getJsonData());
-		}
-		aFactory.incrementThreadIndex(aThread);
-		printProgress(aFactory.getCurrentIndex());
+	else {
+		utils::logError("calculationSystem::calculate unknown algorithm type");
 	}
 }
 
