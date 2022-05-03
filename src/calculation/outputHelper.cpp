@@ -21,6 +21,12 @@ namespace {
 		}
 		return width;
 	}
+
+	std::string getStrFromJson(const Json& aValue) {
+		std::ostringstream os;
+		os << aValue;
+		return os.str();
+	}
 }
 
 void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
@@ -38,9 +44,7 @@ void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
 		weight = weight.get<double>() + aWeight;
 	};
 	for (const auto& [name, value] : aData.items()) {
-		std::ostringstream os;
-		os << value;
-		incrementCb(aStats[name], os.str());
+		incrementCb(aStats[name], getStrFromJson(value));
 	}
 }
 
@@ -82,15 +86,15 @@ void calculation::addHeadlines(std::ofstream& aOutput, const Json& aStats, const
 }
 
 void calculation::addData(std::ofstream& aOutput, const Json& aStats, const Json& aData) {
-	aOutput << std::setw(doubleWidth) << aData["cash"];
+	aOutput << std::setw(doubleWidth) << getStrFromJson(aData["cash"]);
 	for (const auto& [name, value] : aData["stats"].items()) {
-		aOutput << std::setw(getWidth(name, value)) << name;
+		aOutput << std::setw(getWidth(name, value)) << getStrFromJson(value);
 	}
 	for (const auto& [name, value] : aData["data"].items()) {
 		if (aStats[name]["counts"].size() < 2) {
 			continue;
 		}
-		aOutput << std::setw(getWidth(name, value)) << name;
+		aOutput << std::setw(getWidth(name, value)) << getStrFromJson(value);
 	}
 	aOutput << '\n';
 }
