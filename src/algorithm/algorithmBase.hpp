@@ -24,9 +24,10 @@ namespace algorithm {
 			}
 			return result;
 		}
+		void setWithLogs(bool aState) { withLogs = aState; }
 		const dataType& getData() const { return data; }
 		const order& getOrder() const { return order; }
-		const candle& getCandle() const { return curCandle; }
+		const market::candle& getCandle() const { return curCandle; }
 		double getFullCash() const {
 			auto curCash = cash;
 			if (!order.getTime().empty()) {
@@ -36,7 +37,7 @@ namespace algorithm {
 		}
 		double getCash() const { return cash; }
 
-		bool doAction(const candle& aCandle) {
+		bool doAction(const market::candle& aCandle) {
 			if (getStopCashBreak()) {
 				return false;
 			}
@@ -84,7 +85,7 @@ namespace algorithm {
 			return result;
 		}
 	protected:
-		bool updateCandles(const candle& aCandle) {
+		bool updateCandles(const market::candle& aCandle) {
 			if (curCandle.time.empty()) {
 				curCandle = aCandle;
 				return false;
@@ -100,15 +101,14 @@ namespace algorithm {
 
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
-		const candle& getPrevCandle() const { return prevCandle; }
-		void setWithLogs(bool aState) { withLogs = aState; }
+		const market::candle& getPrevCandle() const { return prevCandle; }
 
 		order order;
 	private:
 		const dataType data;
 
-		candle curCandle;
-		candle prevCandle;
+		market::candle curCandle;
+		market::candle prevCandle;
 
 		bool withLogs = false;
 	protected: // tmp

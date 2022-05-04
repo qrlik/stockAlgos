@@ -1,0 +1,30 @@
+{
+	"algorithmType": "superTrend",
+	"ticker": "BTCUSDT",
+	"timeframe": "15m",
+	"data": {
+		"atrType": "RMA",
+		"atrSize": 70,
+		"stFactor": 17.3,
+
+		"dealPercent": 5.0,
+		"leverage": 50,
+		"orderSize": 2500,
+		"startCash": 75000,
+		"maxLossCash": 25000,
+		"maxLossPercent": 35,
+
+		"liquidationOffsetPercent": 0.05,
+		"minimumProfitPercent": 0.1,
+
+		"dynamicSLPercent": 10.6,
+
+		"touchOpenerActivationWaitMode": true,
+
+		"activationWaiterRange": 5,
+
+		"stopLossWaiterEnabled": true,
+		"stopLossWaiterRange": 3,
+		"stopLossWaiterFullCandleCheck": true
+	}
+}

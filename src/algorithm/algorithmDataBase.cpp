@@ -40,7 +40,7 @@ bool algorithmDataBase::isValid() const {
 }
 
 bool algorithmDataBase::initFromJson(const Json& aValue) {
-	if (aValue.is_null()) {
+	if (aValue.is_null() || aValue.empty()) {
 		return false;
 	}
 	auto result = true;

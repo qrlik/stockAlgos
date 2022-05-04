@@ -11,11 +11,11 @@ namespace calculation {
 	private:
 		void loadSettings();
 		void printProgress(size_t aIndex);
-		void saveFinalData(const std::string& aTicker, eCandleInterval aInterval);
+		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
 
 		template<typename algorithmType, typename algorithmDataType>
 		void iterate(combinationFactory<algorithmDataType>& aFactory, int aThread) {
-			std::vector<candle> candles;
+			std::vector<market::candle> candles;
 			auto& threadResults = threadsData[aThread];
 			const auto& threadData = aFactory.getThreadData(aThread);
 			for (const auto& data : threadData) {
@@ -23,15 +23,15 @@ namespace calculation {
 				auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
 				auto finalSize = static_cast<int>(candles.size()) - 150; // TO DO FIX THIS
 				if (finalSize <= 0) {
-					utils::logError("wrong atr size for candles amount");
+					utils::logError("calculationSystem::iterate wrong atr size for candles amount");
 					finalSize = static_cast<int>(candles.size());
 				}
 				indicators.getProcessedCandles(candles, finalSize);
 
-				auto moneyMaker = algorithmType(data);
-				const auto result = moneyMaker.calculate(candles);
+				auto algorithm = algorithmType(data);
+				const auto result = algorithm.calculate(candles);
 				if (result) {
-					threadResults.push_back(moneyMaker.getJsonData());
+					threadResults.push_back(algorithm.getJsonData());
 				}
 				aFactory.incrementThreadIndex(aThread);
 				printProgress(aFactory.getCurrentIndex());
@@ -60,11 +60,11 @@ namespace calculation {
 		}
 
 		std::vector<std::vector<Json>> threadsData;
-		std::vector<candle> candlesSource;
+		std::vector<market::candle> candlesSource;
 		std::mutex printMutex;
 		
 		std::string algorithmType;
-		std::vector<std::pair<std::string, eCandleInterval>> calculations;
+		std::vector<std::pair<std::string, market::eCandleInterval>> calculations;
 		size_t threadsAmount = 0;
 		double weightPrecision = 0.0;
 		int parabolaDegree = 0;

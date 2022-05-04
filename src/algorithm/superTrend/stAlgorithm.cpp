@@ -86,7 +86,7 @@ bool stAlgorithm::isNewTrendChanged() {
 	return false;
 }
 
-bool stAlgorithm::calculate(const std::vector<candle>& aCandles) {
+bool stAlgorithm::calculate(const std::vector<market::candle>& aCandles) { //  TO DO move to base class
 	for (const auto& candle : aCandles) {
 		if (!doAction(candle)) {
 			return false;

@@ -1,6 +1,8 @@
 #include "candle.h"
 #include "utils/utils.h"
 
+using namespace market;
+
 namespace {
 	const std::unordered_map<eCandleInterval, std::string> candleIntervalToStr {
 		{ eCandleInterval::NONE, "" },
@@ -21,14 +23,14 @@ namespace {
 	};
 }
 
-std::string getCandleIntervalApiStr(eCandleInterval aInterval) {
+std::string market::getCandleIntervalApiStr(eCandleInterval aInterval) {
 	if (auto it = candleIntervalToStr.find(aInterval); it != candleIntervalToStr.end()) {
 		return it->second;
 	}
 	return "";
 }
 
-eCandleInterval getCandleIntervalFromStr(const std::string& aInterval) {
+eCandleInterval market::getCandleIntervalFromStr(const std::string& aInterval) {
 	for (const auto& [interval, str] : candleIntervalToStr) {
 		if (str == aInterval) {
 			return interval;
@@ -37,7 +39,7 @@ eCandleInterval getCandleIntervalFromStr(const std::string& aInterval) {
 	return eCandleInterval::NONE;
 }
 
-candle parseCandleFromJson(const Json& aJson) {
+candle market::parseCandleFromJson(const Json& aJson) {
 	auto result = candle();
 	for (const auto& [field, value] : aJson.items()) {
 		if (field == "time") {

@@ -13,17 +13,16 @@ calculationSystem::calculationSystem() {
 }
 
 namespace {
-	bool checkSettingsJson(const Json& aSettigns) {
+	bool checkSettingsJson(const Json& aSettings) {
 		bool result = true;
-		result &= !aSettigns.is_null();
-		result &= aSettigns.is_object();
-		result &= aSettigns.contains("threadsAmount") && aSettigns["threadsAmount"].is_number_unsigned();
-		result &= aSettigns.contains("parabolaDegree") && aSettigns["parabolaDegree"].is_number_unsigned();
-		result &= aSettigns.contains("weightPrecision") && aSettigns["weightPrecision"].is_number_float();
-		result &= aSettigns.contains("algorithmType") && aSettigns["algorithmType"].is_string();
-		result &= aSettigns.contains("calculations") && aSettigns["calculations"].is_array();
+		result &= aSettings.is_object();
+		result &= aSettings.contains("threadsAmount") && aSettings["threadsAmount"].is_number_unsigned();
+		result &= aSettings.contains("parabolaDegree") && aSettings["parabolaDegree"].is_number_unsigned();
+		result &= aSettings.contains("weightPrecision") && aSettings["weightPrecision"].is_number_float();
+		result &= aSettings.contains("algorithmType") && aSettings["algorithmType"].is_string();
+		result &= aSettings.contains("calculations") && aSettings["calculations"].is_array();
 		if (result) {
-			for (const auto& calculation : aSettigns["calculations"]) {
+			for (const auto& calculation : aSettings["calculations"]) {
 				result &= calculation.is_object();
 				result &= calculation.contains("ticker") && calculation["ticker"].is_string();
 				result &= calculation.contains("timeframe") && calculation["timeframe"].is_string();
@@ -46,8 +45,8 @@ void calculationSystem::loadSettings() {
 	algorithmType = settings["algorithmType"].get<std::string>();
 	for (const auto& calculation : settings["calculations"]) {
 		auto ticker = calculation["ticker"].get<std::string>();
-		auto timeframe = getCandleIntervalFromStr(calculation["timeframe"].get<std::string>());
-		if (ticker.empty() || timeframe == eCandleInterval::NONE) {
+		auto timeframe = market::getCandleIntervalFromStr(calculation["timeframe"].get<std::string>());
+		if (ticker.empty() || timeframe == market::eCandleInterval::NONE) {
 			log();
 		}
 		else {
@@ -74,7 +73,7 @@ void calculationSystem::printProgress(size_t aIndex) {
 	}
 }
 
-void calculationSystem::saveFinalData(const std::string& aTicker, eCandleInterval aInterval) {
+void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval) {
 	std::vector<Json> finalVector;
 	size_t size = 0;
 	for (auto& threadData : threadsData) {
@@ -97,8 +96,8 @@ void calculationSystem::saveFinalData(const std::string& aTicker, eCandleInterva
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream dataAll("dataAll_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".txt");
-		std::ofstream dataWeighted("dataWeighted_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".txt");
+		std::ofstream dataAll("dataAll_" + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + ".txt");
+		std::ofstream dataWeighted("dataWeighted_" + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + ".txt");
 		auto getProfit = [](const Json& aData) { return aData["cash"].get<double>() - aData["data"]["startCash"].get<double>(); };
 		const auto maxProfit = getProfit(finalVector[0]);
 

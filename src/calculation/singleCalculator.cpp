@@ -1,52 +1,67 @@
 #include "singleCalculator.h"
+#include "algorithm/superTrend/stAlgorithm.h"
+#include "market/candle.h"
+#include "utils/utils.h"
+#include <string>
 
 using namespace calculation;
 
+namespace {
+	bool checkSettings(const Json& aSettings) {
+		auto result = true;
+		result &= aSettings.is_object();
+		result &= aSettings.contains("algorithmType") && aSettings["algorithmType"].is_string();
+		result &= aSettings.contains("ticker") && aSettings["ticker"].is_string();
+		result &= aSettings.contains("timeframe") && aSettings["timeframe"].is_string();
+		result &= aSettings.contains("data") && aSettings["data"].is_object();
+		return true;
+	}
+
+	template<typename algorithmType>
+	void singleCalculationInternal(const Json& aCandles, const Json& aData) {
+		algorithmType::algorithmDataType data;
+		if (!data.initFromJson(aData)) {
+			utils::logError("singleCalculation wrong algorithm data");
+		}
+		auto candles = utils::parseCandles(aCandles);
+		auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
+		auto finalSize = static_cast<int>(candles.size()) - 2200; // TO DO FIX THIS
+		if (finalSize <= 0) {
+			utils::logError("singleCalculation atr size for candles amount");
+			finalSize = static_cast<int>(candles.size());
+		}
+		indicators.getProcessedCandles(candles, finalSize);
+
+		auto algorithm = algorithmType(data);
+		algorithm.setWithLogs(true);
+		algorithm.calculate(candles);
+		utils::log("singleCalculation full cash - " + std::to_string(algorithm.getFullCash()));
+	}
+}
+
 void calculation::singleCalculation() {
-	//algorithm::stAlgorithmData data{};
-	// TO DO make from json
-	//data.atrType = market::eAtrType::RMA;
-	//data.atrSize = 30;
-	//data.stFactor = 15.0;
-
-	//data.dealPercent = 5.0;
-	//data.leverage = 50;
-
-	//data.startCash = 75'000.0;
-	//data.maxLossPercent = 35.0;
-	//data.maxLossCash = 25'000.0;
-	//data.orderSize = 2500.0;
-
-	//data.liquidationOffsetPercent = 0.05;
-	//data.minimumProfitPercent = 0.1;
-
-	//data.dynamicSLPercent = 7.6;
-	//data.dynamicSLTrendMode = false;
-
-	//data.touchOpenerActivationWaitMode = true;
-
-	//data.breakOpenerEnabled = false;
-	//data.breakOpenerActivationWaitMode = false;
-	//data.alwaysUseNewTrend = false;
-
-	//data.activationWaiterResetAllowed = false;
-	//data.activationWaiterRange = 2;
-	//data.activationWaiterFullCandleCheck = false;
-
-	//data.stopLossWaiterEnabled = true;
-	//data.stopLossWaiterResetAllowed = false;
-	//data.stopLossWaiterRange = 3;
-	//data.stopLossWaiterFullCandleCheck = true;
-
-	//tests::checkAlgorithmData(data);
-	//auto json = utils::readFromJson("assets/candles/BTCUSDT/15m");
-	//auto candles = utils::parseCandles(json);
-
-	//auto indicators = market::indicatorSystem(data.atrType, data.atrSize, data.stFactor);
-	//indicators.getProcessedCandles(candles, static_cast<int>(candles.size()) - 3000);
-
-	//auto mm = algorithm::stAlgorithm(data);
-	//mm.setWithLogs(true);
-	//mm.calculate(candles);
-	//std::cout << mm.getFullCash() << '\n';
+	auto json = utils::readFromJson("singleCalculation");
+	auto log = []() { utils::logError("calculation::singleCalculation wrong algorithm type"); };
+	if (!checkSettings(json)) {
+		log();
+		return;
+	}
+	const auto timeframe = market::getCandleIntervalFromStr(json["timeframe"].get<std::string>());
+	const auto ticker = json["ticker"].get<std::string>();
+	const auto algorithmType = json["algorithmType"].get<std::string>();
+	if (timeframe == market::eCandleInterval::NONE || ticker.empty()) {
+		log();
+		return;
+	}
+	auto candles = utils::readFromJson("assets/candles/" + ticker + '/' + market::getCandleIntervalApiStr(timeframe));
+	if (candles.is_null()) {
+		log();
+		return;
+	}
+	if (algorithmType == "superTrend") {
+		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"]);
+	}
+	else {
+		log();
+	}
 }

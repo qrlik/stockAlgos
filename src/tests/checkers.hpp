@@ -41,7 +41,7 @@ namespace tests {
 			testNextTime = (testIndex < static_cast<int>(testAlgorithmData.size())) ? testAlgorithmData[testIndex]["time"].get<std::string>() : "ENDED";
 		}
 
-		std::vector<candle> candles;
+		std::vector<market::candle> candles;
 		Json testAlgorithmData;
 		std::unique_ptr<algorithmType> actualAlgorithm;
 		std::unique_ptr<algorithmType> testAlgorithm;
