@@ -24,7 +24,7 @@ namespace {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
 		auto candles = utils::parseCandles(aCandles);
-		auto indicators = market::indicatorSystem(const_cast<const algorithmType::algorithmDataType&>(data).getIndicatorsData());
+		auto indicators = market::indicatorsSystem(const_cast<const algorithmType::algorithmDataType&>(data).getIndicatorsData());
 		auto finalSize = static_cast<int>(candles.size()) - 2200; // TO DO FIX THIS
 		if (finalSize <= 0) {
 			utils::logError("singleCalculation atr size for candles amount");

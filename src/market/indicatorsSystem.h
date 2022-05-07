@@ -5,9 +5,9 @@
 #include <deque>
 
 namespace market {
-	class indicatorSystem {
+	class indicatorsSystem {
 	public:
-		indicatorSystem(const indicatorsData& aData);
+		indicatorsSystem(const indicatorsData& aData);
 		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
 
 	private:

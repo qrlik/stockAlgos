@@ -5,7 +5,7 @@
 
 using namespace market;
 
-indicatorSystem::indicatorSystem(const indicatorsData& aData): data(aData) {}
+indicatorsSystem::indicatorsSystem(const indicatorsData& aData): data(aData) {}
 
 namespace {
 	double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
@@ -16,7 +16,7 @@ namespace {
 	}
 }
 
-double indicatorSystem::calculateTrueRangeWMA() const {
+double indicatorsSystem::calculateTrueRangeWMA() const {
 	int weight = 0;
 	double trAndWeightSum = 0.0;
 	for (auto tr : trList) {
@@ -29,14 +29,14 @@ double indicatorSystem::calculateTrueRangeWMA() const {
 	return trAndWeightSum / std::accumulate(weights.begin(), weights.end(), 0);
 }
 
-double indicatorSystem::calculateTrueRangeEMA(double aAlpha) {
+double indicatorsSystem::calculateTrueRangeEMA(double aAlpha) {
 	if (prevCandle.time.empty()) {
 		return trList.back();
 	}
 	return aAlpha * trList.back() + (1 - aAlpha) * prevCandle.atr;
 }
 
-double indicatorSystem::calculateTrueRangeMA() {
+double indicatorsSystem::calculateTrueRangeMA() {
 	switch (data.getAtrType()) {
 	case market::eAtrType::SMA:
 		return std::accumulate(trList.begin(), trList.end(), 0.0) / trList.size();
@@ -52,7 +52,7 @@ double indicatorSystem::calculateTrueRangeMA() {
 	}
 }
 
-void indicatorSystem::calculateSuperTrend(candle& aCandle) {
+void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	if (!data.isSuperTrend()) {
 		return;
 	}
@@ -81,7 +81,7 @@ void indicatorSystem::calculateSuperTrend(candle& aCandle) {
 	aCandle.trendIsUp = trendIsUp;
 }
 
-void indicatorSystem::calculateRangeAtr(candle& aCandle) {
+void indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	if (!data.isAtr()) {
 		return;
 	}
@@ -94,12 +94,12 @@ void indicatorSystem::calculateRangeAtr(candle& aCandle) {
 	prevCandle = aCandle;
 }
 
-void indicatorSystem::processCandle(candle& aCandle) {
+void indicatorsSystem::processCandle(candle& aCandle) {
 	calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
 }
 
-void indicatorSystem::getProcessedCandles(std::vector<candle>& aCandles, int aAmount) {
+void indicatorsSystem::getProcessedCandles(std::vector<candle>& aCandles, int aAmount) {
 	for (auto& candle : aCandles) {
 		processCandle(candle);
 	}
