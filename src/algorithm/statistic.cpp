@@ -5,11 +5,10 @@
 
 using namespace algorithm;
 
-statistic::statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash):
-	currentLossHighCash(aStartCash),
-	currentLossLowCash(aStartCash),
-	maxLossPercent(aMaxLossPercent),
-	maxLossCash(aMaxLossCash) {}
+statistic::statistic(const algorithmDataBase& aData):
+	data(aData),
+	currentLossHighCash(aData.getStartCash()),
+	currentLossLowCash(aData.getStartCash()) {}
 
 void statistic::onOpenOrder(bool isLong, bool aIsBreak) {
 	if (aIsBreak) {
@@ -36,14 +35,14 @@ bool statistic::onCloseOrder(double aCash, double aProfit) {
 	}
 	if (utils::isEqual(maxLossHighCash, 0.0) && !utils::isEqual(currentLossHighCash, 0.0)
 		|| (currentLossLowCash / currentLossHighCash) < (maxLossLowCash / maxLossHighCash)
-		|| (maxLossCash > 0.0 && (currentLossHighCash - currentLossLowCash) > (maxLossHighCash - maxLossLowCash))) {
+		|| (data.getMaxLossCash() > 0.0 && (currentLossHighCash - currentLossLowCash) > (maxLossHighCash - maxLossLowCash))) {
 		maxLossHighCash = currentLossHighCash;
 		maxLossLowCash = currentLossLowCash;
 	}
 
 	const auto curMaxLoss = maxLossHighCash - maxLossLowCash;
 	const auto curMaxLossPercent = curMaxLoss / maxLossHighCash * 100.0;
-	if (curMaxLossPercent > maxLossPercent || (maxLossCash > 0.0 && curMaxLoss > maxLossCash)) {
+	if (curMaxLossPercent > data.getMaxLossPercent() || (data.getMaxLossCash() > 0.0 && curMaxLoss > data.getMaxLossCash())) {
 		return true;
 	}
 
@@ -123,15 +122,15 @@ void statistic::initFromJson(const Json& aJson) {
 	}
 }
 
-void statistic::addJsonData(Json& aJson, const algorithmDataBase& aData, double aCash) const {
+void statistic::addJsonData(Json& aJson, double aCash) const {
 	aJson["orderProfit"] = profitableOrder;
 	aJson["orderProfitStreak"] = profitableStreak;
 	aJson["orderUnprofit"] = unprofitableOrder;
 	aJson["orderUnprofitStreak"] = unprofitableStreak;
 	auto maxLoss = maxLossHighCash - maxLossLowCash;
-	auto maxLossPercentActual = (aData.getOrderSize() > 0.0) ? maxLoss / aData.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
+	auto maxLossPercentActual = (data.getOrderSize() > 0.0) ? maxLoss / data.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
 	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 0.01);
-	const auto recoveryFactor = (aCash - aData.getStartCash()) / summaryLoss;
+	const auto recoveryFactor = (aCash - data.getStartCash()) / summaryLoss;
 	aJson["recoveryFactor"] = utils::round(recoveryFactor, 0.01);
 	aJson["trendTouchOrder"] = touchTrendOrder;
 	aJson["trendBreakOrder"] = breakTrendOrder;

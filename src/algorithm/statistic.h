@@ -4,13 +4,14 @@
 namespace algorithm {
 	class algorithmDataBase;
 	struct statistic {
-		statistic(double aStartCash, double aMaxLossPercent, double aMaxLossCash);
+		statistic(const algorithmDataBase& aData);
 		void onOpenOrder(bool isLong, bool aIsBreak);
 		bool onCloseOrder(double aCash, double aProfit);
 		bool operator==(const statistic& aOther) const;
 		void initFromJson(const Json& aJson);
-		void addJsonData(Json& aJson, const algorithmDataBase& aData, double aCash) const;
+		void addJsonData(Json& aJson, double aCash) const;
 	private:
+		const algorithmDataBase& data;
 
 		double maxLossHighCash = 0.0;
 		double maxLossLowCash = 0.0;
@@ -28,8 +29,6 @@ namespace algorithm {
 
 		double currentLossHighCash = 0.0;
 		double currentLossLowCash = 0.0;
-		double maxLossPercent = 0.0;
-		double maxLossCash = 0.0;
 		size_t currentStreak = 0;
 		bool lastOrderIsProfitable = false;
 		bool inited = false;

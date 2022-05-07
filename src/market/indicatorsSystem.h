@@ -1,13 +1,16 @@
 #pragma once
 #include "candle.h"
-#include "indicatorsData.h"
 #include <vector>
 #include <deque>
 
+namespace algorithm {
+	class algorithmDataBase;
+}
 namespace market {
+	class indicatorsData;
 	class indicatorsSystem {
 	public:
-		indicatorsSystem(const indicatorsData& aData);
+		indicatorsSystem(const algorithm::algorithmDataBase& aData);
 		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
 
 	private:

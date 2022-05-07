@@ -32,7 +32,6 @@ namespace algorithm {
 		static eState stateFromString(const std::string& aStr); // TO DO look
 
 		stAlgorithm(const stAlgorithmData& aData);
-		bool calculate(const std::vector<market::candle>& aCandles);
 		bool operator==(const stAlgorithm& aOther) const;
 
 		activationWaiter& getActivationWaiter() { return activationWaiterModule; }

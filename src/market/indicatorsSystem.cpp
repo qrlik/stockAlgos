@@ -1,11 +1,12 @@
 #include "indicatorsSystem.h"
+#include "algorithm/algorithmDataBase.h"
 #include "indicatorsData.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
 using namespace market;
 
-indicatorsSystem::indicatorsSystem(const indicatorsData& aData): data(aData) {}
+indicatorsSystem::indicatorsSystem(const algorithm::algorithmDataBase& aData): data(aData.getIndicatorsData()) {}
 
 namespace {
 	double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "market/candle.h"
+#include "market/indicatorsSystem.h"
 #include "order.h"
 #include "statistic.h"
 #include <type_traits>
@@ -10,10 +11,11 @@ namespace algorithm {
 	class algorithmBase {
 	public:
 		using algorithmDataType = dataType;
-		algorithmBase(const dataType& aData) : 
-			data(aData), stats(data.getStartCash(),
-			data.getMaxLossPercent(), data.getMaxLossCash()),
-			cash(data.getStartCash()){}
+		algorithmBase(const dataType& aData) :
+			data(aData), stats(data),  indicators(data)
+		{
+			cash = data.getStartCash();
+		}
 		bool operator==(const algorithmBase<dataType>& aOther) const {
 			auto result = true;
 			result &= data == aOther.data;
@@ -36,6 +38,15 @@ namespace algorithm {
 			return curCash;
 		}
 		double getCash() const { return cash; }
+
+		bool calculate(const std::vector<market::candle>& aCandles) {
+			for (const auto& candle : aCandles) {
+				if (!doAction(candle)) {
+					return false;
+				}
+			}
+			return true;
+		}
 
 		bool doAction(const market::candle& aCandle) {
 			if (getStopCashBreak()) {
@@ -80,7 +91,7 @@ namespace algorithm {
 		Json getJsonData() const {
 			Json result;
 			result["cash"] = utils::round(getFullCash(), 0.01);
-			stats.addJsonData(result["stats"], getData(), cash);
+			stats.addJsonData(result["stats"], cash);
 			data.addJsonData(result["data"]);
 			return result;
 		}
@@ -104,17 +115,19 @@ namespace algorithm {
 		const market::candle& getPrevCandle() const { return prevCandle; }
 
 		order order;
+	protected: // TO DO fix 
+		statistic stats;
+		double cash = 0.0;
+		bool inited = false;
+		bool stopCashBreak = false;
+
 	private:
 		const dataType data;
+		market::indicatorsSystem indicators;
 
 		market::candle curCandle;
 		market::candle prevCandle;
 
 		bool withLogs = false;
-	protected: // tmp
-		statistic stats;
-		double cash = 0.0;
-		bool inited = false;
-		bool stopCashBreak = false;
 	};
 }
