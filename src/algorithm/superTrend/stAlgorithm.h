@@ -1,7 +1,7 @@
 #pragma once
 #include "algorithm/algorithmBase.hpp"
 #include "stAlgorithmData.h"
-#include "market/indicators.h"
+#include "market/indicatorsSystem.h"
 #include "activationWaiter.h"
 #include "dynamicStopLoss.h"
 #include "stopLossWaiter.h"

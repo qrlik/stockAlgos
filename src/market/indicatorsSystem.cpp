@@ -1,4 +1,4 @@
-#include "indicators.h"
+#include "indicatorsSystem.h"
 #include "indicatorsData.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"

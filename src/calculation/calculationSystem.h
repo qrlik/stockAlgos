@@ -1,6 +1,6 @@
 #pragma once
 #include "combinationFactory.hpp"
-#include "market/indicators.h"
+#include "market/indicatorsSystem.h"
 #include <mutex>
 
 namespace calculation {
