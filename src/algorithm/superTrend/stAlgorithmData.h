@@ -32,24 +32,6 @@ namespace algorithm {
 		bool getStopLossWaiterResetAllowed() const { return stopLossWaiterResetAllowed; }
 		int getStopLossWaiterRange() const { return stopLossWaiterRange; }
 		bool getStopLossWaiterFullCandleCheck() const { return stopLossWaiterFullCandleCheck; }
-
-		// TO DO delete setters
-		void setAtrType(market::eAtrType aAtrType) { atrType = aAtrType; }
-		void setAtrSize(int aAtrSize) { atrSize = aAtrSize; }
-		void setStFactor(double aStFactor) { stFactor = aStFactor; }
-		void setDynamicSLPercent(double aDynamicSLPercent) { dynamicSLPercent = aDynamicSLPercent; }
-		void setDynamicSLTrendMode(bool aDynamicSLTrendMode) { dynamicSLTrendMode = aDynamicSLTrendMode; }
-		void setTouchOpenerActivationWaitMode(bool aState) { touchOpenerActivationWaitMode = aState; }
-		void setBreakOpenerEnabled(bool aState) { breakOpenerEnabled = aState; }
-		void setBreakOpenerActivationWaitMode(bool aState) { breakOpenerActivationWaitMode = aState; }
-		void setAlwaysUseNewTrend(bool aState) { alwaysUseNewTrend = aState; }
-		void setActivationWaiterResetAllowed(bool aState) { activationWaiterResetAllowed = aState; }
-		void setActivationWaiterRange(int aRange) { activationWaiterRange = aRange; }
-		void setActivationWaiterFullCandleCheck(bool aState) { activationWaiterFullCandleCheck = aState; }
-		void setStopLossWaiterEnabled(bool aState) { stopLossWaiterEnabled = aState; }
-		void setStopLossWaiterResetAllowed(bool aState) { stopLossWaiterResetAllowed = aState; }
-		void setStopLossWaiterRange(int aRange) { stopLossWaiterRange = aRange; }
-		void setStopLossWaiterFullCandleCheck(bool aState) { stopLossWaiterFullCandleCheck = aState; }
 	protected:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;

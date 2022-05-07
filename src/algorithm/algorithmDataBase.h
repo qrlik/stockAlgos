@@ -23,17 +23,6 @@ namespace algorithm {
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
 		double getMinimumProfitPercent() const { return minimumProfitPercent; }
 		bool getFullCheck() const { return fullCheck; }
-
-		// TO DO delete setters
-		void setDealPercent(double aDealPercent) { dealPercent = aDealPercent; }
-		void setOrderSize(double aOrderSize) { orderSize = aOrderSize; }
-		void setLeverage(int aLeverage) { leverage = aLeverage; }
-		void setStartCash(double aStartCash) { startCash = aStartCash; }
-		void setMaxLossPercent(double aMaxLossPercent) { maxLossPercent = aMaxLossPercent; }
-		void setMaxLossCash(double aMaxLossCash) { maxLossCash = aMaxLossCash; }
-		void setLiquidationOffsetPercent(double aPercent) { liquidationOffsetPercent = aPercent; }
-		void setMinimumProfitPercent(double aPercent) { minimumProfitPercent = aPercent; }
-		void setFullCheck(bool aState) { fullCheck = aState; }
 	protected:
 		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
