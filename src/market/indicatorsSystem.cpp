@@ -82,9 +82,9 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	aCandle.trendIsUp = trendIsUp;
 }
 
-void indicatorsSystem::calculateRangeAtr(candle& aCandle) {
+bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	if (!data.isAtr()) {
-		return;
+		return true;
 	}
 	auto currentTrueRange = calculateTrueRange(aCandle, (prevCandle.time.empty() ? aCandle : prevCandle));
 	trList.push_back(currentTrueRange);
@@ -93,11 +93,20 @@ void indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	}
 	aCandle.atr = calculateTrueRangeMA();
 	prevCandle = aCandle;
+	return static_cast<int>(trList.size()) >= data.getAtrSize();
 }
 
-void indicatorsSystem::processCandle(candle& aCandle) {
-	calculateRangeAtr(aCandle);
+bool indicatorsSystem::checkSkip() {
+	++candlesCounter;
+	return candlesCounter > data.getSkipAmount();
+}
+
+bool indicatorsSystem::processCandle(candle& aCandle) {
+	auto result = true;
+	result &= calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
+	result &= checkSkip();
+	return result;
 }
 
 void indicatorsSystem::getProcessedCandles(std::vector<candle>& aCandles, int aAmount) {

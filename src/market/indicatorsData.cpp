@@ -36,6 +36,7 @@ eAtrType market::atrTypeFromString(const std::string& aStr) {
 
 bool indicatorsData::operator==(const indicatorsData& aOther) const {
 	bool result = true;
+	result &= candlesToSkip == aOther.candlesToSkip;
 	result &= atrType == aOther.atrType;
 	result &= atrSize == aOther.atrSize;
 	result &= utils::isEqual(stFactor, aOther.stFactor);
@@ -70,7 +71,11 @@ void indicatorsData::addJsonData(Json& aData) const {
 }
 
 bool indicatorsData::initDataField(const std::string& aName, const Json& aValue) {
-	if (aName == "atrType") {
+	if (aName == "candlesToSkip") {
+		candlesToSkip = aValue.get<int>();
+		return true;
+	}
+	else if (aName == "atrType") {
 		atrType = market::atrTypeFromString(aValue.get<std::string>());
 		return true;
 	}

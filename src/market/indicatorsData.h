@@ -28,11 +28,13 @@ namespace market {
 		bool isAtr() const { return atrFlag; }
 		bool isSuperTrend() const { return superTrendFlag; }
 
+		int getSkipAmount() const { return candlesToSkip; }
 		market::eAtrType getAtrType() const { return atrType; }
 		int getAtrSize() const { return atrSize; }
 		double getStFactor() const { return stFactor; }
 
 	private:
+		int candlesToSkip = 0;
 		bool atrFlag = false;
 		bool superTrendFlag = false;
 

@@ -11,15 +11,16 @@ namespace market {
 	class indicatorsSystem {
 	public:
 		indicatorsSystem(const algorithm::algorithmDataBase& aData);
+		bool processCandle(candle& aCandle);
 		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
 
 	private:
 		double calculateTrueRangeWMA() const;
 		double calculateTrueRangeEMA(double aAlpha);
 		double calculateTrueRangeMA();
+		bool calculateRangeAtr(candle& aCandle);
 		void calculateSuperTrend(candle& aCandle);
-		void calculateRangeAtr(candle& aCandle);
-		void processCandle(candle& aCandle);
+		bool checkSkip();
 
 		const indicatorsData& data;
 
@@ -31,5 +32,6 @@ namespace market {
 		double lastTrend = 0.0;
 		double lastClose = 0.0;
 		int lastCandleTime = 0;
+		int candlesCounter = 0;
 	};
 }
