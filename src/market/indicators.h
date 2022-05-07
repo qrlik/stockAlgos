@@ -4,20 +4,12 @@
 #include <deque>
 
 namespace market {
-	enum class eAtrType : unsigned char {
-		NONE = 0,
-		RMA = 1,
-		EMA = 2,
-		WMA = 3,
-		SMA = 4
-	};
-	std::string atrTypeToString(eAtrType aType);
-	eAtrType atrTypeFromString(const std::string& aStr);
-
+	enum class eAtrType : unsigned char;
 	class indicatorSystem {
 	public:
 		indicatorSystem(eAtrType aType, int aSize, double aStFactor);
 		void getProcessedCandles(std::vector<candle>& aCandles, int aAmount = 0);
+
 	private:
 		double calculateTrueRangeWMA() const;
 		double calculateTrueRangeEMA(double aAlpha);

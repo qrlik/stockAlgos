@@ -1,4 +1,5 @@
 #pragma once
+#include "market/indicatorsData.h"
 #include "json/json.hpp"
 
 namespace algorithm {
@@ -12,6 +13,7 @@ namespace algorithm {
 		bool checkCriteria(const std::string& aName, const Json& aValue) const;
 		bool isValid() const;
 
+		const market::indicatorsData& getIndicatorsData() { return indicatorsData; }
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
 		int getLeverage() const { return leverage; }
@@ -23,12 +25,16 @@ namespace algorithm {
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
 		double getMinimumProfitPercent() const { return minimumProfitPercent; }
 		bool getFullCheck() const { return fullCheck; }
+
 	protected:
 		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
 		virtual bool isValidInternal() const = 0;
 		virtual void addJsonDataInternal(Json& aData) const = 0;
+
 	private:
+		market::indicatorsData indicatorsData;
+
 		double dealPercent = -1.0;
 		double orderSize = -1.0;
 		int leverage = -1;

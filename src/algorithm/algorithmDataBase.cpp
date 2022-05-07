@@ -6,6 +6,7 @@ using namespace algorithm;
 
 bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	bool result = true;
+	result &= indicatorsData == aOther.indicatorsData;
 	result &= utils::isEqual(dealPercent, aOther.dealPercent);
 	result &= utils::isEqual(orderSize, aOther.orderSize);
 	result &= utils::isEqual(startCash, aOther.startCash);

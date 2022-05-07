@@ -1,6 +1,6 @@
 #pragma once
 #include "algorithm/algorithmDataBase.h"
-#include "market/indicators.h"
+#include "market/indicatorsData.h"
 
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
@@ -38,7 +38,7 @@ namespace algorithm {
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 	private:
-		market::eAtrType atrType = market::eAtrType::NONE;
+		market::eAtrType atrType = market::eAtrType::NONE; // TO DO DELETE
 		int atrSize = -1;
 		double stFactor = -1.0;
 
