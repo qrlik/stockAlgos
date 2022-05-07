@@ -3,15 +3,16 @@
 
 using namespace algorithm;
 
-stAlgorithmData::stAlgorithmData(const Json& aValue) {
+stAlgorithmData::stAlgorithmData() {
+	getIndicatorsData().enableSuperTrend();
+}
+
+stAlgorithmData::stAlgorithmData(const Json& aValue): stAlgorithmData() {
 	initFromJson(aValue);
 }
 
 bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
 	bool result = baseClass::operator==(aOther);
-	result &= atrType == aOther.atrType;
-	result &= atrSize == aOther.atrSize;
-	result &= utils::isEqual(stFactor, aOther.stFactor);
 	result &= dynamicSLTrendMode == aOther.dynamicSLTrendMode;
 	result &= utils::isEqual(dynamicSLPercent, aOther.dynamicSLPercent);
 	result &= touchOpenerActivationWaitMode == aOther.touchOpenerActivationWaitMode;
@@ -30,9 +31,6 @@ bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
 
 bool stAlgorithmData::isValidInternal() const {
 	auto result = true;
-	result &= atrType != market::eAtrType::NONE;
-	result &= atrSize > 1;
-	result &= stFactor >= 1.0;
 
 	result &= (utils::isEqual(dynamicSLPercent, -1.0) && dynamicSLTrendMode) || dynamicSLPercent > 0.0;
 
@@ -57,60 +55,8 @@ bool stAlgorithmData::isValidInternal() const {
 	return result;
 }
 
-Json stAlgorithmData::toJson() const {
-	Json result;
-	result["atrType"] = market::atrTypeToString(atrType);
-	result["atrSize"] = atrSize;
-	result["stFactor"] = stFactor;
-
-	result["dealPercent"] = getDealPercent();
-	result["leverage"] = getLeverage();
-
-	result["startCash"] = getStartCash();
-	result["maxLossPercent"] = getMaxLossPercent();
-	result["maxLossCash"] = getMaxLossCash();
-
-	result["liquidationOffsetPercent"] = getLiquidationOffsetPercent();
-	result["minimumProfitPercent"] = getMinimumProfitPercent();
-
-	result["dynamicSLPercent"] = dynamicSLPercent;
-	result["dynamicSLTrendMode"] = dynamicSLTrendMode;
-
-	result["touchOpenerActivationWaitMode"] = touchOpenerActivationWaitMode;
-
-	result["breakOpenerEnabled"] = breakOpenerEnabled;
-	result["breakOpenerActivationWaitMode"] = breakOpenerActivationWaitMode;
-	result["alwaysUseNewTrend"] = alwaysUseNewTrend;
-
-	result["activationWaiterResetAllowed"] = activationWaiterResetAllowed;
-	result["activationWaiterRange"] = activationWaiterRange;
-	result["activationWaiterFullCandleCheck"] = activationWaiterFullCandleCheck;
-
-	result["stopLossWaiterEnabled"] = stopLossWaiterEnabled;
-	result["stopLossWaiterResetAllowed"] = stopLossWaiterResetAllowed;
-	result["stopLossWaiterRange"] = stopLossWaiterRange;
-	result["stopLossWaiterFullCandleCheck"] = stopLossWaiterFullCandleCheck;
-
-	return result;
-}
-
 bool stAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
-	if (aValue.is_null()) {
-		return false;
-	}
-	if (aName == "atrType") {
-		atrType = market::atrTypeFromString(aValue.get<std::string>());
-		return true;
-	}
-	else if (aName == "atrSize") {
-		atrSize = aValue.get<int>();
-		return true;
-	}
-	else if (aName == "stFactor") {
-		stFactor = aValue.get<double>();
-		return true;
-	}
-	else if (aName == "dynamicSLPercent") {
+	if (aName == "dynamicSLPercent") {
 		dynamicSLPercent = aValue.get<double>();
 		return true;
 	}
@@ -166,19 +112,7 @@ bool stAlgorithmData::initDataFieldInternal(const std::string& aName, const Json
 }
 
 bool stAlgorithmData::checkCriteriaInternal(const std::string& aName, const Json& aValue) const {
-	if (aValue.is_null()) {
-		return false;
-	}
-	if (aName == "atrType") {
-		return atrType == market::atrTypeFromString(aValue.get<std::string>());
-	}
-	else if (aName == "atrSize") {
-		return atrSize == aValue.get<int>();
-	}
-	else if (aName == "stFactor") {
-		return utils::isEqual(stFactor, aValue.get<double>());
-	}
-	else if (aName == "dynamicSLPercent") {
+	if (aName == "dynamicSLPercent") {
 		return utils::isEqual(dynamicSLPercent, aValue.get<double>());
 	}
 	else if (aName == "dynamicSLTrendMode") {
@@ -221,9 +155,6 @@ bool stAlgorithmData::checkCriteriaInternal(const std::string& aName, const Json
 }
 
 void stAlgorithmData::addJsonDataInternal(Json& aData) const {
-	aData["atrType"] = market::atrTypeToString(atrType);
-	aData["atrSize"] = atrSize;
-	aData["stFactor"] = stFactor;
 	aData["dynamicSLPercent"] = dynamicSLPercent;
 	aData["dynamicSLTrendMode"] = dynamicSLTrendMode;
 	aData["touchOpenerActivationWaitMode"] = touchOpenerActivationWaitMode;

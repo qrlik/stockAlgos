@@ -14,7 +14,7 @@ namespace {
 		result &= aSettings.contains("ticker") && aSettings["ticker"].is_string();
 		result &= aSettings.contains("timeframe") && aSettings["timeframe"].is_string();
 		result &= aSettings.contains("data") && aSettings["data"].is_object();
-		return true;
+		return result;
 	}
 
 	template<typename algorithmType>
@@ -24,7 +24,7 @@ namespace {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
 		auto candles = utils::parseCandles(aCandles);
-		auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
+		auto indicators = market::indicatorSystem(const_cast<const algorithmType::algorithmDataType&>(data).getIndicatorsData());
 		auto finalSize = static_cast<int>(candles.size()) - 2200; // TO DO FIX THIS
 		if (finalSize <= 0) {
 			utils::logError("singleCalculation atr size for candles amount");
@@ -41,27 +41,27 @@ namespace {
 
 void calculation::singleCalculation() {
 	auto json = utils::readFromJson("singleCalculation");
-	auto log = []() { utils::logError("calculation::singleCalculation wrong algorithm type"); };
+	auto log = [](const std::string& aStr) { utils::logError("calculation::singleCalculation " + aStr); };
 	if (!checkSettings(json)) {
-		log();
+		log("bad json");
 		return;
 	}
 	const auto timeframe = market::getCandleIntervalFromStr(json["timeframe"].get<std::string>());
 	const auto ticker = json["ticker"].get<std::string>();
 	const auto algorithmType = json["algorithmType"].get<std::string>();
 	if (timeframe == market::eCandleInterval::NONE || ticker.empty()) {
-		log();
+		log("bad ticker/timeframe");
 		return;
 	}
 	auto candles = utils::readFromJson("assets/candles/" + ticker + '/' + market::getCandleIntervalApiStr(timeframe));
 	if (candles.is_null()) {
-		log();
+		log("bad candles");
 		return;
 	}
 	if (algorithmType == "superTrend") {
 		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"]);
 	}
 	else {
-		log();
+		log("wrong algorithm type");
 	}
 }

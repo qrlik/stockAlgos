@@ -22,6 +22,7 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 bool algorithmDataBase::isValid() const {
 	auto result = true;
 
+	result &= indicatorsData.isValid();
 	result &= dealPercent > 0.0 && dealPercent < 100.0;
 	result &= leverage > 0 && leverage <= 125;
 
@@ -91,6 +92,9 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 		fullCheck = aValue.get<bool>();
 		return true;
 	}
+	else if (indicatorsData.initDataField(aName, aValue)) {
+		return true;
+	}
 	return initDataFieldInternal(aName, aValue);
 }
 
@@ -125,6 +129,9 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 	else if (aName == "fullCheck") {
 		return fullCheck == aValue.get<bool>();
 	}
+	else if (indicatorsData.checkCriteria(aName, aValue)) {
+		return true;
+	}
 	return checkCriteriaInternal(aName, aValue);
 }
 
@@ -137,5 +144,6 @@ void algorithmDataBase::addJsonData(Json& aData) const {
 	aData["maxLossCash"] = maxLossCash;
 	aData["liquidationOffsetPercent"] = liquidationOffsetPercent;
 	aData["minimumProfitPercent"] = minimumProfitPercent;
+	indicatorsData.addJsonData(aData);
 	addJsonDataInternal(aData);
 }

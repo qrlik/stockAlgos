@@ -13,7 +13,7 @@ namespace algorithm {
 		bool checkCriteria(const std::string& aName, const Json& aValue) const;
 		bool isValid() const;
 
-		const market::indicatorsData& getIndicatorsData() { return indicatorsData; }
+		const market::indicatorsData& getIndicatorsData() const { return indicatorsData; }
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
 		int getLeverage() const { return leverage; }
@@ -32,6 +32,7 @@ namespace algorithm {
 		virtual bool isValidInternal() const = 0;
 		virtual void addJsonDataInternal(Json& aData) const = 0;
 
+		market::indicatorsData& getIndicatorsData() { return indicatorsData; }
 	private:
 		market::indicatorsData indicatorsData;
 

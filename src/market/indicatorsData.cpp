@@ -41,3 +41,59 @@ bool indicatorsData::operator==(const indicatorsData& aOther) const {
 	result &= utils::isEqual(stFactor, aOther.stFactor);
 	return result;
 }
+
+void indicatorsData::enableSuperTrend() {
+	enableAtr();
+	superTrendFlag = true;
+}
+
+bool indicatorsData::isValid() const {
+	auto result = true;
+	if (isAtr()) {
+		result &= atrType != market::eAtrType::NONE;
+		result &= atrSize > 1;
+	}
+	if (isSuperTrend()) {
+		result &= stFactor >= 1.0;
+	}
+	return result;
+}
+
+void indicatorsData::addJsonData(Json& aData) const {
+	if (isAtr()) {
+		aData["atrType"] = market::atrTypeToString(atrType);
+		aData["atrSize"] = atrSize;
+	}
+	if (isSuperTrend()) {
+		aData["stFactor"] = stFactor;
+	}
+}
+
+bool indicatorsData::initDataField(const std::string& aName, const Json& aValue) {
+	if (aName == "atrType") {
+		atrType = market::atrTypeFromString(aValue.get<std::string>());
+		return true;
+	}
+	else if (aName == "atrSize") {
+		atrSize = aValue.get<int>();
+		return true;
+	}
+	else if (aName == "stFactor") {
+		stFactor = aValue.get<double>();
+		return true;
+	}
+	return false;
+}
+
+bool indicatorsData::checkCriteria(const std::string& aName, const Json& aValue) const {
+	if (aName == "atrType") {
+		return atrType == market::atrTypeFromString(aValue.get<std::string>());
+	}
+	else if (aName == "atrSize") {
+		return atrSize == aValue.get<int>();
+	}
+	else if (aName == "stFactor") {
+		return utils::isEqual(stFactor, aValue.get<double>());
+	}
+	return false;
+}

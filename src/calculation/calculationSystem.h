@@ -20,7 +20,7 @@ namespace calculation {
 			const auto& threadData = aFactory.getThreadData(aThread);
 			for (const auto& data : threadData) {
 				candles = candlesSource; // TO DO FIX THIS
-				auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
+				auto indicators = market::indicatorSystem(data.getIndicatorsData());
 				auto finalSize = static_cast<int>(candles.size()) - 150; // TO DO FIX THIS
 				if (finalSize <= 0) {
 					utils::logError("calculationSystem::iterate wrong atr size for candles amount");

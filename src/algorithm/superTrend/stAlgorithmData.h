@@ -6,15 +6,10 @@ namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
 		using baseClass = algorithmDataBase;
-		stAlgorithmData() = default;
-		stAlgorithmData(const Json& aValue);
+		stAlgorithmData();
+		stAlgorithmData(const Json& aValue); // TO DO DELETE
 		bool operator==(const stAlgorithmData& aOther) const;
-		Json toJson() const;
 
-		market::eAtrType getAtrType() const { return atrType; }
-		int getAtrSize() const { return atrSize; }
-		double getStFactor() const { return stFactor; }
-		
 		double getDynamicSLPercent() const { return dynamicSLPercent; }
 		bool getDynamicSLTrendMode() const { return dynamicSLTrendMode; }
 
@@ -38,10 +33,6 @@ namespace algorithm {
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 	private:
-		market::eAtrType atrType = market::eAtrType::NONE; // TO DO DELETE
-		int atrSize = -1;
-		double stFactor = -1.0;
-
 		double dynamicSLPercent = -1.0;
 		bool dynamicSLTrendMode = false;
 

@@ -18,7 +18,7 @@ namespace tests {
 
 			auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
 			candles = utils::parseCandles(jsonCandles);
-			auto indicators = market::indicatorSystem(data.getAtrType(), data.getAtrSize(), data.getStFactor());
+			auto indicators = market::indicatorSystem(const_cast<const algorithmType::algorithmDataType&>(data).getIndicatorsData());
 			indicators.getProcessedCandles(candles, json["candlesAmount"].get<int>());
 		}
 		void check() {

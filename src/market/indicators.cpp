@@ -5,10 +5,7 @@
 
 using namespace market;
 
-indicatorSystem::indicatorSystem(eAtrType aType, int aSize, double aStFactor):
-	atrType(aType),
-	atrSize(aSize),
-	stFactor(aStFactor) {}
+indicatorSystem::indicatorSystem(const indicatorsData& aData): data(aData) {}
 
 namespace {
 	double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
@@ -40,7 +37,7 @@ double indicatorSystem::calculateTrueRangeEMA(double aAlpha) {
 }
 
 double indicatorSystem::calculateTrueRangeMA() {
-	switch (atrType) {
+	switch (data.getAtrType()) {
 	case market::eAtrType::SMA:
 		return std::accumulate(trList.begin(), trList.end(), 0.0) / trList.size();
 	case market::eAtrType::WMA:
@@ -56,11 +53,14 @@ double indicatorSystem::calculateTrueRangeMA() {
 }
 
 void indicatorSystem::calculateSuperTrend(candle& aCandle) {
+	if (!data.isSuperTrend()) {
+		return;
+	}
 	auto middlePrice = (aCandle.high + aCandle.low) / 2;
 
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
-	auto upperBand = utils::round(middlePrice + stFactor * aCandle.atr, pricePrecision);
-	auto lowerBand = utils::round(middlePrice - stFactor * aCandle.atr, pricePrecision);
+	auto upperBand = utils::round(middlePrice + data.getStFactor() * aCandle.atr, pricePrecision);
+	auto lowerBand = utils::round(middlePrice - data.getStFactor() * aCandle.atr, pricePrecision);
 
 	upperBand = (upperBand < lastUpperBand || lastClose > lastUpperBand) ? upperBand : lastUpperBand;
 	lowerBand = (lowerBand > lastLowerBand || lastClose < lastLowerBand) ? lowerBand : lastLowerBand;
@@ -82,9 +82,12 @@ void indicatorSystem::calculateSuperTrend(candle& aCandle) {
 }
 
 void indicatorSystem::calculateRangeAtr(candle& aCandle) {
+	if (!data.isAtr()) {
+		return;
+	}
 	auto currentTrueRange = calculateTrueRange(aCandle, (prevCandle.time.empty() ? aCandle : prevCandle));
 	trList.push_back(currentTrueRange);
-	if (static_cast<int>(trList.size()) > atrSize) {
+	if (static_cast<int>(trList.size()) > data.getAtrSize()) {
 		trList.pop_front();
 	}
 	aCandle.atr = calculateTrueRangeMA();

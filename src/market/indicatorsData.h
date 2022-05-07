@@ -17,11 +17,25 @@ namespace market {
 	class indicatorsData {
 	public:
 		bool operator==(const indicatorsData& aOther) const;
-		market::eAtrType getAtrType() { return atrType; }
-		int getAtrSize() { return atrSize; }
-		double getStFactor() { return stFactor; }
+		void addJsonData(Json& aData) const;
+		bool initDataField(const std::string& aName, const Json& aValue);
+		bool checkCriteria(const std::string& aName, const Json& aValue) const;
+
+		void enableAtr() { atrFlag = true; }
+		void enableSuperTrend();
+
+		bool isValid() const;
+		bool isAtr() const { return atrFlag; }
+		bool isSuperTrend() const { return superTrendFlag; }
+
+		market::eAtrType getAtrType() const { return atrType; }
+		int getAtrSize() const { return atrSize; }
+		double getStFactor() const { return stFactor; }
 
 	private:
+		bool atrFlag = false;
+		bool superTrendFlag = false;
+
 		market::eAtrType atrType = market::eAtrType::NONE;
 		int atrSize = -1;
 		double stFactor = -1.0;
