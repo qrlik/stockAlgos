@@ -1,10 +1,11 @@
 {
 	"candlesFileName": "1500_15m",
-	"candlesAmount": 1000,
 	"algorithmData": {
 		"atrType": "RMA",
 		"atrSize": 14,
 		"stFactor": 3.0,
+
+		"candlesToSkip": 500,
 
 		"dealPercent": 5.0,
 		"leverage": 100,

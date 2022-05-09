@@ -39,8 +39,8 @@ namespace algorithm {
 		}
 		double getCash() const { return cash; }
 
-		bool calculate(const std::vector<market::candle>& aCandles) {
-			for (const auto& candle : aCandles) {
+		bool calculate(std::vector<market::candle> aCandles) {
+			for (auto& candle : aCandles) {
 				if (!doAction(candle)) {
 					return false;
 				}
@@ -48,20 +48,23 @@ namespace algorithm {
 			return true;
 		}
 
-		bool doAction(const market::candle& aCandle) {
+		bool doAction(market::candle& aCandle) {
 			if (getStopCashBreak()) {
 				return false;
 			}
-			if (!updateCandles(aCandle)) {
-				return true;
+			if (isReady()) {
+				curCandle = aCandle;
+				preLoop();
+				while (loop()) {}
+				if (getWithLogs()) {
+					log();
+				}
 			}
-			preLoop();
-			while (loop()) {}
-			if (getWithLogs()) {
-				log();
-			}
+			indicators.processCandle(aCandle);
+			prevCandle = aCandle;
 			return true;
 		}
+
 		void initFromJson(const Json& aValue) {
 			if (aValue.is_null()) {
 				return;
@@ -96,15 +99,6 @@ namespace algorithm {
 			return result;
 		}
 	protected:
-		bool updateCandles(const market::candle& aCandle) {
-			if (curCandle.time.empty()) {
-				curCandle = aCandle;
-				return false;
-			}
-			prevCandle = std::move(curCandle);
-			curCandle = aCandle;
-			return true;
-		}
 		virtual void preLoop() = 0;
 		virtual bool loop() = 0;
 		virtual void log() const = 0; // TO DO add impl
@@ -122,6 +116,8 @@ namespace algorithm {
 		bool stopCashBreak = false;
 
 	private:
+		bool isReady() const { return indicators.isInited() && !prevCandle.time.empty(); }
+
 		const dataType data;
 		market::indicatorsSystem indicators;
 

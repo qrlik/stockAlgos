@@ -19,17 +19,8 @@ namespace calculation {
 			auto& threadResults = threadsData[aThread];
 			const auto& threadData = aFactory.getThreadData(aThread);
 			for (const auto& data : threadData) {
-				candles = candlesSource; // TO DO FIX THIS
-				auto indicators = market::indicatorsSystem(data);
-				auto finalSize = static_cast<int>(candles.size()) - 150; // TO DO FIX THIS
-				if (finalSize <= 0) {
-					utils::logError("calculationSystem::iterate wrong atr size for candles amount");
-					finalSize = static_cast<int>(candles.size());
-				}
-				indicators.getProcessedCandles(candles, finalSize);
-
 				auto algorithm = algorithmType(data);
-				const auto result = algorithm.calculate(candles);
+				const auto result = algorithm.calculate(candlesSource);
 				if (result) {
 					threadResults.push_back(algorithm.getJsonData());
 				}

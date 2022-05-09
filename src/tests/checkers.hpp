@@ -18,11 +18,9 @@ namespace tests {
 
 			auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
 			candles = utils::parseCandles(jsonCandles);
-			auto indicators = market::indicatorsSystem(data);
-			indicators.getProcessedCandles(candles, json["candlesAmount"].get<int>());
 		}
 		void check() {
-			for (const auto& candle : candles) {
+			for (auto& candle : candles) {
 				actualAlgorithm->doAction(candle);
 				updateTestAlgorithm(candle.time);
 				assert(*actualAlgorithm == *testAlgorithm);

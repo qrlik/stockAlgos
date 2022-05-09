@@ -1,10 +1,11 @@
 {
 	"candlesFileName": "1500_15m",
-	"candlesAmount": 1000,
 	"algorithmData": {
 		"atrType": "RMA",
 		"atrSize": 14,
 		"stFactor": 5.0,
+
+		"candlesToSkip": 500,
 
 		"dealPercent": 5.0,
 		"leverage": 50,
@@ -37,6 +38,10 @@
 	},
 	"testAlgorithmData": [
 		{
+			"time": "11:00 31-12-2021",
+			"lastDownSuperTrend": 47943.5
+		},
+		{
 			"time": "11:15 31-12-2021",
 			"order": {
 				"type": "SHORT",
@@ -55,7 +60,6 @@
 			},
 			"state": "SHORT",
 			"cash": 95.109763,
-			"lastDownSuperTrend": 47943.5,
 			"isTrendUp": false
 		},
 		{

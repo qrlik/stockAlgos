@@ -23,18 +23,9 @@ namespace {
 		if (!data.initFromJson(aData)) {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
-		auto candles = utils::parseCandles(aCandles);
-		auto indicators = market::indicatorsSystem(data);
-		auto finalSize = static_cast<int>(candles.size()) - 2200; // TO DO FIX THIS
-		if (finalSize <= 0) {
-			utils::logError("singleCalculation atr size for candles amount");
-			finalSize = static_cast<int>(candles.size());
-		}
-		indicators.getProcessedCandles(candles, finalSize);
-
 		auto algorithm = algorithmType(data);
 		algorithm.setWithLogs(true);
-		algorithm.calculate(candles);
+		algorithm.calculate(utils::parseCandles(aCandles));
 		utils::log("singleCalculation full cash - " + std::to_string(algorithm.getFullCash()));
 	}
 }

@@ -98,24 +98,18 @@ bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 
 bool indicatorsSystem::checkSkip() {
 	++candlesCounter;
-	return candlesCounter > data.getSkipAmount();
+	return candlesCounter >= data.getSkipAmount();
 }
 
-bool indicatorsSystem::processCandle(candle& aCandle) {
+void indicatorsSystem::processCandle(candle& aCandle) {
 	auto result = true;
 	result &= calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
 	result &= checkSkip();
-	return result;
-}
-
-void indicatorsSystem::getProcessedCandles(std::vector<candle>& aCandles, int aAmount) {
-	for (auto& candle : aCandles) {
-		processCandle(candle);
+	if (result != inited) {
+		if (inited) {
+			utils::logError("indicatorsSystem::processCandle wrong inited state");
+		}
+		inited = result;
 	}
-	if (aAmount == 0 || aAmount >= static_cast<int>(aCandles.size())) {
-		return;
-	}
-	auto eraseSize = aCandles.size() - aAmount;
-	aCandles.erase(aCandles.begin(), aCandles.begin() + eraseSize);
 }
