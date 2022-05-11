@@ -3,6 +3,8 @@
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
+using namespace algorithm;
+
 order::order() : state(algorithm::eState::NONE) {}
 
 std::string order::toString() const {
