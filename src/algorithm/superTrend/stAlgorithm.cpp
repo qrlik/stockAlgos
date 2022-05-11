@@ -110,7 +110,12 @@ bool stAlgorithm::updateOrder() {
 }
 
 void stAlgorithm::onOpenOrder() {
-	stats.onOpenOrder((getState() == getIntState(eOrderState::LONG)), isNewTrend); // TO DO FIX
+	if (isNewTrend) {
+		stats.incrementCounter("breakTrendOrder");
+	}
+	else {
+		stats.incrementCounter("touchTrendOrder");
+	}
 	isNewTrend = false;
 }
 

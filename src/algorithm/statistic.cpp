@@ -10,18 +10,20 @@ statistic::statistic(const algorithmDataBase& aData):
 	currentLossHighCash(aData.getStartCash()),
 	currentLossLowCash(aData.getStartCash()) {}
 
-void statistic::onOpenOrder(bool isLong, bool aIsBreak) {
-	if (aIsBreak) {
-		breakTrendOrder += 1;
-	}
-	else {
-		touchTrendOrder += 1;
-	}
+void statistic::incrementCounter(const std::string& aName, int aAmount) {
+	statCounters[aName] += aAmount;
+}
+
+void statistic::decrementCounter(const std::string& aName, int aAmount) {
+	statCounters[aName] -= aAmount;
+}
+
+void statistic::onOpenOrder(bool isLong) {
 	if (isLong) {
-		longOrder += 1;
+		incrementCounter("longOrder");
 	}
 	else {
-		shortOrder += 1;
+		incrementCounter("shortOrder");
 	}
 }
 
@@ -57,11 +59,11 @@ bool statistic::onCloseOrder(double aCash, double aProfit) {
 	lastOrderIsProfitable = isProfitable;
 
 	if (isProfitable) {
-		profitableOrder += 1;
+		incrementCounter("profitableOrder");
 		profitableStreak = std::max(profitableStreak, currentStreak);
 	}
 	else {
-		unprofitableOrder += 1;
+		incrementCounter("unprofitableOrder");
 		unprofitableStreak = std::max(unprofitableStreak, currentStreak);
 		summaryLoss += std::abs(aProfit);
 	}
@@ -73,12 +75,7 @@ bool statistic::operator==(const statistic& aOther) const {
 	result &= utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, MARKET_DATA->getQuotePrecision());
 	result &= utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, MARKET_DATA->getQuotePrecision());
 	result &= utils::isEqual(summaryLoss, aOther.summaryLoss, MARKET_DATA->getQuotePrecision());
-	result &= profitableOrder == aOther.profitableOrder;
-	result &= unprofitableOrder == aOther.unprofitableOrder;
-	result &= touchTrendOrder == aOther.touchTrendOrder;
-	result &= breakTrendOrder == aOther.breakTrendOrder;
-	result &= longOrder == aOther.longOrder;
-	result &= shortOrder == aOther.shortOrder;
+	result &= statCounters == aOther.statCounters;
 	result &= profitableStreak == aOther.profitableStreak;
 	result &= unprofitableStreak == aOther.unprofitableStreak;
 	return result;
@@ -95,45 +92,28 @@ void statistic::initFromJson(const Json& aJson) {
 		else if (field == "summaryLoss") {
 			summaryLoss = value.get<double>();
 		}
-		else if (field == "profitableOrder") {
-			profitableOrder = value.get<size_t>();
-		}
-		else if (field == "unprofitableOrder") {
-			unprofitableOrder = value.get<size_t>();
-		}
-		else if (field == "touchTrendOrder") {
-			touchTrendOrder = value.get<size_t>();
-		}
-		else if (field == "breakTrendOrder") {
-			breakTrendOrder = value.get<size_t>();
-		}
-		else if (field == "longOrder") {
-			longOrder = value.get<size_t>();
-		}
-		else if (field == "shortOrder") {
-			shortOrder = value.get<size_t>();
-		}
 		else if (field == "profitableStreak") {
 			profitableStreak = value.get<size_t>();
 		}
 		else if (field == "unprofitableStreak") {
 			unprofitableStreak = value.get<size_t>();
 		}
+		else {
+			statCounters[field] = value.get<int>();
+		}
 	}
 }
 
 void statistic::addJsonData(Json& aJson, double aCash) const {
-	aJson["orderProfit"] = profitableOrder;
 	aJson["orderProfitStreak"] = profitableStreak;
-	aJson["orderUnprofit"] = unprofitableOrder;
 	aJson["orderUnprofitStreak"] = unprofitableStreak;
 	auto maxLoss = maxLossHighCash - maxLossLowCash;
 	auto maxLossPercentActual = (data.getOrderSize() > 0.0) ? maxLoss / data.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
 	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 0.01);
 	const auto recoveryFactor = (aCash - data.getStartCash()) / summaryLoss;
 	aJson["recoveryFactor"] = utils::round(recoveryFactor, 0.01);
-	aJson["trendTouchOrder"] = touchTrendOrder;
-	aJson["trendBreakOrder"] = breakTrendOrder;
-	aJson["tLong"] = longOrder;
-	aJson["tShort"] = shortOrder;
+
+	for (const auto& [name, count] : statCounters) {
+		aJson[name] = count;
+	}
 }

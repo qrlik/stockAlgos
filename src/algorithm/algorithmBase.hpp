@@ -91,7 +91,7 @@ namespace algorithm {
 			setState(getIntState(aState));
 			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision());
 			cash = cash - getOrder().getMargin() - taxAmount;
-			//stats.onOpenOrder((aState == eOrderState::LONG), isNewTrend);
+			stats.onOpenOrder((aState == eOrderState::LONG));
 			onOpenOrder();
 		}
 		void closeOrder() {
