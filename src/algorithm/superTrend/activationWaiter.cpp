@@ -43,11 +43,11 @@ bool activationWaiter::check() {
 		const auto isTrendUp = algorithm.getIsTrendUp();
 		const auto& open = algorithm.getCandle().open;
 		if (isTrendUp && open > trendActivation) {
-			algorithm.openOrder(eState::LONG, open);
+			algorithm.openOrder(eOrderState::LONG, open);
 			return true;
 		}
 		else if (!isTrendUp && open < trendActivation) {
-			algorithm.openOrder(eState::SHORT, open);
+			algorithm.openOrder(eOrderState::SHORT, open);
 			return true;
 		}
 		activationWaitCounter = algorithm.getData().getActivationWaiterRange();

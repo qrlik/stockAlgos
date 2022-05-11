@@ -5,7 +5,7 @@
 
 using namespace algorithm;
 
-order::order() : state(algorithm::eState::NONE) {}
+order::order() : state(eOrderState::NONE) {}
 
 std::string order::toString() const {
 	std::ostringstream ostr;
@@ -38,23 +38,23 @@ void order::reset() {
 	margin = 0.0;
 	notionalValue = 0.0;
 	quantity = 0.0;
-	state = algorithm::eState::NONE;
+	state = eOrderState::NONE;
 }
 
 double order::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
-	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getData().getLeverage(), quantity, state == algorithm::eState::LONG);
-	auto stopLossSign = (state == algorithm::eState::LONG) ? 1 : -1;
+	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getData().getLeverage(), quantity, state == eOrderState::LONG);
+	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aMM.getData().getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
 double order::calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const {
-	auto minProfitSign = (state == algorithm::eState::LONG) ? 1 : -1;
+	auto minProfitSign = (state == eOrderState::LONG) ? 1 : -1;
 	auto result = price * (100.0 + minProfitSign * aMM.getData().getMinimumProfitPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-bool order::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
+bool order::openOrder(const algorithm::stAlgorithm& aMM, eOrderState aState, double aPrice) {
 	reset();
 	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	auto allowedCash = utils::floor(aMM.getCash() * aMM.getData().getDealPercent() / 100.0, quotePrecision);
@@ -69,7 +69,7 @@ bool order::openOrder(const algorithm::stAlgorithm& aMM, double aPrice) {
 		return false;
 	}
 
-	state = aMM.getState();
+	state = aState;
 	fullCheck = aMM.getData().getFullCheck();
 	price = aPrice;
 	quantity = calcQuantity;
@@ -86,7 +86,7 @@ double order::getProfit() const {
 	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
 	const auto orderCloseTax = utils::round(orderCloseSummary * MARKET_DATA->getTaxFactor(), quotePrecision);
-	auto profitWithoutTax = (state == algorithm::eState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
+	auto profitWithoutTax = (state == eOrderState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
 }
 

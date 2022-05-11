@@ -9,12 +9,17 @@ namespace algorithm {
 }
 
 namespace algorithm {
+	enum class eOrderState {
+		NONE = 0,
+		LONG = 1,
+		SHORT = 2
+	};
 	class order {
 	public:
 		order();
 		void initFromJson(const algorithm::algorithmDataBase& aAlgorithm, const Json& aJson);
 		bool operator==(const order& aOther) const;
-		bool openOrder(const algorithm::stAlgorithm& aMM, double aPrice);
+		bool openOrder(const algorithm::stAlgorithm& aMM, eOrderState aState, double aPrice);
 		void reset();
 		std::string toString() const;
 
@@ -38,7 +43,7 @@ namespace algorithm {
 		double margin = 0.0;
 		double notionalValue = 0.0;
 		double quantity = 0.0;
-		algorithm::eState state;
+		eOrderState state;
 		bool fullCheck = false;
 	};
 }

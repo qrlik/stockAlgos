@@ -47,7 +47,7 @@ namespace algorithm {
 
 		bool isNewTrendChanged();
 
-		void openOrder(eState aState, double aPrice);
+		void openOrder(eOrderState aState, double aPrice);
 		void updateOrderStopLoss(double aStopLoss);
 	private:
 		void preLoop() override;

@@ -6,6 +6,16 @@
 #include <type_traits>
 
 namespace algorithm {
+	enum class eBaseState {
+		NONE = 0,
+		LONG = 1,
+		SHORT = 2
+	};
+	template<typename T>
+	int getIntState(T aState) {
+		return static_cast<int>(aState);
+	}
+
 	class algorithmDataBase;
 	template<typename dataType, typename = typename std::enable_if_t<std::is_base_of_v<algorithmDataBase, dataType>>>
 	class algorithmBase {
@@ -38,6 +48,7 @@ namespace algorithm {
 			return curCash;
 		}
 		double getCash() const { return cash; }
+		int getState() const { return state; }
 
 		bool calculate(std::vector<market::candle> aCandles) {
 			for (auto& candle : aCandles) {
@@ -104,6 +115,7 @@ namespace algorithm {
 		virtual void log() const = 0; // TO DO add impl
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
+		void setState(int aState) { state = aState; }
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
@@ -124,6 +136,7 @@ namespace algorithm {
 		market::candle curCandle;
 		market::candle prevCandle;
 
+		int state = 0;
 		bool withLogs = false;
 	};
 }

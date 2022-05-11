@@ -47,7 +47,7 @@ bool trendBreakOpener::check() {
 	if (isTrendUp && candle.high >= trendActivation) {
 		if (!algorithm.getData().getBreakOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::LONG);
-			algorithm.openOrder(eState::LONG, orderPrice);
+			algorithm.openOrder(eOrderState::LONG, orderPrice);
 			return true;
 		}
 		algorithm.getActivationWaiter().start();
@@ -55,7 +55,7 @@ bool trendBreakOpener::check() {
 	else if (!isTrendUp && candle.low <= trendActivation) {
 		if (!algorithm.getData().getBreakOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::SHORT);
-			algorithm.openOrder(eState::SHORT, orderPrice);
+			algorithm.openOrder(eOrderState::SHORT, orderPrice);
 			return true;
 		}
 		algorithm.getActivationWaiter().start();

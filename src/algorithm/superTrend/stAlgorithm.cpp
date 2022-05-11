@@ -140,14 +140,14 @@ bool stAlgorithm::updateOrder() {
 	return needReupdate;
 }
 
-void stAlgorithm::openOrder(eState aState, double aPrice) {
+void stAlgorithm::openOrder(eOrderState aState, double aPrice) {
 	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
-	state = aState;
-	if (!order.openOrder(*this, aPrice)) {
+	if (!order.openOrder(*this, aState, aPrice)) {
 		state = eState::NONE;
 		return;
 	}
 
+	state = static_cast<eState>(getIntState(aState));
 	auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - getOrder().getMargin() - taxAmount;
 	stats.onOpenOrder((state == eState::LONG), isNewTrend);
