@@ -5,44 +5,17 @@
 
 using namespace algorithm;
 
-std::string stAlgorithm::stateToString(eState aState) {
-	switch (aState) {
-		case algorithm::eState::LONG:
-			return "LONG";
-		case algorithm::eState::SHORT:
-			return "SHORT";
-		case algorithm::eState::STOP_LOSS_WAIT:
-			return "STOP_LOSS_WAIT";
-		case algorithm::eState::ACTIVATION_WAIT:
-			return "ACTIVATION_WAIT";
-		default:
-			return "NONE";
-	}
-}
-
-eState stAlgorithm::stateFromString(const std::string& aStr) {
-	if (aStr == "LONG") {
-		return eState::LONG;
-	}
-	else if (aStr == "SHORT") {
-		return eState::SHORT;
-	}
-	else if (aStr == "STOP_LOSS_WAIT") {
-		return eState::STOP_LOSS_WAIT;
-	}
-	else if (aStr == "ACTIVATION_WAIT") {
-		return eState::ACTIVATION_WAIT;
-	}
-	return eState::NONE;
-}
-
 stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
 	baseClass(aData),
 	activationWaiterModule(*this),
 	stopLossWaiterModule(*this),
 	dynamicStopLossModule(*this),
 	trendTouchOpenerModule(*this),
-	trendBreakOpenerModule(*this) {}
+	trendBreakOpenerModule(*this)
+{
+	addState(getIntState(eState::STOP_LOSS_WAIT), "STOP_LOSS_WAIT");
+	addState(getIntState(eState::ACTIVATION_WAIT), "ACTIVATION_WAIT");
+}
 
 bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 	auto result = baseClass::operator==(aOther);
@@ -196,14 +169,14 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 		isNewTrend = aValue.get<bool>();
 	}
 	else if (aName == "state") {
-		state = algorithm::stAlgorithm::stateFromString(aValue.get<std::string>());
+		state = static_cast<decltype(state)>(stateFromString(aValue.get<std::string>())); // TO DO fix
 	}
 }
 
 void stAlgorithm::log() const {
 	std::ofstream output("Logs.txt", std::ios::app);
 	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(cash)
-		<< std::setw(18) << stateToString(state) << std::setw(4) << std::to_string(isTrendUp)
+		<< std::setw(18) << stateToString(getIntState(state)) << std::setw(4) << std::to_string(isTrendUp) // TO DO fix get int state
 		<< std::setw(4) << std::to_string(isNewTrend);
 	if (state == eState::STOP_LOSS_WAIT) {
 		output << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());

@@ -28,9 +28,6 @@ namespace algorithm {
 		friend class calculation::calculationSystem; // TO DO delete
 	public:
 		using baseClass = algorithmBase<stAlgorithmData>;
-		static std::string stateToString(eState aState); // TO DO look
-		static eState stateFromString(const std::string& aStr); // TO DO look
-
 		stAlgorithm(const stAlgorithmData& aData);
 		bool operator==(const stAlgorithm& aOther) const;
 

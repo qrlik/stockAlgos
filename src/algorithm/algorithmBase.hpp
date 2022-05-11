@@ -22,9 +22,12 @@ namespace algorithm {
 	public:
 		using algorithmDataType = dataType;
 		algorithmBase(const dataType& aData) :
-			data(aData), stats(data),  indicators(data)
+			data(aData), stats(data), indicators(data)
 		{
 			cash = data.getStartCash();
+			statesMap[getIntState(eBaseState::NONE)] = "NONE";
+			statesMap[getIntState(eBaseState::LONG)] = "LONG";
+			statesMap[getIntState(eBaseState::SHORT)] = "SHORT";
 		}
 		bool operator==(const algorithmBase<dataType>& aOther) const {
 			auto result = true;
@@ -58,7 +61,6 @@ namespace algorithm {
 			}
 			return true;
 		}
-
 		bool doAction(market::candle& aCandle) {
 			if (getStopCashBreak()) {
 				return false;
@@ -101,7 +103,6 @@ namespace algorithm {
 				}
 			}
 		}
-
 		Json getJsonData() const {
 			Json result;
 			result["cash"] = utils::round(getFullCash(), 0.01);
@@ -116,6 +117,31 @@ namespace algorithm {
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
 		void setState(int aState) { state = aState; }
+		void addState(int aState, std::string aStr) {
+			if (statesMap.count(aState) == 0) {
+				statesMap[aState] = std::move(aStr);
+			}
+			else {
+				utils::logError("algorithmBase::addState wrong state");
+			}
+		}
+		int stateFromString(const std::string& aStr) const {
+			for (const auto& [intState, str] : statesMap) {
+				if (str == aStr) {
+					return intState;
+				}
+			}
+			utils::logError("algorithmBase::stateFromString wrong state string");
+			return 0;
+		}
+		std::string stateToString(int aState) const {
+			if (auto it = statesMap.find(aState); it != statesMap.end()) {
+				return it->second;
+			}
+			utils::logError("algorithmBase::stateToString wrong state");
+			return {};
+		}
+
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
@@ -132,6 +158,7 @@ namespace algorithm {
 
 		const dataType data;
 		market::indicatorsSystem indicators;
+		std::unordered_map<int, std::string> statesMap;
 
 		market::candle curCandle;
 		market::candle prevCandle;
