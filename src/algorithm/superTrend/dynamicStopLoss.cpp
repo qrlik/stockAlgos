@@ -10,7 +10,7 @@ dynamicStopLoss::dynamicStopLoss(stAlgorithm& aAlgorithm):
 
 bool dynamicStopLoss::checkTrend() {
 	const auto& order = algorithm.getOrder();
-	if (algorithm.getState() == eState::LONG) {
+	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto lastUpTrend = algorithm.getLastUpSuperTrend();
 		if (lastUpTrend >= order.getMinimumProfit() && lastUpTrend > order.getStopLoss()) {
 			algorithm.updateOrderStopLoss(lastUpTrend);
@@ -36,7 +36,7 @@ bool dynamicStopLoss::checkDynamic() {
 	auto& order = algorithm.getOrder();
 	const auto& candle = algorithm.getCandle();
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
-	if (algorithm.getState() == eState::LONG) {
+	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
 		if (dynamicStopLoss >= order.getMinimumProfit() && dynamicStopLoss > order.getStopLoss()) {
 			algorithm.updateOrderStopLoss(dynamicStopLoss);

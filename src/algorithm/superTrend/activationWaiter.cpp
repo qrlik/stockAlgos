@@ -12,11 +12,11 @@ bool activationWaiter::operator==(const activationWaiter& other) const {
 }
 
 void activationWaiter::onNewTrend() {
-	if (algorithm.getState() != eState::ACTIVATION_WAIT) {
+	if (algorithm.getState() != getIntState(eCustomState::ACTIVATION_WAIT)) {
 		return;
 	}
 	if (algorithm.getData().getActivationWaiterResetAllowed()) {
-		algorithm.setState(eState::NONE);
+		algorithm.setState(getIntState(eBaseState::NONE));
 		activationWaitCounter = 0;
 	}
 	else {
@@ -26,7 +26,7 @@ void activationWaiter::onNewTrend() {
 
 void activationWaiter::start() {
 	if (const auto range = algorithm.getData().getActivationWaiterRange(); range >= 0) {
-		algorithm.setState(eState::ACTIVATION_WAIT);
+		algorithm.setState(getIntState(eCustomState::ACTIVATION_WAIT));
 		activationWaitCounter = algorithm.getData().getActivationWaiterRange();
 	}
 	else {
@@ -35,7 +35,7 @@ void activationWaiter::start() {
 }
 
 bool activationWaiter::check() {
-	if (algorithm.getState() != eState::ACTIVATION_WAIT) {
+	if (algorithm.getState() != getIntState(eCustomState::ACTIVATION_WAIT)) {
 		return false;
 	}
 	const auto trendActivation = algorithm.getActualSuperTrend();

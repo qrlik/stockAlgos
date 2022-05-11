@@ -16,11 +16,11 @@ int stopLossWaiter::getCounter() const {
 }
 
 void stopLossWaiter::onNewTrend() {
-	if (algorithm.getState() != eState::STOP_LOSS_WAIT) {
+	if (algorithm.getState() != getIntState(eCustomState::STOP_LOSS_WAIT)) {
 		return;
 	}
 	if (algorithm.getData().getStopLossWaiterResetAllowed()) {
-		algorithm.setState(eState::NONE);
+		algorithm.setState(getIntState(eBaseState::NONE));
 		stopLossWaitCounter = 0;
 	}
 	else {
@@ -31,21 +31,21 @@ void stopLossWaiter::onNewTrend() {
 void stopLossWaiter::start() {
 	if (algorithm.getData().getStopLossWaiterEnabled()) {
 		if (algorithm.getData().getStopLossWaiterRange() >= 0) {
-			algorithm.setState(eState::STOP_LOSS_WAIT);
+			algorithm.setState(getIntState(eCustomState::STOP_LOSS_WAIT));
 			stopLossWaitCounter = algorithm.getData().getStopLossWaiterRange();
 		}
 		else {
 			utils::logError("stopLossWaiter::start wrong range");
-			algorithm.setState(eState::NONE);
+			algorithm.setState(getIntState(eBaseState::NONE));
 		}
 	}
 	else {
-		algorithm.setState(eState::NONE);
+		algorithm.setState(getIntState(eBaseState::NONE));
 	}
 }
 
 bool stopLossWaiter::check() {
-	if (algorithm.getState() != eState::STOP_LOSS_WAIT) {
+	if (algorithm.getState() != getIntState(eCustomState::STOP_LOSS_WAIT)) {
 		return false;
 	}
 	const auto trendActivation = algorithm.getActualSuperTrend();
@@ -55,7 +55,7 @@ bool stopLossWaiter::check() {
 		const bool trendUpAndOpenSuccess = isTrendUp && open > trendActivation;
 		const bool trendDownAndOpenSuccess = !isTrendUp && open < trendActivation;
 		if (trendUpAndOpenSuccess || trendDownAndOpenSuccess) {
-			algorithm.setState(eState::NONE);
+			algorithm.setState(getIntState(eBaseState::NONE));
 			return true;
 		}
 		stopLossWaitCounter = algorithm.getData().getStopLossWaiterRange();

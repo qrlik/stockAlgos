@@ -33,6 +33,7 @@ namespace algorithm {
 			auto result = true;
 			result &= data == aOther.data;
 			result &= order == aOther.order;
+			result &= state == aOther.state;
 			if (data.getFullCheck()) {
 				result &= stats == aOther.stats;
 				result &= utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision());
@@ -40,6 +41,7 @@ namespace algorithm {
 			return result;
 		}
 		void setWithLogs(bool aState) { withLogs = aState; }
+		void setState(int aState) { state = aState; }
 		const dataType& getData() const { return data; }
 		const order& getOrder() const { return order; }
 		const market::candle& getCandle() const { return curCandle; }
@@ -116,7 +118,6 @@ namespace algorithm {
 		virtual void log() const = 0; // TO DO add impl
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
-		void setState(int aState) { state = aState; }
 		void addState(int aState, std::string aStr) {
 			if (statesMap.count(aState) == 0) {
 				statesMap[aState] = std::move(aStr);

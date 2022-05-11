@@ -5,7 +5,6 @@
 namespace algorithm {
 	class stAlgorithm;
 	class algorithmDataBase;
-	enum class eState : unsigned char;
 }
 
 namespace algorithm {

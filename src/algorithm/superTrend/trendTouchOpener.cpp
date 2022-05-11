@@ -4,8 +4,8 @@
 using namespace algorithm;
 
 namespace {
-	double getOrderPrice(double aTrendActivation, double aOpen, eState aState) {
-		if (aState == eState::LONG) {
+	double getOrderPrice(double aTrendActivation, double aOpen, eOrderState aState) {
+		if (aState == eOrderState::LONG) {
 			if (aOpen < aTrendActivation) {
 				return aOpen;
 			}
@@ -29,7 +29,7 @@ bool trendTouchOpener::check() {
 	const auto& candle = algorithm.getCandle();
 	if (isTrendUp && candle.low <= trendActivation) {
 		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
-			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::LONG);
+			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eOrderState::LONG);
 			algorithm.openOrder(eOrderState::LONG, orderPrice);
 			return true;
 		}
@@ -37,7 +37,7 @@ bool trendTouchOpener::check() {
 	}
 	else if (!isTrendUp && candle.high >= trendActivation) {
 		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
-			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eState::SHORT);
+			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eOrderState::SHORT);
 			algorithm.openOrder(eOrderState::SHORT, orderPrice);
 			return true;
 		}

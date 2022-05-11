@@ -13,15 +13,14 @@ stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
 	trendTouchOpenerModule(*this),
 	trendBreakOpenerModule(*this)
 {
-	addState(getIntState(eState::STOP_LOSS_WAIT), "STOP_LOSS_WAIT");
-	addState(getIntState(eState::ACTIVATION_WAIT), "ACTIVATION_WAIT");
+	addState(getIntState(eCustomState::STOP_LOSS_WAIT), "STOP_LOSS_WAIT");
+	addState(getIntState(eCustomState::ACTIVATION_WAIT), "ACTIVATION_WAIT");
 }
 
 bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 	auto result = baseClass::operator==(aOther);
 	result &= activationWaiterModule == aOther.activationWaiterModule;
 	result &= stopLossWaiterModule == aOther.stopLossWaiterModule;
-	result &= state == aOther.state;
 	result &= isTrendUp == aOther.isTrendUp;
 	result &= isNewTrend == aOther.isNewTrend;
 	if (getData().getFullCheck()) {
@@ -29,10 +28,6 @@ bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 		result &= utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend);
 	}
 	return result;
-}
-
-void stAlgorithm::setState(eState aState) {
-	state = aState;
 }
 
 double stAlgorithm::getSuperTrend() const {
@@ -80,16 +75,17 @@ void stAlgorithm::preLoop() {
 }
 
 bool stAlgorithm::loop() {
-	switch (state) {
-	case algorithm::eState::NONE:
+	const auto state = getState();
+	if (state == getIntState(eBaseState::NONE)) {
 		return checkTrend();
-	case algorithm::eState::STOP_LOSS_WAIT:
-		return stopLossWaiterModule.check();
-	case algorithm::eState::ACTIVATION_WAIT:
-		return activationWaiterModule.check();
-	default:
-		return updateOrder();
 	}
+	else if (state == getIntState(eCustomState::STOP_LOSS_WAIT)) {
+		return stopLossWaiterModule.check();
+	}
+	else if (state == getIntState(eCustomState::ACTIVATION_WAIT)) {
+		return activationWaiterModule.check();
+	}
+	return updateOrder();
 }
 
 bool stAlgorithm::checkTrend() {
@@ -101,10 +97,10 @@ bool stAlgorithm::checkTrend() {
 
 bool stAlgorithm::updateOrder() {
 	bool needReupdate = false;
-	if (state == eState::LONG && getCandle().low <= getOrder().getStopLoss()) {
+	if (getState() == getIntState(eBaseState::LONG) && getCandle().low <= getOrder().getStopLoss()) {
 		closeOrder();
 	}
-	else if (state == eState::SHORT && getCandle().high >= getOrder().getStopLoss()) {
+	else if (getState() == getIntState(eBaseState::SHORT) && getCandle().high >= getOrder().getStopLoss()) {
 		closeOrder();
 	}
 	else if (getOrder().getTime() != getCandle().time) {
@@ -116,14 +112,14 @@ bool stAlgorithm::updateOrder() {
 void stAlgorithm::openOrder(eOrderState aState, double aPrice) {
 	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
 	if (!order.openOrder(*this, aState, aPrice)) {
-		state = eState::NONE;
+		setState(getIntState(eBaseState::NONE));
 		return;
 	}
 
-	state = static_cast<eState>(getIntState(aState));
+	setState(getIntState(aState));
 	auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), market::marketData::getInstance()->getQuotePrecision());
 	cash = cash - getOrder().getMargin() - taxAmount;
-	stats.onOpenOrder((state == eState::LONG), isNewTrend);
+	stats.onOpenOrder((aState == eOrderState::LONG), isNewTrend);
 	isNewTrend = false;
 }
 
@@ -133,7 +129,7 @@ void stAlgorithm::closeOrder() {
 		stopLossWaiterModule.start();
 	}
 	else {
-		state = eState::NONE;
+		setState(getIntState(eBaseState::NONE));
 	}
 	cash = cash + getOrder().getMargin() + profit;
 	order.reset();
@@ -169,19 +165,19 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 		isNewTrend = aValue.get<bool>();
 	}
 	else if (aName == "state") {
-		state = static_cast<decltype(state)>(stateFromString(aValue.get<std::string>())); // TO DO fix
+		setState(stateFromString(aValue.get<std::string>()));
 	}
 }
 
 void stAlgorithm::log() const {
 	std::ofstream output("Logs.txt", std::ios::app);
 	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(cash)
-		<< std::setw(18) << stateToString(getIntState(state)) << std::setw(4) << std::to_string(isTrendUp) // TO DO fix get int state
+		<< std::setw(18) << stateToString(getState()) << std::setw(4) << std::to_string(isTrendUp) // TO DO fix get int state
 		<< std::setw(4) << std::to_string(isNewTrend);
-	if (state == eState::STOP_LOSS_WAIT) {
+	if (getState() == getIntState(eCustomState::STOP_LOSS_WAIT)) {
 		output << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
 	}
-	else if (state == eState::ACTIVATION_WAIT) {
+	else if (getState() == getIntState(eCustomState::ACTIVATION_WAIT)) {
 		output << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
 	}
 	else if (!getOrder().getTime().empty()) {

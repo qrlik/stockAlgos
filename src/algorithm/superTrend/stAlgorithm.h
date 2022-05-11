@@ -8,18 +8,12 @@
 #include "trendBreakOpener.h"
 #include "trendTouchOpener.h"
 
-namespace tests {
-	class mmChecker;
-}
 namespace calculation {
 	class calculationSystem;
 }
 
 namespace algorithm {
-	enum class eState : unsigned char {
-		NONE = 0,
-		LONG = 1,
-		SHORT = 2,
+	enum class eCustomState {
 		STOP_LOSS_WAIT = 3,
 		ACTIVATION_WAIT = 4
 	};
@@ -37,14 +31,11 @@ namespace algorithm {
 		double getLastDownSuperTrend() const { return lastDownSuperTrend; }
 		double getSuperTrend() const;
 		double getActualSuperTrend() const;
-		eState getState() const { return state; }
 		bool getIsTrendUp() const { return isTrendUp; }
-
-		void setState(eState aState);
 
 		bool isNewTrendChanged();
 
-		void openOrder(eOrderState aState, double aPrice);
+		void openOrder(eOrderState aState, double aPrice); // TO DO MOVE
 		void updateOrderStopLoss(double aStopLoss);
 	private:
 		void preLoop() override;
@@ -65,6 +56,5 @@ namespace algorithm {
 		double lastDownSuperTrend = 0.0;
 		bool isTrendUp = false;
 		bool isNewTrend = false;
-		eState state = eState::NONE;
 	};
 }
