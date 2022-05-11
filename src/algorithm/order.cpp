@@ -41,27 +41,27 @@ void order::reset() {
 	state = eOrderState::NONE;
 }
 
-double order::calculateStopLoss(const algorithm::stAlgorithm& aMM) const {
-	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aMM.getData().getLeverage(), quantity, state == eOrderState::LONG);
+double order::calculateStopLoss(const algorithm::algorithmDataBase& aData) const {
+	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aData.getLeverage(), quantity, state == eOrderState::LONG);
 	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
-	auto result = liqPrice * (100 + stopLossSign * aMM.getData().getLiquidationOffsetPercent()) / 100.0;
+	auto result = liqPrice * (100 + stopLossSign * aData.getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-double order::calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const {
+double order::calculateMinimumProfit(const algorithm::algorithmDataBase& aData) const {
 	auto minProfitSign = (state == eOrderState::LONG) ? 1 : -1;
-	auto result = price * (100.0 + minProfitSign * aMM.getData().getMinimumProfitPercent()) / 100.0;
+	auto result = price * (100.0 + minProfitSign * aData.getMinimumProfitPercent()) / 100.0;
 	return utils::round(result, MARKET_DATA->getPricePrecision());
 }
 
-bool order::openOrder(const algorithm::stAlgorithm& aMM, eOrderState aState, double aPrice) {
+bool order::openOrder(const algorithm::algorithmDataBase& aData, eOrderState aState, double aPrice, double aCash, const std::string& aTime) {
 	reset();
-	const auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
-	auto allowedCash = utils::floor(aMM.getCash() * aMM.getData().getDealPercent() / 100.0, quotePrecision);
-	if (const auto allowedCashBySize = utils::floor(aMM.getData().getOrderSize(), quotePrecision); allowedCashBySize > 0.0) {
+	const auto quotePrecision = MARKET_DATA->getQuotePrecision();
+	auto allowedCash = utils::floor(aCash * aData.getDealPercent() / 100.0, quotePrecision);
+	if (const auto allowedCashBySize = utils::floor(aData.getOrderSize(), quotePrecision); allowedCashBySize > 0.0) {
 		allowedCash = std::min(allowedCash, allowedCashBySize);
 	}
-	const auto allowedNotionalValue = allowedCash * aMM.getData().getLeverage();
+	const auto allowedNotionalValue = allowedCash * aData.getLeverage();
 	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
 	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);
 	if (calcQuantity < MARKET_DATA->getQuantityPrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
@@ -70,20 +70,20 @@ bool order::openOrder(const algorithm::stAlgorithm& aMM, eOrderState aState, dou
 	}
 
 	state = aState;
-	fullCheck = aMM.getData().getFullCheck();
+	fullCheck = aData.getFullCheck();
 	price = aPrice;
 	quantity = calcQuantity;
 	notionalValue = calcNotionalValue;
-	margin = utils::round(notionalValue / aMM.getData().getLeverage(), quotePrecision);
+	margin = utils::round(notionalValue / aData.getLeverage(), quotePrecision);
 
-	time = aMM.getCandle().time;
-	minimumProfit = calculateMinimumProfit(aMM);
-	stopLoss = calculateStopLoss(aMM);
+	time = aTime;
+	minimumProfit = calculateMinimumProfit(aData);
+	stopLoss = calculateStopLoss(aData);
 	return true;
 }
 
 double order::getProfit() const {
-	auto quotePrecision = market::marketData::getInstance()->getQuotePrecision();
+	auto quotePrecision = MARKET_DATA->getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
 	const auto orderCloseTax = utils::round(orderCloseSummary * MARKET_DATA->getTaxFactor(), quotePrecision);
 	auto profitWithoutTax = (state == eOrderState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;

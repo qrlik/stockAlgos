@@ -70,9 +70,9 @@ bool statistic::onCloseOrder(double aCash, double aProfit) {
 
 bool statistic::operator==(const statistic& aOther) const {
 	bool result = true;
-	result &= utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, market::marketData::getInstance()->getQuotePrecision());
-	result &= utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, market::marketData::getInstance()->getQuotePrecision());
-	result &= utils::isEqual(summaryLoss, aOther.summaryLoss, market::marketData::getInstance()->getQuotePrecision());
+	result &= utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, MARKET_DATA->getQuotePrecision());
+	result &= utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, MARKET_DATA->getQuotePrecision());
+	result &= utils::isEqual(summaryLoss, aOther.summaryLoss, MARKET_DATA->getQuotePrecision());
 	result &= profitableOrder == aOther.profitableOrder;
 	result &= unprofitableOrder == aOther.unprofitableOrder;
 	result &= touchTrendOrder == aOther.touchTrendOrder;

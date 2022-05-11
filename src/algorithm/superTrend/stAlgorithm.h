@@ -35,16 +35,16 @@ namespace algorithm {
 
 		bool isNewTrendChanged();
 
-		void openOrder(eOrderState aState, double aPrice); // TO DO MOVE
 		void updateOrderStopLoss(double aStopLoss);
 	private:
 		void preLoop() override;
 		bool loop() override;
+		void onOpenOrder() override;
+		void onCloseOrder(double aProfit) override;
 		void log() const override;
 		void initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool updateOrder();
 		bool checkTrend();
-		void closeOrder();
 
 		activationWaiter activationWaiterModule;
 		stopLossWaiter stopLossWaiterModule;

@@ -75,14 +75,14 @@ void stAlgorithm::preLoop() {
 }
 
 bool stAlgorithm::loop() {
-	const auto state = getState();
-	if (state == getIntState(eBaseState::NONE)) {
+	const auto curState = getState();
+	if (curState == getIntState(eBaseState::NONE)) {
 		return checkTrend();
 	}
-	else if (state == getIntState(eCustomState::STOP_LOSS_WAIT)) {
+	else if (curState == getIntState(eCustomState::STOP_LOSS_WAIT)) {
 		return stopLossWaiterModule.check();
 	}
-	else if (state == getIntState(eCustomState::ACTIVATION_WAIT)) {
+	else if (curState == getIntState(eCustomState::ACTIVATION_WAIT)) {
 		return activationWaiterModule.check();
 	}
 	return updateOrder();
@@ -109,32 +109,14 @@ bool stAlgorithm::updateOrder() {
 	return needReupdate;
 }
 
-void stAlgorithm::openOrder(eOrderState aState, double aPrice) {
-	aPrice = utils::round(aPrice, market::marketData::getInstance()->getPricePrecision());
-	if (!order.openOrder(*this, aState, aPrice)) {
-		setState(getIntState(eBaseState::NONE));
-		return;
-	}
-
-	setState(getIntState(aState));
-	auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), market::marketData::getInstance()->getQuotePrecision());
-	cash = cash - getOrder().getMargin() - taxAmount;
-	stats.onOpenOrder((aState == eOrderState::LONG), isNewTrend);
+void stAlgorithm::onOpenOrder() {
+	stats.onOpenOrder((getState() == getIntState(eOrderState::LONG)), isNewTrend); // TO DO FIX
 	isNewTrend = false;
 }
 
-void stAlgorithm::closeOrder() {
-	const auto profit = getOrder().getProfit();
-	if (profit < 0) {
+void stAlgorithm::onCloseOrder(double aProfit) {
+	if (aProfit < 0) {
 		stopLossWaiterModule.start();
-	}
-	else {
-		setState(getIntState(eBaseState::NONE));
-	}
-	cash = cash + getOrder().getMargin() + profit;
-	order.reset();
-	if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
-		stopCashBreak = true;
 	}
 }
 

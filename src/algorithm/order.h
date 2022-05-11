@@ -3,7 +3,6 @@
 #include <string>
 
 namespace algorithm {
-	class stAlgorithm;
 	class algorithmDataBase;
 }
 
@@ -18,7 +17,7 @@ namespace algorithm {
 		order();
 		void initFromJson(const algorithm::algorithmDataBase& aAlgorithm, const Json& aJson);
 		bool operator==(const order& aOther) const;
-		bool openOrder(const algorithm::stAlgorithm& aMM, eOrderState aState, double aPrice);
+		bool openOrder(const algorithm::algorithmDataBase& aData, eOrderState aState, double aPrice, double aCash, const std::string& aTime);
 		void reset();
 		std::string toString() const;
 
@@ -32,8 +31,8 @@ namespace algorithm {
 		double getProfit() const;
 		void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
 	private:
-		double calculateStopLoss(const algorithm::stAlgorithm& aMM) const;
-		double calculateMinimumProfit(const algorithm::stAlgorithm& aMM) const;
+		double calculateStopLoss(const algorithm::algorithmDataBase& aData) const;
+		double calculateMinimumProfit(const algorithm::algorithmDataBase& aData) const;
 
 		std::string time;
 		double price = 0.0;

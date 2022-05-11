@@ -1,8 +1,10 @@
 #pragma once
 #include "market/candle.h"
 #include "market/indicatorsSystem.h"
+#include "market/marketRules.h"
 #include "order.h"
 #include "statistic.h"
+#include "utils/utils.h"
 #include <type_traits>
 
 namespace algorithm {
@@ -36,7 +38,7 @@ namespace algorithm {
 			result &= state == aOther.state;
 			if (data.getFullCheck()) {
 				result &= stats == aOther.stats;
-				result &= utils::isEqual(cash, aOther.cash, market::marketData::getInstance()->getQuotePrecision());
+				result &= utils::isEqual(cash, aOther.cash, MARKET_DATA->getQuotePrecision());
 			}
 			return result;
 		}
@@ -80,6 +82,29 @@ namespace algorithm {
 			return true;
 		}
 
+		void openOrder(eOrderState aState, double aPrice) {
+			aPrice = utils::round(aPrice, MARKET_DATA->getPricePrecision());
+			if (!order.openOrder(data, aState, aPrice, cash, getCandle().time)) {
+				return;
+			}
+
+			setState(getIntState(aState));
+			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision());
+			cash = cash - getOrder().getMargin() - taxAmount;
+			//stats.onOpenOrder((aState == eOrderState::LONG), isNewTrend);
+			onOpenOrder();
+		}
+		void closeOrder() {
+			setState(getIntState(eBaseState::NONE));
+			const auto profit = getOrder().getProfit();
+			cash = cash + getOrder().getMargin() + profit;
+			order.reset();
+			if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
+				stopCashBreak = true;
+			}
+			onCloseOrder(profit);
+		}
+
 		void initFromJson(const Json& aValue) {
 			if (aValue.is_null()) {
 				return;
@@ -115,6 +140,8 @@ namespace algorithm {
 	protected:
 		virtual void preLoop() = 0;
 		virtual bool loop() = 0;
+		virtual void onOpenOrder() = 0;
+		virtual void onCloseOrder(double aProfit) = 0;
 		virtual void log() const = 0; // TO DO add impl
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
