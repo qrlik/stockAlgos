@@ -7,6 +7,11 @@
 #include "utils/utils.h"
 #include <type_traits>
 
+namespace tests {
+	template<typename T>
+	class algorithmChecker;
+}
+
 namespace algorithm {
 	enum class eBaseState {
 		NONE = 0,
@@ -21,6 +26,8 @@ namespace algorithm {
 	class algorithmDataBase;
 	template<typename dataType, typename = typename std::enable_if_t<std::is_base_of_v<algorithmDataBase, dataType>>>
 	class algorithmBase {
+		template<typename T>
+		friend class tests::algorithmChecker;
 	public:
 		using algorithmDataType = dataType;
 		algorithmBase(const dataType& aData) :
@@ -42,6 +49,7 @@ namespace algorithm {
 			}
 			return result;
 		}
+
 		void setWithLogs(bool aState) { withLogs = aState; }
 		void setState(int aState) { state = aState; }
 		const dataType& getData() const { return data; }
@@ -65,24 +73,6 @@ namespace algorithm {
 			}
 			return true;
 		}
-		bool doAction(market::candle& aCandle) {
-			if (getStopCashBreak()) {
-				return false;
-			}
-			if (isReady()) {
-				curCandle = aCandle;
-				init();
-				preLoop();
-				while (loop()) {}
-				if (getWithLogs()) {
-					log();
-				}
-			}
-			indicators.processCandle(aCandle);
-			prevCandle = aCandle;
-			return true;
-		}
-
 		void openOrder(eOrderState aState, double aPrice) {
 			aPrice = utils::round(aPrice, MARKET_DATA->getPricePrecision());
 			if (!order.openOrder(data, aState, aPrice, cash, getCandle().time)) {
@@ -186,6 +176,23 @@ namespace algorithm {
 				initInternal();
 				inited = true;
 			}
+		}
+		bool doAction(market::candle& aCandle) {
+			if (getStopCashBreak()) {
+				return false;
+			}
+			if (isReady()) {
+				curCandle = aCandle;
+				init();
+				preLoop();
+				while (loop()) {}
+				if (getWithLogs()) {
+					log();
+				}
+			}
+			indicators.processCandle(aCandle);
+			prevCandle = aCandle;
+			return true;
 		}
 
 		const dataType data;
