@@ -9,6 +9,7 @@
 /*.pdb
 build/*
 assets/candles/*
+output/*
 results/*
 
 # User-specific files
