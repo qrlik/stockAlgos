@@ -62,11 +62,7 @@ void stAlgorithm::preLoop() {
 		lastDownSuperTrend = getPrevCandle().superTrend;
 	}
 
-	if (!inited) {
-		isTrendUp = getPrevCandle().trendIsUp;
-		inited = true;
-	}
-	else if (isTrendUp != getPrevCandle().trendIsUp) {
+	if (isTrendUp != getPrevCandle().trendIsUp) {
 		isTrendUp = getPrevCandle().trendIsUp;
 		isNewTrend = trendBreakOpenerModule.isNewTrendAllowed();
 		stopLossWaiterModule.onNewTrend();
@@ -129,15 +125,19 @@ void stAlgorithm::updateOrderStopLoss(double aStopLoss) {
 	order.updateStopLoss(aStopLoss);
 }
 
+void stAlgorithm::initInternal() {
+	isTrendUp = getPrevCandle().trendIsUp;
+}
+
 void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	if (aValue.is_null()) {
 		return;
 	}
 	if (aName == "activationWaitCounter") {
-		getActivationWaiter().setCounter(aValue.get<int>());
+		activationWaiterModule.setCounter(aValue.get<int>());
 	}
 	else if (aName == "stopLossWaitCounter") {
-		getStopLossWaiter().setCounter(aValue.get<int>());
+		stopLossWaiterModule.setCounter(aValue.get<int>());
 	}
 	else if (aName == "lastUpSuperTrend") {
 		lastUpSuperTrend = aValue.get<double>();
@@ -158,7 +158,7 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 
 void stAlgorithm::log() const {
 	std::ofstream output("Logs.txt", std::ios::app);
-	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(cash)
+	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(getCash())
 		<< std::setw(18) << stateToString(getState()) << std::setw(4) << std::to_string(isTrendUp) // TO DO fix get int state
 		<< std::setw(4) << std::to_string(isNewTrend);
 	if (getState() == getIntState(eCustomState::STOP_LOSS_WAIT)) {

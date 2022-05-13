@@ -33,7 +33,7 @@ bool dynamicStopLoss::checkDynamic() {
 		utils::logError("dynamicStopLoss::checkDynamic wrong percent");
 		return false;
 	}
-	auto& order = algorithm.getOrder();
+	const auto& order = algorithm.getOrder();
 	const auto& candle = algorithm.getCandle();
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {

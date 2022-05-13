@@ -71,6 +71,7 @@ namespace algorithm {
 			}
 			if (isReady()) {
 				curCandle = aCandle;
+				init();
 				preLoop();
 				while (loop()) {}
 				if (getWithLogs()) {
@@ -143,6 +144,7 @@ namespace algorithm {
 		virtual void onOpenOrder() = 0;
 		virtual void onCloseOrder(double aProfit) = 0;
 		virtual void log() const = 0; // TO DO add impl
+		virtual void initInternal() = 0;
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
 		void addState(int aState, std::string aStr) {
@@ -174,15 +176,17 @@ namespace algorithm {
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
 
-		order order;
-	protected: // TO DO fix 
 		statistic stats;
-		double cash = 0.0;
-		bool inited = false;
-		bool stopCashBreak = false;
+		order order;
 
 	private:
 		bool isReady() const { return indicators.isInited() && !prevCandle.time.empty(); }
+		void init() {
+			if (!inited) {
+				initInternal();
+				inited = true;
+			}
+		}
 
 		const dataType data;
 		market::indicatorsSystem indicators;
@@ -191,7 +195,10 @@ namespace algorithm {
 		market::candle curCandle;
 		market::candle prevCandle;
 
+		double cash = 0.0;
 		int state = 0;
+		bool inited = false;
+		bool stopCashBreak = false;
 		bool withLogs = false;
 	};
 }
