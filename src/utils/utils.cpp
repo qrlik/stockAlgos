@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -28,6 +29,10 @@ std::vector<market::candle> utils::parseCandles(const Json& aJson) {
 		result.push_back(market::parseCandleFromJson(candle));
 	}
 	return result;
+}
+
+void utils::createDir(const std::string& aDir) {
+	std::filesystem::create_directory(aDir);
 }
 
 void utils::log(const std::string& aStr) {

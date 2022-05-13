@@ -51,7 +51,11 @@ namespace algorithm {
 			return result;
 		}
 
-		void setWithLogs(bool aState) { withLogs = aState; }
+		void setWithLogs() {
+			withLogs = true;
+			utils::createDir("output");
+			logsFile.open("output/Logs.txt", std::ios::app);
+		}
 		void setState(int aState) { state = aState; }
 		const dataType& getData() const { return data; }
 		const order& getOrder() const { return order; }
@@ -193,11 +197,10 @@ namespace algorithm {
 			prevCandle = aCandle;
 			return true;
 		}
-		void log() const {
+		void log() {
 			if (!withLogs) {
 				return;
 			}
-			std::ofstream logsFile("Logs.txt", std::ios::app);
 			logsFile << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
 				<< std::setw(18) << stateToString(getState()) << std::setw(4);
 			if (!getOrder().getTime().empty()) {
@@ -210,6 +213,7 @@ namespace algorithm {
 		const dataType data;
 		market::indicatorsSystem indicators;
 		std::unordered_map<int, std::string> statesMap;
+		std::ofstream logsFile;
 
 		market::candle curCandle;
 		market::candle prevCandle;

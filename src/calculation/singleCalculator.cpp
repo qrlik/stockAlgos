@@ -24,7 +24,7 @@ namespace {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
 		auto algorithm = algorithmType(data);
-		algorithm.setWithLogs(true);
+		algorithm.setWithLogs();
 		algorithm.calculate(utils::parseCandles(aCandles));
 		utils::log("singleCalculation full cash - " + std::to_string(algorithm.getFullCash()));
 	}

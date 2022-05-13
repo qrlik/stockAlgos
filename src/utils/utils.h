@@ -7,6 +7,7 @@ namespace utils {
 	void saveToJson(const std::string& aPath, const Json& aData);
 	std::vector<market::candle> parseCandles(const Json& aJson);
 
+	void createDir(const std::string& aDir);
 	void log(const std::string& aStr);
 	void logError(const std::string& aStr);
 
