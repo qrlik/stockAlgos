@@ -53,7 +53,7 @@ namespace algorithm {
 
 		void setWithLogs() {
 			withLogs = true;
-			utils::createDir("output");
+			utils::createDir(utils::outputDir);
 			logsFile.open("output/Logs.txt", std::ios::app);
 		}
 		void setState(int aState) { state = aState; }

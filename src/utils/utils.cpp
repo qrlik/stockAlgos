@@ -32,7 +32,7 @@ std::vector<market::candle> utils::parseCandles(const Json& aJson) {
 }
 
 void utils::createDir(const std::string& aDir) {
-	std::filesystem::create_directory(aDir);
+	std::filesystem::create_directories(aDir);
 }
 
 void utils::log(const std::string& aStr) {

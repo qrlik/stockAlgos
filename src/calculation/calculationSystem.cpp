@@ -92,12 +92,13 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		return;
 	}
 	utils::log("calculationSystem::saveFinalData maxCash - [" + std::to_string(finalVector[0]["cash"].get<double>()) + ']');
-
+	const auto dirName = utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
+	utils::createDir(dirName);
 	Json jsonData;
 	Json stats;
 	{
-		std::ofstream dataAll("dataAll_" + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + ".txt");
-		std::ofstream dataWeighted("dataWeighted_" + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + ".txt");
+		std::ofstream dataAll(dirName + "dataAll.txt");
+		std::ofstream dataWeighted(dirName + "dataWeighted.txt");
 		auto getProfit = [](const Json& aData) { return aData["cash"].get<double>() - aData["data"]["startCash"].get<double>(); };
 		const auto maxProfit = getProfit(finalVector[0]);
 
@@ -126,9 +127,9 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		finalVector.clear();
 	}
 	{
-		std::ofstream jsonOutput("jsonDataWeighted_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".json");
+		std::ofstream jsonOutput(dirName + "jsonDataWeighted.json");
 		jsonOutput << jsonData;
 		jsonData.clear();
 	}
-	saveStats(stats, "stats_" + aTicker + '_' + getCandleIntervalApiStr(aInterval) + ".json");
+	saveStats(stats, dirName + "stats.json");
 }

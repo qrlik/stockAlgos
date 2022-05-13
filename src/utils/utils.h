@@ -3,6 +3,8 @@
 #include "market/candle.h"
 
 namespace utils {
+	const std::string outputDir = "output";
+
 	Json readFromJson(const std::string& aPath);
 	void saveToJson(const std::string& aPath, const Json& aData);
 	std::vector<market::candle> parseCandles(const Json& aJson);
