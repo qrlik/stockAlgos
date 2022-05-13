@@ -6,7 +6,8 @@ namespace tests {
 	public:
 		algorithmChecker(std::string aName) : name(std::move(aName)) {
 			auto json = utils::readFromJson("assets/tests/" + name);
-			algorithmType::algorithmDataType data(json["algorithmData"]);
+			algorithmType::algorithmDataType data;
+			data.initFromJson(json["algorithmData"]);
 			if (!data.isValid()) {
 				utils::logError("algorithmChecker - " + name + " invalid algorithm data");
 				assert(false && "!data.isValid()");

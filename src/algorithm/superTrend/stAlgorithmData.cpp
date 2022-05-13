@@ -7,10 +7,6 @@ stAlgorithmData::stAlgorithmData() {
 	getIndicatorsData().enableSuperTrend();
 }
 
-stAlgorithmData::stAlgorithmData(const Json& aValue): stAlgorithmData() {
-	initFromJson(aValue);
-}
-
 bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
 	bool result = baseClass::operator==(aOther);
 	result &= dynamicSLTrendMode == aOther.dynamicSLTrendMode;

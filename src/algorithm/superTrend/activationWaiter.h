@@ -8,7 +8,6 @@ namespace algorithm {
 	class stAlgorithm;
 	class activationWaiter {
 		friend class stAlgorithm;
-		friend class calculation::calculationSystem;
 	public:
 		activationWaiter(stAlgorithm& aAlgorithm);
 		bool operator==(const activationWaiter& other) const;

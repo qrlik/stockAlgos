@@ -8,7 +8,6 @@ namespace algorithm {
 	class stAlgorithm;
 	class dynamicStopLoss {
 		friend class stAlgorithm;
-		friend class calculation::calculationSystem;
 	public:
 		dynamicStopLoss(stAlgorithm& aAlgorithm);
 		bool check();

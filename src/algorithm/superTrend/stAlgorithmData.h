@@ -7,7 +7,6 @@ namespace algorithm {
 	public:
 		using baseClass = algorithmDataBase;
 		stAlgorithmData();
-		stAlgorithmData(const Json& aValue); // TO DO DELETE
 		bool operator==(const stAlgorithmData& aOther) const;
 
 		double getDynamicSLPercent() const { return dynamicSLPercent; }

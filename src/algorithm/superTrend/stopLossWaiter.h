@@ -8,7 +8,6 @@ namespace algorithm {
 	class stAlgorithm;
 	class stopLossWaiter {
 		friend class stAlgorithm;
-		friend class calculation::calculationSystem;
 	public:
 		stopLossWaiter(stAlgorithm& aAlgorithm);
 		bool operator==(const stopLossWaiter& aOther) const;

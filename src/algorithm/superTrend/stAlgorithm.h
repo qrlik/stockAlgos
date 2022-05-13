@@ -19,7 +19,6 @@ namespace algorithm {
 	};
 
 	class stAlgorithm final : public algorithmBase<stAlgorithmData> {
-		friend class calculation::calculationSystem; // TO DO delete
 	public:
 		using baseClass = algorithmBase<stAlgorithmData>;
 		stAlgorithm(const stAlgorithmData& aData);
