@@ -1,7 +1,6 @@
 #include "stAlgorithm.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
-#include <fstream>
 
 using namespace algorithm;
 
@@ -156,19 +155,12 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 	}
 }
 
-void stAlgorithm::log() const {
-	std::ofstream output("Logs.txt", std::ios::app);
-	output << getCandle().time << "\tcash: " << std::setw(12) << std::to_string(getCash())
-		<< std::setw(18) << stateToString(getState()) << std::setw(4) << std::to_string(isTrendUp) // TO DO fix get int state
-		<< std::setw(4) << std::to_string(isNewTrend);
+void stAlgorithm::logInternal(std::ofstream& aFile) const {
+	aFile << std::to_string(isTrendUp) << std::setw(4) << std::to_string(isNewTrend);
 	if (getState() == getIntState(eCustomState::STOP_LOSS_WAIT)) {
-		output << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
+		aFile << std::setw(4) << std::to_string(stopLossWaiterModule.getCounter());
 	}
 	else if (getState() == getIntState(eCustomState::ACTIVATION_WAIT)) {
-		output << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
+		aFile << std::setw(4) << std::to_string(activationWaiterModule.getCounter());
 	}
-	else if (!getOrder().getTime().empty()) {
-		output << getOrder().toString();
-	}
-	output << std::endl;
 }

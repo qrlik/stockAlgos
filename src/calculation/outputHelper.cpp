@@ -26,7 +26,7 @@ namespace {
 	std::string getStrFromJson(const Json& aValue) {
 		std::ostringstream os;
 		if (aValue.is_number_float()) {
-			os << std::fixed << std::setprecision(floatPrecision) << aValue.get<double>();
+			os << std::setprecision(floatPrecision) << aValue.get<double>();
 		}
 		else {
 			os << aValue;

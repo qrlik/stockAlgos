@@ -5,6 +5,7 @@
 #include "order.h"
 #include "statistic.h"
 #include "utils/utils.h"
+#include <fstream>
 #include <type_traits>
 
 namespace tests {
@@ -133,7 +134,7 @@ namespace algorithm {
 		virtual bool loop() = 0;
 		virtual void onOpenOrder() = 0;
 		virtual void onCloseOrder(double aProfit) = 0;
-		virtual void log() const = 0; // TO DO add impl
+		virtual void logInternal(std::ofstream& aFile) const = 0;
 		virtual void initInternal() = 0;
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 
@@ -186,13 +187,24 @@ namespace algorithm {
 				init();
 				preLoop();
 				while (loop()) {}
-				if (getWithLogs()) {
-					log();
-				}
+				log();
 			}
 			indicators.processCandle(aCandle);
 			prevCandle = aCandle;
 			return true;
+		}
+		void log() const {
+			if (!withLogs) {
+				return;
+			}
+			std::ofstream logsFile("Logs.txt", std::ios::app);
+			logsFile << curCandle.time << "\tcash: " << std::setw(12) << std::to_string(cash)
+				<< std::setw(18) << stateToString(getState()) << std::setw(4);
+			if (!getOrder().getTime().empty()) {
+				logsFile << order.toString();
+			}
+			logInternal(logsFile);
+			logsFile << '\n';
 		}
 
 		const dataType data;

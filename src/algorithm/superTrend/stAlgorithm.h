@@ -41,7 +41,7 @@ namespace algorithm {
 		bool loop() override;
 		void onOpenOrder() override;
 		void onCloseOrder(double aProfit) override;
-		void log() const override;
+		void logInternal(std::ofstream& aFile) const override;
 		void initInternal() override;
 		void initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool updateOrder();
