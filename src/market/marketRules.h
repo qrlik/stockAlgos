@@ -31,7 +31,7 @@ namespace market {
 		double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aMargin, int aLeverage) const;
 		double getTaxFactor() const;
-		// TO DO getMaxLeverage();
+		int getMaxLeverage() const;
 	private:
 		marketData();
 		void loadExchangeSettings();

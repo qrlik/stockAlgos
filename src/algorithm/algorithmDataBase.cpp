@@ -24,7 +24,7 @@ bool algorithmDataBase::isValid() const {
 
 	result &= indicatorsData.isValid();
 	result &= dealPercent > 0.0 && dealPercent < 100.0;
-	result &= leverage > 0 && leverage <= 125;
+	result &= leverage > 0 && leverage <= MARKET_DATA->getMaxLeverage();
 
 	result &= startCash > MARKET_DATA->getMinNotionalValue() / leverage;
 	result &= startCash > maxLossCash;

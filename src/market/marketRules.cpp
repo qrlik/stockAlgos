@@ -175,6 +175,14 @@ double marketData::getMinNotionalValue() const {
 	return data.at(currentTicker).minNotionalValue;
 }
 
+int marketData::getMaxLeverage() const {
+	const auto& tiers = data.at(currentTicker).tiersData;
+	if (tiers.empty()) {
+		return 0;
+	}
+	return tiers.front().maxLeverage;
+}
+
 double marketData::getTaxFactor() const {
 	return tax;
 }
