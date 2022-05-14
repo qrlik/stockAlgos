@@ -15,7 +15,6 @@ namespace algorithm {
 		void start();
 		bool check();
 		int getCounter() const { return activationWaitCounter; }
-		void setCounter(int aCounter) { activationWaitCounter = aCounter; } // TO DO make private later
 	private:
 		stAlgorithm& algorithm;
 		int activationWaitCounter = 0;

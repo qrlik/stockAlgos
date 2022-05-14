@@ -133,10 +133,10 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 		return;
 	}
 	if (aName == "activationWaitCounter") {
-		activationWaiterModule.setCounter(aValue.get<int>());
+		activationWaiterModule.activationWaitCounter = aValue.get<int>();
 	}
 	else if (aName == "stopLossWaitCounter") {
-		stopLossWaiterModule.setCounter(aValue.get<int>());
+		stopLossWaiterModule.stopLossWaitCounter = aValue.get<int>();
 	}
 	else if (aName == "lastUpSuperTrend") {
 		lastUpSuperTrend = aValue.get<double>();

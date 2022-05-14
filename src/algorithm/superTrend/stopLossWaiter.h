@@ -15,7 +15,6 @@ namespace algorithm {
 		void start();
 		bool check();
 		int getCounter() const;
-		void setCounter(int aCounter) { stopLossWaitCounter = aCounter; } // TO DO make private later
 	private:
 		stAlgorithm& algorithm;
 		int stopLossWaitCounter = 0;
