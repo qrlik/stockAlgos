@@ -49,6 +49,11 @@ void calculation::singleCalculation() {
 		log("bad candles");
 		return;
 	}
+	if (!MARKET_DATA->loadTickerData(ticker)) {
+		log("wrong ticker market json - " + ticker);
+		return;
+	}
+
 	if (algorithmType == "superTrend") {
 		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"]);
 	}

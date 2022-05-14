@@ -132,6 +132,10 @@ void tests::runTests() {
 #ifdef NDEBUG
 	return;
 #endif
+	if (!MARKET_DATA->loadTickerData("BTCUSDT")) {
+		utils::logError("tests::runTests wrong ticker json for tests");
+		return;
+	}
 	marketDataTests();
 	mmCheckerTests();
 }

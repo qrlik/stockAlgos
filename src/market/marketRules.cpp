@@ -3,6 +3,10 @@
 
 using namespace market;
 
+namespace {
+	const std::string settingsPath = "assets/market/";
+}
+
 marketData* marketData::instance = new marketData();
 
 marketData* marketData::getInstance() {
@@ -10,35 +14,95 @@ marketData* marketData::getInstance() {
 }
 
 marketData::marketData() {
-	init();
+	loadExchangeSettings();
 }
 
-void marketData::init() {
-	auto tradingRules = utils::readFromJson("assets/market/BTCUSDT_data"); // TO DO make reupdate when ticker changed
-	quantityPrecision = tradingRules["quantityStep"].get<double>();
-	pricePrecision = tradingRules["priceTick"].get<double>();
-	quotePrecision = 1.0 / std::pow(10, tradingRules["quotePrecision"].get<int>());
-	minNotionalValue = tradingRules["minNotionalValue"].get<double>();
-	for (auto& tier : tradingRules["brackets"]) {
-		auto data = tierData{};
-		data.notionalCap = tier["notionalCap"].get<int>();
-		data.notionalFloor = tier["notionalFloor"].get<int>();
-		data.maxLeverage = tier["maxLeverage"].get<int>();
-		data.maintenanceMarginRate = tier["maintenanceMarginRate"].get<double>();
-		data.maintenanceAmount = tier["maintenanceAmount"].get<double>();
-		tiersData.push_back(data);
+namespace {
+	bool checkExchangeJson(const Json& aData) {
+		auto result = true;
+		result &= aData.is_object();
+		result &= aData.contains("tax") && aData["tax"].is_number_float();
+		if (result) {
+			const auto tax = aData["tax"].get<double>();
+			result &= !utils::isEqual(tax, 0.0) && tax > 0.0;
+		}
+		return result;
 	}
-	std::sort(tiersData.begin(), tiersData.end(), [](const tierData& aLhs, const tierData& aRhs) { return aLhs.notionalCap < aRhs.notionalCap; });
+}
+
+void marketData::loadExchangeSettings() {
+	auto exchageSettings = utils::readFromJson(settingsPath + "binance");
+	if (!checkExchangeJson(exchageSettings)) {
+		utils::logError("marketData::loadExchangeSettings wrong exchange json");
+	}
+	tax = exchageSettings["tax"].get<double>();
+}
+
+namespace {
+	bool checkTickerJson(const Json& aData) {
+		auto result = true;
+		result &= aData.is_object();
+		result &= aData.contains("brackets") && aData["brackets"].is_array();
+		if (result) {
+			for (const auto& bracket : aData["brackets"]) {
+				result &= bracket.is_object();
+				result &= bracket.contains("maxLeverage") && bracket["maxLeverage"].is_number_integer() && bracket["maxLeverage"].get<int>() > 0;
+				result &= bracket.contains("notionalCap") && bracket["notionalCap"].is_number_integer() && bracket["notionalCap"].get<int>() > 0;
+				result &= bracket.contains("notionalFloor") && bracket["notionalFloor"].is_number_integer() && bracket["notionalFloor"].get<int>() >= 0;
+				result &= bracket.contains("maintenanceMarginRate") && bracket["maintenanceMarginRate"].is_number_float()
+					&& bracket["maintenanceMarginRate"].get<double>() > 0.0;
+				result &= bracket.contains("maintenanceAmount") && bracket["maintenanceAmount"].is_number_float()
+					&& bracket["maintenanceAmount"].get<double>() >= 0.0;
+			}
+		}
+		result &= aData.contains("quotePrecision") && aData["quotePrecision"].is_number_integer() && aData["quotePrecision"].get<int>() > 0;
+		result &= aData.contains("priceTick") && aData["priceTick"].is_number() && aData["priceTick"].get<double>() > 0.0;
+		result &= aData.contains("quantityStep") && aData["quantityStep"].is_number() && aData["quantityStep"].get<double>() > 0.0;
+		result &= aData.contains("minNotionalValue") && aData["minNotionalValue"].is_number() && aData["minNotionalValue"].get<double>() > 0.0;
+		return result;
+	}
+}
+
+bool marketData::loadTickerData(const std::string& aTicker) {
+	if (currentTicker == aTicker) {
+		return true;
+	}
+	if (data.count(aTicker) > 0) {
+		currentTicker = aTicker;
+		return true;
+	}
+	auto tickerJson = utils::readFromJson(settingsPath + aTicker);
+	if (!checkTickerJson(tickerJson)) {
+		utils::logError("marketData::loadTickerData wrong ticker json");
+		return false;
+	}
+	currentTicker = aTicker;
+	auto& tickerData = data[aTicker];
+	tickerData.quantityPrecision = tickerJson["quantityStep"].get<double>();
+	tickerData.pricePrecision = tickerJson["priceTick"].get<double>();
+	tickerData.quotePrecision = 1.0 / std::pow(10, tickerJson["quotePrecision"].get<int>());
+	tickerData.minNotionalValue = tickerJson["minNotionalValue"].get<double>();
+	for (auto& tier : tickerJson["brackets"]) {
+		auto tData = tierData{};
+		tData.notionalCap = tier["notionalCap"].get<int>();
+		tData.notionalFloor = tier["notionalFloor"].get<int>();
+		tData.maxLeverage = tier["maxLeverage"].get<int>();
+		tData.maintenanceMarginRate = tier["maintenanceMarginRate"].get<double>();
+		tData.maintenanceAmount = tier["maintenanceAmount"].get<double>();
+		tickerData.tiersData.push_back(tData);
+	}
+	std::sort(tickerData.tiersData.begin(), tickerData.tiersData.end(), [](const tierData& aLhs, const tierData& aRhs) { return aLhs.notionalCap < aRhs.notionalCap; });
+	return true;
 }
 
 const std::vector<tierData>& marketData::getTiersData() const {
-	return tiersData;
+	return data.at(currentTicker).tiersData;
 }
 
 const tierData& marketData::getTierData(double aPosition) const {
-	auto data = std::upper_bound(tiersData.begin(), tiersData.end(), aPosition,
+	auto tier = std::upper_bound(data.at(currentTicker).tiersData.begin(), data.at(currentTicker).tiersData.end(), aPosition,
 								 [](auto aPosition, const tierData& aData) { return aPosition <= aData.notionalCap; });
-	return *data;
+	return *tier;
 }
 
 double marketData::getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const {
@@ -74,41 +138,41 @@ double marketData::getLiquidationPercent(double aMargin, int aLeverage) const {
 	const auto maxPos = getLeverageMaxPosition(aLeverage);
 	pos = std::min(pos, maxPos);
 
-	return getLiquidationPercent(price, pos, aLeverage, utils::floor(pos / price, instance->quantityPrecision), false);
+	return getLiquidationPercent(price, pos, aLeverage, utils::floor(pos / price, data.at(currentTicker).quantityPrecision), false);
 }
 
 std::pair<double, double> marketData::getLeverageLiquidationRange(int aLeverage) const {
 	const double price = 50'000.0;
-	const double minPosByQuantity = quantityPrecision * price;
+	const double minPosByQuantity = data.at(currentTicker).quantityPrecision * price;
 	const double minPosbyNotional = getMinNotionalValue();
 	const double minPos = std::max(minPosByQuantity, minPosbyNotional);
 	const double maxPos = getLeverageMaxPosition(aLeverage);
 
-	const double maxLiqPercent = getLiquidationPercent(price, minPos, aLeverage, utils::floor(minPos / price, quantityPrecision), false);
-	const double minLiqPercent = getLiquidationPercent(price, maxPos, aLeverage, utils::floor(maxPos / price, quantityPrecision), false);
+	const double maxLiqPercent = getLiquidationPercent(price, minPos, aLeverage, utils::floor(minPos / price, data.at(currentTicker).quantityPrecision), false);
+	const double minLiqPercent = getLiquidationPercent(price, maxPos, aLeverage, utils::floor(maxPos / price, data.at(currentTicker).quantityPrecision), false);
 	return { minLiqPercent, maxLiqPercent };
 }
 
 double marketData::getLeverageMaxPosition(int aLeverage) const {
-	auto tier = std::upper_bound(tiersData.rbegin(), tiersData.rend(), aLeverage, 
+	auto tier = std::upper_bound(data.at(currentTicker).tiersData.rbegin(), data.at(currentTicker).tiersData.rend(), aLeverage,
 								 [](auto aLeverage, const tierData& aData) { return  aLeverage <= aData.maxLeverage; });
 	return tier->notionalCap;
 }
 
 double marketData::getQuantityPrecision() const {
-	return quantityPrecision;
+	return data.at(currentTicker).quantityPrecision;
 }
 
 double marketData::getPricePrecision() const {
-	return pricePrecision;
+	return data.at(currentTicker).pricePrecision;
 }
 
 double marketData::getQuotePrecision() const {
-	return quotePrecision;
+	return data.at(currentTicker).quotePrecision;
 }
 
 double marketData::getMinNotionalValue() const {
-	return minNotionalValue;
+	return data.at(currentTicker).minNotionalValue;
 }
 
 double marketData::getTaxFactor() const {

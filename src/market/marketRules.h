@@ -1,5 +1,7 @@
 #pragma once
+#include <string>
 #include <vector>
+#include <unordered_map>
 
 #define MARKET_DATA market::marketData::getInstance()
 
@@ -15,6 +17,7 @@ namespace market {
 	class marketData {
 	public:
 		static marketData* getInstance();
+		bool loadTickerData(const std::string& aTicker);
 
 		const tierData& getTierData(double aPosition) const;
 		const std::vector<tierData>& getTiersData() const;
@@ -28,17 +31,23 @@ namespace market {
 		double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aMargin, int aLeverage) const;
 		double getTaxFactor() const;
+		// TO DO getMaxLeverage();
 	private:
 		marketData();
-		void init();
+		void loadExchangeSettings();
 
 		static marketData* instance;
-		std::vector<tierData> tiersData;
 
-		double quantityPrecision = 0.0;
-		double pricePrecision = 0.0;
-		double quotePrecision = 0.0;
-		double minNotionalValue = 0.0;
-		const double tax = 0.0004; // to do move to json and max leverage too
+		struct tickerData {
+			std::vector<tierData> tiersData;
+			double quantityPrecision = 0.0;
+			double pricePrecision = 0.0;
+			double quotePrecision = 0.0;
+			double minNotionalValue = 0.0;
+		};
+
+		std::unordered_map<std::string, tickerData> data;
+		std::string currentTicker;
+		double tax = 0.0;
 	};
 }

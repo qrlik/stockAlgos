@@ -1,6 +1,7 @@
 #pragma once
 #include "combinationFactory.hpp"
 #include "market/indicatorsSystem.h"
+#include "market/marketRules.h"
 #include <mutex>
 
 namespace calculation {
@@ -32,6 +33,10 @@ namespace calculation {
 		template<typename algorithmType>
 		void calculateInternal() {
 			for (const auto& [ticker, timeframe] : calculations) {
+				if (!MARKET_DATA->loadTickerData(ticker)) {
+					utils::logError("calculationSystem::calculate wrong ticker - " + ticker);
+					continue;
+				}
 				auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
