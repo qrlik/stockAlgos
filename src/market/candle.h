@@ -27,11 +27,6 @@ namespace market {
 		double high = 0.f;
 		double low = 0.f;
 		double close = 0.f;
-
-		double atr = 0.f;
-		double superTrend = 0.f;
-
-		bool trendIsUp = false;
 	};
 
 	std::string getCandleIntervalApiStr(eCandleInterval aInterval);

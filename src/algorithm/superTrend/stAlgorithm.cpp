@@ -54,15 +54,16 @@ bool stAlgorithm::isNewTrendChanged() {
 }
 
 void stAlgorithm::preLoop() {
-	if (getPrevCandle().trendIsUp) {
-		lastUpSuperTrend = getPrevCandle().superTrend;
+	const auto [superTrend, trendIsUp] = getIndicators().getSuperTrend();
+	if (trendIsUp) {
+		lastUpSuperTrend = superTrend;
 	}
 	else {
-		lastDownSuperTrend = getPrevCandle().superTrend;
+		lastDownSuperTrend = superTrend;
 	}
 
-	if (isTrendUp != getPrevCandle().trendIsUp) {
-		isTrendUp = getPrevCandle().trendIsUp;
+	if (isTrendUp != trendIsUp) {
+		isTrendUp = trendIsUp;
 		isNewTrend = trendBreakOpenerModule.isNewTrendAllowed();
 		stopLossWaiterModule.onNewTrend();
 		activationWaiterModule.onNewTrend();
@@ -125,7 +126,7 @@ void stAlgorithm::updateOrderStopLoss(double aStopLoss) {
 }
 
 void stAlgorithm::initInternal() {
-	isTrendUp = getPrevCandle().trendIsUp;
+	isTrendUp = getIndicators().getSuperTrend().second;
 }
 
 void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {

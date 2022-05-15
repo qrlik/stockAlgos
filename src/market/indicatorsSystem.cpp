@@ -34,7 +34,7 @@ double indicatorsSystem::calculateTrueRangeEMA(double aAlpha) {
 	if (prevCandle.time.empty()) {
 		return trList.back();
 	}
-	return aAlpha * trList.back() + (1 - aAlpha) * prevCandle.atr;
+	return aAlpha * trList.back() + (1 - aAlpha) * atr;
 }
 
 double indicatorsSystem::calculateTrueRangeMA() {
@@ -60,25 +60,22 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	auto middlePrice = (aCandle.high + aCandle.low) / 2;
 
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
-	auto upperBand = utils::round(middlePrice + data.getStFactor() * aCandle.atr, pricePrecision);
-	auto lowerBand = utils::round(middlePrice - data.getStFactor() * aCandle.atr, pricePrecision);
+	auto upperBand = utils::round(middlePrice + data.getStFactor() * atr, pricePrecision);
+	auto lowerBand = utils::round(middlePrice - data.getStFactor() * atr, pricePrecision);
 
 	upperBand = (upperBand < lastUpperBand || prevCandle.close > lastUpperBand) ? upperBand : lastUpperBand;
 	lowerBand = (lowerBand > lastLowerBand || prevCandle.close < lastLowerBand) ? lowerBand : lastLowerBand;
 
-	auto trendIsUp = false;
-	if (lastTrend == lastUpperBand) {
+	if (utils::isEqual(superTrend, lastUpperBand)) {
 		trendIsUp = aCandle.close > upperBand;
 	}
 	else {
 		trendIsUp = aCandle.close > lowerBand;
 	}
 
-	lastTrend = (trendIsUp) ? lowerBand : upperBand;
 	lastUpperBand = upperBand;
 	lastLowerBand = lowerBand;
-	aCandle.superTrend = lastTrend;
-	aCandle.trendIsUp = trendIsUp;
+	superTrend = (trendIsUp) ? lowerBand : upperBand;
 }
 
 bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
@@ -90,7 +87,7 @@ bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	if (static_cast<int>(trList.size()) > data.getAtrSize()) {
 		trList.pop_front();
 	}
-	aCandle.atr = calculateTrueRangeMA();
+	atr = calculateTrueRangeMA();
 	return static_cast<int>(trList.size()) >= data.getAtrSize();
 }
 
