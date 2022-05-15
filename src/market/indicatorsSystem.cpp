@@ -63,8 +63,8 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	auto upperBand = utils::round(middlePrice + data.getStFactor() * aCandle.atr, pricePrecision);
 	auto lowerBand = utils::round(middlePrice - data.getStFactor() * aCandle.atr, pricePrecision);
 
-	upperBand = (upperBand < lastUpperBand || lastClose > lastUpperBand) ? upperBand : lastUpperBand;
-	lowerBand = (lowerBand > lastLowerBand || lastClose < lastLowerBand) ? lowerBand : lastLowerBand;
+	upperBand = (upperBand < lastUpperBand || prevCandle.close > lastUpperBand) ? upperBand : lastUpperBand;
+	lowerBand = (lowerBand > lastLowerBand || prevCandle.close < lastLowerBand) ? lowerBand : lastLowerBand;
 
 	auto trendIsUp = false;
 	if (lastTrend == lastUpperBand) {
@@ -77,7 +77,6 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	lastTrend = (trendIsUp) ? lowerBand : upperBand;
 	lastUpperBand = upperBand;
 	lastLowerBand = lowerBand;
-	lastClose = aCandle.close;
 	aCandle.superTrend = lastTrend;
 	aCandle.trendIsUp = trendIsUp;
 }
@@ -92,7 +91,6 @@ bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 		trList.pop_front();
 	}
 	aCandle.atr = calculateTrueRangeMA();
-	prevCandle = aCandle;
 	return static_cast<int>(trList.size()) >= data.getAtrSize();
 }
 
@@ -112,4 +110,5 @@ void indicatorsSystem::processCandle(candle& aCandle) {
 		}
 		inited = result;
 	}
+	prevCandle = aCandle;
 }

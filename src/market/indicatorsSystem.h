@@ -29,8 +29,7 @@ namespace market {
 		double lastUpperBand = 0.0;
 		double lastLowerBand = 0.0;
 		double lastTrend = 0.0;
-		double lastClose = 0.0;
-		int lastCandleTime = 0;
+
 		int candlesCounter = 0;
 		bool inited = false;
 	};
