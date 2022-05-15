@@ -91,6 +91,32 @@ bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	return static_cast<int>(trList.size()) >= data.getAtrSize();
 }
 
+bool indicatorsSystem::calculateMA(candle& aCandle) {
+	if (!data.isMA()) {
+		return true;
+	}
+	closeList.push_back(aCandle.close);
+	firstMASum += aCandle.close;
+	secondMASum += aCandle.close;
+	if (closeList.size() > data.getFirstMA()) {
+		firstMASum -= closeList[closeList.size() - 1 - data.getFirstMA()];
+	}
+	if (closeList.size() > data.getSecondMA()) {
+		secondMASum -= closeList[closeList.size() - 1 - data.getSecondMA()];
+	}
+	if (closeList.size() < std::max(data.getFirstMA(), data.getSecondMA())) {
+		return false;
+	}
+	if (closeList.size() > std::max(data.getFirstMA(), data.getSecondMA())) {
+		closeList.pop_front();
+	}
+	firstMA = (data.getFirstMA() > 0) ? firstMASum / data.getFirstMA() : 0.0;
+	secondMA = (data.getSecondMA() > 0) ? secondMASum / data.getSecondMA() : 0.0;
+	firstMA = utils::round(firstMA, MARKET_DATA->getPricePrecision());
+	secondMA = utils::round(secondMA, MARKET_DATA->getPricePrecision());
+	return true;
+}
+
 bool indicatorsSystem::checkSkip() {
 	++candlesCounter;
 	return candlesCounter >= data.getSkipAmount();
@@ -98,6 +124,7 @@ bool indicatorsSystem::checkSkip() {
 
 void indicatorsSystem::processCandle(candle& aCandle) {
 	auto result = true;
+	result &= calculateMA(aCandle);
 	result &= calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
 	result &= checkSkip();

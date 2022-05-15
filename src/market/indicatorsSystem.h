@@ -15,6 +15,7 @@ namespace market {
 		bool isInited() const { return inited; }
 		std::pair<double, bool> getSuperTrend() const { return { superTrend, trendIsUp }; }
 	private:
+		bool calculateMA(candle& aCandle);
 		double calculateTrueRangeWMA() const;
 		double calculateTrueRangeEMA(double aAlpha);
 		double calculateTrueRangeMA();
@@ -25,6 +26,7 @@ namespace market {
 		const indicatorsData& data;
 
 		std::deque<double> trList;
+		std::deque<double> closeList;
 		candle prevCandle;
 
 		double atr = 0.f;
@@ -33,6 +35,11 @@ namespace market {
 		double lastLowerBand = 0.0;
 		double superTrend = 0.f;
 		bool trendIsUp = false;
+
+		double firstMASum = 0.0;
+		double secondMASum = 0.0;
+		double firstMA = 0.0;
+		double secondMA = 0.0;
 
 		int candlesCounter = 0;
 		bool inited = false;
