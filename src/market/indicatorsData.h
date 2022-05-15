@@ -38,16 +38,16 @@ namespace market {
 		int getSecondMA() const { return secondMA; }
 
 	private:
+		double stFactor = -1.0;
+		int atrSize = -1;
+		market::eAtrType atrType = market::eAtrType::NONE;
+
+		int firstMA = 0;
+		int secondMA = 0;
+
 		int candlesToSkip = 0;
 		size_t maFlag = false;
 		bool atrFlag = false;
 		bool superTrendFlag = false;
-
-		market::eAtrType atrType = market::eAtrType::NONE;
-		int atrSize = -1;
-		double stFactor = -1.0;
-
-		int firstMA = 0;
-		int secondMA = 0;
 	};
 }

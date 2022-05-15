@@ -170,7 +170,7 @@ namespace algorithm {
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
-		const market::indicatorsSystem getIndicators() const { return indicators; }
+		const market::indicatorsSystem& getIndicators() const { return indicators; }
 
 		statistic stats;
 		order order;
