@@ -57,6 +57,12 @@ bool indicatorsData::isValid() const {
 	if (isSuperTrend()) {
 		result &= stFactor >= 1.0;
 	}
+	if (isMA()) {
+		result &= firstMA > 0;
+		if (maFlag > 1) {
+			result &= secondMA > 0;
+		}
+	}
 	return result;
 }
 
@@ -67,6 +73,12 @@ void indicatorsData::addJsonData(Json& aData) const {
 	}
 	if (isSuperTrend()) {
 		aData["stFactor"] = stFactor;
+	}
+	if (isMA()) {
+		aData["firstMA"] = firstMA;
+		if (secondMA > 0) {
+			aData["secondMA"] = secondMA;
+		}
 	}
 }
 
@@ -87,6 +99,14 @@ bool indicatorsData::initDataField(const std::string& aName, const Json& aValue)
 		stFactor = aValue.get<double>();
 		return true;
 	}
+	else if (aName == "firstMA") {
+		firstMA = aValue.get<int>();
+		return true;
+	}
+	else if (aName == "secondMA") {
+		secondMA = aValue.get<int>();
+		return true;
+	}
 	return false;
 }
 
@@ -99,6 +119,12 @@ bool indicatorsData::checkCriteria(const std::string& aName, const Json& aValue)
 	}
 	else if (aName == "stFactor") {
 		return utils::isEqual(stFactor, aValue.get<double>());
+	}
+	else if (aName == "firstMA") {
+		return firstMA == aValue.get<int>();
+	}
+	else if (aName == "secondMA") {
+		return secondMA == aValue.get<int>();
 	}
 	return false;
 }

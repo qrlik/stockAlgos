@@ -23,23 +23,31 @@ namespace market {
 
 		void enableAtr() { atrFlag = true; }
 		void enableSuperTrend();
+		void enableMA(size_t aAmount) { maFlag = aAmount; }
 
 		bool isValid() const;
 		bool isAtr() const { return atrFlag; }
 		bool isSuperTrend() const { return superTrendFlag; }
+		bool isMA() const { return maFlag > 0; }
 
 		int getSkipAmount() const { return candlesToSkip; }
 		market::eAtrType getAtrType() const { return atrType; }
 		int getAtrSize() const { return atrSize; }
 		double getStFactor() const { return stFactor; }
+		int getFirstMA() const { return firstMA; }
+		int getSecondMA() const { return secondMA; }
 
 	private:
 		int candlesToSkip = 0;
+		size_t maFlag = false;
 		bool atrFlag = false;
 		bool superTrendFlag = false;
 
 		market::eAtrType atrType = market::eAtrType::NONE;
 		int atrSize = -1;
 		double stFactor = -1.0;
+
+		int firstMA = 0;
+		int secondMA = 0;
 	};
 }
