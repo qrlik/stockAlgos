@@ -1,5 +1,5 @@
 {
-	"candlesFileName": "1500_15m",
+	"candlesFileName": "300_15m",
 	"indicatorsData": {
 		"firstMA": 20,
 		"secondMA": 5,
@@ -8,8 +8,16 @@
 		"atrSize": 14,
 		"stFactor": 5.0,
 
-		"candlesToSkip": 500
+		"candlesToSkip": 200
 	},
 	"testIndicatorsData": [
+		{
+			"time": "19:45 16-05-2022",
+			"atr": 278.0,
+			"superTrend": 30514.9,
+			"trendIsUp": false,
+			"firstMA": 29636.6,
+			"secondMA": 29403.7
+		}
 	]
 }

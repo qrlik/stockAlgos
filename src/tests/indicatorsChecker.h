@@ -1,6 +1,7 @@
 #pragma once
 #include "json/json.hpp"
 #include "market/candle.h"
+#include "market/indicatorsData.h"
 
 namespace market {
 	class indicatorsSystem;
@@ -16,6 +17,7 @@ namespace tests {
 
 		std::vector<market::candle> candles;
 		Json testData;
+		market::indicatorsData data;
 		std::unique_ptr<market::indicatorsSystem> actualSystem;
 		std::unique_ptr<market::indicatorsSystem> testSystem;
 

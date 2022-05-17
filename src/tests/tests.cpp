@@ -1,22 +1,19 @@
 #include "tests.h"
 #include "algorithm/superTrend/stAlgorithm.h"
 #include "algorithmChecker.hpp"
+#include "indicatorsChecker.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
 using namespace tests;
 
 namespace {
-	void mmCheckerTests() {
-		auto checker1 = algorithmChecker<algorithm::stAlgorithm>("test1");
-		checker1.check();
-		auto checker2 = algorithmChecker<algorithm::stAlgorithm>("test2");
-		checker2.check();
-		auto checker3 = algorithmChecker<algorithm::stAlgorithm>("test3");
-		checker3.check();
-		auto checker4 = algorithmChecker<algorithm::stAlgorithm>("test4");
-		checker4.check();
-		utils::log("[OK] Money Maker Tests");
+	void checkersTests() {
+		indicatorsChecker().check();
+		algorithmChecker<algorithm::stAlgorithm>("test1").check();
+		algorithmChecker<algorithm::stAlgorithm>("test2").check();
+		algorithmChecker<algorithm::stAlgorithm>("test3").check();
+		algorithmChecker<algorithm::stAlgorithm>("test4").check();
 	}
 
 	void marketDataTests() {
@@ -137,5 +134,5 @@ void tests::runTests() {
 		return;
 	}
 	marketDataTests();
-	mmCheckerTests();
+	checkersTests();
 }

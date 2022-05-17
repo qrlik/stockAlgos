@@ -1,5 +1,4 @@
 #include "indicatorsChecker.h"
-#include "market/indicatorsData.h"
 #include "market/indicatorsSystem.h"
 #include "utils/utils.h"
 
@@ -7,7 +6,8 @@ using namespace tests;
 
 indicatorsChecker::indicatorsChecker() {
 	auto json = utils::readFromJson("assets/tests/testIndicators");
-	market::indicatorsData data;
+	data.enableSuperTrend();
+	data.enableMA(2);
 	for (const auto& [field, value] : json["indicatorsData"].items()) {
 		if (!data.initDataField(field, value)) {
 			utils::logError("indicatorsChecker - " + field + " invalid indicators data field");
@@ -29,9 +29,11 @@ void indicatorsChecker::check() {
 	for (auto& candle : candles) {
 		actualSystem->processCandle(candle);
 		updateTestSystem(candle.time);
-		if (!(*actualSystem == *testSystem)) {
-			utils::logError("[ERROR] indicatorsChecker");
-			return;
+		if (actualSystem->isInited()) {
+			if (!(*actualSystem == *testSystem)) {
+				utils::logError("[ERROR] indicatorsChecker");
+				return;
+			}
 		}
 		actualIndex += 1;
 	}

@@ -10,7 +10,7 @@ indicatorsSystem::indicatorsSystem(const indicatorsData& aData): data(aData) {}
 
 bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
 	auto result = true;
-	result &= utils::isEqual(atr, aOther.atr);
+	result &= utils::isEqual(utils::round(atr, MARKET_DATA->getPricePrecision()), aOther.atr);
 
 	result &= utils::isEqual(superTrend, aOther.superTrend);
 	result &= trendIsUp == aOther.trendIsUp;
