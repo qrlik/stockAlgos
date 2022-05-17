@@ -18,9 +18,32 @@ indicatorsChecker::indicatorsChecker() {
 	}
 	actualSystem = std::make_unique<market::indicatorsSystem>(data);
 	testSystem = std::make_unique<market::indicatorsSystem>(data);
-	//testData = json["testIndicatorsData"];
-	//testNextTime = testData[0]["time"].get<std::string>();
+	testData = json["testIndicatorsData"];
+	testNextTime = testData[0]["time"].get<std::string>();
 
-	//auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
-	//candles = utils::parseCandles(jsonCandles);
+	auto jsonCandles = utils::readFromJson("assets/tests/" + json["candlesFileName"].get<std::string>());
+	candles = utils::parseCandles(jsonCandles);
+}
+
+void indicatorsChecker::check() {
+	for (auto& candle : candles) {
+		actualSystem->processCandle(candle);
+		updateTestSystem(candle.time);
+		if (!(*actualSystem == *testSystem)) {
+			utils::logError("[ERROR] indicatorsChecker");
+			return;
+		}
+		actualIndex += 1;
+	}
+	utils::log("[OK] indicatorsChecker");
+}
+
+void indicatorsChecker::updateTestSystem(const std::string& aTime) {
+	if (aTime != testNextTime) {
+		return;
+	}
+	Json data = testData[testIndex];
+	testSystem->initFromJson(data);
+	testIndex += 1;
+	testNextTime = (testIndex < static_cast<int>(testData.size())) ? testData[testIndex]["time"].get<std::string>() : "ENDED";
 }

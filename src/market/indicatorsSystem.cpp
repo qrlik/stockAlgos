@@ -20,6 +20,32 @@ bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
 	return result;
 }
 
+void indicatorsSystem::initFromJson(const Json& aValue) {
+	if (aValue.is_null()) {
+		return;
+	}
+	for (const auto& [key, value] : aValue.items()) {
+		if (value.is_null()) {
+			continue;
+		}
+		if (key == "atr") {
+			atr = value.get<double>();
+		}
+		else if (key == "superTrend") {
+			superTrend = value.get<double>();
+		}
+		else if (key == "trendIsUp") {
+			trendIsUp = value.get<bool>();
+		}
+		else if (key == "firstMA") {
+			firstMA = value.get<double>();
+		}
+		else if (key == "secondMA") {
+			secondMA = value.get<double>();
+		}
+	}
+}
+
 namespace {
 	double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {
 		auto candleSize = aCandle.high - aCandle.low;

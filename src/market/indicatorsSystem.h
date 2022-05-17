@@ -9,6 +9,7 @@ namespace market {
 	public:
 		indicatorsSystem(const indicatorsData& aData);
 		bool operator==(const indicatorsSystem& aOther) const;
+		void initFromJson(const Json& aValue);
 
 		void processCandle(candle& aCandle);
 		bool isInited() const { return inited; }
