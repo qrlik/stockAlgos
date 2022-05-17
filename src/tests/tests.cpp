@@ -1,6 +1,6 @@
 #include "tests.h"
 #include "algorithm/superTrend/stAlgorithm.h"
-#include "checkers.hpp"
+#include "algorithmChecker.hpp"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 

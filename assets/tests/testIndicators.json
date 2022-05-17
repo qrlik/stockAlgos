@@ -1,0 +1,15 @@
+{
+	"candlesFileName": "1500_15m",
+	"indicatorsData": {
+		"firstMA": 20,
+		"secondMA": 5,
+
+		"atrType": "RMA",
+		"atrSize": 14,
+		"stFactor": 5.0,
+
+		"candlesToSkip": 500
+	},
+	"testIndicatorsData": [
+	]
+}

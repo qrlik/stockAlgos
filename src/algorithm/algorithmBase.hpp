@@ -32,7 +32,7 @@ namespace algorithm {
 	public:
 		using algorithmDataType = dataType;
 		algorithmBase(const dataType& aData) :
-			data(aData), stats(data), indicators(data)
+			data(aData), stats(data), indicators(data.getIndicatorsData())
 		{
 			cash = data.getStartCash();
 			statesMap[getIntState(eBaseState::NONE)] = "NONE";

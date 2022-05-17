@@ -6,7 +6,19 @@
 
 using namespace market;
 
-indicatorsSystem::indicatorsSystem(const algorithm::algorithmDataBase& aData): data(aData.getIndicatorsData()) {}
+indicatorsSystem::indicatorsSystem(const indicatorsData& aData): data(aData) {}
+
+bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
+	auto result = true;
+	result &= utils::isEqual(atr, aOther.atr);
+
+	result &= utils::isEqual(superTrend, aOther.superTrend);
+	result &= trendIsUp == aOther.trendIsUp;
+
+	result &= utils::isEqual(firstMA, aOther.firstMA);
+	result &= utils::isEqual(secondMA, aOther.secondMA);
+	return result;
+}
 
 namespace {
 	double calculateTrueRange(const candle& aCandle, const candle& aPrevCandle) {

@@ -3,14 +3,13 @@
 #include <vector>
 #include <deque>
 
-namespace algorithm {
-	class algorithmDataBase;
-}
 namespace market {
 	class indicatorsData;
 	class indicatorsSystem {
 	public:
-		indicatorsSystem(const algorithm::algorithmDataBase& aData);
+		indicatorsSystem(const indicatorsData& aData);
+		bool operator==(const indicatorsSystem& aOther) const;
+
 		void processCandle(candle& aCandle);
 		bool isInited() const { return inited; }
 		std::pair<double, bool> getSuperTrend() const { return { superTrend, trendIsUp }; }
