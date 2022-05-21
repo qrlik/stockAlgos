@@ -2,6 +2,10 @@
 
 using namespace algorithm;
 
+stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
+	baseClass(aData),
+	opener(*this),
+	closer(*this) {}
 
 void stMAlgorithm::preLoop() {
 	// TO DO

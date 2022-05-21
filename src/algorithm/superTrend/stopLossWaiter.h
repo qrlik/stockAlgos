@@ -1,9 +1,5 @@
 #pragma once
 
-namespace calculation {
-	class calculationSystem;
-}
-
 namespace algorithm {
 	class stAlgorithm;
 	class stopLossWaiter {

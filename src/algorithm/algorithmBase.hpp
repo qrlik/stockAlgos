@@ -39,6 +39,7 @@ namespace algorithm {
 			statesMap[getIntState(eBaseState::LONG)] = "LONG";
 			statesMap[getIntState(eBaseState::SHORT)] = "SHORT";
 		}
+		virtual ~algorithmBase() = default;
 		bool operator==(const algorithmBase<dataType>& aOther) const {
 			auto result = true;
 			result &= data == aOther.data;
