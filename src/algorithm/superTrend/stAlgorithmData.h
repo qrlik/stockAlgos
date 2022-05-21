@@ -26,12 +26,13 @@ namespace algorithm {
 		bool getStopLossWaiterResetAllowed() const { return stopLossWaiterResetAllowed; }
 		int getStopLossWaiterRange() const { return stopLossWaiterRange; }
 		bool getStopLossWaiterFullCandleCheck() const { return stopLossWaiterFullCandleCheck; }
-	protected:
+
+	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
-	private:
+
 		double dynamicSLPercent = -1.0;
 		bool dynamicSLTrendMode = false;
 

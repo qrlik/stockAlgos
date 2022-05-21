@@ -6,7 +6,7 @@ set(CPP_VERSION 17)
 set(CMAKE_SUPPRESS_REGENERATION true)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/utilities/cmake/")
-include(gameSources)
+include(sources)
 include(macros)
 
 GENERATE_SOURCE_GROUPS("${CMAKE_SOURCE_DIR}/src/" ${SOURCES})

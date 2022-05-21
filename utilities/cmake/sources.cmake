@@ -7,6 +7,9 @@ file(GLOB_RECURSE SRC_ALGORITHM
     "src/algorithm/superTrend/*.cpp"
     "src/algorithm/superTrend/*.h"
     "src/algorithm/superTrend/*.hpp"
+    "src/algorithm/superTrendMA/*.hpp"
+    "src/algorithm/superTrendMA/*.hpp"
+    "src/algorithm/superTrendMA/*.hpp"
 )
 file(GLOB_RECURSE SRC_CALCULATION
     "src/calculation/*.cpp"
