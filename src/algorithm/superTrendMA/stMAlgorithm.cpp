@@ -7,13 +7,17 @@ stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
 	opener(*this),
 	closer(*this) {}
 
-void stMAlgorithm::preLoop() {
-	// TO DO
-}
+void stMAlgorithm::preLoop() {}
 
 bool stMAlgorithm::loop() {
-	// TO DO
-	return false;
+	const auto curState = getState();
+	if (curState == getIntState(eBaseState::NONE)) {
+		return opener.check();
+	}
+	else if (curState == getIntState(eBaseState::LONG) || curState == getIntState(eBaseState::SHORT)) {
+		return closer.check();
+	}
+	return true;
 }
 
 void stMAlgorithm::onOpenOrder() {
@@ -28,9 +32,7 @@ void stMAlgorithm::logInternal(std::ofstream& aFile) const {
 	// TO DO
 }
 
-void stMAlgorithm::initInternal() {
-	// TO DO
-}
+void stMAlgorithm::initInternal() {}
 
 void stMAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	// TO DO
