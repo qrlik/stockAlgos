@@ -13,7 +13,8 @@ namespace market {
 
 		void processCandle(candle& aCandle);
 		bool isInited() const { return inited; }
-		std::pair<double, bool> getSuperTrend() const { return { superTrend, trendIsUp }; }
+		double getSuperTrend() const { return superTrend; }
+		bool isSuperTrendUp() const { return trendIsUp; }
 	private:
 		bool calculateMA(candle& aCandle);
 		double calculateTrueRangeWMA() const;

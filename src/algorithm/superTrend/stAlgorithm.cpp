@@ -54,12 +54,12 @@ bool stAlgorithm::isNewTrendChanged() {
 }
 
 void stAlgorithm::preLoop() {
-	const auto [superTrend, trendIsUp] = getIndicators().getSuperTrend();
+	const auto trendIsUp = getIndicators().isSuperTrendUp();
 	if (trendIsUp) {
-		lastUpSuperTrend = superTrend;
+		lastUpSuperTrend = getIndicators().getSuperTrend();
 	}
 	else {
-		lastDownSuperTrend = superTrend;
+		lastDownSuperTrend = getIndicators().getSuperTrend();
 	}
 
 	if (isTrendUp != trendIsUp) {
@@ -126,7 +126,7 @@ void stAlgorithm::updateOrderStopLoss(double aStopLoss) {
 }
 
 void stAlgorithm::initInternal() {
-	isTrendUp = getIndicators().getSuperTrend().second;
+	isTrendUp = getIndicators().isSuperTrendUp();
 }
 
 void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
