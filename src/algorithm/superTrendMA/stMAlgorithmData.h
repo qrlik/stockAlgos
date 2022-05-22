@@ -11,5 +11,6 @@ namespace algorithm {
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 
+		double maTrendPrecision = 0.0;
 	};
 }
