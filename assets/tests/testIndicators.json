@@ -1,8 +1,8 @@
 {
 	"candlesFileName": "300_15m",
 	"indicatorsData": {
-		"firstMA": 20,
-		"secondMA": 5,
+		"firstMA": 5,
+		"secondMA": 20,
 
 		"atrType": "RMA",
 		"atrSize": 14,

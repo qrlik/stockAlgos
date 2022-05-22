@@ -100,11 +100,15 @@ bool indicatorsData::initDataField(const std::string& aName, const Json& aValue)
 		return true;
 	}
 	else if (aName == "firstMA") {
-		firstMA = aValue.get<int>();
+		const auto [minMA, maxMA] = std::minmax({ aValue.get<int>(), secondMA });
+		firstMA = maxMA;
+		secondMA = minMA;
 		return true;
 	}
 	else if (aName == "secondMA") {
-		secondMA = aValue.get<int>();
+		const auto [minMA, maxMA] = std::minmax({ aValue.get<int>(), firstMA });
+		firstMA = maxMA;
+		secondMA = minMA;
 		return true;
 	}
 	return false;
