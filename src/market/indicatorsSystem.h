@@ -15,6 +15,9 @@ namespace market {
 		bool isInited() const { return inited; }
 		double getSuperTrend() const { return superTrend; }
 		bool isSuperTrendUp() const { return trendIsUp; }
+		double getFirstMA() const { return firstMA; }
+		double getSecondMA() const { return secondMA; }
+
 	private:
 		bool calculateMA(candle& aCandle);
 		double calculateTrueRangeWMA() const;

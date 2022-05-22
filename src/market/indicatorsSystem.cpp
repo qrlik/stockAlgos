@@ -136,20 +136,20 @@ bool indicatorsSystem::calculateMA(candle& aCandle) {
 	closeList.push_back(aCandle.close);
 	firstMASum += aCandle.close;
 	secondMASum += aCandle.close;
-	if (closeList.size() > data.getFirstMA()) {
-		firstMASum -= closeList[closeList.size() - 1 - data.getFirstMA()];
+	if (closeList.size() > data.getFirstMASize()) {
+		firstMASum -= closeList[closeList.size() - 1 - data.getFirstMASize()];
 	}
-	if (closeList.size() > data.getSecondMA()) {
-		secondMASum -= closeList[closeList.size() - 1 - data.getSecondMA()];
+	if (closeList.size() > data.getSecondMASize()) {
+		secondMASum -= closeList[closeList.size() - 1 - data.getSecondMASize()];
 	}
-	if (closeList.size() < std::max(data.getFirstMA(), data.getSecondMA())) {
+	if (closeList.size() < std::max(data.getFirstMASize(), data.getSecondMASize())) {
 		return false;
 	}
-	if (closeList.size() > std::max(data.getFirstMA(), data.getSecondMA())) {
+	if (closeList.size() > std::max(data.getFirstMASize(), data.getSecondMASize())) {
 		closeList.pop_front();
 	}
-	firstMA = (data.getFirstMA() > 0) ? firstMASum / data.getFirstMA() : 0.0;
-	secondMA = (data.getSecondMA() > 0) ? secondMASum / data.getSecondMA() : 0.0;
+	firstMA = (data.getFirstMASize() > 0) ? firstMASum / data.getFirstMASize() : 0.0;
+	secondMA = (data.getSecondMASize() > 0) ? secondMASum / data.getSecondMASize() : 0.0;
 	firstMA = utils::round(firstMA, MARKET_DATA->getPricePrecision());
 	secondMA = utils::round(secondMA, MARKET_DATA->getPricePrecision());
 	return true;

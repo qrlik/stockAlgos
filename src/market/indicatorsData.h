@@ -34,8 +34,8 @@ namespace market {
 		market::eAtrType getAtrType() const { return atrType; }
 		int getAtrSize() const { return atrSize; }
 		double getStFactor() const { return stFactor; }
-		int getFirstMA() const { return firstMA; }
-		int getSecondMA() const { return secondMA; }
+		int getFirstMASize() const { return firstMA; }
+		int getSecondMASize() const { return secondMA; }
 
 	private:
 		double stFactor = -1.0;
