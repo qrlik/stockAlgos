@@ -4,6 +4,7 @@
 namespace algorithm {
 	class stMAlgorithmData final : public algorithmDataBase {
 	public:
+		double getMATrendPrecision() const { return maTrendPrecision; }
 
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
