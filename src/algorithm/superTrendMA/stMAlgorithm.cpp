@@ -5,9 +5,12 @@ using namespace algorithm;
 stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
 	baseClass(aData),
 	opener(*this),
+	maDirection(*this),
 	closer(*this) {}
 
-void stMAlgorithm::preLoop() {}
+void stMAlgorithm::preLoop() {
+	maDirection.update();
+}
 
 bool stMAlgorithm::loop() {
 	const auto curState = getState();

@@ -1,7 +1,8 @@
 #pragma once
 #include "algorithm/algorithmBase.hpp"
-#include "openerModule.h"
 #include "closerModule.h"
+#include "maDirectionModule.h"
+#include "openerModule.h"
 #include "stMAlgorithmData.h"
 
 namespace algorithm {
@@ -19,6 +20,7 @@ namespace algorithm {
 		void initInternal() override;
 		void initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 
+		maDirectionModule maDirection;
 		openerModule opener;
 		closerModule closer;
 	};
