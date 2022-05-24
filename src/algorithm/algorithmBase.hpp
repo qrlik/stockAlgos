@@ -70,6 +70,7 @@ namespace algorithm {
 		}
 		double getCash() const { return cash; }
 		int getState() const { return state; }
+		const market::indicatorsSystem& getIndicators() const { return indicators; }
 
 		bool calculate(std::vector<market::candle> aCandles) {
 			for (auto& candle : aCandles) {
@@ -171,7 +172,6 @@ namespace algorithm {
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
-		const market::indicatorsSystem& getIndicators() const { return indicators; }
 
 		statistic stats;
 		order order;

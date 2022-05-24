@@ -61,3 +61,11 @@ bool utils::isEqual(double aLhs, double aRhs, double aPrecision) {
 	}
 	return std::fabs(aLhs - aRhs) <= aPrecision;
 }
+
+bool utils::isGreater(double aLhs, double aRhs) {
+	return aLhs - aRhs > (std::max(std::fabs(aLhs), std::fabs(aRhs))) * std::numeric_limits<double>::epsilon();
+}
+
+bool utils::isLess(double aLhs, double aRhs) {
+	return aRhs - aLhs > (std::max(std::fabs(aLhs), std::fabs(aRhs))) * std::numeric_limits<double>::epsilon();
+}

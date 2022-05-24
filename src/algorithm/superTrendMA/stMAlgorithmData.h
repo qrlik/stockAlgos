@@ -4,7 +4,8 @@
 namespace algorithm {
 	class stMAlgorithmData final : public algorithmDataBase {
 	public:
-		double getMATrendPrecision() const { return maTrendPrecision; }
+		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
+		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
@@ -12,6 +13,7 @@ namespace algorithm {
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 
-		double maTrendPrecision = 0.0;
+		double firstMATrendPrecision = 0.0;
+		double secondMATrendPrecision = 0.0;
 	};
 }

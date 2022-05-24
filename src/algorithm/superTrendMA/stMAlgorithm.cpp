@@ -8,11 +8,12 @@ stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
 	maDirection(*this),
 	closer(*this) {}
 
-void stMAlgorithm::preLoop() {
-	maDirection.update();
-}
+void stMAlgorithm::preLoop() {}
 
 bool stMAlgorithm::loop() {
+	if (!maDirection.update()) {
+		return true;
+	}
 	const auto curState = getState();
 	if (curState == getIntState(eBaseState::NONE)) {
 		return opener.check();

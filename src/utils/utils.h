@@ -18,4 +18,6 @@ namespace utils {
 	double ceil(double aValue, double aPrecision);
 
 	bool isEqual(double aLhs, double aRhs, double aPrecision = -1.0);
+	bool isGreater(double aLhs, double aRhs);
+	bool isLess(double aLhs, double aRhs);
 }
