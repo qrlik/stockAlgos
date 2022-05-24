@@ -11,6 +11,8 @@ namespace algorithm {
 		using baseClass = algorithmBase<stMAlgorithmData>;
 		stMAlgorithm(const stMAlgorithmData& aData);
 
+		const maDirectionModule& getMAModule() const { return maDirection; }
+
 	private:
 		void preLoop() override;
 		bool loop() override;

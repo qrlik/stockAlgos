@@ -12,7 +12,7 @@ void stMAlgorithm::preLoop() {}
 
 bool stMAlgorithm::loop() {
 	if (!maDirection.update()) {
-		return true;
+		return false;
 	}
 	const auto curState = getState();
 	if (curState == getIntState(eBaseState::NONE)) {
@@ -21,7 +21,7 @@ bool stMAlgorithm::loop() {
 	else if (curState == getIntState(eBaseState::LONG) || curState == getIntState(eBaseState::SHORT)) {
 		return closer.check();
 	}
-	return true;
+	return false;
 }
 
 void stMAlgorithm::onOpenOrder() {
