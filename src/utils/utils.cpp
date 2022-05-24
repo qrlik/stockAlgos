@@ -55,6 +55,14 @@ double utils::ceil(double aValue, double aPrecision) {
 	return std::ceil(aValue / aPrecision) * aPrecision;
 }
 
+double utils::maxFloat(double aLhs, double aRhs) {
+	return (isGreater(aLhs, aRhs)) ? aLhs : aRhs;
+}
+
+double utils::minFloat(double aLhs, double aRhs) {
+	return (isGreater(aLhs, aRhs)) ? aRhs : aLhs;
+}
+
 bool utils::isEqual(double aLhs, double aRhs, double aPrecision) {
 	if (aPrecision == -1.0) {
 		return std::fabs(aLhs - aRhs) <= std::min(std::fabs(aLhs), std::fabs(aRhs)) * std::numeric_limits<double>::epsilon();
@@ -66,6 +74,14 @@ bool utils::isGreater(double aLhs, double aRhs) {
 	return aLhs - aRhs > (std::max(std::fabs(aLhs), std::fabs(aRhs))) * std::numeric_limits<double>::epsilon();
 }
 
+bool utils::isGreaterOrEqual(double aLhs, double aRhs) {
+	return isGreater(aLhs, aRhs) || isEqual(aLhs, aRhs);
+}
+
 bool utils::isLess(double aLhs, double aRhs) {
 	return aRhs - aLhs > (std::max(std::fabs(aLhs), std::fabs(aRhs))) * std::numeric_limits<double>::epsilon();
+}
+
+bool utils::isLessOrEqual(double aLhs, double aRhs) {
+	return isLess(aLhs, aRhs) || isEqual(aLhs, aRhs);
 }

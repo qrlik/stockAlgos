@@ -29,8 +29,8 @@ bool stMAlgorithmData::checkCriteriaInternal(const std::string& aName, const Jso
 bool stMAlgorithmData::isValidInternal() const {
 	auto result = true;
 
-	result &= firstMATrendPrecision > 0.0;
-	result &= secondMATrendPrecision > 0.0;
+	result &= utils::isGreater(firstMATrendPrecision, 0.0);
+	result &= utils::isGreater(secondMATrendPrecision, 0.0);
 
 	return result;
 }

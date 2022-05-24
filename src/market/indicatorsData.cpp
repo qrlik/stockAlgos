@@ -55,7 +55,7 @@ bool indicatorsData::isValid() const {
 		result &= atrSize > 1;
 	}
 	if (isSuperTrend()) {
-		result &= stFactor >= 1.0;
+		result &= utils::isGreaterOrEqual(stFactor, 1.0);
 	}
 	if (isMA()) {
 		result &= firstMA > 0;

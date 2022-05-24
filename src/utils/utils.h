@@ -17,7 +17,12 @@ namespace utils {
 	double floor(double aValue, double aPrecision);
 	double ceil(double aValue, double aPrecision);
 
+	double maxFloat(double aLhs, double aRhs);
+	double minFloat(double aLhs, double aRhs);
+
 	bool isEqual(double aLhs, double aRhs, double aPrecision = -1.0);
 	bool isGreater(double aLhs, double aRhs);
+	bool isGreaterOrEqual(double aLhs, double aRhs);
 	bool isLess(double aLhs, double aRhs);
+	bool isLessOrEqual(double aLhs, double aRhs);
 }

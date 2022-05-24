@@ -58,13 +58,13 @@ bool order::openOrder(const algorithm::algorithmDataBase& aData, eOrderState aSt
 	reset();
 	const auto quotePrecision = MARKET_DATA->getQuotePrecision();
 	auto allowedCash = utils::floor(aCash * aData.getDealPercent() / 100.0, quotePrecision);
-	if (const auto allowedCashBySize = utils::floor(aData.getOrderSize(), quotePrecision); allowedCashBySize > 0.0) {
-		allowedCash = std::min(allowedCash, allowedCashBySize);
+	if (const auto allowedCashBySize = utils::floor(aData.getOrderSize(), quotePrecision); utils::isGreater(allowedCashBySize, 0.0)) {
+		allowedCash = utils::minFloat(allowedCash, allowedCashBySize);
 	}
 	const auto allowedNotionalValue = allowedCash * aData.getLeverage();
 	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
 	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);
-	if (calcQuantity < MARKET_DATA->getQuantityPrecision() || calcNotionalValue < MARKET_DATA->getMinNotionalValue()) {
+	if (utils::isLess(calcQuantity, MARKET_DATA->getQuantityPrecision()) || utils::isLess(calcNotionalValue, MARKET_DATA->getMinNotionalValue())) {
 		utils::logError("orderData::openOrder can't open order");
 		return false;
 	}

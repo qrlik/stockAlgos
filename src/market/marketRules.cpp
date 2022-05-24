@@ -24,7 +24,7 @@ namespace {
 		result &= aData.contains("tax") && aData["tax"].is_number_float();
 		if (result) {
 			const auto tax = aData["tax"].get<double>();
-			result &= !utils::isEqual(tax, 0.0) && tax > 0.0;
+			result &= !utils::isEqual(tax, 0.0) && utils::isGreater(tax, 0.0);
 		}
 		return result;
 	}
@@ -50,15 +50,15 @@ namespace {
 				result &= bracket.contains("notionalCap") && bracket["notionalCap"].is_number_integer() && bracket["notionalCap"].get<int>() > 0;
 				result &= bracket.contains("notionalFloor") && bracket["notionalFloor"].is_number_integer() && bracket["notionalFloor"].get<int>() >= 0;
 				result &= bracket.contains("maintenanceMarginRate") && bracket["maintenanceMarginRate"].is_number_float()
-					&& bracket["maintenanceMarginRate"].get<double>() > 0.0;
+					&& utils::isGreater(bracket["maintenanceMarginRate"].get<double>(), 0.0);
 				result &= bracket.contains("maintenanceAmount") && bracket["maintenanceAmount"].is_number_float()
-					&& bracket["maintenanceAmount"].get<double>() >= 0.0;
+					&& utils::isGreaterOrEqual(bracket["maintenanceAmount"].get<double>(), 0.0);
 			}
 		}
-		result &= aData.contains("quotePrecision") && aData["quotePrecision"].is_number_integer() && aData["quotePrecision"].get<int>() > 0;
-		result &= aData.contains("priceTick") && aData["priceTick"].is_number() && aData["priceTick"].get<double>() > 0.0;
-		result &= aData.contains("quantityStep") && aData["quantityStep"].is_number() && aData["quantityStep"].get<double>() > 0.0;
-		result &= aData.contains("minNotionalValue") && aData["minNotionalValue"].is_number() && aData["minNotionalValue"].get<double>() > 0.0;
+		result &= aData.contains("quotePrecision") && aData["quotePrecision"].is_number_integer() && utils::isGreater(aData["quotePrecision"].get<int>(), 0);
+		result &= aData.contains("priceTick") && aData["priceTick"].is_number() && utils::isGreater(aData["priceTick"].get<double>(), 0.0);
+		result &= aData.contains("quantityStep") && aData["quantityStep"].is_number() && utils::isGreater(aData["quantityStep"].get<double>(), 0.0);
+		result &= aData.contains("minNotionalValue") && aData["minNotionalValue"].is_number() && utils::isGreater(aData["minNotionalValue"].get<double>(), 0.0);
 		return result;
 	}
 }
@@ -91,7 +91,7 @@ bool marketData::loadTickerData(const std::string& aTicker) {
 		tData.maintenanceAmount = tier["maintenanceAmount"].get<double>();
 		tickerData.tiersData.push_back(tData);
 	}
-	std::sort(tickerData.tiersData.begin(), tickerData.tiersData.end(), [](const tierData& aLhs, const tierData& aRhs) { return aLhs.notionalCap < aRhs.notionalCap; });
+	std::sort(tickerData.tiersData.begin(), tickerData.tiersData.end(), [](const tierData& aLhs, const tierData& aRhs) { return utils::isLess(aLhs.notionalCap, aRhs.notionalCap); });
 	return true;
 }
 
@@ -101,7 +101,7 @@ const std::vector<tierData>& marketData::getTiersData() const {
 
 const tierData& marketData::getTierData(double aPosition) const {
 	auto tier = std::upper_bound(data.at(currentTicker).tiersData.begin(), data.at(currentTicker).tiersData.end(), aPosition,
-								 [](auto aPosition, const tierData& aData) { return aPosition <= aData.notionalCap; });
+								 [](auto aPosition, const tierData& aData) { return utils::isLessOrEqual(aPosition, aData.notionalCap); });
 	return *tier;
 }
 
@@ -110,8 +110,11 @@ double marketData::getLiquidationPrice(double aPrice, double aNotional, double a
 	auto notional = -1.0;
 	auto* tierData = &getTierData(aNotional);
 
-	while ((aLong || utils::isEqual(notional, -1.0)) ? notional < tierData->notionalFloor : (notional > tierData->notionalCap && tierData->maxLeverage != 1)) {
-		if (notional > 0.0) {
+	while ((aLong || utils::isEqual(notional, -1.0))
+		? utils::isLess(notional, tierData->notionalFloor)
+		: (utils::isGreater(notional, tierData->notionalCap) && tierData->maxLeverage != 1))
+	{
+		if (utils::isGreater(notional, 0.0)) {
 			tierData = &getTierData(notional);
 		}
 
@@ -136,7 +139,7 @@ double marketData::getLiquidationPercent(double aMargin, int aLeverage) const {
 	const auto price = 50'000.0;
 	auto pos = aMargin * aLeverage;
 	const auto maxPos = getLeverageMaxPosition(aLeverage);
-	pos = std::min(pos, maxPos);
+	pos = utils::minFloat(pos, maxPos);
 
 	return getLiquidationPercent(price, pos, aLeverage, utils::floor(pos / price, data.at(currentTicker).quantityPrecision), false);
 }
@@ -145,7 +148,7 @@ std::pair<double, double> marketData::getLeverageLiquidationRange(int aLeverage)
 	const double price = 50'000.0;
 	const double minPosByQuantity = data.at(currentTicker).quantityPrecision * price;
 	const double minPosbyNotional = getMinNotionalValue();
-	const double minPos = std::max(minPosByQuantity, minPosbyNotional);
+	const double minPos = utils::maxFloat(minPosByQuantity, minPosbyNotional);
 	const double maxPos = getLeverageMaxPosition(aLeverage);
 
 	const double maxLiqPercent = getLiquidationPercent(price, minPos, aLeverage, utils::floor(minPos / price, data.at(currentTicker).quantityPrecision), false);

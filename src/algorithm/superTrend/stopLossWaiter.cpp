@@ -52,8 +52,8 @@ bool stopLossWaiter::check() {
 	if (stopLossWaitCounter == 0) {
 		const auto isTrendUp = algorithm.getIsTrendUp();
 		const auto& open = algorithm.getCandle().open;
-		const bool trendUpAndOpenSuccess = isTrendUp && open > trendActivation;
-		const bool trendDownAndOpenSuccess = !isTrendUp && open < trendActivation;
+		const bool trendUpAndOpenSuccess = isTrendUp && utils::isGreater(open, trendActivation);
+		const bool trendDownAndOpenSuccess = !isTrendUp && utils::isLess(open, trendActivation);
 		if (trendUpAndOpenSuccess || trendDownAndOpenSuccess) {
 			algorithm.setState(getIntState(eBaseState::NONE));
 			return true;
@@ -63,10 +63,10 @@ bool stopLossWaiter::check() {
 	else {
 		const auto& candle = algorithm.getCandle();
 		const auto fullCandleCheck = algorithm.getData().getStopLossWaiterFullCandleCheck();
-		auto minimum = (fullCandleCheck) ? candle.low : std::min(candle.open, candle.close);
-		auto maximum = (fullCandleCheck) ? candle.high : std::max(candle.open, candle.close);
+		auto minimum = (fullCandleCheck) ? candle.low : utils::minFloat(candle.open, candle.close);
+		auto maximum = (fullCandleCheck) ? candle.high : utils::maxFloat(candle.open, candle.close);
 		const auto isTrendUp = algorithm.getIsTrendUp();
-		if ((isTrendUp && minimum > trendActivation) || (!isTrendUp && maximum < trendActivation)) {
+		if ((isTrendUp && utils::isGreater(minimum, trendActivation)) || (!isTrendUp && utils::isLess(maximum, trendActivation))) {
 			stopLossWaitCounter -= 1;
 		}
 		else {

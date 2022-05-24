@@ -29,7 +29,7 @@ bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
 bool stAlgorithmData::isValidInternal() const {
 	auto result = true;
 
-	result &= (utils::isEqual(dynamicSLPercent, -1.0) && dynamicSLTrendMode) || dynamicSLPercent > 0.0;
+	result &= (utils::isEqual(dynamicSLPercent, -1.0) && dynamicSLTrendMode) || utils::isGreater(dynamicSLPercent, 0.0);
 
 	auto waiter = touchOpenerActivationWaitMode;
 	if (breakOpenerEnabled) {

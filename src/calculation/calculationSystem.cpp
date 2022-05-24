@@ -66,7 +66,7 @@ void calculationSystem::calculate() {
 
 void calculationSystem::printProgress(size_t aIndex) {
 	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 1);
-	if (newProgress > progress) {
+	if (utils::isGreater(newProgress, progress)) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;
 		utils::log(std::to_string(progress) + '%');
@@ -85,7 +85,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	}
 	threadsData.clear();
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const Json& aLhs, const Json& aRhs) {
-		return aLhs["cash"].get<double>() > aRhs["cash"].get<double>();
+		return utils::isGreater(aLhs["cash"].get<double>(), aRhs["cash"].get<double>());
 	});
 	utils::log("calculationSystem::saveFinalData finalVector size - [" + std::to_string(finalVector.size()) + ']');
 	if (finalVector.empty()) {
@@ -104,7 +104,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 
 		for (const auto& data : finalVector) {
 			const auto weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
-			if (weight < weightPrecision) {
+			if (utils::isLess(weight, weightPrecision)) {
 				continue;
 			}
 			addStats(stats, data["data"], weight);
@@ -117,7 +117,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 			addData(dataAll, stats, data);
 
 			const auto weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
-			if (weight < weightPrecision) {
+			if (utils::isLess(weight, weightPrecision)) {
 				continue;
 			}
 			addData(dataWeighted, stats, data);

@@ -7,11 +7,11 @@ maDirectionModule::maDirectionModule(stMAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
 void maDirectionModule::updateData(maData& aData, double aMa, double aPresicion) {
-	if (aMa > aData.lastMaximum) {
+	if (utils::isGreater(aMa, aData.lastMaximum)) {
 		aData.lastMaximum = aMa;
 		aData.isLastMaximum = true;
 	}
-	if (aMa < aData.lastMinimum) {
+	if (utils::isLess(aMa, aData.lastMinimum)) {
 		aData.lastMinimum = aMa;
 		aData.isLastMaximum = false;
 	}

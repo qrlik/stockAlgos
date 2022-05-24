@@ -23,19 +23,19 @@ bool algorithmDataBase::isValid() const {
 	auto result = true;
 
 	result &= indicatorsData.isValid();
-	result &= dealPercent > 0.0 && dealPercent < 100.0;
+	result &= utils::isGreater(dealPercent, 0.0) && utils::isLess(dealPercent, 100.0);
 	result &= leverage > 0 && leverage <= MARKET_DATA->getMaxLeverage();
 
-	result &= startCash > MARKET_DATA->getMinNotionalValue() / leverage;
-	result &= startCash > maxLossCash;
-	result &= orderSize < startCash;
-	result &= maxLossPercent > 0.0 && maxLossPercent < 100.0;
+	result &= utils::isGreater(startCash, MARKET_DATA->getMinNotionalValue() / leverage);
+	result &= utils::isGreater(startCash, maxLossCash);
+	result &= utils::isLess(orderSize, startCash);
+	result &= utils::isGreater(maxLossPercent, 0.0) && utils::isLess(maxLossPercent, 100.0);
 
-	const auto minLiqPercent = (orderSize > 0.0)
+	const auto minLiqPercent = (utils::isGreater(orderSize, 0.0))
 		? MARKET_DATA->getLiquidationPercent(orderSize, leverage)
 		: MARKET_DATA->getLeverageLiquidationRange(leverage).first;
-	result &= liquidationOffsetPercent > 0.0 && liquidationOffsetPercent < minLiqPercent;
-	result &= minimumProfitPercent > 2 * MARKET_DATA->getTaxFactor() * 100.0;
+	result &= utils::isGreater(liquidationOffsetPercent, 0.0) && utils::isLess(liquidationOffsetPercent, minLiqPercent);
+	result &= utils::isGreater(minimumProfitPercent, 2 * MARKET_DATA->getTaxFactor() * 100.0);
 
 	result &= isValidInternal();
 	return result;

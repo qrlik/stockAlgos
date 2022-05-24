@@ -12,14 +12,14 @@ bool dynamicStopLoss::checkTrend() {
 	const auto& order = algorithm.getOrder();
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto lastUpTrend = algorithm.getLastUpSuperTrend();
-		if (lastUpTrend >= order.getMinimumProfit() && lastUpTrend > order.getStopLoss()) {
+		if (utils::isGreaterOrEqual(lastUpTrend, order.getMinimumProfit()) && utils::isGreater(lastUpTrend, order.getStopLoss())) {
 			algorithm.updateOrderStopLoss(lastUpTrend);
 			return true;
 		}
 	}
 	else {
 		auto lastDownTrend = algorithm.getLastDownSuperTrend();
-		if (lastDownTrend <= order.getMinimumProfit() && lastDownTrend < order.getStopLoss()) {
+		if (utils::isLessOrEqual(lastDownTrend, order.getMinimumProfit()) && utils::isLess(lastDownTrend, order.getStopLoss())) {
 			algorithm.updateOrderStopLoss(lastDownTrend);
 			return true;
 		}
@@ -29,7 +29,7 @@ bool dynamicStopLoss::checkTrend() {
 
 bool dynamicStopLoss::checkDynamic() {
 	const auto dynamicSLPercent = algorithm.getData().getDynamicSLPercent();
-	if (dynamicSLPercent < 0.0 || utils::isEqual(dynamicSLPercent, 0.0)) {
+	if (utils::isLess(dynamicSLPercent, 0.0) || utils::isEqual(dynamicSLPercent, 0.0)) {
 		utils::logError("dynamicStopLoss::checkDynamic wrong percent");
 		return false;
 	}
@@ -38,14 +38,14 @@ bool dynamicStopLoss::checkDynamic() {
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
-		if (dynamicStopLoss >= order.getMinimumProfit() && dynamicStopLoss > order.getStopLoss()) {
+		if (utils::isGreaterOrEqual(dynamicStopLoss, order.getMinimumProfit()) && utils::isGreater(dynamicStopLoss, order.getStopLoss())) {
 			algorithm.updateOrderStopLoss(dynamicStopLoss);
 			return true;
 		}
 	}
 	else {
 		auto dynamicStopLoss = utils::round(candle.low * (100.0 + dynamicSLPercent) / 100.0, pricePrecision);
-		if (dynamicStopLoss <= order.getMinimumProfit() && dynamicStopLoss < order.getStopLoss()) {
+		if (utils::isLessOrEqual(dynamicStopLoss, order.getMinimumProfit()) && utils::isLess(dynamicStopLoss, order.getStopLoss())) {
 			algorithm.updateOrderStopLoss(dynamicStopLoss);
 			return true;
 		}

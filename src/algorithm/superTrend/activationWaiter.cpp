@@ -42,11 +42,11 @@ bool activationWaiter::check() {
 	if (activationWaitCounter == 0) {
 		const auto isTrendUp = algorithm.getIsTrendUp();
 		const auto& open = algorithm.getCandle().open;
-		if (isTrendUp && open > trendActivation) {
+		if (isTrendUp && utils::isGreater(open, trendActivation)) {
 			algorithm.openOrder(eOrderState::LONG, open);
 			return true;
 		}
-		else if (!isTrendUp && open < trendActivation) {
+		else if (!isTrendUp && utils::isLess(open, trendActivation)) {
 			algorithm.openOrder(eOrderState::SHORT, open);
 			return true;
 		}
@@ -55,10 +55,10 @@ bool activationWaiter::check() {
 	else {
 		const auto& candle = algorithm.getCandle();
 		const auto fullCandleCheck = algorithm.getData().getActivationWaiterFullCandleCheck();
-		auto minimum = (fullCandleCheck) ? candle.low : std::min(candle.open, candle.close);
-		auto maximum = (fullCandleCheck) ? candle.high : std::max(candle.open, candle.close);
+		auto minimum = (fullCandleCheck) ? candle.low : utils::minFloat(candle.open, candle.close);
+		auto maximum = (fullCandleCheck) ? candle.high : utils::maxFloat(candle.open, candle.close);
 		const auto isTrendUp = algorithm.getIsTrendUp();
-		if ((isTrendUp && minimum > trendActivation) || (!isTrendUp && maximum < trendActivation)) {
+		if ((isTrendUp && utils::isGreater(minimum, trendActivation)) || (!isTrendUp && utils::isLess(maximum, trendActivation))) {
 			activationWaitCounter -= 1;
 		}
 		else {

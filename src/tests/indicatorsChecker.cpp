@@ -44,8 +44,8 @@ void indicatorsChecker::updateTestSystem(const std::string& aTime) {
 	if (aTime != testNextTime) {
 		return;
 	}
-	Json data = testData[testIndex];
-	testSystem->initFromJson(data);
+	Json stepData = testData[testIndex];
+	testSystem->initFromJson(stepData);
 	testIndex += 1;
 	testNextTime = (testIndex < static_cast<int>(testData.size())) ? testData[testIndex]["time"].get<std::string>() : "ENDED";
 }

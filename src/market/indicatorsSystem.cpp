@@ -51,7 +51,7 @@ namespace {
 		auto candleSize = aCandle.high - aCandle.low;
 		auto highDelta = std::abs(aCandle.high - aPrevCandle.close);
 		auto lowDelta = std::abs(aCandle.low - aPrevCandle.close);
-		return std::max(candleSize, std::max(highDelta, lowDelta));
+		return utils::maxFloat(candleSize, utils::maxFloat(highDelta, lowDelta));
 	}
 }
 
@@ -101,14 +101,14 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	auto upperBand = utils::round(middlePrice + data.getStFactor() * atr, pricePrecision);
 	auto lowerBand = utils::round(middlePrice - data.getStFactor() * atr, pricePrecision);
 
-	upperBand = (upperBand < lastUpperBand || prevCandle.close > lastUpperBand) ? upperBand : lastUpperBand;
-	lowerBand = (lowerBand > lastLowerBand || prevCandle.close < lastLowerBand) ? lowerBand : lastLowerBand;
+	upperBand = (utils::isLess(upperBand, lastUpperBand) || utils::isGreater(prevCandle.close, lastUpperBand)) ? upperBand : lastUpperBand;
+	lowerBand = (utils::isGreater(lowerBand, lastLowerBand) || utils::isLess(prevCandle.close, lastLowerBand)) ? lowerBand : lastLowerBand;
 
 	if (utils::isEqual(superTrend, lastUpperBand)) {
-		trendIsUp = aCandle.close > upperBand;
+		trendIsUp = utils::isGreater(aCandle.close, upperBand);
 	}
 	else {
-		trendIsUp = aCandle.close > lowerBand;
+		trendIsUp = utils::isGreater(aCandle.close, lowerBand);
 	}
 
 	lastUpperBand = upperBand;

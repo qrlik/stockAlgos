@@ -36,8 +36,8 @@ double stAlgorithm::getSuperTrend() const {
 double stAlgorithm::getActualSuperTrend() const {
 	if (isNewTrend) {
 		return (isTrendUp)
-			? std::max(lastDownSuperTrend, lastUpSuperTrend)
-			: std::min(lastDownSuperTrend, lastUpSuperTrend);
+			? utils::maxFloat(lastDownSuperTrend, lastUpSuperTrend)
+			: utils::minFloat(lastDownSuperTrend, lastUpSuperTrend);
 	}
 	return getSuperTrend();
 }
@@ -46,7 +46,7 @@ bool stAlgorithm::isNewTrendChanged() {
 	if (!isNewTrend) {
 		return false;
 	}
-	if ((isTrendUp && getCandle().low <= getSuperTrend()) || (!isTrendUp && getCandle().high >= getSuperTrend())) {
+	if ((isTrendUp && utils::isLessOrEqual(getCandle().low, getSuperTrend())) || (!isTrendUp && utils::isGreaterOrEqual(getCandle().high, getSuperTrend()))) {
 		isNewTrend = false;
 		return true;
 	}
@@ -93,10 +93,10 @@ bool stAlgorithm::checkTrend() {
 
 bool stAlgorithm::updateOrder() {
 	bool needReupdate = false;
-	if (getState() == getIntState(eBaseState::LONG) && getCandle().low <= getOrder().getStopLoss()) {
+	if (getState() == getIntState(eBaseState::LONG) && utils::isLessOrEqual(getCandle().low, getOrder().getStopLoss())) {
 		closeOrder();
 	}
-	else if (getState() == getIntState(eBaseState::SHORT) && getCandle().high >= getOrder().getStopLoss()) {
+	else if (getState() == getIntState(eBaseState::SHORT) && utils::isGreaterOrEqual(getCandle().high, getOrder().getStopLoss())) {
 		closeOrder();
 	}
 	else if (getOrder().getTime() != getCandle().time) {
@@ -116,7 +116,7 @@ void stAlgorithm::onOpenOrder() {
 }
 
 void stAlgorithm::onCloseOrder(double aProfit) {
-	if (aProfit < 0) {
+	if (utils::isLess(aProfit, 0)) {
 		stopLossWaiterModule.start();
 	}
 }

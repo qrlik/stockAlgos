@@ -6,13 +6,13 @@ using namespace algorithm;
 namespace {
 	double getOrderPrice(double aTrendActivation, double aOpen, eOrderState aState) {
 		if (aState == eOrderState::LONG) {
-			if (aOpen < aTrendActivation) {
+			if (utils::isLess(aOpen, aTrendActivation)) {
 				return aOpen;
 			}
 			return aTrendActivation;
 		}
 		else {
-			if (aOpen > aTrendActivation) {
+			if (utils::isGreater(aOpen, aTrendActivation)) {
 				return aOpen;
 			}
 			return aTrendActivation;
@@ -27,7 +27,7 @@ bool trendTouchOpener::check() {
 	const auto trendActivation = algorithm.getSuperTrend();
 	const auto isTrendUp = algorithm.getIsTrendUp();
 	const auto& candle = algorithm.getCandle();
-	if (isTrendUp && candle.low <= trendActivation) {
+	if (isTrendUp && utils::isLessOrEqual(candle.low, trendActivation)) {
 		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eOrderState::LONG);
 			algorithm.openOrder(eOrderState::LONG, orderPrice);
@@ -35,7 +35,7 @@ bool trendTouchOpener::check() {
 		}
 		algorithm.getActivationWaiter().start();
 	}
-	else if (!isTrendUp && candle.high >= trendActivation) {
+	else if (!isTrendUp && utils::isGreaterOrEqual(candle.high, trendActivation)) {
 		if (!algorithm.getData().getTouchOpenerActivationWaitMode()) {
 			const auto orderPrice = getOrderPrice(trendActivation, candle.open, eOrderState::SHORT);
 			algorithm.openOrder(eOrderState::SHORT, orderPrice);
