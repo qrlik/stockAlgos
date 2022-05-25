@@ -7,6 +7,10 @@ namespace algorithm {
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 
+		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
+		bool getCloserMainMACheck() const { return closerMainMACheck; }
+		bool getCloserConjuctionCheck() const { return closerConjuctionCheck; }
+
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;
@@ -15,5 +19,9 @@ namespace algorithm {
 
 		double firstMATrendPrecision = 0.0;
 		double secondMATrendPrecision = 0.0;
+		
+		bool closerTrendChangeCheck = false;
+		bool closerMainMACheck = false;
+		bool closerConjuctionCheck = false;
 	};
 }
