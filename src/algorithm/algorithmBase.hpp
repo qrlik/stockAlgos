@@ -87,7 +87,7 @@ namespace algorithm {
 			}
 
 			setState(getIntState(aState));
-			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision());
+			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision()); // TO DO REFACTOR
 			cash = cash - getOrder().getMargin() - taxAmount;
 			stats.onOpenOrder((aState == eOrderState::LONG));
 			onOpenOrder();
@@ -97,9 +97,9 @@ namespace algorithm {
 			if (utils::isGreater(aPrice, 0.0)) {
 				order.updateStopLoss(aPrice);
 			}
-			const auto profit = getOrder().getProfit();
-			cash = cash + getOrder().getMargin() + profit;
-			order.reset();
+			const auto margin = order.getMargin();
+			const auto profit = order.closeOrder();
+			cash += margin + profit;
 			if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 				stopCashBreak = true;
 			}

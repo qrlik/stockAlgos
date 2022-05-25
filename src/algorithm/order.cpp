@@ -33,6 +33,7 @@ bool order::operator==(const order& aOther) const {
 void order::reset() {
 	time.clear();
 	price = 0.0;
+	initStopLoss = 0.0;
 	stopLoss = 0.0;
 	minimumProfit = 0.0;
 	margin = 0.0;
@@ -78,8 +79,21 @@ bool order::openOrder(const algorithm::algorithmDataBase& aData, eOrderState aSt
 
 	time = aTime;
 	minimumProfit = calculateMinimumProfit(aData);
-	stopLoss = calculateStopLoss(aData);
+	initStopLoss = calculateStopLoss(aData);
+	stopLoss = initStopLoss;
 	return true;
+}
+
+double order::closeOrder() {
+	auto profit = std::numeric_limits<double>::min();
+	if (state == eOrderState::LONG && utils::isLess(stopLoss, initStopLoss) ||
+		state == eOrderState::SHORT && utils::isGreater(stopLoss, initStopLoss)) {
+		utils::logError("order::closeOrder wrong stopLoss");
+		return profit;
+	}
+	profit = getProfit();
+	reset();
+	return profit;
 }
 
 double order::getProfit() const {
@@ -100,6 +114,7 @@ void order::initFromJson(const algorithm::algorithmDataBase& aAlgData, const Jso
 			price = value.get<double>();
 		}
 		else if (field == "stopLoss") {
+			initStopLoss = value.get<double>();
 			stopLoss = value.get<double>();
 		}
 		else if (field == "minimumProfit") {

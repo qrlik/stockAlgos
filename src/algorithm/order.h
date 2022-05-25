@@ -18,6 +18,7 @@ namespace algorithm {
 		void initFromJson(const algorithm::algorithmDataBase& aAlgorithm, const Json& aJson);
 		bool operator==(const order& aOther) const;
 		bool openOrder(const algorithm::algorithmDataBase& aData, eOrderState aState, double aPrice, double aCash, const std::string& aTime);
+		double closeOrder();
 		void reset();
 		std::string toString() const;
 
@@ -37,6 +38,7 @@ namespace algorithm {
 		std::string time;
 		double price = 0.0;
 		double stopLoss = 0.0;
+		double initStopLoss = 0.0;
 		double minimumProfit = 0.0;
 		double margin = 0.0;
 		double notionalValue = 0.0;
