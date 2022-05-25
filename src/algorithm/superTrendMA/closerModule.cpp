@@ -11,23 +11,23 @@ closerModule::closerModule(stMAlgorithm& aAlgorithm)
 bool closerModule::check() {
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		if (utils::isLessOrEqual(algorithm.getCandle().low, algorithm.getOrder().getStopLoss())) {
-			algorithm.closeOrder(); // TO DO ADD CLOSE PRICE
+			algorithm.closeOrder();
 			return true;
 		}
 
 		if (checkStates(true)) {
-			algorithm.closeOrder(); // TO DO ADD CLOSE PRICE
+			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
 	}
 	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
 		if (utils::isGreaterOrEqual(algorithm.getCandle().high, algorithm.getOrder().getStopLoss())) {
-			algorithm.closeOrder(); // TO DO ADD CLOSE PRICE
+			algorithm.closeOrder();
 			return true;
 		}
 
 		if (checkStates(false)) {
-			algorithm.closeOrder(); // TO DO ADD CLOSE PRICE
+			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
 	}

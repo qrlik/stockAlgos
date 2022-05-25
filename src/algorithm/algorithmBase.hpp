@@ -92,8 +92,11 @@ namespace algorithm {
 			stats.onOpenOrder((aState == eOrderState::LONG));
 			onOpenOrder();
 		}
-		void closeOrder() {
+		void closeOrder(double aPrice = -1.0) {
 			setState(getIntState(eBaseState::NONE));
+			if (utils::isGreater(aPrice, 0.0)) {
+				order.updateStopLoss(aPrice);
+			}
 			const auto profit = getOrder().getProfit();
 			cash = cash + getOrder().getMargin() + profit;
 			order.reset();
