@@ -5,7 +5,6 @@
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
-		using baseClass = algorithmDataBase;
 		stAlgorithmData();
 		bool operator==(const stAlgorithmData& aOther) const;
 

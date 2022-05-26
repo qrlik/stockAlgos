@@ -5,6 +5,7 @@ namespace algorithm {
 	class stMAlgorithmData final : public algorithmDataBase {
 	public:
 		stMAlgorithmData();
+		bool operator==(const stMAlgorithmData& aOther) const;
 
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }

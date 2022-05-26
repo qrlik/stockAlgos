@@ -1,0 +1,186 @@
+{
+	"candlesFileName": "300_15m",
+	"algorithmData": {
+		"firstMA": 20,
+		"secondMA": 5,
+
+		"atrType": "RMA",
+		"atrSize": 15,
+		"stFactor": 3.0,
+
+		"candlesToSkip": 250,
+
+		"dealPercent": 5.0,
+		"leverage": 50,
+
+		"startCash": 100.0,
+		"maxLossPercent": 60.0,
+
+		"liquidationOffsetPercent": 0.05,
+		"minimumProfitPercent": 0.1,
+
+		"fullCheck": true,
+
+		"firstMATrendPrecision": 0.5,
+		"secondMATrendPrecision": 1.0,
+		
+		"closerTrendChangeCheck": true,
+		"closerMainMACheck": true,
+		"closerConjuctionCheck": true
+	},
+	"testAlgorithmData": [
+		{
+			"time": "08:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30136.5,
+				"lastMinimum": 30136.5
+			},
+			"secondMA": {
+				"lastMaximum": 30301.7,
+				"lastMinimum": 30301.7
+			}
+		},
+		{
+			"time": "08:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30149.2,
+				"isLastMaximum": true
+			},
+			"secondMA": {
+				"lastMaximum": 30328.5,
+				"isLastMaximum": true
+			}
+		},
+		{
+			"time": "09:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30164.5
+			},
+			"secondMA": {
+				"lastMaximum": 30355.9
+			}
+		},
+		{
+			"time": "09:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30185.7
+			}
+		},
+		{
+			"time": "09:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30211.5
+			},
+			"secondMA": {
+				"lastMaximum": 30363.9
+			}
+		},
+		{
+			"time": "09:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30239.2
+			},
+			"secondMA": {
+				"lastMaximum": 30389.1
+			}
+		},
+		{
+			"time": "10:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30265.9
+			},
+			"secondMA": {
+				"lastMaximum": 30416.5
+			}
+		},
+		{
+			"time": "10:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30281.9
+			}
+		},
+		{
+			"time": "10:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30304.5,
+				"state": "UP"
+			}
+		},
+		{
+			"time": "10:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30329.0
+			},
+			"secondMA": {
+				"lastMaximum": 30424.5
+			}
+		},
+		{
+			"time": "11:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30346.2
+			}
+		},
+		{
+			"time": "11:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30365.3
+			}
+		},
+		{
+			"time": "11:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30381.7
+			},
+			"secondMA": {
+				"lastMaximum": 30446.3
+			}
+		},
+		{
+			"time": "11:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30396.9
+			},
+			"secondMA": {
+				"lastMaximum": 30513.4
+			}
+		},
+		{
+			"time": "12:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30407.8
+			},
+			"secondMA": {
+				"lastMaximum": 30537.6
+			}
+		},
+		{
+			"time": "12:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30421.2
+			},
+			"secondMA": {
+				"lastMaximum": 30575.0
+			}
+		},
+		{
+			"time": "12:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30442.8
+			},
+			"secondMA": {
+				"lastMaximum": 30605.4,
+				"state": "UP"
+			}
+		},
+		{
+			"time": "12:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30459.8
+			},
+			"secondMA": {
+				"lastMaximum": 30630.8
+			}
+		}
+	]
+}

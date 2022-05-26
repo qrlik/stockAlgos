@@ -45,5 +45,10 @@ void stMAlgorithm::logInternal(std::ofstream& aFile) const {
 void stMAlgorithm::initInternal() {}
 
 void stMAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
-	// TO DO
+	if (aName == "firstMA") {
+		maDirection.updateData(maDirection.firstData, aValue);
+	}
+	else if (aName == "secondMA") {
+		maDirection.updateData(maDirection.secondData, aValue);
+	}
 }

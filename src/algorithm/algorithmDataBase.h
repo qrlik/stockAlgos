@@ -27,6 +27,8 @@ namespace algorithm {
 		bool getFullCheck() const { return fullCheck; }
 
 	protected:
+		using baseClass = algorithmDataBase;
+
 		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
 		virtual bool isValidInternal() const = 0;

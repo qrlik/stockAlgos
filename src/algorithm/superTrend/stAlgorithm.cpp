@@ -130,9 +130,6 @@ void stAlgorithm::initInternal() {
 }
 
 void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
-	if (aValue.is_null()) {
-		return;
-	}
 	if (aName == "activationWaitCounter") {
 		activationWaiterModule.activationWaitCounter = aValue.get<int>();
 	}

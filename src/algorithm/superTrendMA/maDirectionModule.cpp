@@ -57,12 +57,12 @@ bool maDirectionModule::operator==(const maDirectionModule& aOther) const {
 	result &= firstData.state == aOther.firstData.state;
 	result &= secondData.state == aOther.secondData.state;
 	if (algorithm.getData().getFullCheck()) {
-		result &= firstData.lastMinimum == aOther.firstData.lastMinimum;
-		result &= firstData.lastMaximum == aOther.firstData.lastMaximum;
+		result &= utils::isEqual(firstData.lastMinimum, aOther.firstData.lastMinimum);
+		result &= utils::isEqual(firstData.lastMaximum, aOther.firstData.lastMaximum);
 		result &= firstData.isLastMaximum == aOther.firstData.isLastMaximum;
 
-		result &= secondData.lastMinimum == aOther.secondData.lastMinimum;
-		result &= secondData.lastMaximum == aOther.secondData.lastMaximum;
+		result &= utils::isEqual(secondData.lastMinimum, aOther.secondData.lastMinimum);
+		result &= utils::isEqual(secondData.lastMaximum, aOther.secondData.lastMaximum);
 		result &= secondData.isLastMaximum == aOther.secondData.isLastMaximum;
 	}
 	return result;
@@ -80,4 +80,31 @@ bool maDirectionModule::isFirstUp() const {
 
 bool maDirectionModule::isSecondUp() const {
 	return (secondData.state == eMaState::UP) ? true : false;
+}
+
+maDirectionModule::eMaState maDirectionModule::stateFromStr(const std::string aName) const {
+	if (aName == "DOWN") {
+		return eMaState::DOWN;
+	}
+	if (aName == "UP") {
+		return eMaState::UP;
+	}
+	return eMaState::NONE;
+}
+
+void maDirectionModule::updateData(maData& aData, const Json& aJson) {
+	for (const auto& [name, value] : aJson.items()) {
+		if (name == "lastMinimum") {
+			aData.lastMinimum = value.get<double>();
+		}
+		else if (name == "lastMaximum") {
+			aData.lastMaximum = value.get<double>();
+		}
+		else if (name == "state") {
+			aData.state = stateFromStr(value.get<std::string>());
+		}
+		else if (name == "isLastMaximum") {
+			aData.isLastMaximum = value.get<bool>();
+		}
+	}
 }

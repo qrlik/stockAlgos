@@ -1,5 +1,7 @@
 #pragma once
+#include "json/json.hpp"
 #include <numeric>
+#include <string>
 
 namespace algorithm {
 	class stMAlgorithm;
@@ -25,7 +27,9 @@ namespace algorithm {
 			bool isLastMaximum = false;
 		};
 
+		eMaState stateFromStr(const std::string aName) const;
 		void updateData(maData& aData, double aMa, double aPresicion);
+		void updateData(maData& aData, const Json& aJson);
 
 		stMAlgorithm& algorithm;
 

@@ -8,6 +8,17 @@ stMAlgorithmData::stMAlgorithmData() {
 	getIndicatorsData().enableSuperTrend();
 }
 
+bool stMAlgorithmData::operator==(const stMAlgorithmData& aOther) const {
+	bool result = baseClass::operator==(aOther);
+	result &= utils::isEqual(firstMATrendPrecision, aOther.firstMATrendPrecision);
+	result &= utils::isEqual(secondMATrendPrecision, aOther.secondMATrendPrecision);
+
+	result &= closerTrendChangeCheck == aOther.closerTrendChangeCheck;
+	result &= closerMainMACheck == aOther.closerMainMACheck;
+	result &= closerConjuctionCheck == aOther.closerConjuctionCheck;
+	return result;
+}
+
 bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	if (aName == "firstMATrendPrecision") {
 		firstMATrendPrecision = aValue.get<double>();
