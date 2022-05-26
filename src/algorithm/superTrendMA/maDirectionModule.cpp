@@ -52,6 +52,22 @@ void maDirectionModule::updateData(maData& aData, double aMa, double aPresicion)
 	}
 }
 
+bool maDirectionModule::operator==(const maDirectionModule& aOther) const {
+	auto result = true;
+	result &= firstData.state == aOther.firstData.state;
+	result &= secondData.state == aOther.secondData.state;
+	if (algorithm.getData().getFullCheck()) {
+		result &= firstData.lastMinimum == aOther.firstData.lastMinimum;
+		result &= firstData.lastMaximum == aOther.firstData.lastMaximum;
+		result &= firstData.isLastMaximum == aOther.firstData.isLastMaximum;
+
+		result &= secondData.lastMinimum == aOther.secondData.lastMinimum;
+		result &= secondData.lastMaximum == aOther.secondData.lastMaximum;
+		result &= secondData.isLastMaximum == aOther.secondData.isLastMaximum;
+	}
+	return result;
+}
+
 bool maDirectionModule::update() {
 	updateData(firstData, algorithm.getIndicators().getFirstMA(), algorithm.getData().getFirstMATrendPrecision());
 	updateData(secondData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getSecondMATrendPrecision());

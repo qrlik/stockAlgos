@@ -7,6 +7,7 @@ namespace algorithm {
 		friend class stMAlgorithm;
 	public:
 		maDirectionModule(stMAlgorithm& aAlgorithm);
+		bool operator==(const maDirectionModule& aOther) const;
 		bool update();
 
 		bool isFirstUp() const;

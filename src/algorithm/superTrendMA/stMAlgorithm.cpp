@@ -8,6 +8,12 @@ stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
 	maDirection(*this),
 	closer(*this) {}
 
+bool stMAlgorithm::operator==(const stMAlgorithm& aOther) const {
+	auto result = baseClass::operator==(aOther);
+	result &= maDirection == aOther.maDirection;
+	return result;
+}
+
 void stMAlgorithm::preLoop() {}
 
 bool stMAlgorithm::loop() {

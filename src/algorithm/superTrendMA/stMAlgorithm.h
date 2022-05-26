@@ -10,6 +10,7 @@ namespace algorithm {
 	public:
 		using baseClass = algorithmBase<stMAlgorithmData>;
 		stMAlgorithm(const stMAlgorithmData& aData);
+		bool operator==(const stMAlgorithm& aOther) const;
 
 		const maDirectionModule& getMAModule() const { return maDirection; }
 
