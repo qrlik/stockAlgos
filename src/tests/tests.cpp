@@ -10,10 +10,10 @@ using namespace tests;
 namespace {
 	void checkersTests() {
 		indicatorsChecker().check();
-		algorithmChecker<algorithm::stAlgorithm>("test1").check();
-		algorithmChecker<algorithm::stAlgorithm>("test2").check();
-		algorithmChecker<algorithm::stAlgorithm>("test3").check();
-		algorithmChecker<algorithm::stAlgorithm>("test4").check();
+		algorithmChecker<algorithm::stAlgorithm>("superTrend/test1").check();
+		algorithmChecker<algorithm::stAlgorithm>("superTrend/test2").check();
+		algorithmChecker<algorithm::stAlgorithm>("superTrend/test3").check();
+		algorithmChecker<algorithm::stAlgorithm>("superTrend/test4").check();
 	}
 
 	void marketDataTests() {
