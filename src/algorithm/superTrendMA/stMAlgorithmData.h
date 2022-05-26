@@ -4,6 +4,8 @@
 namespace algorithm {
 	class stMAlgorithmData final : public algorithmDataBase {
 	public:
+		stMAlgorithmData();
+
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 

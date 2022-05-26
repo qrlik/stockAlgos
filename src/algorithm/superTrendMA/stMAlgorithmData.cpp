@@ -3,6 +3,10 @@
 
 using namespace algorithm;
 
+stMAlgorithmData::stMAlgorithmData() {
+	getIndicatorsData().enableMA(2);
+	getIndicatorsData().enableSuperTrend();
+}
 
 bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	if (aName == "firstMATrendPrecision") {
@@ -22,7 +26,7 @@ bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Jso
 		return true;
 	}
 	if (aName == "closerConjuctionCheck") {
-		closerConjuctionCheck = aValue.get<double>();
+		closerConjuctionCheck = aValue.get<bool>();
 		return true;
 	}
 	return false;

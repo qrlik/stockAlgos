@@ -4,7 +4,6 @@
 using namespace algorithm;
 
 stAlgorithmData::stAlgorithmData() {
-	getIndicatorsData().enableMA(2);
 	getIndicatorsData().enableSuperTrend();
 }
 
