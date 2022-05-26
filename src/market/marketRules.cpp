@@ -187,5 +187,5 @@ int marketData::getMaxLeverage() const {
 }
 
 double marketData::getTaxFactor() const {
-	return tax;
+	return tax / 100.0;
 }
