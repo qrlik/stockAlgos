@@ -22,7 +22,7 @@ bool stAlgorithm::operator==(const stAlgorithm& aOther) const {
 	result &= stopLossWaiterModule == aOther.stopLossWaiterModule;
 	result &= isTrendUp == aOther.isTrendUp;
 	result &= isNewTrend == aOther.isNewTrend;
-	if (getData().getFullCheck()) {
+	if (getData().getFullCheckCustom()) {
 		result &= utils::isEqual(lastUpSuperTrend, aOther.lastUpSuperTrend);
 		result &= utils::isEqual(lastDownSuperTrend, aOther.lastDownSuperTrend);
 	}
@@ -147,9 +147,6 @@ void stAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aV
 	}
 	else if (aName == "isNewTrend") {
 		isNewTrend = aValue.get<bool>();
-	}
-	else if (aName == "state") {
-		setState(stateFromString(aValue.get<std::string>()));
 	}
 }
 

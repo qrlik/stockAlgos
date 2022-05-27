@@ -19,7 +19,7 @@
 		"liquidationOffsetPercent": 0.05,
 		"minimumProfitPercent": 0.1,
 
-		"fullCheck": true,
+		"fullCheckCustom": true,
 
 		"firstMATrendPrecision": 0.5,
 		"secondMATrendPrecision": 1.0,
@@ -43,12 +43,10 @@
 		{
 			"time": "08:45 17-05-2022",
 			"firstMA": {
-				"lastMaximum": 30149.2,
-				"isLastMaximum": true
+				"lastMaximum": 30149.2
 			},
 			"secondMA": {
-				"lastMaximum": 30328.5,
-				"isLastMaximum": true
+				"lastMaximum": 30328.5
 			}
 		},
 		{
@@ -171,7 +169,14 @@
 			"secondMA": {
 				"lastMaximum": 30605.4,
 				"state": "UP"
-			}
+			},
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 30676.2,
+				"time": "12:30 17-05-2022"
+			},
+			"state": "LONG"
 		},
 		{
 			"time": "12:45 17-05-2022",
@@ -180,6 +185,139 @@
 			},
 			"secondMA": {
 				"lastMaximum": 30630.8
+			}
+		},
+		{
+			"time": "13:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30472.8
+			}
+		},
+		{
+			"time": "13:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30485.9
+			}
+		},
+		{
+			"time": "13:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30499.3
+			}
+		},
+		{
+			"time": "13:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30503.3
+			}
+		},
+		{
+			"time": "14:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30509.6
+			}
+		},
+		{
+			"time": "14:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30512.7
+			}
+		},
+		{
+			"time": "16:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30519.5
+			}
+		},
+		{
+			"time": "17:30 17-05-2022",
+			"order": {
+				"lifeState": false
+			},
+			"state": "NONE"
+		},
+		{
+			"time": "18:00 17-05-2022",
+			"secondMA": {
+				"lastMinimum": 30236.9,
+				"state": "DOWN"
+			}
+		},
+		{
+			"time": "18:15 17-05-2022",
+			"secondMA": {
+				"lastMinimum": 30156.5
+			}
+		},
+		{
+			"time": "18:30 17-05-2022",
+			"secondMA": {
+				"lastMinimum": 30078.6
+			}
+		},
+		{
+			"time": "18:45 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30350.4,
+				"state": "DOWN"
+			},
+			"secondMA": {
+				"lastMinimum": 30023.3
+			},
+			"order": {
+				"type": "SHORT",
+				"lifeState": true,
+				"price": 30045.1,
+				"time": "18:45 17-05-2022"
+			},
+			"state": "SHORT"
+		},
+		{
+			"time": "19:00 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30334.9
+			}
+		},
+		{
+			"time": "19:15 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30311.5
+			}
+		},
+		{
+			"time": "19:30 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30291.3
+			}
+		},
+		{
+			"time": "19:45 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30279.6
+			}
+		},
+		{
+			"time": "20:00 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30271.0
+			}
+		},
+		{
+			"time": "20:15 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30260.3
+			}
+		},
+		{
+			"time": "20:30 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30242.4
+			}
+		},
+		{
+			"time": "20:45 17-05-2022",
+			"firstMA": {
+				"lastMinimum": 30222.4
 			}
 		}
 	]

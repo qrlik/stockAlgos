@@ -37,7 +37,8 @@
 		"stopLossWaiterRange": null,
 		"stopLossWaiterFullCandleCheck": null,
 
-		"fullCheck": true
+		"fullCheck": true,
+		"fullCheckCustom": true
 	},
 	"testAlgorithmData": [
 		{

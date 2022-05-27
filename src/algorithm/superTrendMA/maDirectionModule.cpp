@@ -29,24 +29,16 @@ void maDirectionModule::updateData(maData& aData, double aMa, double aPresicion)
 		}
 	}
 	else if (aData.state == eMaState::UP) {
-		if (!aData.isLastMaximum) {
-			utils::logError("maDirectionModule::update wrong UP logic");
-		}
 		const auto diffPercents = (1.0 - aMa / aData.lastMaximum) * 100.0;
 		if (utils::isGreater(diffPercents, aPresicion)) {
 			aData.state = eMaState::DOWN;
-			aData.isLastMaximum = false;
 			aData.lastMinimum = aMa;
 		}
 	}
 	else if (aData.state == eMaState::DOWN) {
-		if (aData.isLastMaximum) {
-			utils::logError("maDirectionModule::update wrong DOWN logic");
-		}
 		const auto diffPercents = (aMa / aData.lastMinimum - 1.0) * 100.0;
 		if (utils::isGreater(diffPercents, aPresicion)) {
 			aData.state = eMaState::UP;
-			aData.isLastMaximum = true;
 			aData.lastMaximum = aMa;
 		}
 	}
@@ -56,14 +48,12 @@ bool maDirectionModule::operator==(const maDirectionModule& aOther) const {
 	auto result = true;
 	result &= firstData.state == aOther.firstData.state;
 	result &= secondData.state == aOther.secondData.state;
-	if (algorithm.getData().getFullCheck()) {
+	if (algorithm.getData().getFullCheckCustom()) {
 		result &= utils::isEqual(firstData.lastMinimum, aOther.firstData.lastMinimum);
 		result &= utils::isEqual(firstData.lastMaximum, aOther.firstData.lastMaximum);
-		result &= firstData.isLastMaximum == aOther.firstData.isLastMaximum;
 
 		result &= utils::isEqual(secondData.lastMinimum, aOther.secondData.lastMinimum);
 		result &= utils::isEqual(secondData.lastMaximum, aOther.secondData.lastMaximum);
-		result &= secondData.isLastMaximum == aOther.secondData.isLastMaximum;
 	}
 	return result;
 }
@@ -102,9 +92,6 @@ void maDirectionModule::updateData(maData& aData, const Json& aJson) {
 		}
 		else if (name == "state") {
 			aData.state = stateFromStr(value.get<std::string>());
-		}
-		else if (name == "isLastMaximum") {
-			aData.isLastMaximum = value.get<bool>();
 		}
 	}
 }

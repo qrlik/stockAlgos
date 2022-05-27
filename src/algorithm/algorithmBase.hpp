@@ -114,7 +114,10 @@ namespace algorithm {
 				if (value.is_null()) {
 					continue;
 				}
-				if (key == "order") {
+				if (key == "state") {
+					setState(stateFromString(value.get<std::string>()));
+				}
+				else if (key == "order") {
 					if (value.contains("lifeState")) {
 						order.reset();
 					}

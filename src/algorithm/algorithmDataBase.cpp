@@ -16,6 +16,7 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	result &= utils::isEqual(minimumProfitPercent, aOther.minimumProfitPercent);
 	result &= leverage == aOther.leverage;
 	result &= fullCheck == aOther.fullCheck;
+	result &= fullCheckCustom == aOther.fullCheckCustom;
 	return result;
 }
 
@@ -92,6 +93,10 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 		fullCheck = aValue.get<bool>();
 		return true;
 	}
+	else if (aName == "fullCheckCustom") {
+		fullCheckCustom = aValue.get<bool>();
+		return true;
+	}
 	else if (indicatorsData.initDataField(aName, aValue)) {
 		return true;
 	}
@@ -128,6 +133,9 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 	}
 	else if (aName == "fullCheck") {
 		return fullCheck == aValue.get<bool>();
+	}
+	else if (aName == "fullCheckCustom") {
+		return fullCheckCustom == aValue.get<bool>();
 	}
 	else if (indicatorsData.checkCriteria(aName, aValue)) {
 		return true;

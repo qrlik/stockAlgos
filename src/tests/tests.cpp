@@ -1,5 +1,6 @@
 #include "tests.h"
 #include "algorithm/superTrend/stAlgorithm.h"
+#include "algorithm/superTrendMA/stMAlgorithm.h"
 #include "algorithmChecker.hpp"
 #include "indicatorsChecker.h"
 #include "market/marketRules.h"
@@ -10,10 +11,13 @@ using namespace tests;
 namespace {
 	void checkersTests() {
 		indicatorsChecker().check();
+
 		algorithmChecker<algorithm::stAlgorithm>("superTrend/test1").check();
 		algorithmChecker<algorithm::stAlgorithm>("superTrend/test2").check();
 		algorithmChecker<algorithm::stAlgorithm>("superTrend/test3").check();
 		algorithmChecker<algorithm::stAlgorithm>("superTrend/test4").check();
+
+		algorithmChecker<algorithm::stMAlgorithm>("superTrendMA/test1").check();
 	}
 
 	void marketDataTests() {

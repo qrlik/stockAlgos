@@ -25,6 +25,7 @@ namespace algorithm {
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
 		double getMinimumProfitPercent() const { return minimumProfitPercent; }
 		bool getFullCheck() const { return fullCheck; }
+		bool getFullCheckCustom() const { return fullCheckCustom; }
 
 	protected:
 		using baseClass = algorithmDataBase;
@@ -50,5 +51,6 @@ namespace algorithm {
 		double minimumProfitPercent = -1.0;
 
 		bool fullCheck = false;
+		bool fullCheckCustom = false;
 	};
 }
