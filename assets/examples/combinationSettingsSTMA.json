@@ -1,0 +1,97 @@
+[
+	{
+		"name": "startCash",
+		"value": 75000
+	},
+	{
+		"name": "orderSize",
+		"value": 2500
+	},
+	{
+		"name": "maxLossCash",
+		"value": 25000
+	},
+	{
+		"name": "maxLossPercent",
+		"value": 35
+	},
+	{
+		"name": "dealPercent",
+		"value": 5
+	},
+	{
+		"name": "leverage",
+		"value": 50
+	},
+	{
+		"name": "liquidationOffsetPercent",
+		"value": 0.05
+	},
+	{
+		"name": "minimumProfitPercent",
+		"value": 0.1
+	},
+	{
+		"name": "firstMA",
+		"value": 20
+	},
+	{
+		"name": "secondMA",
+		"value": 5
+	},
+	{
+		"name": "atrType",
+		"value": "RMA"
+	},
+	{
+		"name": "atrSize",
+		"values": [ 20, 110 ],
+		"step": 5
+	},
+	{
+		"name": "stFactor",
+		"values": [ 1.0, 21.0 ],
+		"step": 1.0
+	},
+	{
+		"name": "firstMATrendPrecision",
+		"values": [ 0.1, 2.5 ],
+		"step": 0.1
+	},
+	{
+		"name": "secondMATrendPrecision",
+		"values": [ 0.1, 5.0 ],
+		"step": 0.1
+	},
+	{
+		"name": "closerTrendChangeCheck",
+		"values": [ true, false ]
+	},
+	{
+		"name": "closerMainMACheck",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "closerTrendChangeCheck",
+				"value": true
+			}
+		],
+		"otherwise": true
+	},
+	{
+		"name": "closerConjuctionCheck",
+		"values": [ true, false ],
+		"criteria": [
+			{
+				"name": "closerTrendChangeCheck",
+				"value": true
+			},
+			{
+				"name": "closerMainMACheck",
+				"value": true
+			}
+		],
+		"criteriaOperand": "and",
+		"otherwise": false
+	}
+]
