@@ -1,5 +1,6 @@
 #include "singleCalculator.h"
 #include "algorithm/superTrend/stAlgorithm.h"
+#include "algorithm/superTrendMA/stMAlgorithm.h"
 #include "market/candle.h"
 #include "utils/utils.h"
 #include <string>
@@ -32,6 +33,9 @@ namespace {
 
 void calculation::singleCalculation() {
 	auto json = utils::readFromJson("singleCalculation");
+	if (json.is_null()) {
+		return;
+	}
 	auto log = [](const std::string& aStr) { utils::logError("calculation::singleCalculation " + aStr); };
 	if (!checkSettings(json)) {
 		log("bad json");
@@ -56,6 +60,9 @@ void calculation::singleCalculation() {
 
 	if (algorithmType == "superTrend") {
 		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"]);
+	}
+	if (algorithmType == "superTrendMA") {
+		singleCalculationInternal<algorithm::stMAlgorithm>(candles, json["data"]);
 	}
 	else {
 		log("wrong algorithm type");

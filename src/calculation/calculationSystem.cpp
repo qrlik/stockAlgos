@@ -1,5 +1,6 @@
 #include "calculationSystem.h"
 #include "algorithm/superTrend/stAlgorithm.h"
+#include "algorithm/superTrendMA/stMAlgorithm.h"
 #include "outputHelper.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
@@ -58,6 +59,9 @@ void calculationSystem::loadSettings() {
 void calculationSystem::calculate() {
 	if (algorithmType == "superTrend") {
 		calculateInternal<algorithm::stAlgorithm>();
+	}
+	else if (algorithmType == "superTrendMA") {
+		calculateInternal<algorithm::stMAlgorithm>();
 	}
 	else {
 		utils::logError("calculationSystem::calculate unknown algorithm type");
