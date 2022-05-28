@@ -198,7 +198,11 @@ namespace algorithm {
 				curCandle = aCandle;
 				init();
 				preLoop();
-				while (loop()) {}
+				auto workState = true;
+				while (workState) {
+					workState &= loop();
+					workState &= !getStopCashBreak();
+				}
 				log();
 			}
 			indicators.processCandle(aCandle);
