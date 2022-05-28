@@ -8,7 +8,7 @@
 		"atrSize": 15,
 		"stFactor": 3.0,
 
-		"candlesToSkip": 250,
+		"candlesToSkip": 219,
 
 		"dealPercent": 5.0,
 		"leverage": 50,
@@ -30,14 +30,215 @@
 	},
 	"testAlgorithmData": [
 		{
-			"time": "08:30 17-05-2022",
+			"time": "00:45 17-05-2022",
 			"firstMA": {
-				"lastMaximum": 30136.5,
-				"lastMinimum": 30136.5
+				"lastMaximum": 29767.4,
+				"lastMinimum": 29767.4
 			},
 			"secondMA": {
-				"lastMaximum": 30301.7,
-				"lastMinimum": 30301.7
+				"lastMaximum": 29963.4,
+				"lastMinimum": 29963.4
+			}
+		},
+		{
+			"time": "01:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29810.3
+			},
+			"secondMA": {
+				"lastMaximum": 30045.6
+			}
+		},
+		{
+			"time": "01:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29847.8
+			},
+			"secondMA": {
+				"lastMaximum": 30097.4
+			}
+		},
+		{
+			"time": "01:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29870.8
+			},
+			"secondMA": {
+				"lastMaximum": 30114.1
+			}
+		},
+		{
+			"time": "01:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29888.4
+			},
+			"secondMA": {
+				"lastMaximum": 30137.2
+			}
+		},
+		{
+			"time": "02:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29903.3
+			}
+		},
+		{
+			"time": "02:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29911.1
+			}
+		},
+		{
+			"time": "02:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29916.5,
+				"state": "UP"
+			}
+		},
+		{
+			"time": "02:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29918.6
+			}
+		},
+		{
+			"time": "03:00 17-05-2022",
+			"secondMA": {
+				"lastMinimum": 29959.9
+			}
+		},
+		{
+			"time": "03:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29921.5
+			},
+			"secondMA": {
+				"lastMinimum": 29938.6
+			}
+		},
+		{
+			"time": "03:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29934.0
+			}
+		},
+		{
+			"time": "03:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29952.1
+			}
+		},
+		{
+			"time": "04:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29980.9
+			}
+		},
+		{
+			"time": "04:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 29996.8
+			}
+		},
+		{
+			"time": "04:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30004.7
+			}
+		},
+		{
+			"time": "04:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30010.5
+			}
+		},
+		{
+			"time": "05:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30013.0
+			}
+		},
+		{
+			"time": "05:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30016.2
+			},
+			"secondMA": {
+				"lastMinimum": 29936.5
+			}
+		},
+		{
+			"time": "05:30 17-05-2022",
+			"secondMA": {
+				"lastMinimum": 29931.3
+			}
+		},
+		{
+			"time": "06:45 17-05-2022",
+			"secondMA": {
+				"lastMaximum": 30143.9
+			}
+		},
+		{
+			"time": "07:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30030.6
+			},
+			"secondMA": {
+				"lastMaximum": 30222.1
+			}
+		},
+		{
+			"time": "07:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30045.9
+			},
+			"secondMA": {
+				"lastMaximum": 30275.1,
+				"state": "UP"
+			},
+			"order": {
+				"type": "LONG",
+				"lifeState": true,
+				"price": 30314.5,
+				"time": "07:15 17-05-2022"
+			},
+			"state": "LONG"
+		},
+		{
+			"time": "07:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30057.0
+			},
+			"secondMA": {
+				"lastMaximum": 30295.1
+			}
+		},
+		{
+			"time": "07:45 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30077.9
+			},
+			"secondMA": {
+				"lastMaximum": 30318.5
+			}
+		},
+		{
+			"time": "08:00 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30102.8
+			}
+		},
+		{
+			"time": "08:15 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30122.3
+			}
+		},
+		{
+			"time": "08:30 17-05-2022",
+			"firstMA": {
+				"lastMaximum": 30136.5
 			}
 		},
 		{
@@ -100,8 +301,7 @@
 		{
 			"time": "10:30 17-05-2022",
 			"firstMA": {
-				"lastMaximum": 30304.5,
-				"state": "UP"
+				"lastMaximum": 30304.5
 			}
 		},
 		{
@@ -167,16 +367,8 @@
 				"lastMaximum": 30442.8
 			},
 			"secondMA": {
-				"lastMaximum": 30605.4,
-				"state": "UP"
-			},
-			"order": {
-				"type": "LONG",
-				"lifeState": true,
-				"price": 30676.2,
-				"time": "12:30 17-05-2022"
-			},
-			"state": "LONG"
+				"lastMaximum": 30605.4
+			}
 		},
 		{
 			"time": "12:45 17-05-2022",
@@ -228,13 +420,6 @@
 			"firstMA": {
 				"lastMaximum": 30519.5
 			}
-		},
-		{
-			"time": "17:30 17-05-2022",
-			"order": {
-				"lifeState": false
-			},
-			"state": "NONE"
 		},
 		{
 			"time": "18:00 17-05-2022",

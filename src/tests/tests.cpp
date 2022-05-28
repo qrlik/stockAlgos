@@ -18,6 +18,7 @@ namespace {
 		algorithmChecker<algorithm::stAlgorithm>("superTrend/test4").check();
 
 		algorithmChecker<algorithm::stMAlgorithm>("superTrendMA/test1").check();
+		algorithmChecker<algorithm::stMAlgorithm>("superTrendMA/test2").check();
 	}
 
 	void marketDataTests() {
