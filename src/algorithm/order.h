@@ -30,6 +30,7 @@ namespace algorithm {
 		double getNotionalValue() const { return notionalValue; }
 		double getQuantity() const { return quantity; }
 		double getProfit() const;
+		eOrderState getState() const { return state; }
 		void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
 	private:
 		double calculateStopLoss(const algorithm::algorithmDataBase& aData) const;

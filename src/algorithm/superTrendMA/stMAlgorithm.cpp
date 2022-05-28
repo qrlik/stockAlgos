@@ -34,8 +34,9 @@ void stMAlgorithm::onOpenOrder() {
 	// TO DO
 }
 
-void stMAlgorithm::onCloseOrder(double aProfit) {
-	// TO DO
+void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
+	opener.lastClosedOrder.first = getCandle().time;
+	opener.lastClosedOrder.second = aState;
 }
 
 void stMAlgorithm::logInternal(std::ofstream& aFile) const {

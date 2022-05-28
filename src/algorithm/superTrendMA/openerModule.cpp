@@ -7,6 +7,7 @@ openerModule::openerModule(stMAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
 bool openerModule::check() {
+	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
 	const auto isFirstMAGrowing = algorithm.getMAModule().isFirstUp();
 	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
 	const auto firstMA = algorithm.getIndicators().getFirstMA();
@@ -14,16 +15,20 @@ bool openerModule::check() {
 	if (algorithm.getIndicators().isSuperTrendUp()) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
 			if (utils::isGreater(secondMA, firstMA)) {
-				algorithm.openOrder(eOrderState::LONG, algorithm.getCandle().open);
-				return true;
+				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT)) {
+					algorithm.openOrder(eOrderState::LONG, algorithm.getCandle().open);
+					return true;
+				}
 			}
 		}
 	}
 	else {
 		if (!isFirstMAGrowing && !isSecondMAGrowing) {
 			if (utils::isGreater(firstMA, secondMA)) {
-				algorithm.openOrder(eOrderState::SHORT, algorithm.getCandle().open);
-				return true;
+				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
+					algorithm.openOrder(eOrderState::SHORT, algorithm.getCandle().open);
+					return true;
+				}
 			}
 		}
 	}

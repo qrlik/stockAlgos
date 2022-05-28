@@ -115,7 +115,7 @@ void stAlgorithm::onOpenOrder() {
 	isNewTrend = false;
 }
 
-void stAlgorithm::onCloseOrder(double aProfit) {
+void stAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
 	if (utils::isLess(aProfit, 0)) {
 		stopLossWaiterModule.start();
 	}

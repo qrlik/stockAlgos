@@ -97,13 +97,14 @@ namespace algorithm {
 			if (utils::isGreater(aPrice, 0.0)) {
 				order.updateStopLoss(aPrice);
 			}
+			const auto orderState = order.getState();
 			const auto margin = order.getMargin();
 			const auto profit = order.closeOrder();
 			cash += margin + profit;
 			if (const bool isMaxLossStop = stats.onCloseOrder(cash, profit)) {
 				stopCashBreak = true;
 			}
-			onCloseOrder(profit);
+			onCloseOrder(orderState, profit);
 		}
 
 		void initFromJson(const Json& aValue) {
@@ -145,7 +146,7 @@ namespace algorithm {
 		virtual void preLoop() = 0;
 		virtual bool loop() = 0;
 		virtual void onOpenOrder() = 0;
-		virtual void onCloseOrder(double aProfit) = 0;
+		virtual void onCloseOrder(eOrderState aState, double aProfit) = 0;
 		virtual void logInternal(std::ofstream& aFile) const = 0;
 		virtual void initInternal() = 0;
 		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
