@@ -25,7 +25,7 @@
 		"secondMATrendPrecision": 1.0,
 		
 		"closerTrendChangeCheck": true,
-		"closerMainMACheck": true,
+		"closerMACheck": true,
 		"closerConjuctionCheck": true
 	},
 	"testAlgorithmData": [
@@ -426,7 +426,12 @@
 			"secondMA": {
 				"lastMinimum": 30236.9,
 				"state": "DOWN"
-			}
+			},
+			"order": {
+				"type": "SHORT",
+				"lifeState": false
+			},
+			"state": "NONE"
 		},
 		{
 			"time": "18:15 17-05-2022",

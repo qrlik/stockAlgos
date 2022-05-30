@@ -11,7 +11,7 @@ namespace algorithm {
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 
 		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
-		bool getCloserMainMACheck() const { return closerMainMACheck; }
+		bool getCloserMACheck() const { return closerMACheck; }
 		bool getCloserConjuctionCheck() const { return closerConjuctionCheck; }
 
 	private:
@@ -24,7 +24,7 @@ namespace algorithm {
 		double secondMATrendPrecision = 0.0;
 		
 		bool closerTrendChangeCheck = false;
-		bool closerMainMACheck = false;
+		bool closerMACheck = false;
 		bool closerConjuctionCheck = false;
 	};
 }

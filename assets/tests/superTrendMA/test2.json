@@ -25,7 +25,7 @@
 		"secondMATrendPrecision": 1.0,
 		
 		"closerTrendChangeCheck": true,
-		"closerMainMACheck": true,
+		"closerMACheck": true,
 		"closerConjuctionCheck": true
 	},
 	"testAlgorithmData": [

@@ -68,7 +68,7 @@
 		"values": [ true, false ]
 	},
 	{
-		"name": "closerMainMACheck",
+		"name": "closerMACheck",
 		"values": [ true, false ],
 		"criteria": [
 			{
@@ -87,7 +87,7 @@
 				"value": true
 			},
 			{
-				"name": "closerMainMACheck",
+				"name": "closerMACheck",
 				"value": true
 			}
 		],

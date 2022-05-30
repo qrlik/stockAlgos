@@ -25,7 +25,7 @@
 		"secondMATrendPrecision": 3.0,
 		
 		"closerTrendChangeCheck": true,
-		"closerMainMACheck": false,
+		"closerMACheck": false,
 		"closerConjuctionCheck": false
 	}
 }
