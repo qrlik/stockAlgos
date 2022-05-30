@@ -131,7 +131,7 @@ namespace {
 }
 
 void tests::runTests() {
-#ifdef NDEBUG
+#ifndef _DEBUG 
 	return;
 #endif
 	if (!MARKET_DATA->loadTickerData("BTCUSDT")) {
