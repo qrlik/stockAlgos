@@ -26,7 +26,7 @@ namespace {
 	std::string getStrFromJson(const Json& aValue) {
 		std::ostringstream os;
 		if (aValue.is_number_float()) {
-			os << std::setprecision(floatPrecision) << aValue.get<double>();
+			os << std::fixed << std::setprecision(floatPrecision) << aValue.get<double>();
 		}
 		else {
 			os << aValue;
@@ -78,7 +78,7 @@ void calculation::saveStats(Json& aStats, const std::string& aFileName) {
 }
 
 void calculation::addHeadlines(std::ofstream& aOutput, const Json& aStats, const Json& aExample) {
-	aOutput << std::setw(doubleWidth) << "Cash";
+	aOutput << std::fixed << std::setw(doubleWidth) << "Cash";
 	for (const auto& [name, value] : aExample["stats"].items()) {
 		aOutput << std::setw(getWidth(name, value)) << name;
 	}
