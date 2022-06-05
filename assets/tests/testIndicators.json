@@ -8,6 +8,8 @@
 		"atrSize": 14,
 		"stFactor": 5.0,
 
+		"rsiSize": 25,
+
 		"candlesToSkip": 200
 	},
 	"testIndicatorsData": [

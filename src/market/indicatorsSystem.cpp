@@ -1,6 +1,5 @@
 #include "indicatorsSystem.h"
 #include "algorithm/algorithmDataBase.h"
-#include "indicatorsData.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 
@@ -17,6 +16,8 @@ bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
 
 	result &= utils::isEqual(firstMA, aOther.firstMA);
 	result &= utils::isEqual(secondMA, aOther.secondMA);
+
+	result &= utils::isEqual(utils::round(rsi, 0.01), aOther.rsi);
 	return result;
 }
 
@@ -43,6 +44,9 @@ void indicatorsSystem::initFromJson(const Json& aValue) {
 		else if (key == "secondMA") {
 			secondMA = value.get<double>();
 		}
+		else if (key == "rsi") {
+			rsi = value.get<double>();
+		}
 	}
 }
 
@@ -53,42 +57,70 @@ namespace {
 		auto lowDelta = std::abs(aCandle.low - aPrevCandle.close);
 		return utils::maxFloat(candleSize, utils::maxFloat(highDelta, lowDelta));
 	}
+
+	double calculateCloseDelta(const candle& aCandle, const candle& aPrevCandle) {
+		return aCandle.close - aPrevCandle.close;
+	}
+
+	double calculateWMA(const std::deque<double>& aList) {
+		int weight = 0;
+		double trAndWeightSum = 0.0;
+		for (auto tr : aList) {
+			++weight;
+			trAndWeightSum += weight * tr;
+		}
+		std::vector<int> weights(weight + 1);
+		std::iota(weights.begin(), weights.end(), 0);
+
+		return trAndWeightSum / std::accumulate(weights.begin(), weights.end(), 0);
+	}
+
+	double calculateEMA(const std::deque<double>& aList, double aAlpha, bool aIsFirst, double lastValue) {
+		if (aIsFirst) { // prevCandle.time.empty()
+			return aList.back();
+		}
+		return aAlpha * aList.back() + (1 - aAlpha) * lastValue;
+	}
+
+	double calculateCustomMASwitch(market::eAtrType aType, const std::deque<double>& aList, bool aIsFirst, double lastValue) {
+		switch (aType) {
+		case market::eAtrType::SMA:
+			return std::accumulate(aList.begin(), aList.end(), 0.0) / aList.size();
+		case market::eAtrType::WMA:
+			return calculateWMA(aList);
+		case market::eAtrType::EMA:
+			return calculateEMA(aList, 2.0 / (aList.size() + 1), aIsFirst, lastValue);
+		case market::eAtrType::RMA:
+			return calculateEMA(aList, 1.0 / aList.size(), aIsFirst, lastValue);
+		default:
+			assert(false && "calculateTrueRangeMA NONE type");
+			return 0.0;
+		}
+	}
 }
 
-double indicatorsSystem::calculateTrueRangeWMA() const {
-	int weight = 0;
-	double trAndWeightSum = 0.0;
-	for (auto tr : trList) {
-		++weight;
-		trAndWeightSum += weight * tr;
-	}
-	std::vector<int> weights(weight + 1);
-	std::iota(weights.begin(), weights.end(), 0);
-
-	return trAndWeightSum / std::accumulate(weights.begin(), weights.end(), 0);
+double indicatorsSystem::calculateCustomMA(market::eAtrType aType, const std::deque<double>& aList, double lastValue) const {
+	return calculateCustomMASwitch(aType, aList, prevCandle.time.empty(), lastValue);
 }
 
-double indicatorsSystem::calculateTrueRangeEMA(double aAlpha) {
-	if (prevCandle.time.empty()) {
-		return trList.back();
+bool indicatorsSystem::calculateRSI(candle& aCandle) {
+	if (!data.isRSI()) {
+		return true;
 	}
-	return aAlpha * trList.back() + (1 - aAlpha) * atr;
-}
-
-double indicatorsSystem::calculateTrueRangeMA() {
-	switch (data.getAtrType()) {
-	case market::eAtrType::SMA:
-		return std::accumulate(trList.begin(), trList.end(), 0.0) / trList.size();
-	case market::eAtrType::WMA:
-		return calculateTrueRangeWMA();
-	case market::eAtrType::EMA:
-		return calculateTrueRangeEMA(2.0 / (trList.size() + 1));
-	case market::eAtrType::RMA:
-		return calculateTrueRangeEMA(1.0 / trList.size());
-	default:
-		assert(false && "calculateTrueRangeMA NONE type");
-		return 0.0;
+	const auto closeDelta = calculateCloseDelta(aCandle, (prevCandle.time.empty() ? aCandle : prevCandle));
+	const auto upDelta = (utils::isGreater(closeDelta, 0.0)) ? closeDelta : 0.0;
+	const auto downDelta = (utils::isLess(closeDelta, 0.0)) ? std::abs(closeDelta) : 0.0;
+	upList.push_back(upDelta);
+	downList.push_back(downDelta);
+	if (static_cast<int>(upList.size()) > data.getRsiSize()) {
+		upList.pop_front();
+		downList.pop_front();
 	}
+	upMa = calculateCustomMA(market::eAtrType::RMA, upList, upMa);
+	downMa = calculateCustomMA(market::eAtrType::RMA, downList, downMa);
+	const auto rs = (utils::isGreater(downMa, 0.0)) ? upMa / downMa : 0.0;
+	rsi = (utils::isGreater(rs, 0.0)) ? 100.0 - 100.0 / (1.0 + rs) : 100.0;
+	return static_cast<int>(upList.size()) >= data.getRsiSize();
 }
 
 void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
@@ -125,7 +157,7 @@ bool indicatorsSystem::calculateRangeAtr(candle& aCandle) {
 	if (static_cast<int>(trList.size()) > data.getAtrSize()) {
 		trList.pop_front();
 	}
-	atr = calculateTrueRangeMA();
+	atr = calculateCustomMA(data.getAtrType(), trList, atr);
 	return static_cast<int>(trList.size()) >= data.getAtrSize();
 }
 
@@ -165,6 +197,7 @@ void indicatorsSystem::processCandle(candle& aCandle) {
 	result &= calculateMA(aCandle);
 	result &= calculateRangeAtr(aCandle);
 	calculateSuperTrend(aCandle);
+	result &= calculateRSI(aCandle);
 	result &= checkSkip();
 	if (result != inited) {
 		if (inited) {

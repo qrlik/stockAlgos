@@ -38,7 +38,7 @@ namespace market {
 		double getStFactor() const { return stFactor; }
 		int getFirstMASize() const { return firstMA; }
 		int getSecondMASize() const { return secondMA; }
-
+		int getRsiSize() const { return rsiSize; }
 	private:
 		double stFactor = -1.0;
 		int atrSize = -1;

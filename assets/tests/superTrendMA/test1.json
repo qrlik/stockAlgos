@@ -4,6 +4,8 @@
 		"firstMA": 20,
 		"secondMA": 5,
 
+		"rsiSize": 15,
+
 		"atrType": "RMA",
 		"atrSize": 15,
 		"stFactor": 3.0,

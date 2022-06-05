@@ -8,6 +8,7 @@ indicatorsChecker::indicatorsChecker() {
 	auto json = utils::readFromJson("assets/tests/testIndicators");
 	data.enableSuperTrend();
 	data.enableMA(2);
+	data.enableRSI();
 	for (const auto& [field, value] : json["indicatorsData"].items()) {
 		if (!data.initDataField(field, value)) {
 			utils::logError("indicatorsChecker - " + field + " invalid indicators data field");
@@ -31,13 +32,18 @@ void indicatorsChecker::check() {
 		updateTestSystem(candle.time);
 		if (actualSystem->isInited()) {
 			if (!(*actualSystem == *testSystem)) {
-				utils::logError("[ERROR] indicatorsChecker");
+				utils::logError("[ERROR] indicatorsChecker - not equal");
 				return;
 			}
 		}
 		actualIndex += 1;
 	}
-	utils::log("[OK] indicatorsChecker");
+	if (actualSystem->isInited()) {
+		utils::log("[OK] indicatorsChecker");
+	}
+	else {
+		utils::logError("[ERROR] indicatorsChecker - not inited");
+	}
 }
 
 void indicatorsChecker::updateTestSystem(const std::string& aTime) {
