@@ -22,6 +22,7 @@ namespace algorithm {
 		double getMaxLossPercent() const { return maxLossPercent; }
 		double getMaxLossCash() const { return maxLossCash; }
 
+		double getStopLossPercent() const { return stopLossPercent; }
 		double getLiquidationOffsetPercent() const { return liquidationOffsetPercent; }
 		double getMinimumProfitPercent() const { return minimumProfitPercent; }
 		bool getFullCheck() const { return fullCheck; }
@@ -47,6 +48,7 @@ namespace algorithm {
 		double maxLossPercent = 0.0;
 		double maxLossCash = -1.0;
 
+		double stopLossPercent = -1.0;
 		double liquidationOffsetPercent = -1.0;
 		double minimumProfitPercent = -1.0;
 

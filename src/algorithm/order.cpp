@@ -43,6 +43,11 @@ void order::reset() {
 }
 
 double order::calculateStopLoss(const algorithm::algorithmDataBase& aData) const {
+	if (auto stopLossPercent = aData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
+		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
+		auto result = price * (100 + stopLossSign * stopLossPercent) / 100.0;
+		return utils::round(result, MARKET_DATA->getPricePrecision());
+	}
 	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aData.getLeverage(), quantity, state == eOrderState::LONG);
 	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * aData.getLiquidationOffsetPercent()) / 100.0;

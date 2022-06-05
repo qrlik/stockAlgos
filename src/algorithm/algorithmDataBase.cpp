@@ -12,6 +12,7 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	result &= utils::isEqual(startCash, aOther.startCash);
 	result &= utils::isEqual(maxLossPercent, aOther.maxLossPercent);
 	result &= utils::isEqual(maxLossCash, aOther.maxLossCash);
+	result &= utils::isEqual(stopLossPercent, aOther.stopLossPercent);
 	result &= utils::isEqual(liquidationOffsetPercent, aOther.liquidationOffsetPercent);
 	result &= utils::isEqual(minimumProfitPercent, aOther.minimumProfitPercent);
 	result &= leverage == aOther.leverage;
@@ -35,7 +36,10 @@ bool algorithmDataBase::isValid() const {
 	const auto minLiqPercent = (utils::isGreater(orderSize, 0.0))
 		? MARKET_DATA->getLiquidationPercent(orderSize, leverage)
 		: MARKET_DATA->getLeverageLiquidationRange(leverage).first;
-	result &= utils::isGreater(liquidationOffsetPercent, 0.0) && utils::isLess(liquidationOffsetPercent, minLiqPercent);
+	result &= utils::isGreater(stopLossPercent, 0.0) || utils::isGreater(liquidationOffsetPercent, 0.0);
+	result &= utils::isLess(stopLossPercent, minLiqPercent);
+	result &= utils::isLess(liquidationOffsetPercent, minLiqPercent);
+
 	result &= utils::isGreater(minimumProfitPercent, 2 * MARKET_DATA->getTaxFactor() * 100.0);
 
 	result &= isValidInternal();
@@ -79,6 +83,10 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 	}
 	else if (aName == "maxLossCash") {
 		maxLossCash = aValue.get<double>();
+		return true;
+	}
+	else if (aName == "stopLossPercent") {
+		stopLossPercent = aValue.get<double>();
 		return true;
 	}
 	else if (aName == "liquidationOffsetPercent") {
@@ -125,6 +133,9 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 	else if (aName == "maxLossCash") {
 		return utils::isEqual(maxLossCash, aValue.get<double>());
 	}
+	else if (aName == "stopLossPercent") {
+		return utils::isEqual(stopLossPercent, aValue.get<double>());
+	}
 	else if (aName == "liquidationOffsetPercent") {
 		return utils::isEqual(liquidationOffsetPercent, aValue.get<double>());
 	}
@@ -150,6 +161,7 @@ void algorithmDataBase::addJsonData(Json& aData) const {
 	aData["startCash"] = startCash;
 	aData["maxLossPercent"] = maxLossPercent;
 	aData["maxLossCash"] = maxLossCash;
+	aData["stopLossPercent"] = stopLossPercent;
 	aData["liquidationOffsetPercent"] = liquidationOffsetPercent;
 	aData["minimumProfitPercent"] = minimumProfitPercent;
 	indicatorsData.addJsonData(aData);
