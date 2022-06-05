@@ -61,6 +61,7 @@ bool maDirectionModule::operator==(const maDirectionModule& aOther) const {
 bool maDirectionModule::update() {
 	updateData(firstData, algorithm.getIndicators().getFirstMA(), algorithm.getData().getFirstMATrendPrecision());
 	updateData(secondData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getSecondMATrendPrecision());
+	updateData(closerData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getCloserMATrendPrecision());
 	return firstData.state != eMaState::NONE && secondData.state != eMaState::NONE;
 }
 
@@ -70,6 +71,10 @@ bool maDirectionModule::isFirstUp() const {
 
 bool maDirectionModule::isSecondUp() const {
 	return (secondData.state == eMaState::UP) ? true : false;
+}
+
+bool maDirectionModule::isCloserUp() const {
+	return (closerData.state == eMaState::UP) ? true : false;
 }
 
 maDirectionModule::eMaState maDirectionModule::stateFromStr(const std::string aName) const {

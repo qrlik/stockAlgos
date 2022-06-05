@@ -9,6 +9,7 @@ namespace algorithm {
 
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
+		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }
 
 		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
 		bool getCloserMACheck() const { return closerMACheck; }
@@ -22,6 +23,7 @@ namespace algorithm {
 
 		double firstMATrendPrecision = 0.0;
 		double secondMATrendPrecision = 0.0;
+		double closerMATrendPrecision = 0.0;
 		
 		bool closerTrendChangeCheck = false;
 		bool closerMACheck = false;

@@ -31,7 +31,7 @@ bool stMAlgorithm::loop() {
 }
 
 void stMAlgorithm::onOpenOrder() {
-	// TO DO
+	opener.touchActivated = false;
 }
 
 void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {

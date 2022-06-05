@@ -12,6 +12,7 @@ bool stMAlgorithmData::operator==(const stMAlgorithmData& aOther) const {
 	bool result = baseClass::operator==(aOther);
 	result &= utils::isEqual(firstMATrendPrecision, aOther.firstMATrendPrecision);
 	result &= utils::isEqual(secondMATrendPrecision, aOther.secondMATrendPrecision);
+	result &= utils::isEqual(closerMATrendPrecision, aOther.closerMATrendPrecision);
 
 	result &= closerTrendChangeCheck == aOther.closerTrendChangeCheck;
 	result &= closerMACheck == aOther.closerMACheck;
@@ -26,6 +27,10 @@ bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Jso
 	}
 	if (aName == "secondMATrendPrecision") {
 		secondMATrendPrecision = aValue.get<double>();
+		return true;
+	}
+	if (aName == "closerMATrendPrecision") {
+		closerMATrendPrecision = aValue.get<double>();
 		return true;
 	}
 	if (aName == "closerTrendChangeCheck") {
@@ -50,6 +55,9 @@ bool stMAlgorithmData::checkCriteriaInternal(const std::string& aName, const Jso
 	if (aName == "secondMATrendPrecision") {
 		return utils::isEqual(secondMATrendPrecision, aValue.get<double>());
 	}
+	if (aName == "closerMATrendPrecision") {
+		return utils::isEqual(closerMATrendPrecision, aValue.get<double>());
+	}
 	if (aName == "closerTrendChangeCheck") {
 		return closerTrendChangeCheck == aValue.get<bool>();
 	}
@@ -67,6 +75,9 @@ bool stMAlgorithmData::isValidInternal() const {
 
 	result &= utils::isGreater(firstMATrendPrecision, 0.0);
 	result &= utils::isGreater(secondMATrendPrecision, 0.0);
+	if (closerMACheck) {
+		result &= utils::isGreater(closerMATrendPrecision, 0.0);
+	}
 	result &= closerTrendChangeCheck || closerMACheck;
 	if (closerConjuctionCheck) {
 		result &= closerTrendChangeCheck && closerMACheck;
@@ -78,6 +89,7 @@ bool stMAlgorithmData::isValidInternal() const {
 void stMAlgorithmData::addJsonDataInternal(Json& aData) const {
 	aData["firstMATrendPrecision"] = firstMATrendPrecision;
 	aData["secondMATrendPrecision"] = secondMATrendPrecision;
+	aData["closerMATrendPrecision"] = secondMATrendPrecision;
 	aData["closerTrendChangeCheck"] = closerTrendChangeCheck;
 	aData["closerMACheck"] = closerMACheck;
 	aData["closerConjuctionCheck"] = closerConjuctionCheck;

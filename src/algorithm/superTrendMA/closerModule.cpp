@@ -51,7 +51,7 @@ bool closerModule::checkStates(bool aLong) const {
 		updateState(checkState, trendState);
 	}
 	if (algorithm.getData().getCloserMACheck()) {
-		auto mainMAState = algorithm.getMAModule().isSecondUp();
+		auto mainMAState = algorithm.getMAModule().isCloserUp();
 		mainMAState = (aLong) ? !mainMAState : mainMAState;
 		updateState(checkState, mainMAState);
 	}

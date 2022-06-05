@@ -14,6 +14,7 @@ namespace algorithm {
 
 		bool isFirstUp() const;
 		bool isSecondUp() const;
+		bool isCloserUp() const;
 	private:
 		enum class eMaState : signed char {
 			NONE = -1,
@@ -35,5 +36,6 @@ namespace algorithm {
 
 		maData firstData;
 		maData secondData;
+		maData closerData;
 	};
 }
