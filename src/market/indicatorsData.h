@@ -23,12 +23,14 @@ namespace market {
 
 		void enableAtr() { atrFlag = true; }
 		void enableSuperTrend();
+		void enableRSI() { rsiFlag = true; }
 		void enableMA(size_t aAmount) { maFlag = aAmount; }
 
 		bool isValid() const;
 		bool isAtr() const { return atrFlag; }
 		bool isSuperTrend() const { return superTrendFlag; }
 		bool isMA() const { return maFlag > 0; }
+		bool isRSI() const { return rsiFlag; }
 
 		int getSkipAmount() const { return candlesToSkip; }
 		market::eAtrType getAtrType() const { return atrType; }
@@ -45,9 +47,12 @@ namespace market {
 		int firstMA = 0;
 		int secondMA = 0;
 
+		int rsiSize = 0;
+
 		int candlesToSkip = 0;
 		size_t maFlag = false;
 		bool atrFlag = false;
 		bool superTrendFlag = false;
+		bool rsiFlag = false;
 	};
 }

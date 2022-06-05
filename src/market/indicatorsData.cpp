@@ -36,10 +36,17 @@ eAtrType market::atrTypeFromString(const std::string& aStr) {
 
 bool indicatorsData::operator==(const indicatorsData& aOther) const {
 	bool result = true;
-	result &= candlesToSkip == aOther.candlesToSkip;
+	result &= utils::isEqual(stFactor, aOther.stFactor);
 	result &= atrType == aOther.atrType;
 	result &= atrSize == aOther.atrSize;
-	result &= utils::isEqual(stFactor, aOther.stFactor);
+
+	result &= firstMA == aOther.firstMA;
+	result &= secondMA == aOther.secondMA;
+
+	result &= rsiSize == aOther.rsiSize;
+
+	result &= candlesToSkip == aOther.candlesToSkip;
+
 	return result;
 }
 
@@ -63,6 +70,9 @@ bool indicatorsData::isValid() const {
 			result &= secondMA > 0;
 		}
 	}
+	if (isRSI()) {
+		result &= rsiSize > 0;
+	}
 	return result;
 }
 
@@ -79,6 +89,9 @@ void indicatorsData::addJsonData(Json& aData) const {
 		if (secondMA > 0) {
 			aData["secondMA"] = secondMA;
 		}
+	}
+	if (isRSI()) {
+		aData["rsiSize"] = rsiSize;
 	}
 }
 
@@ -111,6 +124,10 @@ bool indicatorsData::initDataField(const std::string& aName, const Json& aValue)
 		secondMA = minMA;
 		return true;
 	}
+	else if (aName == "rsiSize") {
+		rsiSize = aValue.get<int>();
+		return true;
+	}
 	return false;
 }
 
@@ -129,6 +146,9 @@ bool indicatorsData::checkCriteria(const std::string& aName, const Json& aValue)
 	}
 	else if (aName == "secondMA") {
 		return secondMA == aValue.get<int>();
+	}
+	else if (aName == "rsiSize") {
+		return rsiSize == aValue.get<int>();
 	}
 	return false;
 }
