@@ -17,7 +17,7 @@ bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
 	result &= utils::isEqual(firstMA, aOther.firstMA);
 	result &= utils::isEqual(secondMA, aOther.secondMA);
 
-	result &= utils::isEqual(utils::round(rsi, 0.01), aOther.rsi);
+	result &= utils::isEqual(rsi, aOther.rsi, 0.01);
 	return result;
 }
 

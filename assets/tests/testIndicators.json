@@ -19,325 +19,379 @@
 			"superTrend": 30514.9,
 			"trendIsUp": false,
 			"firstMA": 29636.6,
-			"secondMA": 29403.7
+			"secondMA": 29403.7,
+			"rsi": 41.61
 		},
 		{
 			"time": "20:00 16-05-2022",
 			"atr": 278.5,
 			"firstMA": 29619.1,
-			"secondMA": 29358.8
+			"secondMA": 29358.8,
+			"rsi": 44.14
 		},
 		{
 			"time": "20:15 16-05-2022",
 			"atr": 277.1,
 			"firstMA": 29597.9,
-			"secondMA": 29401.7
+			"secondMA": 29401.7,
+			"rsi": 47.64
 		},
 		{
 			"time": "20:30 16-05-2022",
 			"atr": 271.8,
 			"firstMA": 29591.2,
-			"secondMA": 29465.0
+			"secondMA": 29465.0,
+			"rsi": 49.37
 		},
 		{
 			"time": "20:45 16-05-2022",
 			"atr": 260.0,
 			"firstMA": 29583.1,
-			"secondMA": 29566.4
+			"secondMA": 29566.4,
+			"rsi": 48.99
 		},
 		{
 			"time": "21:00 16-05-2022",
 			"atr": 259.8,
 			"firstMA": 29578.5,
-			"secondMA": 29675.9
+			"secondMA": 29675.9,
+			"rsi": 51.32
 		},
 		{
 			"time": "21:15 16-05-2022",
 			"atr": 256.0,
 			"firstMA": 29584.1,
-			"secondMA": 29771.0
+			"secondMA": 29771.0,
+			"rsi": 52.31
 		},
 		{
 			"time": "21:30 16-05-2022",
 			"atr": 248.8,
 			"firstMA": 29588.2,
-			"secondMA": 29813.5
+			"secondMA": 29813.5,
+			"rsi": 51.12
 		},
 		{
 			"time": "21:45 16-05-2022",
 			"atr": 242.5,
 			"firstMA": 29607.6,
-			"secondMA": 29845.0
+			"secondMA": 29845.0,
+			"rsi": 51.94
 		},
 		{
 			"time": "22:00 16-05-2022",
 			"atr": 238.3,
 			"firstMA": 29617.6,
-			"secondMA": 29865.6
+			"secondMA": 29865.6,
+			"rsi": 50.51
 		},
 		{
 			"time": "22:15 16-05-2022",
 			"atr": 229.6,
 			"firstMA": 29617.1,
-			"secondMA": 29847.8
+			"secondMA": 29847.8,
+			"rsi": 49.52
 		},
 		{
 			"time": "22:30 16-05-2022",
 			"atr": 217.6,
 			"firstMA": 29624.2,
-			"secondMA": 29817.0
+			"secondMA": 29817.0,
+			"rsi": 49.45
 		},
 		{
 			"time": "22:45 16-05-2022",
 			"atr": 223.3,
 			"firstMA": 29629.0,
-			"secondMA": 29760.4
+			"secondMA": 29760.4,
+			"rsi": 45.92
 		},
 		{
 			"time": "23:00 16-05-2022",
 			"atr": 215.0,
 			"firstMA": 29630.4,
-			"secondMA": 29703.1
+			"secondMA": 29703.1,
+			"rsi": 46.82
 		},
 		{
 			"time": "23:15 16-05-2022",
 			"atr": 209.2,
 			"firstMA": 29633.6,
-			"secondMA": 29674.3
+			"secondMA": 29674.3,
+			"rsi": 48.14
 		},
 		{
 			"time": "23:30 16-05-2022",
 			"atr": 203.3,
 			"firstMA": 29649.8,
-			"secondMA": 29671.8
+			"secondMA": 29671.8,
+			"rsi": 49.67
 		},
 		{
 			"time": "23:45 16-05-2022",
 			"atr": 203.1,
 			"firstMA": 29663.1,
-			"secondMA": 29705.7
+			"secondMA": 29705.7,
+			"rsi": 53.03
 		},
 		{
 			"time": "00:00 17-05-2022",
 			"atr": 214.6,
 			"firstMA": 29692.7,
-			"secondMA": 29795.2
+			"secondMA": 29795.2,
+			"rsi": 54.48
 		},
 		{
 			"time": "00:15 17-05-2022",
 			"atr": 211.8,
 			"firstMA": 29720.4,
-			"secondMA": 29868.4
+			"secondMA": 29868.4,
+			"rsi": 53.69
 		},
 		{
 			"time": "00:30 17-05-2022",
 			"atr": 210.2,
 			"firstMA": 29767.4,
-			"secondMA": 29963.4
+			"secondMA": 29963.4,
+			"rsi": 56.73
 		},
 		{
 			"time": "00:45 17-05-2022",
 			"atr": 209.8,
 			"firstMA": 29810.3,
-			"secondMA": 30045.6
+			"secondMA": 30045.6,
+			"rsi": 56.96
 		},
 		{
 			"time": "01:00 17-05-2022",
 			"atr": 203.8,
 			"firstMA": 29847.8,
-			"secondMA": 30097.4
+			"secondMA": 30097.4,
+			"rsi": 57.42
 		},
 		{
 			"time": "01:15 17-05-2022",
 			"atr": 199.8,
 			"firstMA": 29870.8,
-			"secondMA": 30114.1
+			"secondMA": 30114.1,
+			"rsi": 55.25
 		},
 		{
 			"time": "01:30 17-05-2022",
 			"atr": 194.8,
 			"firstMA": 29888.4,
-			"secondMA": 30137.2
+			"secondMA": 30137.2,
+			"rsi": 55.13
 		},
 		{
 			"time": "01:45 17-05-2022",
 			"atr": 193.4,
 			"firstMA": 29903.3,
-			"secondMA": 30109.8
+			"secondMA": 30109.8,
+			"rsi": 53.32
 		},
 		{
 			"time": "02:00 17-05-2022",
 			"atr": 184.1,
 			"firstMA": 29911.1,
-			"secondMA": 30079.1
+			"secondMA": 30079.1,
+			"rsi": 53.24
 		},
 		{
 			"time": "02:15 17-05-2022",
 			"atr": 183.0,
 			"firstMA": 29916.5,
-			"secondMA": 30045.6
+			"secondMA": 30045.6,
+			"rsi": 53.51
 		},
 		{
 			"time": "02:30 17-05-2022",
 			"atr": 187.3,
 			"firstMA": 29918.6,
-			"secondMA": 30004.6
+			"secondMA": 30004.6,
+			"rsi": 50.37
 		},
 		{
 			"time": "02:45 17-05-2022",
 			"atr": 181.0,
 			"firstMA": 29917.1,
-			"secondMA": 29959.9
+			"secondMA": 29959.9,
+			"rsi": 49.83
 		},
 		{
 			"time": "03:00 17-05-2022",
 			"atr": 180.0,
 			"firstMA": 29921.5,
-			"secondMA": 29938.6
+			"secondMA": 29938.6,
+			"rsi": 50.75
 		},
 		{
 			"time": "03:15 17-05-2022",
 			"atr": 180.7,
 			"firstMA": 29934.0,
-			"secondMA": 29939.4
+			"secondMA": 29939.4,
+			"rsi": 53.21
 		},
 		{
 			"time": "03:30 17-05-2022",
 			"atr": 179.4,
 			"firstMA": 29952.1,
-			"secondMA": 29959.7
+			"secondMA": 29959.7,
+			"rsi": 55.58
 		},
 		{
 			"time": "03:45 17-05-2022",
 			"atr": 178.6,
 			"firstMA": 29980.9,
-			"secondMA": 30009.6
+			"secondMA": 30009.6,
+			"rsi": 55.92
 		},
 		{
 			"time": "04:00 17-05-2022",
 			"atr": 184.1,
 			"firstMA": 29996.8,
-			"secondMA": 30021.5
+			"secondMA": 30021.5,
+			"rsi": 50.59
 		},
 		{
 			"time": "04:15 17-05-2022",
 			"atr": 179.6,
 			"firstMA": 30004.7,
-			"secondMA": 30007.0
+			"secondMA": 30007.0,
+			"rsi": 48.47
 		},
 		{
 			"time": "04:30 17-05-2022",
 			"atr": 178.5,
 			"firstMA": 30010.5,
-			"secondMA": 29978.1
+			"secondMA": 29978.1,
+			"rsi": 49.31
 		},
 		{
 			"time": "04:45 17-05-2022",
 			"atr": 178.3,
 			"firstMA": 30013.0,
-			"secondMA": 29949.4
+			"secondMA": 29949.4,
+			"rsi": 51.87
 		},
 		{
 			"time": "05:00 17-05-2022",
 			"atr": 178.7,
 			"firstMA": 30016.2,
-			"secondMA": 29936.5
+			"secondMA": 29936.5,
+			"rsi": 53.93
 		},
 		{
 			"time": "05:15 17-05-2022",
 			"atr": 180.7,
 			"firstMA": 30012.5,
-			"secondMA": 29931.3
+			"secondMA": 29931.3,
+			"rsi": 49.85
 		},
 		{
 			"time": "05:30 17-05-2022",
 			"atr": 175.7,
 			"firstMA": 30002.5,
-			"secondMA": 29954.8
+			"secondMA": 29954.8,
+			"rsi": 50.96
 		},
 		{
 			"time": "05:45 17-05-2022",
 			"atr": 171.6,
 			"firstMA": 29996.9,
-			"secondMA": 29991.0
+			"secondMA": 29991.0,
+			"rsi": 53.10
 		},
 		{
 			"time": "06:00 17-05-2022",
 			"atr": 174.8,
 			"firstMA": 29994.6,
-			"secondMA": 30023.7
+			"secondMA": 30023.7,
+			"rsi": 55.03
 		},
 		{
 			"time": "06:15 17-05-2022",
 			"atr": 174.1,
 			"firstMA": 29999.4,
-			"secondMA": 30047.1
+			"secondMA": 30047.1,
+			"rsi": 56.02
 		},
 		{
 			"time": "06:30 17-05-2022",
 			"atr": 186.9,
 			"firstMA": 30014.2,
-			"secondMA": 30143.9
+			"secondMA": 30143.9,
+			"rsi": 59.65
 		},
 		{
 			"time": "06:45 17-05-2022",
 			"atr": 184.6,
 			"firstMA": 30030.6,
-			"secondMA": 30222.1
+			"secondMA": 30222.1,
+			"rsi": 58.53
 		},
 		{
 			"time": "07:00 17-05-2022",
 			"atr": 179.4,
 			"firstMA": 30045.9,
-			"secondMA": 30275.1
+			"secondMA": 30275.1,
+			"rsi": 57.81
 		},
 		{
 			"time": "07:15 17-05-2022",
 			"atr": 173.1,
 			"firstMA": 30057.0,
-			"secondMA": 30295.1
+			"secondMA": 30295.1,
+			"rsi": 55.94
 		},
 		{
 			"time": "07:30 17-05-2022",
 			"atr": 174.2,
 			"firstMA": 30077.9,
-			"secondMA": 30318.5
+			"secondMA": 30318.5,
+			"rsi": 57.27
 		},
 		{
 			"time": "07:45 17-05-2022",
 			"atr": 168.6,
 			"firstMA": 30102.8,
-			"secondMA": 30314.6
+			"secondMA": 30314.6,
+			"rsi": 58.39
 		},
 		{
 			"time": "08:00 17-05-2022",
 			"atr": 164.5,
 			"firstMA": 30122.3,
-			"secondMA": 30305.3
+			"secondMA": 30305.3,
+			"rsi": 56.47
 		},
 		{
 			"time": "08:15 17-05-2022",
 			"atr": 158.1,
 			"firstMA": 30136.5,
-			"secondMA": 30301.7
+			"secondMA": 30301.7,
+			"rsi": 56.50
 		},
 		{
 			"time": "08:30 17-05-2022",
 			"atr": 156.6,
 			"firstMA": 30149.2,
-			"secondMA": 30328.5
+			"secondMA": 30328.5,
+			"rsi": 58.22
 		},
 		{
 			"time": "08:45 17-05-2022",
 			"atr": 155.5,
 			"firstMA": 30164.5,
-			"secondMA": 30355.9
+			"secondMA": 30355.9,
+			"rsi": 59.62
 		},
 		{
 			"time": "09:00 17-05-2022",
 			"atr": 152.4,
 			"firstMA": 30185.7,
-			"secondMA": 30352.9
+			"secondMA": 30352.9,
+			"rsi": 56.84
 		},
 		{
 			"time": "09:15 17-05-2022",
@@ -349,37 +403,43 @@
 			"time": "09:30 17-05-2022",
 			"atr": 143.3,
 			"firstMA": 30239.2,
-			"secondMA": 30389.1
+			"secondMA": 30389.1,
+			"rsi": 58.42
 		},
 		{
 			"time": "09:45 17-05-2022",
 			"atr": 144.8,
 			"firstMA": 30265.9,
-			"secondMA": 30416.5
+			"secondMA": 30416.5,
+			"rsi": 60.37
 		},
 		{
 			"time": "10:00 17-05-2022",
 			"atr": 148.2,
 			"firstMA": 30281.9,
-			"secondMA": 30406.3
+			"secondMA": 30406.3,
+			"rsi": 56.78
 		},
 		{
 			"time": "10:15 17-05-2022",
 			"atr": 143.3,
 			"firstMA": 30304.5,
-			"secondMA": 30406.8
+			"secondMA": 30406.8,
+			"rsi": 55.57
 		},
 		{
 			"time": "10:30 17-05-2022",
 			"atr": 141.3,
 			"firstMA": 30329.0,
-			"secondMA": 30424.5
+			"secondMA": 30424.5,
+			"rsi": 57.50
 		},
 		{
 			"time": "10:45 17-05-2022",
 			"atr": 138.8,
 			"firstMA": 30346.2,
-			"secondMA": 30419.0
+			"secondMA": 30419.0,
+			"rsi": 56.19
 		},
 		{
 			"time": "11:00 17-05-2022",
@@ -387,161 +447,187 @@
 			"superTrend": 29754.6,
 			"trendIsUp": true,
 			"firstMA": 30365.3,
-			"secondMA": 30421.0
+			"secondMA": 30421.0,
+			"rsi": 59.04
 		},
 		{
 			"time": "11:15 17-05-2022",
 			"atr": 136.6,
 			"superTrend": 29845.8,
 			"firstMA": 30381.7,
-			"secondMA": 30446.3
+			"secondMA": 30446.3,
+			"rsi": 58.95
 		},
 		{
 			"time": "11:30 17-05-2022",
 			"atr": 148.2,
 			"superTrend": 29903.2,
 			"firstMA": 30396.9,
-			"secondMA": 30513.4
+			"secondMA": 30513.4,
+			"rsi": 62.34
 		},
 		{
 			"time": "11:45 17-05-2022",
 			"atr": 148.6,
 			"firstMA": 30407.8,
-			"secondMA": 30537.6
+			"secondMA": 30537.6,
+			"rsi": 58.47
 		},
 		{
 			"time": "12:00 17-05-2022",
 			"atr": 146.3,
 			"firstMA": 30421.2,
-			"secondMA": 30575.0
+			"secondMA": 30575.0,
+			"rsi": 58.92
 		},
 		{
 			"time": "12:15 17-05-2022",
 			"atr": 145.0,
 			"superTrend": 29919.3,
 			"firstMA": 30442.8,
-			"secondMA": 30605.4
+			"secondMA": 30605.4,
+			"rsi": 60.85
 		},
 		{
 			"time": "12:30 17-05-2022",
 			"atr": 141.5,
 			"superTrend": 29961.7,
 			"firstMA": 30459.8,
-			"secondMA": 30630.8
+			"secondMA": 30630.8,
+			"rsi": 59.99
 		},
 		{
 			"time": "12:45 17-05-2022",
 			"atr": 138.8,
 			"firstMA": 30472.8,
-			"secondMA": 30618.2
+			"secondMA": 30618.2,
+			"rsi": 59.25
 		},
 		{
 			"time": "13:00 17-05-2022",
 			"atr": 138.1,
 			"firstMA": 30485.9,
-			"secondMA": 30617.5
+			"secondMA": 30617.5,
+			"rsi": 57.10
 		},
 		{
 			"time": "13:15 17-05-2022",
 			"atr": 133.4,
 			"firstMA": 30499.3,
-			"secondMA": 30614.0
+			"secondMA": 30614.0,
+			"rsi": 57.30
 		},
 		{
 			"time": "13:30 17-05-2022",
 			"atr": 133.9,
 			"firstMA": 30503.3,
-			"secondMA": 30570.5
+			"secondMA": 30570.5,
+			"rsi": 54.04
 		},
 		{
 			"time": "13:45 17-05-2022",
 			"atr": 131.3,
 			"firstMA": 30503.1,
-			"secondMA": 30528.8
+			"secondMA": 30528.8,
+			"rsi": 53.49
 		},
 		{
 			"time": "14:00 17-05-2022",
 			"atr": 126.5,
 			"firstMA": 30509.6,
-			"secondMA": 30499.8
+			"secondMA": 30499.8,
+			"rsi": 54.53
 		},
 		{
 			"time": "14:15 17-05-2022",
 			"atr": 129.7,
 			"firstMA": 30512.7,
-			"secondMA": 30471.3
+			"secondMA": 30471.3,
+			"rsi": 52.48
 		},
 		{
 			"time": "14:30 17-05-2022",
 			"atr": 134.1,
 			"firstMA": 30508.0,
-			"secondMA": 30423.8
+			"secondMA": 30423.8,
+			"rsi": 49.94
 		},
 		{
 			"time": "14:45 17-05-2022",
 			"atr": 133.1,
 			"firstMA": 30497.3,
-			"secondMA": 30392.4
+			"secondMA": 30392.4,
+			"rsi": 49.23
 		},
 		{
 			"time": "15:00 17-05-2022",
 			"atr": 136.9,
 			"firstMA": 30496.5,
-			"secondMA": 30379.9
+			"secondMA": 30379.9,
+			"rsi": 51.42
 		},
 		{
 			"time": "15:15 17-05-2022",
 			"atr": 140.9,
 			"firstMA": 30504.3,
-			"secondMA": 30385.6
+			"secondMA": 30385.6,
+			"rsi": 54.94
 		},
 		{
 			"time": "15:30 17-05-2022",
 			"atr": 146.1,
 			"firstMA": 30510.4,
-			"secondMA": 30415.2
+			"secondMA": 30415.2,
+			"rsi": 56.28
 		},
 		{
 			"time": "15:45 17-05-2022",
 			"atr": 145.0,
 			"firstMA": 30519.5,
-			"secondMA": 30465.1
+			"secondMA": 30465.1,
+			"rsi": 56.65
 		},
 		{
 			"time": "16:00 17-05-2022",
 			"atr": 143.6,
 			"firstMA": 30517.8,
-			"secondMA": 30502.7
+			"secondMA": 30502.7,
+			"rsi": 53.85
 		},
 		{
 			"time": "16:15 17-05-2022",
 			"atr": 142.0,
 			"firstMA": 30517.6,
-			"secondMA": 30530.8
+			"secondMA": 30530.8,
+			"rsi": 54.62
 		},
 		{
 			"time": "16:30 17-05-2022",
 			"atr": 159.0,
 			"firstMA": 30518.6,
-			"secondMA": 30570.8
+			"secondMA": 30570.8,
+			"rsi": 59.33
 		},
 		{
 			"time": "16:45 17-05-2022",
 			"atr": 165.6,
 			"firstMA": 30515.7,
-			"secondMA": 30559.0
+			"secondMA": 30559.0,
+			"rsi": 53.11
 		},
 		{
 			"time": "17:00 17-05-2022",
 			"atr": 170.4,
 			"firstMA": 30504.9,
-			"secondMA": 30516.8
+			"secondMA": 30516.8,
+			"rsi": 49.51
 		},
 		{
 			"time": "17:15 17-05-2022",
 			"atr": 167.1,
 			"firstMA": 30487.2,
-			"secondMA": 30483.1
+			"secondMA": 30483.1,
+			"rsi": 48.41
 		},
 		{
 			"time": "17:30 17-05-2022",
@@ -549,88 +635,102 @@
 			"superTrend": 31024.3,
 			"trendIsUp": false,
 			"firstMA": 30451.9,
-			"secondMA": 30368.0
+			"secondMA": 30368.0,
+			"rsi": 40.37
 		},
 		{
 			"time": "17:45 17-05-2022",
 			"atr": 183.3,
 			"superTrend": 30931.8,
 			"firstMA": 30423.3,
-			"secondMA": 30236.9
+			"secondMA": 30236.9,
+			"rsi": 43.23
 		},
 		{
 			"time": "18:00 17-05-2022",
 			"atr": 177.9,
 			"firstMA": 30400.5,
-			"secondMA": 30156.5
+			"secondMA": 30156.5,
+			"rsi": 44.42
 		},
 		{
 			"time": "18:15 17-05-2022",
 			"atr": 176.0,
 			"superTrend": 30911.4,
 			"firstMA": 30371.1,
-			"secondMA": 30078.6
+			"secondMA": 30078.6,
+			"rsi": 42.02
 		},
 		{
 			"time": "18:30 17-05-2022",
 			"atr": 181.2,
 			"firstMA": 30350.4,
-			"secondMA": 30023.3
+			"secondMA": 30023.3,
+			"rsi": 43.78
 		},
 		{
 			"time": "18:45 17-05-2022",
 			"atr": 176.0,
 			"firstMA": 30334.9,
-			"secondMA": 30061.0
+			"secondMA": 30061.0,
+			"rsi": 45.90
 		},
 		{
 			"time": "19:00 17-05-2022",
 			"atr": 178.5,
 			"firstMA": 30311.5,
-			"secondMA": 30052.7
+			"secondMA": 30052.7,
+			"rsi": 43.51
 		},
 		{
 			"time": "19:15 17-05-2022",
 			"atr": 180.8,
 			"superTrend": 30859.3,
 			"firstMA": 30291.3,
-			"secondMA": 30034.6
+			"secondMA": 30034.6,
+			"rsi": 43.47
 		},
 		{
 			"time": "19:30 17-05-2022",
 			"atr": 178.6,
 			"firstMA": 30279.6,
-			"secondMA": 30058.0
+			"secondMA": 30058.0,
+			"rsi": 45.64
 		},
 		{
 			"time": "19:45 17-05-2022",
 			"atr": 175.4,
 			"firstMA": 30271.0,
-			"secondMA": 30074.8
+			"secondMA": 30074.8,
+			"rsi": 46.54
 		},
 		{
 			"time": "20:00 17-05-2022",
 			"atr": 173.3,
 			"firstMA": 30260.3,
-			"secondMA": 30081.2
+			"secondMA": 30081.2,
+			"rsi": 47.40
 		},
 		{
 			"time": "20:15 17-05-2022",
 			"atr": 168.2,
 			"firstMA": 30242.4,
-			"secondMA": 30109.1
+			"secondMA": 30109.1,
+			"rsi": 47.11
 		},
 		{
 			"time": "20:30 17-05-2022",
 			"atr": 165.1,
 			"firstMA": 30222.4,
-			"secondMA": 30139.8
+			"secondMA": 30139.8,
+			"rsi": 47.45
 		},
 		{
 			"time": "20:45 17-05-2022",
 			"atr": 163.8,
 			"firstMA": 30197.0,
-			"secondMA": 30134.7
+			"secondMA": 30134.7,
+			"rsi": 45.16
 		}
 	]
 }
