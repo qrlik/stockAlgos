@@ -90,7 +90,7 @@ bool stMAlgorithmData::isValidInternal() const {
 void stMAlgorithmData::addJsonDataInternal(Json& aData) const {
 	aData["firstMATrendPrecision"] = firstMATrendPrecision;
 	aData["secondMATrendPrecision"] = secondMATrendPrecision;
-	aData["closerMATrendPrecision"] = secondMATrendPrecision;
+	aData["closerMATrendPrecision"] = closerMATrendPrecision;
 	aData["closerTrendChangeCheck"] = closerTrendChangeCheck;
 	aData["closerMACheck"] = closerMACheck;
 	aData["closerConjuctionCheck"] = closerConjuctionCheck;
