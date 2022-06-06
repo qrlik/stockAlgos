@@ -62,3 +62,31 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 	}
 	return false;
 }
+
+void openerModule::onOpenOrder() {
+	touchActivated = false;
+	lastOpenRsi = algorithm.getIndicators().getRSI();
+}
+
+void openerModule::onCloseOrder(eOrderState aState, double aProfit) {
+	lastClosedOrder.first = algorithm.getCandle().time;
+	lastClosedOrder.second = aState;
+
+	auto flooredRsi = static_cast<int>(utils::ceil(lastOpenRsi, 10.0));
+	if (aState == eOrderState::LONG) {
+		if (utils::isGreater(aProfit, 0.0)) {
+			++rsiProfitLongs[flooredRsi];
+		}
+		else {
+			++rsiUnprofitLongs[flooredRsi];
+		}
+	}
+	else {
+		if (utils::isGreater(aProfit, 0.0)) {
+			++rsiProfitShorts[flooredRsi];
+		}
+		else {
+			++rsiUnprofitShorts[flooredRsi];
+		}
+	}
+}

@@ -31,12 +31,11 @@ bool stMAlgorithm::loop() {
 }
 
 void stMAlgorithm::onOpenOrder() {
-	opener.touchActivated = false;
+	opener.onOpenOrder();
 }
 
 void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
-	opener.lastClosedOrder.first = getCandle().time;
-	opener.lastClosedOrder.second = aState;
+	opener.onCloseOrder(aState, aProfit);
 }
 
 void stMAlgorithm::logInternal(std::ofstream& aFile) const {
