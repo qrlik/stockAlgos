@@ -25,6 +25,7 @@ void statistic::onOpenOrder(bool isLong) {
 	else {
 		incrementCounter("shortOrder");
 	}
+	incrementCounter("orderCounter");
 }
 
 bool statistic::onCloseOrder(double aCash, double aProfit) {
@@ -113,6 +114,14 @@ void statistic::addJsonData(Json& aJson, double aCash) const {
 	aJson["maxLossPercent"] = utils::round(maxLossPercentActual, 0.01);
 	const auto recoveryFactor = (aCash - data.getStartCash()) / summaryLoss;
 	aJson["recoveryFactor"] = utils::round(recoveryFactor, 0.01);
+
+	if (auto itProfit = statCounters.find("profitableOrder"); itProfit != statCounters.end()) {
+		if (auto itUnprofit = statCounters.find("unprofitableOrder"); itUnprofit != statCounters.end()) {
+			 auto profitsFactor = static_cast<double>(itProfit->second) / (itProfit->second + itUnprofit->second);
+			 profitsFactor = utils::round(profitsFactor * 100.0, 0.1);
+			 aJson["profitsFactor"] = profitsFactor;
+		}
+	}
 
 	for (const auto& [name, count] : statCounters) {
 		aJson[name] = count;

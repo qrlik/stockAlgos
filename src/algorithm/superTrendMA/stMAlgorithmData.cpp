@@ -6,7 +6,7 @@ using namespace algorithm;
 stMAlgorithmData::stMAlgorithmData() {
 	getIndicatorsData().enableMA(2);
 	getIndicatorsData().enableSuperTrend();
-	getIndicatorsData().enableRSI();
+	//getIndicatorsData().enableRSI();
 }
 
 bool stMAlgorithmData::operator==(const stMAlgorithmData& aOther) const {

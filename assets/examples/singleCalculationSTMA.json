@@ -7,25 +7,25 @@
 		"secondMA": 5,
 
 		"atrType": "RMA",
-		"atrSize": 105,
+		"atrSize": 25,
 		"stFactor": 10.0,
+		"rsiSize": 25,
 
 		"dealPercent": 5.0,
 		"leverage": 50,
 
-		"startCash": 75000,
-		"orderSize": 2500,
-		"maxLossCash": 25000,
-		"maxLossPercent": 35.0,
+		"startCash": 10000,
+		"maxLossPercent": 60.0,
 
-		"liquidationOffsetPercent": 0.05,
+		"stopLossPercent": 1.0,
 		"minimumProfitPercent": 0.1,
 
-		"firstMATrendPrecision": 1.1,
-		"secondMATrendPrecision": 3.0,
+		"firstMATrendPrecision": 15.0,
+		"secondMATrendPrecision": 5.0,
+		"closerMATrendPrecision": 15.0,
 		
 		"closerTrendChangeCheck": true,
-		"closerMACheck": false,
-		"closerConjuctionCheck": false
+		"closerMACheck": true,
+		"closerConjuctionCheck": true
 	}
 }
