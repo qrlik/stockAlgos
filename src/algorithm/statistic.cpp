@@ -117,8 +117,8 @@ void statistic::addJsonData(Json& aJson, double aCash) const {
 
 	if (auto itProfit = statCounters.find("profitableOrder"); itProfit != statCounters.end()) {
 		if (auto itUnprofit = statCounters.find("unprofitableOrder"); itUnprofit != statCounters.end()) {
-			 auto profitsFactor = static_cast<double>(itProfit->second) / (itProfit->second + itUnprofit->second);
-			 profitsFactor = utils::round(profitsFactor * 100.0, 0.1);
+			 auto profitsFactor = static_cast<double>(itUnprofit->second) / itProfit->second;
+			 profitsFactor = utils::round(profitsFactor, 0.1);
 			 aJson["profitsFactor"] = profitsFactor;
 		}
 	}
