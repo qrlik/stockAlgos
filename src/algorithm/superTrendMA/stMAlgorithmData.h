@@ -24,9 +24,11 @@ namespace algorithm {
 		double firstMATrendPrecision = 0.0;
 		double secondMATrendPrecision = 0.0;
 		double closerMATrendPrecision = 0.0;
+		double closerTrailPrecision = 0.0;
 		
 		bool closerTrendChangeCheck = false;
 		bool closerMACheck = false;
+		bool closerTrailStop = false;
 		bool closerConjuctionCheck = false;
 	};
 }
