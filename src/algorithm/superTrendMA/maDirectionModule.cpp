@@ -62,7 +62,7 @@ bool maDirectionModule::update() {
 	updateData(firstData, algorithm.getIndicators().getFirstMA(), algorithm.getData().getFirstMATrendPrecision());
 	updateData(secondData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getSecondMATrendPrecision());
 	updateData(closerData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getCloserMATrendPrecision());
-	return firstData.state != eMaState::NONE && secondData.state != eMaState::NONE;
+	return firstData.state != eMaState::NONE && secondData.state != eMaState::NONE && closerData.state != eMaState::NONE;
 }
 
 bool maDirectionModule::isFirstUp() const {
