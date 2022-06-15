@@ -10,10 +10,12 @@ namespace algorithm {
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }
+		double getCloserTrailPrecision() const { return closerTrailPrecision; }
 
 		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
 		bool getCloserMACheck() const { return closerMACheck; }
 		bool getCloserConjuctionCheck() const { return closerConjuctionCheck; }
+		bool getCloserTrailStop() const { return closerTrailStop; }
 
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;

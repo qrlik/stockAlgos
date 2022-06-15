@@ -52,3 +52,7 @@ void stMAlgorithm::initDataFieldInternal(const std::string& aName, const Json& a
 		maDirection.updateData(maDirection.secondData, aValue);
 	}
 }
+
+void stMAlgorithm::updateOrderStopLoss(double aStopLoss) {
+	order.updateStopLoss(aStopLoss);
+}

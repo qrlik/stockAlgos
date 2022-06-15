@@ -13,7 +13,7 @@ namespace algorithm {
 		bool operator==(const stMAlgorithm& aOther) const;
 
 		const maDirectionModule& getMAModule() const { return maDirection; }
-
+		void updateOrderStopLoss(double aStopLoss);
 	private:
 		void preLoop() override;
 		bool loop() override;

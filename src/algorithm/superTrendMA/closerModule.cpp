@@ -10,28 +10,28 @@ closerModule::closerModule(stMAlgorithm& aAlgorithm)
 
 bool closerModule::check() {
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
-		if (utils::isLessOrEqual(algorithm.getCandle().low, algorithm.getOrder().getStopLoss())) {
-			algorithm.closeOrder();
-			return true;
-		}
-
 		if (checkStates(true)) {
 			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
-	}
-	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
-		if (utils::isGreaterOrEqual(algorithm.getCandle().high, algorithm.getOrder().getStopLoss())) {
+
+		if (utils::isLessOrEqual(algorithm.getCandle().low, algorithm.getOrder().getStopLoss())) {
 			algorithm.closeOrder();
 			return true;
 		}
-
+	}
+	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
 		if (checkStates(false)) {
 			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
+
+		if (utils::isGreaterOrEqual(algorithm.getCandle().high, algorithm.getOrder().getStopLoss())) {
+			algorithm.closeOrder();
+			return true;
+		}
 	}
-	return false;
+	return updateTrail();
 }
 
 void closerModule::updateState(bool& aState, bool aAdd) const {
@@ -56,4 +56,26 @@ bool closerModule::checkStates(bool aLong) const {
 		updateState(checkState, mainMAState);
 	}
 	return checkState;
+}
+
+bool closerModule::updateTrail() {
+	if (!algorithm.getData().getCloserTrailStop()) {
+		return false;
+	}
+	const auto pricePrecision = MARKET_DATA->getPricePrecision();
+	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
+		auto trailStopLoss = utils::round(algorithm.getCandle().high * (100.0 - algorithm.getData().getCloserTrailPrecision()) / 100.0, pricePrecision);
+		if (utils::isGreaterOrEqual(trailStopLoss, algorithm.getOrder().getMinimumProfit()) && utils::isGreater(trailStopLoss, algorithm.getOrder().getStopLoss())) {
+			algorithm.updateOrderStopLoss(trailStopLoss);
+			return true;
+		}
+	}
+	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
+		auto trailStopLoss = utils::round(algorithm.getCandle().low * (100.0 + algorithm.getData().getCloserTrailPrecision()) / 100.0, pricePrecision);
+		if (utils::isLessOrEqual(trailStopLoss, algorithm.getOrder().getMinimumProfit()) && utils::isLess(trailStopLoss, algorithm.getOrder().getStopLoss())) {
+			algorithm.updateOrderStopLoss(trailStopLoss);
+			return true;
+		}
+	}
+	return false;
 }

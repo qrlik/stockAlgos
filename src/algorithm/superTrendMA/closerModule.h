@@ -11,6 +11,7 @@ namespace algorithm {
 	private:
 		void updateState(bool& aState, bool aAdd) const;
 		bool checkStates(bool aLong) const;
+		bool updateTrail();
 
 		stMAlgorithm& algorithm;
 	};
