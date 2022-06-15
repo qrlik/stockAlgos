@@ -97,7 +97,7 @@ bool stMAlgorithmData::isValidInternal() const {
 		result &= utils::isGreater(closerMATrendPrecision, 0.0);
 	}
 	if (closerTrailStop) {
-		result &= !closerMACheck && !closerConjuctionCheck;
+		result &= !closerMACheck;
 		result &= utils::isGreater(closerTrailPrecision, 0.0);
 	}
 	result &= closerTrendChangeCheck || closerMACheck || closerTrailStop;
