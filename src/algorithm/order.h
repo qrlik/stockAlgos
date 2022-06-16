@@ -31,7 +31,7 @@ namespace algorithm {
 		double getQuantity() const { return quantity; }
 		double getProfit() const;
 		eOrderState getState() const { return state; }
-		void updateStopLoss(double aStopLoss) { stopLoss = aStopLoss; }
+		void updateStopLoss(double aStopLoss);
 	private:
 		double calculateStopLoss(const algorithm::algorithmDataBase& aData) const;
 		double calculateMinimumProfit(const algorithm::algorithmDataBase& aData) const;

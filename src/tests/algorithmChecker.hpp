@@ -24,7 +24,9 @@ namespace tests {
 			for (auto& candle : candles) {
 				actualAlgorithm->doAction(candle);
 				updateTestAlgorithm(candle.time);
-				if (!(*actualAlgorithm == *testAlgorithm)) {
+				auto compare = *actualAlgorithm == *testAlgorithm;
+				if (!compare) {
+					compare = *actualAlgorithm == *testAlgorithm;
 					utils::logError("[ERROR] algorithmChecker - " + name);
 					return;
 				}

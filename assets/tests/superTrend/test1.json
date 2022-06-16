@@ -60,7 +60,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 1,
-				"shortOrder": 1
+				"shortOrder": 1,
+				"orderCounter": 1
 			},
 			"state": "SHORT",
 			"cash": 95.109763,
@@ -169,7 +170,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 2,
-				"shortOrder": 2
+				"shortOrder": 2,
+				"orderCounter": 2
 			},
 			"state": "SHORT",
 			"cash": 100.8605518
@@ -238,7 +240,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 3,
-				"longOrder": 1
+				"longOrder": 1,
+				"orderCounter": 3
 			},
 			"state": "LONG",
 			"cash": 97.066279
@@ -275,7 +278,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 4,
-				"longOrder": 2
+				"longOrder": 2,
+				"orderCounter": 4
 			},
 			"state": "LONG",
 			"cash": 97.616595
@@ -360,7 +364,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 5,
-				"shortOrder": 3
+				"shortOrder": 3,
+				"orderCounter": 5
 			},
 			"state": "SHORT",
 			"cash": 98.6750444
@@ -434,7 +439,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 6,
-				"shortOrder": 4
+				"shortOrder": 4,
+				"orderCounter": 6
 			},
 			"state": "SHORT",
 			"cash": 101.8836188
@@ -654,7 +660,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 7,
-				"shortOrder": 5
+				"shortOrder": 5,
+				"orderCounter": 7
 			},
 			"state": "SHORT",
 			"cash": 104.17277624
@@ -692,7 +699,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 8,
-				"shortOrder": 6
+				"shortOrder": 6,
+				"orderCounter": 8
 			},
 			"state": "SHORT",
 			"cash": 104.86196048
@@ -760,7 +768,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 9,
-				"shortOrder": 7
+				"shortOrder": 7,
+				"orderCounter": 9
 			},
 			"state": "SHORT",
 			"cash": 111.61394864
@@ -863,7 +872,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 10,
-				"longOrder": 3
+				"longOrder": 3,
+				"orderCounter": 10
 			},
 			"state": "LONG",
 			"cash": 112.60636304
@@ -931,7 +941,8 @@
 			},
 			"stats": {
 				"touchTrendOrder": 11,
-				"shortOrder": 8
+				"shortOrder": 8,
+				"orderCounter": 11
 			},
 			"state": "SHORT",
 			"cash": 108.70138380

@@ -42,6 +42,15 @@ void order::reset() {
 	state = eOrderState::NONE;
 }
 
+void order::updateStopLoss(double aStopLoss) {
+	if (state == eOrderState::LONG) {
+		stopLoss = utils::maxFloat(initStopLoss, aStopLoss);
+	}
+	else if (state == eOrderState::SHORT) {
+		stopLoss = utils::minFloat(initStopLoss, aStopLoss);
+	}
+}
+
 double order::calculateStopLoss(const algorithm::algorithmDataBase& aData) const {
 	if (auto stopLossPercent = aData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
 		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
