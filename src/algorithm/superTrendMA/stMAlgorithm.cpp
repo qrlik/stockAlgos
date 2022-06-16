@@ -32,6 +32,16 @@ bool stMAlgorithm::loop() {
 
 void stMAlgorithm::onOpenOrder() {
 	opener.onOpenOrder();
+	if (getState() == getIntState(eBaseState::LONG)) {
+		if (!getMAModule().isCloserUp()) {
+			stats.incrementCounter("maCloserDiscrepancy");
+		}
+	}
+	else if (getState() == getIntState(eBaseState::SHORT)) {
+		if (getMAModule().isCloserUp()) {
+			stats.incrementCounter("maCloserDiscrepancy");
+		}
+	}
 }
 
 void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
