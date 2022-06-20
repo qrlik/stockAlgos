@@ -27,6 +27,9 @@ bool openerModule::checkTrendTouch() {
 	else if (!isTrendUp && utils::isGreaterOrEqual(candle.high, trendActivation)) {
 		touchActivated = true;
 	}
+	if (algorithm.getCloserModule().isNeedToClose(isTrendUp)) {
+		touchActivated = false;
+	}
 	return touchActivated;
 }
 

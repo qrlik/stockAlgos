@@ -10,7 +10,7 @@ closerModule::closerModule(stMAlgorithm& aAlgorithm)
 
 bool closerModule::check() {
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
-		if (checkStates(true)) {
+		if (isNeedToClose(true)) {
 			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
@@ -21,7 +21,7 @@ bool closerModule::check() {
 		}
 	}
 	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
-		if (checkStates(false)) {
+		if (isNeedToClose(false)) {
 			algorithm.closeOrder(algorithm.getCandle().open);
 			return true;
 		}
@@ -43,14 +43,14 @@ void closerModule::updateState(bool& aState, bool aAdd) const {
 	}
 }
 
-bool closerModule::checkStates(bool aLong) const {
+bool closerModule::isNeedToClose(bool aLong) const {
 	bool checkState = algorithm.getData().getCloserConjuctionCheck();
 	if (algorithm.getData().getCloserTrendChangeCheck()) {
 		auto trendState = algorithm.getIndicators().isSuperTrendUp();
 		trendState = (aLong) ? !trendState : trendState;
 		updateState(checkState, trendState);
 	}
-	if (algorithm.getData().getCloserMACheck() && !algorithm.getMAModule().isCloserDiscrepancy()) {
+	if (algorithm.getData().getCloserMACheck()) {
 		auto mainMAState = algorithm.getMAModule().isCloserUp();
 		mainMAState = (aLong) ? !mainMAState : mainMAState;
 		updateState(checkState, mainMAState);

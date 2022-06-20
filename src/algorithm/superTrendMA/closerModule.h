@@ -7,10 +7,10 @@ namespace algorithm {
 	public:
 		closerModule(stMAlgorithm& aAlgorithm);
 		bool check();
+		bool isNeedToClose(bool aLong) const;
 
 	private:
 		void updateState(bool& aState, bool aAdd) const;
-		bool checkStates(bool aLong) const;
 		bool updateTrail();
 
 		stMAlgorithm& algorithm;
