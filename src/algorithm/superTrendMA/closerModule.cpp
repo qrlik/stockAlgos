@@ -50,7 +50,7 @@ bool closerModule::checkStates(bool aLong) const {
 		trendState = (aLong) ? !trendState : trendState;
 		updateState(checkState, trendState);
 	}
-	if (algorithm.getData().getCloserMACheck()) {
+	if (algorithm.getData().getCloserMACheck() && !algorithm.getMAModule().isCloserDiscrepancy()) {
 		auto mainMAState = algorithm.getMAModule().isCloserUp();
 		mainMAState = (aLong) ? !mainMAState : mainMAState;
 		updateState(checkState, mainMAState);

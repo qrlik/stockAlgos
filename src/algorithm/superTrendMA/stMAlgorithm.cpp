@@ -32,14 +32,10 @@ bool stMAlgorithm::loop() {
 
 void stMAlgorithm::onOpenOrder() {
 	opener.onOpenOrder();
-	if (getState() == getIntState(eBaseState::LONG)) {
-		if (!getMAModule().isCloserUp()) {
+	if (getData().getCloserMACheck()) {
+		if ((getState() == getIntState(eBaseState::LONG) && !getMAModule().isCloserUp()) || (getState() == getIntState(eBaseState::SHORT) && getMAModule().isCloserUp())) {
 			stats.incrementCounter("maCloserDiscrepancy");
-		}
-	}
-	else if (getState() == getIntState(eBaseState::SHORT)) {
-		if (getMAModule().isCloserUp()) {
-			stats.incrementCounter("maCloserDiscrepancy");
+			maDirection.setCloserDiscrepancy(true);
 		}
 	}
 }
