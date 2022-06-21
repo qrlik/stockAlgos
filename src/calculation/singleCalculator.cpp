@@ -32,7 +32,7 @@ namespace {
 }
 
 void calculation::singleCalculation() {
-	auto json = utils::readFromJson("singleCalculation");
+	auto json = utils::readFromJson("input/singleCalculation");
 	if (json.is_null()) {
 		return;
 	}

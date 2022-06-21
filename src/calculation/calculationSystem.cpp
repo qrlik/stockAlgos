@@ -35,7 +35,7 @@ namespace {
 
 void calculationSystem::loadSettings() {
 	const auto log = []() { utils::logError("calculationSystem::loadSettings parse error"); };
-	auto settings = utils::readFromJson("calculationSettings");
+	auto settings = utils::readFromJson("input/calculationSettings");
 	if (!checkSettingsJson(settings)) {
 		log();
 		return;
@@ -98,7 +98,6 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	utils::log("calculationSystem::saveFinalData maxCash - [" + std::to_string(finalVector[0]["cash"].get<double>()) + ']');
 	const auto dirName = utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 	utils::createDir(dirName);
-	Json jsonWeightData;
 	Json jsonAllData;
 	Json stats;
 	{
@@ -108,13 +107,12 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		const auto maxProfit = getProfit(finalVector[0]);
 
 		for (const auto& data : finalVector) {
-			jsonAllData.push_back(data["data"]);
+			jsonAllData.push_back(data);
 			const auto weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
 			if (utils::isLess(weight, weightPrecision)) {
 				continue;
 			}
 			addStats(stats, data["data"], weight);
-			jsonWeightData.push_back(data["data"]);
 		}
 
 		addHeadlines(dataAll, stats, finalVector[0]);
@@ -136,11 +134,6 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		std::ofstream jsonOutput(dirName + "jsonDataAll.json");
 		jsonOutput << jsonAllData;
 		jsonAllData.clear();
-	}
-	{
-		std::ofstream jsonOutput(dirName + "jsonDataWeighted.json");
-		jsonOutput << jsonWeightData;
-		jsonWeightData.clear();
 	}
 	saveStats(stats, dirName + "stats.json");
 }

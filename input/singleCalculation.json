@@ -1,0 +1,31 @@
+{
+	"algorithmType": "superTrendMA",
+	"ticker": "BTCUSDT",
+	"timeframe": "15m",
+	"data": {
+		"firstMA": 20,
+		"secondMA": 5,
+
+		"atrType": "RMA",
+		"atrSize": 25,
+		"stFactor": 10.0,
+		"rsiSize": 25,
+
+		"dealPercent": 5.0,
+		"leverage": 50,
+
+		"startCash": 10000,
+		"maxLossPercent": 60.0,
+
+		"stopLossPercent": 1.0,
+		"minimumProfitPercent": 0.1,
+
+		"firstMATrendPrecision": 15.0,
+		"secondMATrendPrecision": 5.0,
+		"closerMATrendPrecision": 15.0,
+		
+		"closerTrendChangeCheck": true,
+		"closerMACheck": true,
+		"closerConjuctionCheck": true
+	}
+}

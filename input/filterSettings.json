@@ -1,0 +1,17 @@
+{
+	"keepPredicates": [
+		{
+			"field": "closerConjuctionCheck",
+			"value": true,
+			"operand": "=="
+		},
+		{
+			"field": "closerTrendChangeCheck",
+			"value": true,
+			"operand": "=="
+		}
+	],
+	"deletePredicates": [
+
+	]
+}

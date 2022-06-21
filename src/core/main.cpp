@@ -1,4 +1,5 @@
 #include "tests/tests.h"
+#include "calculation/filterHelper.h"
 #include "calculation/singleCalculator.h"
 #include "calculation/calculationSystem.h"
 #include "utils/utils.h"
@@ -17,9 +18,9 @@ void calculate() {
 int main() {
 	tests::runTests();
 
-	calculation::singleCalculation();
-
-	calculate();
+	calculation::processFilter();
+	//calculation::singleCalculation();
+	//calculate();
 
 	return 0;
 }

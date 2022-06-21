@@ -56,7 +56,7 @@ namespace calculation {
 			combinationsData(aThreadsAmount),
 			indexes(aThreadsAmount, 0)
 		{
-			settings = utils::readFromJson("combinationSettings");
+			settings = utils::readFromJson("input/combinationSettings");
 			if (threadsAmount == 0 || settings.empty()) {
 				return;
 			}

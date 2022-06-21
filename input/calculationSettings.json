@@ -1,0 +1,12 @@
+{
+	"threadsAmount": 8,
+	"weightPrecision": 0.0001,
+	"parabolaDegree": 7,
+	"algorithmType": "superTrendMA",
+	"calculations": [
+		{
+			"ticker": "BTCUSDT",
+			"timeframe": "15m"
+		}
+	]
+}
