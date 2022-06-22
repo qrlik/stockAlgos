@@ -101,7 +101,11 @@ namespace calculation {
 			}
 			const auto name = iterationData["name"].get<std::string>();
 			if (iterationData.contains("value")) {
-				iterateCombination(aIndex, name, iterationData["value"]);
+				bool criteriaCheck = true;
+				if (iterationData.contains("criteria")) {
+					criteriaCheck = checkCriteria(iterationData["criteria"], iterationData["criteriaOperand"]);
+				}
+				iterateCombination(aIndex, name, (criteriaCheck) ? iterationData["value"] : iterationData["otherwise"]);
 			}
 			else {
 				auto& values = iterationData["values"];
@@ -147,8 +151,8 @@ namespace calculation {
 		void onIterate() {
 			++combinations;
 			if (!data.isValid()) {
-				assert(false && "!tmpData.isValid()");
 				utils::logError("combinationFactory invalid algorithm data");
+				assert(false && "!tmpData.isValid()");
 			}
 			else {
 				allData.push_back(data);
