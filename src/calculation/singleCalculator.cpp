@@ -4,6 +4,7 @@
 #include "market/candle.h"
 #include "utils/utils.h"
 #include <string>
+#include <iostream>
 
 using namespace calculation;
 
@@ -26,8 +27,10 @@ namespace {
 		}
 		auto algorithm = algorithmType(data);
 		algorithm.setWithLogs();
-		algorithm.calculate(utils::parseCandles(aCandles));
-		utils::log("singleCalculation full cash - " + std::to_string(algorithm.getFullCash()));
+		auto result = algorithm.calculate(utils::parseCandles(aCandles));
+		auto json = algorithm.getJsonData();
+		utils::log("singleCalculation result - " + (result) ? "true" : "false");
+		std::cout << json;
 	}
 }
 
