@@ -50,6 +50,17 @@ bool indicatorsData::operator==(const indicatorsData& aOther) const {
 	return result;
 }
 
+size_t indicatorsData::getHash() const {
+	size_t result{};
+	utils::hash_combine(result, stFactor);
+	utils::hash_combine(result, atrSize);
+	utils::hash_combine(result, static_cast<int>(atrType));
+	utils::hash_combine(result, firstMA);
+	utils::hash_combine(result, secondMA);
+	utils::hash_combine(result, rsiSize);
+	return result;
+}
+
 void indicatorsData::enableSuperTrend() {
 	enableAtr();
 	superTrendFlag = true;

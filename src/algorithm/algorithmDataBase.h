@@ -7,6 +7,7 @@ namespace algorithm {
 	public:
 		algorithmDataBase() = default;
 		bool operator==(const algorithmDataBase& aOther) const;
+		size_t getHash() const;
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
@@ -31,6 +32,7 @@ namespace algorithm {
 	protected:
 		using baseClass = algorithmDataBase;
 
+		virtual size_t getCustomHash() const = 0;
 		virtual bool initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
 		virtual bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const = 0;
 		virtual bool isValidInternal() const = 0;
@@ -38,6 +40,8 @@ namespace algorithm {
 
 		market::indicatorsData& getIndicatorsData() { return indicatorsData; }
 	private:
+		size_t getBaseHash() const;
+
 		market::indicatorsData indicatorsData;
 
 		double dealPercent = -1.0;

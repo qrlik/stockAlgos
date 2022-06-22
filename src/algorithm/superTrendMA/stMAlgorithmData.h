@@ -17,16 +17,19 @@ namespace algorithm {
 		bool getCloserConjuctionCheck() const { return closerConjuctionCheck; }
 		bool getCloserTrailStop() const { return closerTrailStop; }
 
+	protected:
+		size_t getCustomHash() const override;
+
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 
-		double firstMATrendPrecision = 0.0;
-		double secondMATrendPrecision = 0.0;
-		double closerMATrendPrecision = 0.0;
-		double closerTrailPrecision = 0.0;
+		double firstMATrendPrecision = -1.0;
+		double secondMATrendPrecision = -1.0;
+		double closerMATrendPrecision = -1.0;
+		double closerTrailPrecision = -1.0;
 		
 		bool closerTrendChangeCheck = false;
 		bool closerMACheck = false;

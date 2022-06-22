@@ -26,6 +26,9 @@ namespace algorithm {
 		int getStopLossWaiterRange() const { return stopLossWaiterRange; }
 		bool getStopLossWaiterFullCandleCheck() const { return stopLossWaiterFullCandleCheck; }
 
+	protected:
+		size_t getCustomHash() const override;
+
 	private:
 		bool initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 		bool checkCriteriaInternal(const std::string& aName, const Json& aValue) const override;

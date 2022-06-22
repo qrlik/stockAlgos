@@ -25,6 +25,30 @@ bool stAlgorithmData::operator==(const stAlgorithmData& aOther) const {
 	return result;
 }
 
+size_t stAlgorithmData::getCustomHash() const {
+	size_t result{};
+
+	utils::hash_combine(result, dynamicSLPercent);
+	utils::hash_combine(result, dynamicSLTrendMode);
+
+	utils::hash_combine(result, touchOpenerActivationWaitMode);
+
+	utils::hash_combine(result, breakOpenerEnabled);
+	utils::hash_combine(result, breakOpenerActivationWaitMode);
+	utils::hash_combine(result, alwaysUseNewTrend);
+
+	utils::hash_combine(result, activationWaiterResetAllowed);
+	utils::hash_combine(result, activationWaiterRange);
+	utils::hash_combine(result, activationWaiterFullCandleCheck);
+
+	utils::hash_combine(result, stopLossWaiterEnabled);
+	utils::hash_combine(result, stopLossWaiterResetAllowed);
+	utils::hash_combine(result, stopLossWaiterRange);
+	utils::hash_combine(result, stopLossWaiterFullCandleCheck);
+
+	return result;
+}
+
 bool stAlgorithmData::isValidInternal() const {
 	auto result = true;
 

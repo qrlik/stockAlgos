@@ -23,6 +23,21 @@ bool stMAlgorithmData::operator==(const stMAlgorithmData& aOther) const {
 	return result;
 }
 
+size_t stMAlgorithmData::getCustomHash() const {
+	size_t result{};
+	utils::hash_combine(result, firstMATrendPrecision);
+	utils::hash_combine(result, secondMATrendPrecision);
+	utils::hash_combine(result, closerMATrendPrecision);
+	utils::hash_combine(result, closerTrailPrecision);
+
+	utils::hash_combine(result, closerTrendChangeCheck);
+	utils::hash_combine(result, closerMACheck);
+	utils::hash_combine(result, closerTrailStop);
+	utils::hash_combine(result, closerConjuctionCheck);
+
+	return result;
+}
+
 bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	if (aName == "firstMATrendPrecision") {
 		firstMATrendPrecision = aValue.get<double>();

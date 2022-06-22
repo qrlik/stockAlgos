@@ -21,6 +21,30 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	return result;
 }
 
+size_t algorithmDataBase::getHash() const {
+	size_t result = getBaseHash();
+	utils::hash_combine(result, getCustomHash());
+	return result;
+}
+
+size_t algorithmDataBase::getBaseHash() const {
+	size_t result = indicatorsData.getHash();
+
+	utils::hash_combine(result, dealPercent);
+	utils::hash_combine(result, orderSize);
+	utils::hash_combine(result, leverage);
+
+	utils::hash_combine(result, startCash);
+	utils::hash_combine(result, maxLossPercent);
+	utils::hash_combine(result, maxLossCash);
+
+	utils::hash_combine(result, stopLossPercent);
+	utils::hash_combine(result, liquidationOffsetPercent);
+	utils::hash_combine(result, minimumProfitPercent);
+
+	return result;
+}
+
 bool algorithmDataBase::isValid() const {
 	auto result = true;
 

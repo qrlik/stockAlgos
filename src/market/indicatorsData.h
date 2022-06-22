@@ -17,6 +17,7 @@ namespace market {
 	class indicatorsData {
 	public:
 		bool operator==(const indicatorsData& aOther) const;
+		size_t getHash() const;
 		void addJsonData(Json& aData) const;
 		bool initDataField(const std::string& aName, const Json& aValue);
 		bool checkCriteria(const std::string& aName, const Json& aValue) const;
