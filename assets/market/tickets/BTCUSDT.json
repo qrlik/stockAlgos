@@ -24,52 +24,52 @@
         },
         {
             "maxLeverage": 20,
-            "notionalCap": 7500000,
+            "notionalCap": 10000000,
             "notionalFloor": 1000000,
             "maintenanceMarginRate": 0.025,
             "maintenanceAmount": 16300.0
         },
         {
             "maxLeverage": 10,
-            "notionalCap": 40000000,
-            "notionalFloor": 7500000,
+            "notionalCap": 20000000,
+            "notionalFloor": 10000000,
             "maintenanceMarginRate": 0.05,
-            "maintenanceAmount": 203800.0
+            "maintenanceAmount": 266300.0
         },
         {
             "maxLeverage": 5,
-            "notionalCap": 100000000,
-            "notionalFloor": 40000000,
+            "notionalCap": 50000000,
+            "notionalFloor": 20000000,
             "maintenanceMarginRate": 0.1,
-            "maintenanceAmount": 2203800.0
+            "maintenanceAmount": 1266300.0
         },
         {
             "maxLeverage": 4,
-            "notionalCap": 200000000,
-            "notionalFloor": 100000000,
+            "notionalCap": 100000000,
+            "notionalFloor": 50000000,
             "maintenanceMarginRate": 0.125,
-            "maintenanceAmount": 4703800.0
+            "maintenanceAmount": 2516300.0
         },
         {
             "maxLeverage": 3,
-            "notionalCap": 400000000,
-            "notionalFloor": 200000000,
+            "notionalCap": 200000000,
+            "notionalFloor": 100000000,
             "maintenanceMarginRate": 0.15,
-            "maintenanceAmount": 9703800.0
+            "maintenanceAmount": 5016300.0
         },
         {
             "maxLeverage": 2,
-            "notionalCap": 600000000,
-            "notionalFloor": 400000000,
+            "notionalCap": 300000000,
+            "notionalFloor": 200000000,
             "maintenanceMarginRate": 0.25,
-            "maintenanceAmount": 49703800.0
+            "maintenanceAmount": 25016300.0
         },
         {
             "maxLeverage": 1,
-            "notionalCap": 1000000000,
-            "notionalFloor": 600000000,
+            "notionalCap": 2000000000,
+            "notionalFloor": 300000000,
             "maintenanceMarginRate": 0.5,
-            "maintenanceAmount": 199703800.0
+            "maintenanceAmount": 100016300.0
         }
     ],
     "baseAsset": "BTC",

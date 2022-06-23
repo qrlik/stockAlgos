@@ -4,7 +4,7 @@
 using namespace market;
 
 namespace {
-	const std::string settingsPath = "assets/market/";
+	const std::string settingsPath = "assets/market/tickets/";
 }
 
 marketData* marketData::instance = new marketData();
