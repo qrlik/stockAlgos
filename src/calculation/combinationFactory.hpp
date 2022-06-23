@@ -155,6 +155,7 @@ namespace calculation {
 				assert(false && "!tmpData.isValid()");
 			}
 			else {
+				data.setID();
 				allData.push_back(data);
 			}
 		}

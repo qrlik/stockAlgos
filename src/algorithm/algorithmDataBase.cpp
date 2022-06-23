@@ -21,6 +21,10 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	return result;
 }
 
+void algorithmDataBase::setID() {
+	id = getHash();
+}
+
 size_t algorithmDataBase::getHash() const {
 	size_t result = getBaseHash();
 	utils::hash_combine(result, getCustomHash());
@@ -85,7 +89,11 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 	if (aValue.is_null()) {
 		return false;
 	}
-	if (aName == "dealPercent") {
+	if (aName == "id") {
+		id = aValue.get<size_t>();
+		return true;
+	}
+	else if (aName == "dealPercent") {
 		dealPercent = aValue.get<double>();
 		return true;
 	}
@@ -179,6 +187,7 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 }
 
 void algorithmDataBase::addJsonData(Json& aData) const {
+	aData["id"] = id;
 	aData["dealPercent"] = dealPercent;
 	aData["orderSize"] = orderSize;
 	aData["leverage"] = leverage;

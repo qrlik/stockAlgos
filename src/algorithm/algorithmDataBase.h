@@ -7,7 +7,7 @@ namespace algorithm {
 	public:
 		algorithmDataBase() = default;
 		bool operator==(const algorithmDataBase& aOther) const;
-		size_t getHash() const;
+		void setID();
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
@@ -40,6 +40,7 @@ namespace algorithm {
 
 		market::indicatorsData& getIndicatorsData() { return indicatorsData; }
 	private:
+		size_t getHash() const;
 		size_t getBaseHash() const;
 
 		market::indicatorsData indicatorsData;
@@ -47,6 +48,7 @@ namespace algorithm {
 		double dealPercent = -1.0;
 		double orderSize = -1.0;
 		int leverage = -1;
+		size_t id = 0;
 
 		double startCash = 0.0;
 		double maxLossPercent = 0.0;
