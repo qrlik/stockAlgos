@@ -52,6 +52,7 @@ namespace calculation {
 				}
 				factory.onFinish();
 				saveFinalData(ticker, timeframe);
+				utils::log("calculationSystem::calculate finish - " + ticker);
 			}
 		}
 
