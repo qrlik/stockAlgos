@@ -4,7 +4,7 @@
 using namespace market;
 
 namespace {
-	const std::string settingsPath = "assets/market/tickets/";
+	const std::string settingsPath = "assets/market/";
 }
 
 marketData* marketData::instance = new marketData();
@@ -71,7 +71,7 @@ bool marketData::loadTickerData(const std::string& aTicker) {
 		currentTicker = aTicker;
 		return true;
 	}
-	auto tickerJson = utils::readFromJson(settingsPath + aTicker);
+	auto tickerJson = utils::readFromJson(settingsPath + "tickets/" +aTicker);
 	if (!checkTickerJson(tickerJson)) {
 		utils::logError("marketData::loadTickerData wrong ticker json");
 		return false;

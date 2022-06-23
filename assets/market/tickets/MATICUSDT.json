@@ -1,5 +1,5 @@
 {
-    "symbol": "1000SHIBUSDT",
+    "symbol": "MATICUSDT",
     "brackets": [
         {
             "maxLeverage": 50,
@@ -31,33 +31,33 @@
         },
         {
             "maxLeverage": 4,
-            "notionalCap": 1000000,
+            "notionalCap": 750000,
             "notionalFloor": 500000,
             "maintenanceMarginRate": 0.125,
             "maintenanceAmount": 29500.0
         },
         {
             "maxLeverage": 2,
-            "notionalCap": 2000000,
-            "notionalFloor": 1000000,
+            "notionalCap": 1000000,
+            "notionalFloor": 750000,
             "maintenanceMarginRate": 0.25,
-            "maintenanceAmount": 154500.0
+            "maintenanceAmount": 123250.0
         },
         {
             "maxLeverage": 1,
             "notionalCap": 30000000,
-            "notionalFloor": 2000000,
+            "notionalFloor": 1000000,
             "maintenanceMarginRate": 0.5,
-            "maintenanceAmount": 654500.0
+            "maintenanceAmount": 373250.0
         }
     ],
-    "baseAsset": "1000SHIB",
+    "baseAsset": "MATIC",
     "quoteAsset": "USDT",
     "baseAssetPrecision": 8,
     "quotePrecision": 8,
-    "priceTick": 0.000001,
+    "priceTick": 0.0001,
     "quantityStep": 1.0,
-    "maxLimitQuantity": 100000000.0,
-    "maxMarketQuantity": 20000000.0,
+    "maxLimitQuantity": 10000000.0,
+    "maxMarketQuantity": 500000.0,
     "minNotionalValue": 5.0
 }

@@ -18,9 +18,9 @@ void calculate() {
 int main() {
 	tests::runTests();
 
-	calculation::processFilter();
+	//calculation::processFilter();
 	//calculation::singleCalculation();
-	//calculate();
+	calculate();
 
 	return 0;
 }
