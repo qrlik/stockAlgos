@@ -16,8 +16,6 @@ namespace algorithm {
 		bool isSecondUp() const;
 		bool isCloserUp() const;
 
-		bool isCloserDiscrepancy() const { return closerDiscrepancy; }
-		void setCloserDiscrepancy(bool aState) { closerDiscrepancy = aState; }
 	private:
 		enum class eMaState : signed char {
 			NONE = -1,
@@ -41,6 +39,5 @@ namespace algorithm {
 		maData firstData;
 		maData secondData;
 		maData closerData;
-		bool closerDiscrepancy = false;
 	};
 }

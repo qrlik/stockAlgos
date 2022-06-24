@@ -58,17 +58,10 @@ bool maDirectionModule::operator==(const maDirectionModule& aOther) const {
 	return result;
 }
 
-void maDirectionModule::updateCloserDiscrepancy() {
-	if ((algorithm.getState() == getIntState(eBaseState::LONG) && isCloserUp()) || (algorithm.getState() == getIntState(eBaseState::SHORT) && !isCloserUp())) {
-		closerDiscrepancy = false;
-	}
-}
-
 bool maDirectionModule::update() {
 	updateData(firstData, algorithm.getIndicators().getFirstMA(), algorithm.getData().getFirstMATrendPrecision());
 	updateData(secondData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getSecondMATrendPrecision());
 	updateData(closerData, algorithm.getIndicators().getSecondMA(), algorithm.getData().getCloserMATrendPrecision());
-	updateCloserDiscrepancy();
 	return firstData.state != eMaState::NONE && secondData.state != eMaState::NONE && closerData.state != eMaState::NONE;
 }
 
