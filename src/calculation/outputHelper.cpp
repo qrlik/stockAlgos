@@ -14,6 +14,9 @@ namespace {
 		if (aValue.is_number_float()) {
 			width = std::max(width, doubleWidth);
 		}
+		else if (aValue.is_number_unsigned()) {
+			width = std::max(width, 2 * intWidth);
+		}
 		else if (aValue.is_number_integer()) {
 			width = std::max(width, intWidth);
 		}

@@ -37,6 +37,7 @@ namespace calculation {
 					utils::logError("calculationSystem::calculate wrong ticker - " + ticker);
 					continue;
 				}
+				progress = 0;
 				auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
@@ -66,7 +67,7 @@ namespace calculation {
 		double weightPrecision = 0.0;
 		int parabolaDegree = 0;
 
-		double progress = 0.0;
+		int progress = 0;
 		size_t combinations = 0;
 	};
 }

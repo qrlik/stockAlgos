@@ -27,9 +27,6 @@ bool openerModule::checkTrendTouch() {
 	else if (!isTrendUp && utils::isGreaterOrEqual(candle.high, trendActivation)) {
 		touchActivated = true;
 	}
-	if (algorithm.getCloserModule().isNeedToClose(isTrendUp)) {
-		touchActivated = false;
-	}
 	return touchActivated;
 }
 
@@ -47,8 +44,14 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
 			if (utils::isGreater(secondMA, firstMA)) {
 				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT)) {
-					algorithm.openOrder(eOrderState::LONG, openPrice);
-					return true;
+					if (algorithm.getCloserModule().isNeedToClose(true)) {
+						touchActivated = false;
+						return !aIsTochedThisCandle;
+					}
+					else {
+						algorithm.openOrder(eOrderState::LONG, openPrice);
+						return true;
+					}
 				}
 			}
 		}
@@ -57,8 +60,14 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		if (!isFirstMAGrowing && !isSecondMAGrowing) {
 			if (utils::isGreater(firstMA, secondMA)) {
 				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
-					algorithm.openOrder(eOrderState::SHORT, openPrice);
-					return true;
+					if (algorithm.getCloserModule().isNeedToClose(false)) {
+						touchActivated = false;
+						return !aIsTochedThisCandle;
+					}
+					else {
+						algorithm.openOrder(eOrderState::SHORT, openPrice);
+						return true;
+					}
 				}
 			}
 		}

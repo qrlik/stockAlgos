@@ -6,6 +6,7 @@
 #include "utils/utils.h"
 #include <execution>
 #include <future>
+#include <iostream>
 
 using namespace calculation;
 
@@ -69,11 +70,12 @@ void calculationSystem::calculate() {
 }
 
 void calculationSystem::printProgress(size_t aIndex) {
-	const auto newProgress = utils::round(static_cast<double>(aIndex) / combinations * 100, 1);
-	if (utils::isGreater(newProgress, progress)) {
+	const auto newProgress = static_cast<int>(static_cast<double>(aIndex) / combinations * 100);
+	if (newProgress > progress) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;
-		utils::log(std::to_string(progress) + '%');
+		std::cout << std::to_string(progress) + "%...";
+		std::cout.flush();
 	}
 }
 

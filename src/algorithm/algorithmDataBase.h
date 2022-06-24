@@ -8,6 +8,7 @@ namespace algorithm {
 		algorithmDataBase() = default;
 		bool operator==(const algorithmDataBase& aOther) const;
 		void setID();
+		size_t getID() const { return id; }
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
