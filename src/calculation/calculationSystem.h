@@ -32,6 +32,8 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
+			auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
+			combinations = factory.getCombinationsAmount();
 			for (const auto& [ticker, timeframe] : calculations) {
 				if (!MARKET_DATA->loadTickerData(ticker)) {
 					utils::logError("calculationSystem::calculate wrong ticker - " + ticker);
@@ -43,8 +45,6 @@ namespace calculation {
 				threadsData.resize(threadsAmount);
 
 				std::vector<std::future<void>> futures;
-				auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
-				combinations = factory.getCombinationsAmount();
 				for (size_t i = 0; i < threadsAmount; ++i) {
 					futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate<algorithmType>(factory, static_cast<int>(i)); }));
 				}

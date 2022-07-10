@@ -82,10 +82,11 @@ namespace calculation {
 		size_t getCurrentIndex() const { return std::accumulate(indexes.cbegin(), indexes.cend(), size_t{ 0 }); }
 		const std::vector<algorithmDataType>& getThreadData(int aThread) { return combinationsData[aThread]; }
 		void incrementThreadIndex(int aThread) { ++indexes[aThread]; }
-		void onFinish() const {
+		void onFinish() {
 			if (std::accumulate(indexes.begin(), indexes.end(), size_t{ 0 }) != combinations) {
 				utils::logError("combinationFactory onFinish combinations not correct");
 			}
+			std::fill(indexes.begin(), indexes.end(), 0);
 		}
 	private:
 		void generateCombinations(size_t aIndex) {
