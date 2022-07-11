@@ -10,11 +10,9 @@
 
 using namespace calculation;
 
-calculationSystem::calculationSystem() {
-	loadSettings();
-}
-
 namespace {
+	const auto* allDataFileName = "jsonDataAll";
+
 	bool checkSettingsJson(const Json& aSettings) {
 		bool result = true;
 		result &= aSettings.is_object();
@@ -32,6 +30,18 @@ namespace {
 		}
 		return result;
 	}
+
+	double getProfit(const Json& aData) {
+		return aData["cash"].get<double>() - aData["data"]["startCash"].get<double>();
+	}
+
+	std::string getDirName(const std::string& aTicker, market::eCandleInterval aInterval) {
+		return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
+	}
+}
+
+calculationSystem::calculationSystem() {
+	loadSettings();
 }
 
 void calculationSystem::loadSettings() {
@@ -98,14 +108,13 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		return;
 	}
 	utils::log("calculationSystem::saveFinalData maxCash - [" + std::to_string(finalVector[0]["cash"].get<double>()) + ']');
-	const auto dirName = utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
+	const auto dirName = getDirName(aTicker, aInterval);
 	utils::createDir(dirName);
 	Json jsonAllData;
 	Json stats;
 	{
 		std::ofstream dataAll(dirName + "dataAll.txt");
 		std::ofstream dataWeighted(dirName + "dataWeighted.txt");
-		auto getProfit = [](const Json& aData) { return aData["cash"].get<double>() - aData["data"]["startCash"].get<double>(); };
 		const auto maxProfit = getProfit(finalVector[0]);
 
 		for (const auto& data : finalVector) {
@@ -133,9 +142,46 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		finalVector.clear();
 	}
 	{
-		std::ofstream jsonOutput(dirName + "jsonDataAll.json");
-		jsonOutput << jsonAllData;
+		utils::saveToJson(dirName + allDataFileName, jsonAllData);
 		jsonAllData.clear();
 	}
 	saveStats(stats, dirName + "stats.json");
+}
+
+void calculationSystem::uniteResults() {
+	std::unordered_map<size_t, std::vector<calculationInfo>> unitedInfo;
+
+	for (const auto& [ticker, timeframe] : calculations) {
+		const auto dirName = getDirName(ticker, timeframe);
+		const auto allData = utils::readFromJson(dirName + allDataFileName);
+
+		const auto maxProfit = getProfit(allData[0]);
+
+		for (const auto& data : allData) {
+			calculationInfo info;
+			auto profit = getProfit(data);
+			if (!utils::isGreater(profit, 0.0)) {
+				continue;
+			}
+			info.weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
+			info.cash = data["cash"].get<double>();
+			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
+			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
+			info.ordersAmount = data["stats"]["orderCounter"].get<int>();
+			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
+		}
+	}
+	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
+
+	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
+		if (it->second.size() < calculations.size()) {
+			it = unitedInfo.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
+
+	auto x = 5;
 }

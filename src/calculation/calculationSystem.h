@@ -13,6 +13,7 @@ namespace calculation {
 		void loadSettings();
 		void printProgress(size_t aIndex);
 		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
+		void uniteResults();
 
 		template<typename algorithmType, typename algorithmDataType>
 		void iterate(combinationFactory<algorithmDataType>& aFactory, int aThread) {
@@ -32,6 +33,12 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
+			//processCalculations<algorithmType>();
+			uniteResults();
+		}
+
+		template<typename algorithmType>
+		void processCalculations() {
 			auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
 			combinations = factory.getCombinationsAmount();
 			for (const auto& [ticker, timeframe] : calculations) {
@@ -56,6 +63,14 @@ namespace calculation {
 				utils::log("calculationSystem::calculate finish - " + ticker);
 			}
 		}
+
+		struct calculationInfo {
+			double weight = 0.0;
+			double cash = 0.0;
+			double profitsFactor = 0.0;
+			double recoveryFactor = 0.0;
+			int ordersAmount = 0;
+		};
 
 		std::vector<std::vector<Json>> threadsData;
 		std::vector<market::candle> candlesSource;
