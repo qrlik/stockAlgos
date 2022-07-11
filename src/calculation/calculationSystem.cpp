@@ -200,7 +200,5 @@ void calculationSystem::uniteResults() {
 		averageInfo.push_back({ united.first, average });
 	}
 
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash < aRhs.second.cash; });
-
-	auto x = 5;
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash > aRhs.second.cash; });
 }
