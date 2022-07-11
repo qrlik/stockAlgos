@@ -150,7 +150,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 
 void calculationSystem::uniteResults() {
 	std::unordered_map<size_t, std::vector<calculationInfo>> unitedInfo;
-
+	const auto size = calculations.size();
 	for (const auto& [ticker, timeframe] : calculations) {
 		const auto dirName = getDirName(ticker, timeframe);
 		const auto allData = utils::readFromJson(dirName + allDataFileName);
@@ -174,7 +174,7 @@ void calculationSystem::uniteResults() {
 	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
 	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
-		if (it->second.size() < calculations.size()) {
+		if (it->second.size() < size) {
 			it = unitedInfo.erase(it);
 		}
 		else {
@@ -182,6 +182,25 @@ void calculationSystem::uniteResults() {
 		}
 	}
 	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
+
+	std::vector<std::pair<size_t, calculationInfo>> averageInfo;
+	for (const auto& united : unitedInfo) {
+		calculationInfo average;
+		for (const auto& info : united.second) {
+			average.weight += info.weight;
+			average.cash += info.cash;
+			average.profitsFactor += info.profitsFactor;
+			average.recoveryFactor += info.recoveryFactor;
+			average.ordersAmount += info.ordersAmount;
+		}
+		average.weight /= size;
+		average.profitsFactor /= size;
+		average.recoveryFactor /= size;
+		average.ordersAmount /= size;
+		averageInfo.push_back({ united.first, average });
+	}
+
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash < aRhs.second.cash; });
 
 	auto x = 5;
 }
