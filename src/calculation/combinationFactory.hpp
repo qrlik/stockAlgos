@@ -2,6 +2,7 @@
 #include "json/json.hpp"
 #include <algorithm>
 #include <random>
+#include <unordered_set>
 
 namespace {
 	template<typename T>
@@ -65,6 +66,15 @@ namespace calculation {
 			utils::log("combinationFactory combinations - " + std::to_string(combinations));
 			auto threadDataAmount = combinations / threadsAmount;
 			auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
+
+			{
+				std::unordered_set<size_t> uniques;
+				std::transform(allData.begin(), allData.end(), std::inserter(uniques, uniques.end()), [](const auto& data) { return data.getID(); });
+				if (uniques.size() < allData.size()) {
+					utils::logError("combinationFactory collision detected!");
+				}
+			}
+
 			std::shuffle(allData.begin(), allData.end(), std::default_random_engine{});
 			for (size_t i = 0; i < threadsAmount; ++i) {
 				const bool isLast = i == 0;
