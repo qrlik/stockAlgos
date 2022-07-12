@@ -150,6 +150,8 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 
 void calculationSystem::uniteResults() {
 	std::unordered_map<size_t, std::vector<calculationInfo>> unitedInfo;
+	std::unordered_map<size_t, Json> idToJsons;
+
 	const auto size = calculations.size();
 	for (const auto& [ticker, timeframe] : calculations) {
 		const auto dirName = getDirName(ticker, timeframe);
@@ -163,12 +165,13 @@ void calculationSystem::uniteResults() {
 			if (!utils::isGreater(profit, 0.0)) {
 				continue;
 			}
-			info.weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
+			info.weight = getProfit(data) / maxProfit;
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
 			info.ordersAmount = data["stats"]["orderCounter"].get<int>();
 			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
+			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
 		}
 	}
 	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
@@ -201,4 +204,24 @@ void calculationSystem::uniteResults() {
 	}
 
 	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash > aRhs.second.cash; });
+	{
+		Json unitedData;
+		for (const auto& info : averageInfo) {
+			Json data;
+			data["cash"] = info.second.cash;
+			data["data"] = idToJsons[info.first];
+			auto& stats = data["stats"];
+			stats["weight"] = info.second.weight;
+			stats["profitsFactor"] = info.second.profitsFactor;
+			stats["recoveryFactor"] = info.second.recoveryFactor;
+			stats["ordersAmount"] = info.second.ordersAmount;
+			unitedData.push_back(data);
+		}
+
+		std::ofstream unitedOutput(utils::outputDir + "/unitedData.txt");
+		addHeadlines(unitedOutput, Json{}, unitedData[0]);
+		for (const auto& data : unitedData) {
+			addData(unitedOutput, Json{}, data);
+		}
+	}
 }

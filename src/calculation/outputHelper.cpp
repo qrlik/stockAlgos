@@ -86,7 +86,7 @@ void calculation::addHeadlines(std::ofstream& aOutput, const Json& aStats, const
 		aOutput << std::setw(getWidth(name, value)) << name;
 	}
 	for (const auto& [name, value] : aExample["data"].items()) {
-		if (aStats[name]["counts"].size() < 2) {
+		if (aStats.is_object() && aStats[name]["counts"].size() < 2) {
 			continue;
 		}
 		aOutput << std::setw(getWidth(name, value)) << name;
@@ -100,7 +100,7 @@ void calculation::addData(std::ofstream& aOutput, const Json& aStats, const Json
 		aOutput << std::setw(getWidth(name, value)) << getStrFromJson(value);
 	}
 	for (const auto& [name, value] : aData["data"].items()) {
-		if (aStats[name]["counts"].size() < 2) {
+		if (aStats.is_object() && aStats[name]["counts"].size() < 2) {
 			continue;
 		}
 		aOutput << std::setw(getWidth(name, value)) << getStrFromJson(value);
