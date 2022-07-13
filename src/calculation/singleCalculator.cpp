@@ -20,12 +20,12 @@ namespace {
 	}
 
 	template<typename algorithmType>
-	void singleCalculationInternal(const Json& aCandles, const Json& aData) {
+	void singleCalculationInternal(const Json& aCandles, const Json& aData, market::eCandleInterval aTimeFrame) {
 		algorithmType::algorithmDataType data;
 		if (!data.initFromJson(aData)) {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
-		auto algorithm = algorithmType(data);
+		auto algorithm = algorithmType(data, aTimeFrame);
 		algorithm.setWithLogs();
 		auto result = algorithm.calculate(utils::parseCandles(aCandles));
 		auto json = algorithm.getJsonData();
@@ -62,10 +62,10 @@ void calculation::singleCalculation() {
 	}
 
 	if (algorithmType == "superTrend") {
-		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"]);
+		singleCalculationInternal<algorithm::stAlgorithm>(candles, json["data"], timeframe);
 	}
 	if (algorithmType == "superTrendMA") {
-		singleCalculationInternal<algorithm::stMAlgorithm>(candles, json["data"]);
+		singleCalculationInternal<algorithm::stMAlgorithm>(candles, json["data"], timeframe);
 	}
 	else {
 		log("wrong algorithm type");

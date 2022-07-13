@@ -4,8 +4,8 @@
 
 using namespace algorithm;
 
-stAlgorithm::stAlgorithm(const stAlgorithmData& aData):
-	baseClass(aData),
+stAlgorithm::stAlgorithm(const stAlgorithmData& aData, market::eCandleInterval aTimeframe):
+	baseClass(aData, aTimeframe),
 	activationWaiterModule(*this),
 	stopLossWaiterModule(*this),
 	dynamicStopLossModule(*this),

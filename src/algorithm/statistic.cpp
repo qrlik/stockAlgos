@@ -5,8 +5,9 @@
 
 using namespace algorithm;
 
-statistic::statistic(const algorithmDataBase& aData):
+statistic::statistic(const algorithmDataBase& aData, market::eCandleInterval aTimeframe):
 	data(aData),
+	timeframe(aTimeframe),
 	currentLossHighCash(aData.getStartCash()),
 	currentLossLowCash(aData.getStartCash()) {}
 

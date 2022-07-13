@@ -31,8 +31,8 @@ namespace algorithm {
 		friend class tests::algorithmChecker;
 	public:
 		using algorithmDataType = dataType;
-		algorithmBase(const dataType& aData) :
-			data(aData), stats(data), indicators(data.getIndicatorsData())
+		algorithmBase(const dataType& aData, market::eCandleInterval aTimeframe) :
+			data(aData), stats(data, aTimeframe), indicators(data.getIndicatorsData())
 		{
 			cash = data.getStartCash();
 			statesMap[getIntState(eBaseState::NONE)] = "NONE";
@@ -204,6 +204,7 @@ namespace algorithm {
 					workState &= loop();
 					workState &= !getStopCashBreak();
 				}
+				++workedCandleCounter;
 				log();
 			}
 			prevCandle = aCandle;
@@ -233,6 +234,7 @@ namespace algorithm {
 
 		double cash = 0.0;
 		int state = 0;
+		int workedCandleCounter = 0;
 		bool inited = false;
 		bool stopCashBreak = false;
 		bool withLogs = false;

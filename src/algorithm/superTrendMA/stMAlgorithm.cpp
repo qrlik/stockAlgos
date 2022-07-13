@@ -2,8 +2,8 @@
 
 using namespace algorithm;
 
-stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData) :
-	baseClass(aData),
+stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData, market::eCandleInterval aTimeframe) :
+	baseClass(aData, aTimeframe),
 	opener(*this),
 	maDirection(*this),
 	closer(*this) {}

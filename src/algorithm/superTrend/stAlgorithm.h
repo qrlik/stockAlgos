@@ -21,7 +21,7 @@ namespace algorithm {
 	class stAlgorithm final : public algorithmBase<stAlgorithmData> {
 	public:
 		using baseClass = algorithmBase<stAlgorithmData>;
-		stAlgorithm(const stAlgorithmData& aData);
+		stAlgorithm(const stAlgorithmData& aData, market::eCandleInterval aTimeframe);
 		bool operator==(const stAlgorithm& aOther) const;
 
 		activationWaiter& getActivationWaiter() { return activationWaiterModule; }

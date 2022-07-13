@@ -16,12 +16,12 @@ namespace calculation {
 		void uniteResults();
 
 		template<typename algorithmType, typename algorithmDataType>
-		void iterate(combinationFactory<algorithmDataType>& aFactory, int aThread) {
+		void iterate(combinationFactory<algorithmDataType>& aFactory, market::eCandleInterval aTimeframe, int aThread) {
 			std::vector<market::candle> candles;
 			auto& threadResults = threadsData[aThread];
 			const auto& threadData = aFactory.getThreadData(aThread);
 			for (const auto& data : threadData) {
-				auto algorithm = algorithmType(data);
+				auto algorithm = algorithmType(data, aTimeframe);
 				const auto result = algorithm.calculate(candlesSource);
 				if (result) {
 					threadResults.push_back(algorithm.getJsonData());
@@ -53,7 +53,7 @@ namespace calculation {
 
 				std::vector<std::future<void>> futures;
 				for (size_t i = 0; i < threadsAmount; ++i) {
-					futures.push_back(std::async(std::launch::async, [this, &factory, i]() { return iterate<algorithmType>(factory, static_cast<int>(i)); }));
+					futures.push_back(std::async(std::launch::async, [this, &factory, timeframe, i]() { return iterate<algorithmType>(factory, timeframe, static_cast<int>(i)); }));
 				}
 				for (auto& future : futures) {
 					future.wait();

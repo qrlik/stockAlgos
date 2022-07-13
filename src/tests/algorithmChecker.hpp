@@ -12,8 +12,8 @@ namespace tests {
 				utils::logError("algorithmChecker - " + name + " invalid algorithm data");
 				assert(false && "!data.isValid()");
 			}
-			actualAlgorithm = std::make_unique<algorithmType>(data);
-			testAlgorithm = std::make_unique<algorithmType>(data);
+			actualAlgorithm = std::make_unique<algorithmType>(data, market::eCandleInterval::FIFTEEN_MIN);
+			testAlgorithm = std::make_unique<algorithmType>(data, market::eCandleInterval::FIFTEEN_MIN);
 			testAlgorithmData = json["testAlgorithmData"];
 			testNextTime = testAlgorithmData[0]["time"].get<std::string>();
 

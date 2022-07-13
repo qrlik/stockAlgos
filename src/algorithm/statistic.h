@@ -1,10 +1,11 @@
 #pragma once
 #include "json/json.hpp"
+#include "market/candle.h"
 
 namespace algorithm {
 	class algorithmDataBase;
 	struct statistic {
-		statistic(const algorithmDataBase& aData);
+		statistic(const algorithmDataBase& aData, market::eCandleInterval aTimeframe);
 		void onOpenOrder(bool isLong);
 		bool onCloseOrder(double aCash, double aProfit);
 		bool operator==(const statistic& aOther) const;
@@ -16,6 +17,8 @@ namespace algorithm {
 		const algorithmDataBase& data;
 
 		std::unordered_map<std::string, int> statCounters;
+		market::eCandleInterval timeframe = market::eCandleInterval::NONE;
+
 		double maxLossHighCash = 0.0;
 		double maxLossLowCash = 0.0;
 		double summaryLoss = 0.0;

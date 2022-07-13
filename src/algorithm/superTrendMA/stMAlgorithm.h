@@ -9,7 +9,7 @@ namespace algorithm {
 	class stMAlgorithm final : public algorithmBase<stMAlgorithmData> {
 	public:
 		using baseClass = algorithmBase<stMAlgorithmData>;
-		stMAlgorithm(const stMAlgorithmData& aData);
+		stMAlgorithm(const stMAlgorithmData& aData, market::eCandleInterval aTimeframe);
 		bool operator==(const stMAlgorithm& aOther) const;
 
 		const maDirectionModule& getMAModule() const { return maDirection; }
