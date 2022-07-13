@@ -72,8 +72,8 @@ namespace algorithm {
 		int getState() const { return state; }
 		const market::indicatorsSystem& getIndicators() const { return indicators; }
 
-		bool calculate(std::vector<market::candle> aCandles) {
-			for (auto& candle : aCandles) {
+		bool calculate(const std::vector<market::candle>& aCandles) {
+			for (const auto& candle : aCandles) {
 				if (!doAction(candle)) {
 					return false;
 				}
@@ -191,7 +191,7 @@ namespace algorithm {
 				inited = true;
 			}
 		}
-		bool doAction(market::candle& aCandle) {
+		bool doAction(const market::candle& aCandle) {
 			if (getStopCashBreak()) {
 				return false;
 			}
@@ -206,8 +206,8 @@ namespace algorithm {
 				}
 				log();
 			}
-			indicators.processCandle(aCandle);
 			prevCandle = aCandle;
+			indicators.processCandle(prevCandle);
 			return true;
 		}
 		void log() {
