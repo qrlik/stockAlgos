@@ -15,6 +15,7 @@
 		"dealPercent": 5.0,
 		"leverage": 50,
 
+		"statsInterval": "1d",
 		"startCash": 100.0,
 		"maxLossPercent": 60.0,
 

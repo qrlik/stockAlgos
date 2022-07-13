@@ -16,6 +16,7 @@ bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	result &= utils::isEqual(liquidationOffsetPercent, aOther.liquidationOffsetPercent);
 	result &= utils::isEqual(minimumProfitPercent, aOther.minimumProfitPercent);
 	result &= leverage == aOther.leverage;
+	result &= statsInterval == aOther.statsInterval;
 	result &= fullCheck == aOther.fullCheck;
 	result &= fullCheckCustom == aOther.fullCheckCustom;
 	return result;
@@ -46,6 +47,8 @@ size_t algorithmDataBase::getBaseHash() const {
 	utils::hash_combine(result, liquidationOffsetPercent);
 	utils::hash_combine(result, minimumProfitPercent);
 
+	utils::hash_combine(result, std::underlying_type_t<market::eCandleInterval>(statsInterval));
+
 	return result;
 }
 
@@ -56,6 +59,7 @@ bool algorithmDataBase::isValid() const {
 	result &= utils::isGreater(dealPercent, 0.0) && utils::isLess(dealPercent, 100.0);
 	result &= leverage > 0 && leverage <= MARKET_DATA->getMaxLeverage();
 
+	result &= statsInterval != market::eCandleInterval::NONE;
 	result &= utils::isGreater(startCash, MARKET_DATA->getMinNotionalValue() / leverage);
 	result &= utils::isGreater(startCash, maxLossCash);
 	result &= utils::isLess(orderSize, startCash);
@@ -91,6 +95,10 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 	}
 	if (aName == "id") {
 		id = aValue.get<size_t>();
+		return true;
+	}
+	else if (aName == "statsInterval") {
+		statsInterval = market::getCandleIntervalFromStr(aValue.get<std::string>());
 		return true;
 	}
 	else if (aName == "dealPercent") {
@@ -149,6 +157,9 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 	}
 	if (aName == "dealPercent") {
 		return utils::isEqual(dealPercent, aValue.get<double>());
+	}
+	else if (aName == "statsInterval") {
+		return statsInterval == market::getCandleIntervalFromStr(aValue.get<std::string>());
 	}
 	else if (aName == "orderSize") {
 		return utils::isEqual(orderSize, aValue.get<double>());
