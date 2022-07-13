@@ -77,7 +77,11 @@ bool order::openOrder(const algorithm::algorithmDataBase& aData, eOrderState aSt
 		allowedCash = utils::minFloat(allowedCash, allowedCashBySize);
 	}
 	const auto allowedNotionalValue = utils::minFloat(allowedCash * aData.getLeverage(), MARKET_DATA->getLeverageMaxPosition(aData.getLeverage()));
-	const auto calcQuantity = utils::floor(allowedNotionalValue / aPrice, MARKET_DATA->getQuantityPrecision());
+	const auto calcQuantity = [allowedNotionalValue, aPrice]() {
+		const auto minQuantity = MARKET_DATA->getQuantityPrecision();
+		auto result = utils::floor(allowedNotionalValue / aPrice, minQuantity);
+		return (utils::isGreaterOrEqual(result, minQuantity)) ? result : minQuantity;
+	}(); 
 	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);
 	if (utils::isLess(calcQuantity, MARKET_DATA->getQuantityPrecision()) || utils::isLess(calcNotionalValue, MARKET_DATA->getMinNotionalValue())) {
 		utils::logError("orderData::openOrder can't open order");
