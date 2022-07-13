@@ -169,7 +169,7 @@ void calculationSystem::uniteResults() {
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
-			info.ordersAmount = data["stats"]["orderCounter"].get<int>();
+			info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
 			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
 			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
 		}
@@ -194,12 +194,12 @@ void calculationSystem::uniteResults() {
 			average.cash += info.cash;
 			average.profitsFactor += info.profitsFactor;
 			average.recoveryFactor += info.recoveryFactor;
-			average.ordersAmount += info.ordersAmount;
+			average.ordersPerInterval += info.ordersPerInterval;
 		}
 		average.weight /= size;
 		average.profitsFactor /= size;
 		average.recoveryFactor /= size;
-		average.ordersAmount /= size;
+		average.ordersPerInterval /= size;
 		averageInfo.push_back({ united.first, average });
 	}
 
@@ -214,7 +214,7 @@ void calculationSystem::uniteResults() {
 			stats["weight"] = info.second.weight;
 			stats["profitsFactor"] = info.second.profitsFactor;
 			stats["recoveryFactor"] = info.second.recoveryFactor;
-			stats["ordersAmount"] = info.second.ordersAmount;
+			stats["ordersPerInterval"] = info.second.ordersPerInterval;
 			unitedData.push_back(data);
 		}
 

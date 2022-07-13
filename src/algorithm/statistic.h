@@ -10,7 +10,7 @@ namespace algorithm {
 		bool onCloseOrder(double aCash, double aProfit);
 		bool operator==(const statistic& aOther) const;
 		void initFromJson(const Json& aJson);
-		void addJsonData(Json& aJson, double aCash) const;
+		void addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) const;
 		void incrementCounter(const std::string& aName, int aAmount = 1);
 		void decrementCounter(const std::string& aName, int aAmount = 1);
 	private:

@@ -107,7 +107,7 @@ void statistic::initFromJson(const Json& aJson) {
 	}
 }
 
-void statistic::addJsonData(Json& aJson, double aCash) const {
+void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) const {
 	aJson["orderProfitStreak"] = profitableStreak;
 	aJson["orderUnprofitStreak"] = unprofitableStreak;
 	auto maxLoss = maxLossHighCash - maxLossLowCash;
@@ -122,6 +122,12 @@ void statistic::addJsonData(Json& aJson, double aCash) const {
 			 profitsFactor = utils::round(profitsFactor, 0.1);
 			 aJson["profitsFactor"] = profitsFactor;
 		}
+	}
+
+	if (auto itOrders = statCounters.find("orderCounter"); itOrders != statCounters.end()) {
+		const auto timeframesPerInterval = static_cast<int>(data.getStatsInterval()) / static_cast<int>(timeframe);
+		const auto intervalsAmount = static_cast<double>(aCandlesAmount) / timeframesPerInterval;
+		aJson["ordersPerInterval"] = itOrders->second / intervalsAmount;
 	}
 
 	for (const auto& [name, count] : statCounters) {

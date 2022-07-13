@@ -138,7 +138,7 @@ namespace algorithm {
 		Json getJsonData() const {
 			Json result;
 			result["cash"] = utils::round(getFullCash(), 0.01);
-			stats.addJsonData(result["stats"], getFullCash());
+			stats.addJsonData(result["stats"], getFullCash(), workedCandleCounter);
 			data.addJsonData(result["data"]);
 			return result;
 		}
@@ -234,7 +234,7 @@ namespace algorithm {
 
 		double cash = 0.0;
 		int state = 0;
-		int workedCandleCounter = 0;
+		size_t workedCandleCounter = 0;
 		bool inited = false;
 		bool stopCashBreak = false;
 		bool withLogs = false;

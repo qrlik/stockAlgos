@@ -69,7 +69,7 @@ namespace calculation {
 			double cash = 0.0;
 			double profitsFactor = 0.0;
 			double recoveryFactor = 0.0;
-			int ordersAmount = 0;
+			double ordersPerInterval = 0;
 		};
 
 		std::vector<std::vector<Json>> threadsData;
