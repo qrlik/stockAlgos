@@ -170,6 +170,7 @@ void calculationSystem::uniteResults() {
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
 			info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
+			info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
 			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
 			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
 		}
@@ -195,11 +196,13 @@ void calculationSystem::uniteResults() {
 			average.profitsFactor += info.profitsFactor;
 			average.recoveryFactor += info.recoveryFactor;
 			average.ordersPerInterval += info.ordersPerInterval;
+			average.profitPerInterval += info.profitPerInterval;
 		}
 		average.weight /= size;
 		average.profitsFactor /= size;
 		average.recoveryFactor /= size;
 		average.ordersPerInterval /= size;
+		average.profitPerInterval /= size;
 		averageInfo.push_back({ united.first, average });
 	}
 
@@ -215,6 +218,7 @@ void calculationSystem::uniteResults() {
 			stats["profitsFactor"] = info.second.profitsFactor;
 			stats["recoveryFactor"] = info.second.recoveryFactor;
 			stats["ordersPerInterval"] = info.second.ordersPerInterval;
+			stats["profitPerInterval"] = info.second.profitPerInterval;
 			unitedData.push_back(data);
 		}
 

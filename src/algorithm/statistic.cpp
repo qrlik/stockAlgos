@@ -124,11 +124,13 @@ void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) co
 		}
 	}
 
+	const auto timeframesPerInterval = static_cast<int>(data.getStatsInterval()) / static_cast<int>(timeframe);
+	const auto intervalsAmount = static_cast<double>(aCandlesAmount) / timeframesPerInterval;
 	if (auto itOrders = statCounters.find("orderCounter"); itOrders != statCounters.end()) {
-		const auto timeframesPerInterval = static_cast<int>(data.getStatsInterval()) / static_cast<int>(timeframe);
-		const auto intervalsAmount = static_cast<double>(aCandlesAmount) / timeframesPerInterval;
 		aJson["ordersPerInterval"] = itOrders->second / intervalsAmount;
 	}
+	const auto cashProfitFactor = aCash / data.getStartCash();
+	aJson["profitPerInterval"] = std::pow(cashProfitFactor, 1 / (intervalsAmount - 1)) * 100.0;
 
 	for (const auto& [name, count] : statCounters) {
 		aJson[name] = count;

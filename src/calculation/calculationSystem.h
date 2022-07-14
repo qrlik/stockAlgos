@@ -33,7 +33,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			//processCalculations<algorithmType>();
+			processCalculations<algorithmType>();
 			uniteResults();
 		}
 
@@ -70,6 +70,7 @@ namespace calculation {
 			double profitsFactor = 0.0;
 			double recoveryFactor = 0.0;
 			double ordersPerInterval = 0;
+			double profitPerInterval = 0;
 		};
 
 		std::vector<std::vector<Json>> threadsData;
