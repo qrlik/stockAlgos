@@ -39,8 +39,6 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void processCalculations() {
-			auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
-			combinations = factory.getCombinationsAmount();
 			for (const auto& [ticker, timeframe] : calculations) {
 				if (!MARKET_DATA->loadTickerData(ticker)) {
 					utils::logError("calculationSystem::calculate wrong ticker - " + ticker);
@@ -51,6 +49,8 @@ namespace calculation {
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
 
+				auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
+				combinations = factory.getCombinationsAmount();
 				std::vector<std::future<void>> futures;
 				for (size_t i = 0; i < threadsAmount; ++i) {
 					futures.push_back(std::async(std::launch::async, [this, &factory, timeframe, i]() { return iterate<algorithmType>(factory, timeframe, static_cast<int>(i)); }));
