@@ -11,8 +11,6 @@
 using namespace calculation;
 
 namespace {
-	const auto* allDataFileName = "jsonDataAll";
-
 	bool checkSettingsJson(const Json& aSettings) {
 		bool result = true;
 		result &= aSettings.is_object();
@@ -29,14 +27,6 @@ namespace {
 			}
 		}
 		return result;
-	}
-
-	double getProfit(const Json& aData) {
-		return aData["cash"].get<double>() - aData["data"]["startCash"].get<double>();
-	}
-
-	std::string getDirName(const std::string& aTicker, market::eCandleInterval aInterval) {
-		return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 	}
 }
 
@@ -142,77 +132,23 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		finalVector.clear();
 	}
 	{
-		utils::saveToJson(dirName + allDataFileName, jsonAllData);
+		utils::saveToJson(dirName + getAllDataFilename(), jsonAllData);
 		jsonAllData.clear();
 	}
 	saveStats(stats, dirName + "stats.json");
 }
 
 void calculationSystem::uniteResults() {
-	std::unordered_map<size_t, std::vector<calculationInfo>> unitedInfo;
-	std::unordered_map<size_t, Json> idToJsons;
-
-	const auto size = calculations.size();
-	for (const auto& [ticker, timeframe] : calculations) {
-		const auto dirName = getDirName(ticker, timeframe);
-		const auto allData = utils::readFromJson(dirName + allDataFileName);
-
-		const auto maxProfit = getProfit(allData[0]);
-
-		for (const auto& data : allData) {
-			calculationInfo info;
-			auto profit = getProfit(data);
-			if (!utils::isGreater(profit, 0.0)) {
-				continue;
-			}
-			info.weight = getProfit(data) / maxProfit;
-			info.cash = data["cash"].get<double>();
-			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
-			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
-			info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
-			info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
-			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
-			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
-		}
-	}
-	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
-
-	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
-		if (it->second.size() < size) {
-			it = unitedInfo.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
-
-	std::vector<std::pair<size_t, calculationInfo>> averageInfo;
-	for (const auto& united : unitedInfo) {
-		calculationInfo average;
-		for (const auto& info : united.second) {
-			average.weight += info.weight;
-			average.cash += info.cash;
-			average.profitsFactor += info.profitsFactor;
-			average.recoveryFactor += info.recoveryFactor;
-			average.ordersPerInterval += info.ordersPerInterval;
-			average.profitPerInterval += info.profitPerInterval;
-		}
-		average.weight /= size;
-		average.profitsFactor /= size;
-		average.recoveryFactor /= size;
-		average.ordersPerInterval /= size;
-		average.profitPerInterval /= size;
-		averageInfo.push_back({ united.first, average });
-	}
-
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash > aRhs.second.cash; });
+	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
+	auto combinationsAverages = getCalculationsAverages(combinationsCalculations, calculations.size());
 	{
 		Json unitedData;
-		for (const auto& info : averageInfo) {
+		Json unitedStats;
+		double maxProfit = (!combinationsAverages.empty()) ? combinationsAverages[0].second.cash : 0.0;
+		for (const auto& info : combinationsAverages) {
 			Json data;
 			data["cash"] = info.second.cash;
-			data["data"] = idToJsons[info.first];
+			data["data"] = combinationsJsons[info.first];
 			auto& stats = data["stats"];
 			stats["weight"] = info.second.weight;
 			stats["profitsFactor"] = info.second.profitsFactor;
@@ -220,12 +156,16 @@ void calculationSystem::uniteResults() {
 			stats["ordersPerInterval"] = info.second.ordersPerInterval;
 			stats["profitPerInterval"] = info.second.profitPerInterval;
 			unitedData.push_back(data);
+
+			const auto weight = getProfit(data) / maxProfit;
+			addStats(unitedStats, data["data"], weight);
 		}
 
 		std::ofstream unitedOutput(utils::outputDir + "/unitedData.txt");
-		addHeadlines(unitedOutput, Json{}, unitedData[0]);
+		addHeadlines(unitedOutput, unitedStats, unitedData[0]);
 		for (const auto& data : unitedData) {
-			addData(unitedOutput, Json{}, data);
+			addData(unitedOutput, unitedStats, data);
 		}
+		saveStats(unitedStats, utils::outputDir + "/stats.json");
 	}
 }
