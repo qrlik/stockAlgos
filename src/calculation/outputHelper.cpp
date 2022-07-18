@@ -4,10 +4,10 @@ using namespace calculation;
 
 namespace {
 	const auto doubleWidth = 16;
-	const auto intWidth = 10;
+	const auto intWidth = 12;
 	const auto boolWidth = 8;
 	const auto spaceWidth = 4;
-	const auto floatPrecision = 2;
+	const auto floatPrecision = 3;
 
 	int getWidth(const std::string& aName, const Json& aValue) {
 		auto width = static_cast<int>(aName.length()) + spaceWidth;
@@ -59,6 +59,9 @@ void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
 
 void calculation::saveStats(Json& aStats, const std::string& aFileName) {
 	for (auto& var : aStats) {
+		if (var == "id") {
+			continue;
+		}
 		auto sum = 0.0;
 		for (auto& value : var["counts"]) {
 			sum += value.get<int>();
