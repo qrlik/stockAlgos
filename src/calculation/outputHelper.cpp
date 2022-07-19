@@ -174,7 +174,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
 	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
-		if (it->second.size() < size - 2) {
+		if (it->second.size() < size) {
 			it = unitedInfo.erase(it);
 		}
 		else {
