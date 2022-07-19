@@ -132,6 +132,10 @@ double calculation::getProfit(const Json& aData) {
 	return -1;
 }
 
+double calculation::getWeight(double aProfit, double aMaxProfit, double aDegree) {
+	return std::pow(aProfit / aMaxProfit, aDegree);
+}
+
 std::string calculation::getAllDataFilename() {
 	return allDataFileName;
 }
@@ -140,7 +144,7 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 	return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 }
 
-std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations) {
+std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations, int aDegree) {
 	combinationsCalculations unitedInfo;
 	combinationsJsons idToJsons;
 
@@ -157,7 +161,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 			if (!utils::isGreater(profit, 0.0)) {
 				continue;
 			}
-			info.weight = getProfit(data) / maxProfit;
+			info.weight = getWeight(getProfit(data), maxProfit, aDegree);
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
@@ -170,7 +174,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
 	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
-		if (it->second.size() < size) {
+		if (it->second.size() < size - 2) {
 			it = unitedInfo.erase(it);
 		}
 		else {

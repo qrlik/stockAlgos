@@ -7,6 +7,8 @@ namespace algorithm {
 		stMAlgorithmData();
 		bool operator==(const stMAlgorithmData& aOther) const;
 
+		size_t getCustomID() const override;
+
 		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }

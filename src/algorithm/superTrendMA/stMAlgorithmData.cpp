@@ -38,6 +38,17 @@ size_t stMAlgorithmData::getCustomHash() const {
 	return result;
 }
 
+size_t stMAlgorithmData::getCustomID() const {
+	size_t result{};
+
+	utils::hash_combine(result, closerTrendChangeCheck);
+	utils::hash_combine(result, closerMACheck);
+	utils::hash_combine(result, closerTrailStop);
+	utils::hash_combine(result, closerConjuctionCheck);
+
+	return result;
+}
+
 bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Json& aValue) {
 	if (aName == "firstMATrendPrecision") {
 		firstMATrendPrecision = aValue.get<double>();
@@ -115,7 +126,7 @@ bool stMAlgorithmData::isValidInternal() const {
 		result &= !closerMACheck;
 		result &= utils::isGreater(closerTrailPrecision, 0.0);
 	}
-	result &= closerTrendChangeCheck || closerMACheck || closerTrailStop;
+	result &= closerMACheck || closerTrailStop;
 	if (closerConjuctionCheck) {
 		result &= closerTrendChangeCheck && closerMACheck;
 	}

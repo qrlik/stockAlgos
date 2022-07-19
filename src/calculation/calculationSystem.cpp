@@ -109,7 +109,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 
 		for (const auto& data : finalVector) {
 			jsonAllData.push_back(data);
-			const auto weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
+			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
 			if (utils::isLess(weight, weightPrecision)) {
 				continue;
 			}
@@ -121,7 +121,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		for (const auto& data : finalVector) {
 			addData(dataAll, stats, data);
 
-			const auto weight = std::pow(getProfit(data) / maxProfit, parabolaDegree);
+			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
 			if (utils::isLess(weight, weightPrecision)) {
 				continue;
 			}
@@ -139,7 +139,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 }
 
 void calculationSystem::uniteResults() {
-	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
+	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations, 1);
 	auto combinationsAverages = getCalculationsAverages(combinationsCalculations, calculations.size());
 	{
 		Json unitedData;
@@ -157,7 +157,7 @@ void calculationSystem::uniteResults() {
 			stats["profitPerInterval"] = info.second.profitPerInterval;
 			unitedData.push_back(data);
 
-			const auto weight = getProfit(data) / maxProfit;
+			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
 			addStats(unitedStats, data["data"], weight);
 		}
 

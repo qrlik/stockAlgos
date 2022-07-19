@@ -199,6 +199,7 @@ bool algorithmDataBase::checkCriteria(const std::string& aName, const Json& aVal
 
 void algorithmDataBase::addJsonData(Json& aData) const {
 	aData["id"] = id;
+	aData["customId"] = getCustomID();
 	aData["dealPercent"] = dealPercent;
 	aData["orderSize"] = orderSize;
 	aData["leverage"] = leverage;

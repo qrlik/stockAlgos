@@ -9,6 +9,7 @@ namespace algorithm {
 		bool operator==(const algorithmDataBase& aOther) const;
 		void setID();
 		size_t getID() const { return id; }
+		virtual size_t getCustomID() const { return 0; }
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
