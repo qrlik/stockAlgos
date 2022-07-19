@@ -163,6 +163,7 @@ namespace calculation {
 		}
 		void onIterate() {
 			if (!data.isValid()) {
+				auto valid = data.isValid();
 				++errorCombinations;
 			}
 			else {

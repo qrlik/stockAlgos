@@ -136,7 +136,7 @@ double marketData::getLiquidationPercent(double aPrice, double aNotional, double
 }
 
 double marketData::getLiquidationPercent(double aMargin, int aLeverage) const {
-	const auto price = 50'000.0;
+	const auto price = 25000.0;
 	auto pos = aMargin * aLeverage;
 	const auto maxPos = getLeverageMaxPosition(aLeverage);
 	pos = utils::minFloat(pos, maxPos);
@@ -145,11 +145,14 @@ double marketData::getLiquidationPercent(double aMargin, int aLeverage) const {
 }
 
 std::pair<double, double> marketData::getLeverageLiquidationRange(int aLeverage) const {
-	const double price = 50'000.0;
+	const double price = 25000.0;
 	const double minPosByQuantity = data.at(currentTicker).quantityPrecision * price;
 	const double minPosbyNotional = getMinNotionalValue();
 	const double minPos = utils::maxFloat(minPosByQuantity, minPosbyNotional);
 	const double maxPos = getLeverageMaxPosition(aLeverage);
+	if (utils::isGreater(minPos, maxPos)) {
+		utils::logError("marketData::getLeverageLiquidationRange wrong");
+	}
 
 	const double maxLiqPercent = getLiquidationPercent(price, minPos, aLeverage, utils::floor(minPos / price, data.at(currentTicker).quantityPrecision), false);
 	const double minLiqPercent = getLiquidationPercent(price, maxPos, aLeverage, utils::floor(maxPos / price, data.at(currentTicker).quantityPrecision), false);

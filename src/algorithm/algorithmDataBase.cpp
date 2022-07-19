@@ -74,6 +74,9 @@ bool algorithmDataBase::isValid() const {
 
 	result &= utils::isGreater(minimumProfitPercent, 2 * MARKET_DATA->getTaxFactor() * 100.0);
 
+	if (!result) {
+		utils::logError("algorithmDataBase::isValid()");
+	}
 	result &= isValidInternal();
 	return result;
 }
