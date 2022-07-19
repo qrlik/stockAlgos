@@ -63,6 +63,9 @@ namespace calculation {
 			}
 
 			generateCombinations(0);
+			if (errorCombinations > 0) {
+				utils::logError("combinationFactory errors - " + std::to_string(errorCombinations));
+			}
 			utils::log("combinationFactory combinations - " + std::to_string(combinations));
 			auto threadDataAmount = combinations / threadsAmount;
 			auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
@@ -159,12 +162,11 @@ namespace calculation {
 			}
 		}
 		void onIterate() {
-			++combinations;
 			if (!data.isValid()) {
-				utils::logError("combinationFactory invalid algorithm data");
-				assert(false && "!tmpData.isValid()");
+				++errorCombinations;
 			}
 			else {
+				++combinations;
 				data.setID();
 				allData.push_back(data);
 			}
@@ -197,5 +199,7 @@ namespace calculation {
 
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;
+
+		size_t errorCombinations = 0;
 	};
 }
