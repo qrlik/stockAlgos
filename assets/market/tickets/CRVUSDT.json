@@ -1,0 +1,63 @@
+{
+    "symbol": "CRVUSDT",
+    "brackets": [
+        {
+            "maxLeverage": 50,
+            "notionalCap": 50000,
+            "notionalFloor": 0,
+            "maintenanceMarginRate": 0.01,
+            "maintenanceAmount": 0.0
+        },
+        {
+            "maxLeverage": 20,
+            "notionalCap": 150000,
+            "notionalFloor": 50000,
+            "maintenanceMarginRate": 0.025,
+            "maintenanceAmount": 750.0
+        },
+        {
+            "maxLeverage": 10,
+            "notionalCap": 250000,
+            "notionalFloor": 150000,
+            "maintenanceMarginRate": 0.05,
+            "maintenanceAmount": 4500.0
+        },
+        {
+            "maxLeverage": 5,
+            "notionalCap": 500000,
+            "notionalFloor": 250000,
+            "maintenanceMarginRate": 0.1,
+            "maintenanceAmount": 17000.0
+        },
+        {
+            "maxLeverage": 4,
+            "notionalCap": 1000000,
+            "notionalFloor": 500000,
+            "maintenanceMarginRate": 0.125,
+            "maintenanceAmount": 29500.0
+        },
+        {
+            "maxLeverage": 2,
+            "notionalCap": 2000000,
+            "notionalFloor": 1000000,
+            "maintenanceMarginRate": 0.25,
+            "maintenanceAmount": 154500.0
+        },
+        {
+            "maxLeverage": 1,
+            "notionalCap": 5000000,
+            "notionalFloor": 2000000,
+            "maintenanceMarginRate": 0.5,
+            "maintenanceAmount": 654500.0
+        }
+    ],
+    "baseAsset": "CRV",
+    "quoteAsset": "USDT",
+    "baseAssetPrecision": 8,
+    "quotePrecision": 8,
+    "priceTick": 0.001,
+    "quantityStep": 0.1,
+    "maxLimitQuantity": 1000000.0,
+    "maxMarketQuantity": 300000.0,
+    "minNotionalValue": 5.0
+}
