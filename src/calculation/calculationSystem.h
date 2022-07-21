@@ -33,7 +33,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			processCalculations<algorithmType>();
+			//processCalculations<algorithmType>();
 			uniteResults();
 		}
 

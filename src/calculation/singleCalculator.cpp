@@ -51,7 +51,7 @@ void calculation::singleCalculation() {
 		log("bad ticker/timeframe");
 		return;
 	}
-	auto candles = utils::readFromJson("assets/candles/" + ticker + '/' + market::getCandleIntervalApiStr(timeframe));
+	auto candles = utils::readFromJson("assets/candles/" + ticker + '_' + market::getCandleIntervalApiStr(timeframe));
 	if (candles.is_null()) {
 		log("bad candles");
 		return;
