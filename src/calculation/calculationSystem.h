@@ -33,7 +33,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			//processCalculations<algorithmType>();
+			processCalculations<algorithmType>();
 			uniteResults();
 		}
 
@@ -45,7 +45,7 @@ namespace calculation {
 					continue;
 				}
 				progress = 0;
-				auto json = utils::readFromJson("assets/candles/" + ticker + '/' + getCandleIntervalApiStr(timeframe));
+				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
 
