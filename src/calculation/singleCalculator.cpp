@@ -22,7 +22,7 @@ namespace {
 	template<typename algorithmType>
 	void singleCalculationInternal(const Json& aCandles, const Json& aData, market::eCandleInterval aTimeFrame) {
 		algorithmType::algorithmDataType data;
-		if (!data.initFromJson(aData)) {
+		if (!data.initFromJson(aData) || !data.isValid()) {
 			utils::logError("singleCalculation wrong algorithm data");
 		}
 		auto algorithm = algorithmType(data, aTimeFrame);
