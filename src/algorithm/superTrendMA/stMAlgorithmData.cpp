@@ -138,7 +138,7 @@ void stMAlgorithmData::addJsonDataInternal(Json& aData) const {
 	aData["firstMATrendPrecision"] = firstMATrendPrecision;
 	aData["secondMATrendPrecision"] = secondMATrendPrecision;
 	aData["closerMATrendPrecision"] = closerMATrendPrecision;
-	aData["closerTrailingPrecision"] = closerTrailPrecision;
+	aData["closerTrailPrecision"] = closerTrailPrecision;
 	aData["closerTrendChangeCheck"] = closerTrendChangeCheck;
 	aData["closerMACheck"] = closerMACheck;
 	aData["closerTrailStop"] = closerTrailStop;
