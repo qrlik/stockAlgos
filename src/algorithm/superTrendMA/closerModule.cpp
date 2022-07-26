@@ -62,6 +62,8 @@ bool closerModule::updateTrail() {
 	if (!algorithm.getData().getCloserTrailStop()) {
 		return false;
 	}
+	// if touched this candle -> return
+	// else close < trail if long / close > trail if short
 	const auto pricePrecision = MARKET_DATA->getPricePrecision();
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto trailStopLoss = utils::round(algorithm.getCandle().high * (100.0 - algorithm.getData().getCloserTrailPrecision()) / 100.0, pricePrecision);
