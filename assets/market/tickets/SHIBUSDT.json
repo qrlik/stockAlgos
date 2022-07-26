@@ -55,7 +55,7 @@
     "quoteAsset": "USDT",
     "baseAssetPrecision": 8,
     "quotePrecision": 8,
-    "priceTick": 0.000001,
+    "priceTick": 0.000000001,
     "quantityStep": 1.0,
     "maxLimitQuantity": 100000000.0,
     "maxMarketQuantity": 20000000.0,
