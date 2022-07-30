@@ -17,6 +17,7 @@ namespace {
 		result &= aSettings.contains("threadsAmount") && aSettings["threadsAmount"].is_number_unsigned();
 		result &= aSettings.contains("parabolaDegree") && aSettings["parabolaDegree"].is_number_unsigned();
 		result &= aSettings.contains("weightPrecision") && aSettings["weightPrecision"].is_number_float();
+		result &= aSettings.contains("maxLossToProfitFactor") && aSettings["maxLossToProfitFactor"].is_number_float();
 		result &= aSettings.contains("algorithmType") && aSettings["algorithmType"].is_string();
 		result &= aSettings.contains("calculations") && aSettings["calculations"].is_array();
 		if (result) {
@@ -43,6 +44,7 @@ void calculationSystem::loadSettings() {
 	}
 	threadsAmount = settings["threadsAmount"].get<unsigned int>();
 	weightPrecision = settings["weightPrecision"].get<double>();
+	maxLossToProfitFactor = settings["maxLossToProfitFactor"].get<double>();
 	parabolaDegree = settings["parabolaDegree"].get<unsigned int>();
 	algorithmType = settings["algorithmType"].get<std::string>();
 	for (const auto& calculation : settings["calculations"]) {
