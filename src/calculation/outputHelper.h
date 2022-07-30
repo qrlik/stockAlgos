@@ -6,12 +6,12 @@
 
 namespace calculation {
 	struct calculationInfo {
-		double weight = 0.0;
 		double cash = 0.0;
 		double profitsFactor = 0.0;
 		double recoveryFactor = 0.0;
-		double ordersPerInterval = 0;
-		double profitPerInterval = 0;
+		double ordersPerInterval = 0.0;
+		double maxLossPercent = 0.0;
+		double profitPerInterval = 0.0;
 	};
 
 	using combinationId = size_t;

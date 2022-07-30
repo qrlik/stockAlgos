@@ -153,21 +153,18 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 		const auto dirName = getDirName(ticker, timeframe);
 		const auto allData = utils::readFromJson(dirName + allDataFileName);
 
-		const auto maxProfit = getProfit(allData[0]);
-
 		for (const auto& data : allData) {
 			calculationInfo info;
-			auto profit = getProfit(data);
-			if (!utils::isGreater(profit, 0.0)) {
+			if (!utils::isGreater(getProfit(data), 0.0)) {
 				continue;
 			}
-			info.weight = getWeight(getProfit(data), maxProfit, aDegree);
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
 			info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
+			info.maxLossPercent = data["stats"]["maxLossPercent"].get<double>();
 			info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
-			unitedInfo[data["data"]["id"].get<size_t>()].push_back(info);
+			unitedInfo[data["data"]["id"].get<size_t>()].push_back(std::move(info));
 			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
 		}
 	}
@@ -191,14 +188,12 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	for (const auto& united : aCalculations) {
 		calculationInfo average;
 		for (const auto& info : united.second) {
-			average.weight += info.weight;
 			average.cash += info.cash;
 			average.profitsFactor += info.profitsFactor;
 			average.recoveryFactor += info.recoveryFactor;
 			average.ordersPerInterval += info.ordersPerInterval;
 			average.profitPerInterval += info.profitPerInterval;
 		}
-		average.weight /= aSize;
 		average.profitsFactor /= aSize;
 		average.recoveryFactor /= aSize;
 		average.ordersPerInterval /= aSize;

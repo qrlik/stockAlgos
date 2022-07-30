@@ -14,6 +14,7 @@ namespace algorithm {
 		void incrementCounter(const std::string& aName, int aAmount = 1);
 		void decrementCounter(const std::string& aName, int aAmount = 1);
 	private:
+		double getMaxLossPercentActual() const;
 		const algorithmDataBase& data;
 
 		std::unordered_map<std::string, int> statCounters;

@@ -152,7 +152,6 @@ void calculationSystem::uniteResults() {
 			data["cash"] = info.second.cash;
 			data["data"] = combinationsJsons[info.first];
 			auto& stats = data["stats"];
-			stats["weight"] = info.second.weight;
 			stats["profitsFactor"] = info.second.profitsFactor;
 			stats["recoveryFactor"] = info.second.recoveryFactor;
 			stats["ordersPerInterval"] = info.second.ordersPerInterval;
