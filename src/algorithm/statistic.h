@@ -6,7 +6,7 @@ namespace algorithm {
 	class algorithmDataBase;
 	struct statistic {
 		statistic(const algorithmDataBase& aData, market::eCandleInterval aTimeframe);
-		void onOpenOrder(bool isLong);
+		void onOpenOrder(bool isLong, double aTax);
 		bool onCloseOrder(double aCash, double aProfit);
 		bool operator==(const statistic& aOther) const;
 		void initFromJson(const Json& aJson);

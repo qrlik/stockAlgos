@@ -107,10 +107,10 @@ bool stAlgorithm::updateOrder() {
 
 void stAlgorithm::onOpenOrder() {
 	if (isNewTrend) {
-		stats.incrementCounter("breakTrendOrder");
+		getStats().incrementCounter("breakTrendOrder");
 	}
 	else {
-		stats.incrementCounter("touchTrendOrder");
+		getStats().incrementCounter("touchTrendOrder");
 	}
 	isNewTrend = false;
 }

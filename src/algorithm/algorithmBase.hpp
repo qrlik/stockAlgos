@@ -62,11 +62,7 @@ namespace algorithm {
 		const order& getOrder() const { return order; }
 		const market::candle& getCandle() const { return curCandle; }
 		double getFullCash() const {
-			auto curCash = cash;
-			if (!order.getTime().empty()) {
-				curCash += order.getMargin() + order.getProfit();
-			}
-			return curCash;
+			return cash + order.getMargin();
 		}
 		double getCash() const { return cash; }
 		int getState() const { return state; }
@@ -89,7 +85,7 @@ namespace algorithm {
 			setState(getIntState(aState));
 			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision()); // TO DO REFACTOR
 			cash = cash - getOrder().getMargin() - taxAmount;
-			stats.onOpenOrder((aState == eOrderState::LONG));
+			stats.onOpenOrder((aState == eOrderState::LONG), taxAmount);
 			onOpenOrder();
 		}
 		void closeOrder(double aPrice = -1.0) {
@@ -178,9 +174,9 @@ namespace algorithm {
 
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
+		statistic& getStats() { return stats; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
 
-		statistic stats;
 		order order;
 
 	private:
@@ -225,6 +221,7 @@ namespace algorithm {
 		}
 
 		const dataType data;
+		statistic stats;
 		market::indicatorsSystem indicators;
 		std::unordered_map<int, std::string> statesMap;
 		std::ofstream logsFile;

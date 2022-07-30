@@ -19,7 +19,7 @@ void statistic::decrementCounter(const std::string& aName, int aAmount) {
 	statCounters[aName] -= aAmount;
 }
 
-void statistic::onOpenOrder(bool isLong) {
+void statistic::onOpenOrder(bool isLong, double aTax) {
 	if (isLong) {
 		incrementCounter("longOrder");
 	}
@@ -27,6 +27,7 @@ void statistic::onOpenOrder(bool isLong) {
 		incrementCounter("shortOrder");
 	}
 	incrementCounter("orderCounter");
+	summaryLoss += aTax;
 }
 
 bool statistic::onCloseOrder(double aCash, double aProfit) {
