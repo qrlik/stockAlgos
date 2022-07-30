@@ -16,7 +16,6 @@ namespace {
 		result &= aSettings.is_object();
 		result &= aSettings.contains("threadsAmount") && aSettings["threadsAmount"].is_number_unsigned();
 		result &= aSettings.contains("parabolaDegree") && aSettings["parabolaDegree"].is_number_unsigned();
-		result &= aSettings.contains("weightPrecision") && aSettings["weightPrecision"].is_number_float();
 		result &= aSettings.contains("maxLossToProfitFactor") && aSettings["maxLossToProfitFactor"].is_number_float();
 		result &= aSettings.contains("algorithmType") && aSettings["algorithmType"].is_string();
 		result &= aSettings.contains("calculations") && aSettings["calculations"].is_array();
@@ -43,7 +42,6 @@ void calculationSystem::loadSettings() {
 		return;
 	}
 	threadsAmount = settings["threadsAmount"].get<unsigned int>();
-	weightPrecision = settings["weightPrecision"].get<double>();
 	maxLossToProfitFactor = settings["maxLossToProfitFactor"].get<double>();
 	parabolaDegree = settings["parabolaDegree"].get<unsigned int>();
 	algorithmType = settings["algorithmType"].get<std::string>();
@@ -106,31 +104,25 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	Json stats;
 	{
 		std::ofstream dataAll(dirName + "dataAll.txt");
-		std::ofstream dataWeighted(dirName + "dataWeighted.txt");
 		const auto maxProfit = getProfit(finalVector[0]);
 
 		for (const auto& data : finalVector) {
-			jsonAllData.push_back(data);
-			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
-			if (utils::isLess(weight, weightPrecision)) {
-				continue;
+			const auto profit = getProfit(data);
+			if (utils::isLessOrEqual(profit, 0.0)) {
+				break;
 			}
-			addStats(stats, data["data"], weight);
+			addStats(stats, data["data"], getWeight(profit, maxProfit, parabolaDegree));
 		}
 
 		addHeadlines(dataAll, stats, finalVector[0]);
-		addHeadlines(dataWeighted, stats, finalVector[0]);
-		for (const auto& data : finalVector) {
-			addData(dataAll, stats, data);
-
-			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
-			if (utils::isLess(weight, weightPrecision)) {
-				continue;
+		for (auto& data : finalVector) {
+			if (utils::isLessOrEqual(getProfit(data), 0.0)) {
+				break;
 			}
-			addData(dataWeighted, stats, data);
+			addData(dataAll, stats, data);
+			jsonAllData.push_back(std::move(data));
 		}
 		dataAll.close();
-		dataWeighted.close();
 		finalVector.clear();
 	}
 	{

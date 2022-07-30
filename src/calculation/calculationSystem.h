@@ -33,8 +33,8 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			//processCalculations<algorithmType>();
-			uniteResults();
+			processCalculations<algorithmType>();
+			//uniteResults();
 		}
 
 		template<typename algorithmType>
@@ -71,7 +71,6 @@ namespace calculation {
 		std::string algorithmType;
 		std::vector<std::pair<std::string, market::eCandleInterval>> calculations;
 		size_t threadsAmount = 0;
-		double weightPrecision = 0.0;
 		double maxLossToProfitFactor = 0.0;
 		int parabolaDegree = 0;
 
