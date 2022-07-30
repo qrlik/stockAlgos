@@ -71,7 +71,6 @@ namespace calculation {
 		std::string algorithmType;
 		std::vector<std::pair<std::string, market::eCandleInterval>> calculations;
 		size_t threadsAmount = 0;
-		double maxLossToProfitFactor = 0.0;
 		int parabolaDegree = 0;
 
 		int progress = 0;
