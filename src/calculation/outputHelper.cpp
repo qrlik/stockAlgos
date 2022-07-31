@@ -38,6 +38,20 @@ namespace {
 		}
 		return os.str();
 	}
+
+	double getMedian(const std::vector<double>& aValues) {
+		auto firstIndex = 0;
+		auto secondIndex = 0;
+		if (aValues.size() % 2 == 0) {
+			firstIndex = aValues.size() / 2;
+			secondIndex = firstIndex + 1;
+		}
+		else {
+			firstIndex = (aValues.size() + 1) / 2;
+			secondIndex = firstIndex;
+		}
+		return (aValues[firstIndex] + aValues[secondIndex]) / 2;
+	}
 }
 
 void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
@@ -187,19 +201,25 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	combinationsAverages averageInfo;
 	for (const auto& united : aCalculations) {
 		calculationInfo average;
+		std::vector<double> profitsPerInterval;
+
 		for (const auto& info : united.second) {
 			average.cash += info.cash;
-			average.profitsFactor += info.profitsFactor;
-			average.recoveryFactor += info.recoveryFactor;
-			average.ordersPerInterval += info.ordersPerInterval;
-			average.profitPerInterval += info.profitPerInterval;
+
+			// worst
+			average.profitsFactor = utils::maxFloat(average.profitsFactor, info.profitsFactor);
+			average.recoveryFactor = utils::minFloat(average.recoveryFactor,info.recoveryFactor);
+			average.ordersPerInterval = utils::minFloat(average.ordersPerInterval, info.ordersPerInterval);
+			average.maxLossPercent = utils::maxFloat(average.maxLossPercent, info.maxLossPercent);
+
+			// median
+			profitsPerInterval.push_back(info.profitPerInterval);
 		}
-		average.profitsFactor /= aSize;
-		average.recoveryFactor /= aSize;
-		average.ordersPerInterval /= aSize;
-		average.profitPerInterval /= aSize;
-		averageInfo.push_back({ united.first, average });
+		std::sort(profitsPerInterval.begin(), profitsPerInterval.end());
+		average.profitPerInterval = getMedian(profitsPerInterval);
+
+		averageInfo.push_back({ united.first, std::move(average) });
 	}
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.cash > aRhs.second.cash; });
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.profitPerInterval > aRhs.second.profitPerInterval ; });
 	return averageInfo;
 }

@@ -7,10 +7,10 @@
 namespace calculation {
 	struct calculationInfo {
 		double cash = 0.0;
-		double profitsFactor = 0.0;
-		double recoveryFactor = 0.0;
-		double ordersPerInterval = 0.0;
-		double maxLossPercent = 0.0;
+		double profitsFactor = std::numeric_limits<double>::min();
+		double recoveryFactor = std::numeric_limits<double>::max();
+		double ordersPerInterval = std::numeric_limits<double>::max();
+		double maxLossPercent = std::numeric_limits<double>::min();
 		double profitPerInterval = 0.0;
 	};
 
