@@ -43,11 +43,11 @@ namespace {
 		auto firstIndex = 0;
 		auto secondIndex = 0;
 		if (aValues.size() % 2 == 0) {
-			firstIndex = aValues.size() / 2;
+			firstIndex = static_cast<int>(aValues.size()) / 2 - 1;
 			secondIndex = firstIndex + 1;
 		}
 		else {
-			firstIndex = (aValues.size() + 1) / 2;
+			firstIndex = static_cast<int>(aValues.size() + 1) / 2 - 1;
 			secondIndex = firstIndex;
 		}
 		return (aValues[firstIndex] + aValues[secondIndex]) / 2;

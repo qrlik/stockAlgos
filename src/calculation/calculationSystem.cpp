@@ -136,7 +136,7 @@ void calculationSystem::uniteResults() {
 	{
 		Json unitedData;
 		Json unitedStats;
-		double maxProfit = (!combinationsAverages.empty()) ? combinationsAverages[0].second.cash : 0.0;
+		double maxProfit = (!combinationsAverages.empty()) ? combinationsAverages[0].second.profitPerInterval : 0.0;
 		for (const auto& info : combinationsAverages) {
 			Json data;
 			data["cash"] = info.second.cash;
@@ -145,10 +145,11 @@ void calculationSystem::uniteResults() {
 			stats["profitsFactor"] = info.second.profitsFactor;
 			stats["recoveryFactor"] = info.second.recoveryFactor;
 			stats["ordersPerInterval"] = info.second.ordersPerInterval;
+			stats["maxLossPercent"] = info.second.maxLossPercent;
 			stats["profitPerInterval"] = info.second.profitPerInterval;
 			unitedData.push_back(data);
 
-			const auto weight = getWeight(getProfit(data), maxProfit, parabolaDegree);
+			const auto weight = getWeight(info.second.profitPerInterval, maxProfit, parabolaDegree);
 			addStats(unitedStats, data["data"], weight);
 		}
 
