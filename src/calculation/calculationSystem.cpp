@@ -91,7 +91,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	std::sort(std::execution::par_unseq, finalVector.begin(), finalVector.end(), [](const Json& aLhs, const Json& aRhs) {
 		return utils::isGreater(aLhs["cash"].get<double>(), aRhs["cash"].get<double>());
 	});
-	utils::log("calculationSystem::saveFinalData finalVector size - [" + std::to_string(finalVector.size()) + ']');
+	utils::log("\ncalculationSystem::saveFinalData finalVector size - [" + std::to_string(finalVector.size()) + ']');
 	if (finalVector.empty()) {
 		return;
 	}
@@ -123,6 +123,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		dataAll.close();
 		finalVector.clear();
 	}
+	utils::log("\ncalculationSystem::saveFinalData profits size - [" + std::to_string(jsonAllData.size()) + ']');
 	{
 		utils::saveToJson(dirName + getAllDataFilename(), jsonAllData);
 		utils::saveToJson(utils::lastDataDir, jsonAllData);
