@@ -125,14 +125,19 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	}
 	{
 		utils::saveToJson(dirName + getAllDataFilename(), jsonAllData);
+		utils::saveToJson(utils::lastDataDir, jsonAllData);
 		jsonAllData.clear();
 	}
 	saveStats(stats, dirName + "stats.json");
 }
 
 void calculationSystem::uniteResults() {
-	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations, 1);
+	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
 	auto combinationsAverages = getCalculationsAverages(combinationsCalculations, calculations.size());
+	if (combinationsAverages.empty()) {
+		utils::log("calculationSystem::uniteResults EMPTY");
+		return;
+	}
 	{
 		Json unitedData;
 		Json unitedStats;

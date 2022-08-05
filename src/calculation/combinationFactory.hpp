@@ -62,7 +62,7 @@ namespace calculation {
 				return;
 			}
 
-			generateCombinations(0);
+			generateOrTakeLast();
 			if (errorCombinations > 0) {
 				utils::logError("combinationFactory errors - " + std::to_string(errorCombinations));
 			}
@@ -101,6 +101,20 @@ namespace calculation {
 			}
 		}
 	private:
+		void generateOrTakeLast() {
+			auto lastData = utils::readFromJson(utils::lastDataDir);
+			if (lastData.is_null()) {
+				generateCombinations(0);
+			}
+			else {
+				for (const auto& json : lastData) {
+					data = algorithmDataType{};
+					data.initFromJson(json["data"]);
+					onIterate();
+				}
+			}
+		}
+
 		void generateCombinations(size_t aIndex) {
 			if (aIndex >= settings.size()) {
 				onIterate();

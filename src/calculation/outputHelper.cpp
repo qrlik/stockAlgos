@@ -158,7 +158,7 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 	return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 }
 
-std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations, int aDegree) {
+std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations) {
 	combinationsCalculations unitedInfo;
 	combinationsJsons idToJsons;
 

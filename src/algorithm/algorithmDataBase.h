@@ -17,7 +17,7 @@ namespace algorithm {
 		bool isValid() const;
 
 		const market::indicatorsData& getIndicatorsData() const { return indicatorsData; }
-		market::eCandleInterval getStatsInterval() const { return statsInterval; }
+		market::eCandleInterval getStatsInterval() const;
 		double getDealPercent() const { return dealPercent; }
 		double getOrderSize() const { return orderSize; }
 		int getLeverage() const { return leverage; }
@@ -61,7 +61,6 @@ namespace algorithm {
 		double liquidationOffsetPercent = -1.0;
 		double minimumProfitPercent = -1.0;
 
-		market::eCandleInterval statsInterval = market::eCandleInterval::NONE;
 		bool fullCheck = false;
 		bool fullCheckCustom = false;
 	};

@@ -4,6 +4,7 @@
 
 namespace utils {
 	const std::string outputDir = "output";
+	const std::string lastDataDir = outputDir + "/lastData";
 
 	Json readFromJson(const std::string& aPath);
 	void saveToJson(const std::string& aPath, const Json& aData);
