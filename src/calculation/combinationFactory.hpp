@@ -66,7 +66,7 @@ namespace calculation {
 			if (errorCombinations > 0) {
 				utils::logError("combinationFactory errors - " + std::to_string(errorCombinations));
 			}
-			utils::log("combinationFactory combinations - " + std::to_string(combinations));
+			utils::log("\ncombinationFactory combinations - " + std::to_string(combinations));
 			auto threadDataAmount = combinations / threadsAmount;
 			auto lastThreadDataAmount = threadDataAmount + combinations % threadsAmount;
 

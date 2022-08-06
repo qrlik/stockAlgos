@@ -34,7 +34,7 @@ namespace calculation {
 		template<typename algorithmType>
 		void calculateInternal() {
 			processCalculations<algorithmType>();
-			//uniteResults();
+			uniteResults();
 		}
 
 		template<typename algorithmType>
@@ -60,7 +60,7 @@ namespace calculation {
 				}
 				factory.onFinish();
 				saveFinalData(ticker, timeframe);
-				utils::log("calculationSystem::calculate finish - " + ticker);
+				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
 			}
 		}
 

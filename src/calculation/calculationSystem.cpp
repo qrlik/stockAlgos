@@ -123,7 +123,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		dataAll.close();
 		finalVector.clear();
 	}
-	utils::log("\ncalculationSystem::saveFinalData profits size - [" + std::to_string(jsonAllData.size()) + ']');
+	utils::log("calculationSystem::saveFinalData profits size - [" + std::to_string(jsonAllData.size()) + "]");
 	{
 		utils::saveToJson(dirName + getAllDataFilename(), jsonAllData);
 		utils::saveToJson(utils::lastDataDir, jsonAllData);
