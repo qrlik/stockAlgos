@@ -8,9 +8,6 @@ openerModule::openerModule(stMAlgorithm& aAlgorithm)
 
 bool openerModule::check() {
 	auto touchedThisCandle = checkTrendTouch();
-	//if (checkTrendTouch()) { // try to allow the same candle
-	//	return false;
-	//}
 	return tryToOpenOrder(touchedThisCandle);
 }
 
