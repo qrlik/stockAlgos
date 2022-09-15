@@ -12,6 +12,8 @@ namespace algorithm {
 		openerModule(stMAlgorithm& aAlgorithm);
 		bool check();
 	private:
+		double getActivationPrice() const;
+		double getOpenPrice(bool aIsTochedThisCandle) const;
 		bool checkTrendTouch();
 		bool tryToOpenOrder(bool aIsTochedThisCandle);
 		void onOpenOrder();

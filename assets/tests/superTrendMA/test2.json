@@ -24,6 +24,7 @@
 
 		"fullCheckCustom": true,
 
+		"activationPercent": 0.0,
 		"firstMATrendPrecision": 0.5,
 		"secondMATrendPrecision": 1.0,
 		

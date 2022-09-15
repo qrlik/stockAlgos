@@ -15,7 +15,7 @@ bool openerModule::checkTrendTouch() {
 	if (touchActivated) {
 		return false;
 	}
-	const auto trendActivation = algorithm.getIndicators().getSuperTrend();
+	const auto trendActivation = getActivationPrice();
 	const auto isTrendUp = algorithm.getIndicators().isSuperTrendUp();
 	const auto& candle = algorithm.getCandle();
 	if (isTrendUp && utils::isLessOrEqual(candle.low, trendActivation)) {
@@ -27,6 +27,25 @@ bool openerModule::checkTrendTouch() {
 	return touchActivated;
 }
 
+double openerModule::getActivationPrice() const {
+	const auto superTrend = algorithm.getIndicators().getSuperTrend();
+	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
+	return superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
+}
+
+double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
+	if (!aIsTochedThisCandle) {
+		return algorithm.getCandle().open;
+	}
+	const auto activationPrice = getActivationPrice();
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return utils::minFloat(activationPrice, algorithm.getCandle().open);
+	}
+	else {
+		return utils::maxFloat(activationPrice, algorithm.getCandle().open);
+	}
+}
+
 bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 	if (!touchActivated) {
 		return false;
@@ -36,7 +55,7 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
 	const auto firstMA = algorithm.getIndicators().getFirstMA();
 	const auto secondMA = algorithm.getIndicators().getSecondMA();
-	const auto openPrice = aIsTochedThisCandle ? algorithm.getIndicators().getSuperTrend() : algorithm.getCandle().open;
+	const auto openPrice = getOpenPrice(aIsTochedThisCandle);
 	if (algorithm.getIndicators().isSuperTrendUp()) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
 			if (utils::isGreater(secondMA, firstMA)) {
