@@ -223,3 +223,37 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.profitPerInterval > aRhs.second.profitPerInterval ; });
 	return averageInfo;
 }
+
+void calculation::alignByMaxLossPercent() {
+
+}
+
+void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree) {
+	Json unitedData;
+	Json unitedStats;
+	double maxProfit = combinationsAverages[0].second.profitPerInterval;
+	for (const auto& info : combinationsAverages) {
+		Json data;
+		data["cash"] = info.second.cash;
+		if (auto it = combinationsJsons.find(info.first); it != combinationsJsons.end()) {
+			data["data"] = it->second;
+		}
+		auto& stats = data["stats"];
+		stats["profitsFactor"] = info.second.profitsFactor;
+		stats["recoveryFactor"] = info.second.recoveryFactor;
+		stats["ordersPerInterval"] = info.second.ordersPerInterval;
+		stats["maxLossPercent"] = info.second.maxLossPercent;
+		stats["profitPerInterval"] = info.second.profitPerInterval;
+		unitedData.push_back(data);
+
+		const auto weight = getWeight(info.second.profitPerInterval, maxProfit, degree);
+		addStats(unitedStats, data["data"], weight);
+	}
+
+	std::ofstream unitedOutput(utils::outputDir + "/unitedData.txt");
+	addHeadlines(unitedOutput, unitedStats, unitedData[0]);
+	for (const auto& data : unitedData) {
+		addData(unitedOutput, unitedStats, data);
+	}
+	saveStats(unitedStats, utils::outputDir + "/stats.json");
+}

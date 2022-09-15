@@ -139,31 +139,6 @@ void calculationSystem::uniteResults() {
 		utils::log("calculationSystem::uniteResults EMPTY");
 		return;
 	}
-	{
-		Json unitedData;
-		Json unitedStats;
-		double maxProfit = (!combinationsAverages.empty()) ? combinationsAverages[0].second.profitPerInterval : 0.0;
-		for (const auto& info : combinationsAverages) {
-			Json data;
-			data["cash"] = info.second.cash;
-			data["data"] = combinationsJsons[info.first];
-			auto& stats = data["stats"];
-			stats["profitsFactor"] = info.second.profitsFactor;
-			stats["recoveryFactor"] = info.second.recoveryFactor;
-			stats["ordersPerInterval"] = info.second.ordersPerInterval;
-			stats["maxLossPercent"] = info.second.maxLossPercent;
-			stats["profitPerInterval"] = info.second.profitPerInterval;
-			unitedData.push_back(data);
-
-			const auto weight = getWeight(info.second.profitPerInterval, maxProfit, parabolaDegree);
-			addStats(unitedStats, data["data"], weight);
-		}
-
-		std::ofstream unitedOutput(utils::outputDir + "/unitedData.txt");
-		addHeadlines(unitedOutput, unitedStats, unitedData[0]);
-		for (const auto& data : unitedData) {
-			addData(unitedOutput, unitedStats, data);
-		}
-		saveStats(unitedStats, utils::outputDir + "/stats.json");
-	}
+	alignByMaxLossPercent();
+	saveDataAndStats(combinationsAverages, combinationsJsons, parabolaDegree);
 }
