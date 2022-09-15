@@ -6,6 +6,7 @@
 
 namespace calculation {
 	struct calculationInfo {
+		std::string ticker;
 		double cash = 0.0;
 		double profitsFactor = std::numeric_limits<double>::min();
 		double recoveryFactor = std::numeric_limits<double>::max();
@@ -23,6 +24,7 @@ namespace calculation {
 	double getWeight(double aProfit, double aMaxProfit, double aDegree);
 	std::string getAllDataFilename();
 	std::string getDirName(const std::string& aTicker, market::eCandleInterval aInterval);
+
 	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations);
 	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations, size_t aSize);
 	void alignByMaxLossPercent();

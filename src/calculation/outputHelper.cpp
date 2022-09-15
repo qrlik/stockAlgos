@@ -162,7 +162,6 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	combinationsCalculations unitedInfo;
 	combinationsJsons idToJsons;
 
-	const auto size = aCalculations.size();
 	for (const auto& [ticker, timeframe] : aCalculations) {
 		const auto dirName = getDirName(ticker, timeframe);
 		const auto allData = utils::readFromJson(dirName + allDataFileName);
@@ -172,6 +171,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 			if (!utils::isGreater(getProfit(data), 0.0)) {
 				continue;
 			}
+			info.ticker = ticker;
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
 			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
@@ -184,6 +184,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	}
 	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
+	const auto size = aCalculations.size();
 	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
 		if (it->second.size() < size) {
 			it = unitedInfo.erase(it);
@@ -193,6 +194,10 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 		}
 	}
 	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
+	auto data = utils::readFromJson(utils::lastDataDir);
+	if (data.size() != unitedInfo.size()) {
+		utils::logError("calculation::getCalculationsConjunction wrong united data size");
+	}
 
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
@@ -210,7 +215,10 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 			average.profitsFactor = utils::maxFloat(average.profitsFactor, info.profitsFactor);
 			average.recoveryFactor = utils::minFloat(average.recoveryFactor,info.recoveryFactor);
 			average.ordersPerInterval = utils::minFloat(average.ordersPerInterval, info.ordersPerInterval);
-			average.maxLossPercent = utils::maxFloat(average.maxLossPercent, info.maxLossPercent);
+			if (utils::isGreater(info.maxLossPercent, average.maxLossPercent)) {
+				average.ticker = info.ticker;
+				average.maxLossPercent = info.maxLossPercent;
+			}
 
 			// median
 			profitsPerInterval.push_back(info.profitPerInterval);
@@ -225,7 +233,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 }
 
 void calculation::alignByMaxLossPercent() {
-
+	auto data = utils::readFromJson(utils::lastDataDir);
 }
 
 void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree) {
@@ -242,6 +250,7 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 		stats["profitsFactor"] = info.second.profitsFactor;
 		stats["recoveryFactor"] = info.second.recoveryFactor;
 		stats["ordersPerInterval"] = info.second.ordersPerInterval;
+		stats["maxLossTicker"] = info.second.ticker;
 		stats["maxLossPercent"] = info.second.maxLossPercent;
 		stats["profitPerInterval"] = info.second.profitPerInterval;
 		unitedData.push_back(data);
