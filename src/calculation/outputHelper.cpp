@@ -202,6 +202,30 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
 
+void calculation::alignByMaxLossPercent(const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations) {
+	for (const auto& [id, infos] : combinations) {
+		if (infos.empty()) {
+			utils::logError("calculation::alignByMaxLossPercent empty data - " + std::to_string(id));
+			continue;
+		}
+		auto it = std::max_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return lhs.maxLossPercent < rhs.maxLossPercent; });
+		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [it](const auto& pair) { return pair.first == it->ticker; });
+		if (calcIt == calculations.end()) {
+			utils::logError("calculation::alignByMaxLossPercent empty calculation - " + it->ticker);
+			continue;
+		}
+
+		auto candlesJson = utils::readFromJson("assets/candles/" + calcIt->first + '_' + getCandleIntervalApiStr(calcIt->second));
+		auto candles = utils::parseCandles(candlesJson);
+
+		// get data
+		// get max loss percent + order size
+		// align helper -> get next data
+		// increase -> calculate(new data)
+
+	}
+}
+
 combinationsAverages calculation::getCalculationsAverages(const combinationsCalculations& aCalculations, size_t aSize) {
 	combinationsAverages averageInfo;
 	for (const auto& united : aCalculations) {
@@ -230,10 +254,6 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	}
 	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.profitPerInterval > aRhs.second.profitPerInterval ; });
 	return averageInfo;
-}
-
-void calculation::alignByMaxLossPercent() {
-	auto data = utils::readFromJson(utils::lastDataDir);
 }
 
 void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree) {

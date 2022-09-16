@@ -1,6 +1,7 @@
 #pragma once
 #include "json/json.hpp"
 #include "market/candle.h"
+#include "calculationSystem.h"
 #include <string>
 #include <fstream>
 
@@ -25,9 +26,9 @@ namespace calculation {
 	std::string getAllDataFilename();
 	std::string getDirName(const std::string& aTicker, market::eCandleInterval aInterval);
 
-	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations);
+	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const calculationsType& aCalculations);
+	void alignByMaxLossPercent(const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations);
 	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations, size_t aSize);
-	void alignByMaxLossPercent();
 	void saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree);
 
 	void addStats(Json& aStats, const Json& aData, double aWeight);

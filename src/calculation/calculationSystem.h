@@ -5,6 +5,7 @@
 #include <mutex>
 
 namespace calculation {
+	using calculationsType = std::vector<std::pair<std::string, market::eCandleInterval>>;
 	class calculationSystem {
 	public:
 		calculationSystem();
@@ -33,7 +34,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			processCalculations<algorithmType>();
+			//processCalculations<algorithmType>();
 			uniteResults();
 		}
 
@@ -69,7 +70,7 @@ namespace calculation {
 		std::mutex printMutex;
 		
 		std::string algorithmType;
-		std::vector<std::pair<std::string, market::eCandleInterval>> calculations;
+		calculationsType calculations;
 		size_t threadsAmount = 0;
 		int parabolaDegree = 0;
 

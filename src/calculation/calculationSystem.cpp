@@ -134,11 +134,11 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 
 void calculationSystem::uniteResults() {
 	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
+	alignByMaxLossPercent(combinationsCalculations, combinationsJsons, calculations);
 	auto combinationsAverages = getCalculationsAverages(combinationsCalculations, calculations.size());
 	if (combinationsAverages.empty()) {
 		utils::log("calculationSystem::uniteResults EMPTY");
 		return;
 	}
-	alignByMaxLossPercent();
 	saveDataAndStats(combinationsAverages, combinationsJsons, parabolaDegree);
 }
