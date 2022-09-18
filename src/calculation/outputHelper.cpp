@@ -1,4 +1,5 @@
 #include "outputHelper.h"
+#include "maxLossBalancer.h"
 #include "utils/utils.h"
 
 using namespace calculation;
@@ -158,9 +159,11 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 	return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 }
 
-std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const std::vector<std::pair<std::string, market::eCandleInterval>>& aCalculations) {
+std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const calculationsType& aCalculations) {
 	combinationsCalculations unitedInfo;
 	combinationsJsons idToJsons;
+
+	// TO DO optimize by lastData
 
 	for (const auto& [ticker, timeframe] : aCalculations) {
 		const auto dirName = getDirName(ticker, timeframe);
@@ -210,18 +213,16 @@ void calculation::alignByMaxLossPercent(const combinationsCalculations& combinat
 		}
 		auto it = std::max_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return lhs.maxLossPercent < rhs.maxLossPercent; });
 		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [it](const auto& pair) { return pair.first == it->ticker; });
-		if (calcIt == calculations.end()) {
-			utils::logError("calculation::alignByMaxLossPercent empty calculation - " + it->ticker);
+		auto jsonIt = std::find_if(jsons.begin(), jsons.end(), [id = id](const auto& pair) { return pair.first == id; });
+		if (calcIt == calculations.end() || jsonIt == jsons.end()) {
+			utils::logError("calculation::alignByMaxLossPercent can't find data - " + it->ticker + " " + std::to_string(id));
 			continue;
 		}
 
-		auto candlesJson = utils::readFromJson("assets/candles/" + calcIt->first + '_' + getCandleIntervalApiStr(calcIt->second));
-		auto candles = utils::parseCandles(candlesJson);
+		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, it->maxLossPercent);
+		balancer.calculate();
 
-		// get data
-		// get max loss percent + order size
-		// align helper -> get next data
-		// increase -> calculate(new data)
+		// get balanced data;
 
 	}
 }
