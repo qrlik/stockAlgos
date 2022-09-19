@@ -99,6 +99,9 @@ bool algorithmDataBase::initDataField(const std::string& aName, const Json& aVal
 	if (aValue.is_null()) {
 		return false;
 	}
+	if (aName == "customID") {
+		return true;
+	}
 	if (aName == "id") {
 		id = aValue.get<size_t>();
 		return true;
