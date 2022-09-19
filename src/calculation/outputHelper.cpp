@@ -159,21 +159,32 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 	return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 }
 
-std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const calculationsType& aCalculations) {
-	combinationsCalculations unitedInfo;
-	combinationsJsons idToJsons;
+std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const calculationsType& calculations) {
+	auto lastData = utils::readFromJson(utils::lastDataDir);
+	combinationsCalculations unitedInfo(lastData.size());
+	combinationsJsons idToJsons(lastData.size());
 
-	// TO DO optimize by lastData
+	for (auto& data : lastData) {
+		if (!utils::isGreater(getProfit(data), 0.0)) {
+			utils::logError("calculation::getCalculationsConjunction wrong data in lastData");
+		}
+		const auto id = data["data"]["id"].get<size_t>();
+		unitedInfo[id].reserve(calculations.size());
+		idToJsons[id] = std::move(data["data"]);
+	}
 
-	for (const auto& [ticker, timeframe] : aCalculations) {
+	for (const auto& [ticker, timeframe] : calculations) {
 		const auto dirName = getDirName(ticker, timeframe);
 		const auto allData = utils::readFromJson(dirName + allDataFileName);
 
 		for (const auto& data : allData) {
-			calculationInfo info;
-			if (!utils::isGreater(getProfit(data), 0.0)) {
+			if (utils::isLessOrEqual(getProfit(data), 0.0)) {
+				break;
+			}
+			if (!idToJsons.count(data["data"]["id"].get<size_t>())) {
 				continue;
 			}
+			calculationInfo info;
 			info.ticker = ticker;
 			info.cash = data["cash"].get<double>();
 			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
@@ -182,25 +193,18 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 			info.maxLossPercent = data["stats"]["maxLossPercent"].get<double>();
 			info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
 			unitedInfo[data["data"]["id"].get<size_t>()].push_back(std::move(info));
-			idToJsons.try_emplace(data["data"]["id"].get<size_t>(), data["data"]);
 		}
 	}
-	utils::log("<Disjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
-	const auto size = aCalculations.size();
-	for (auto it = unitedInfo.begin(); it != unitedInfo.end();) {
-		if (it->second.size() < size) {
-			it = unitedInfo.erase(it);
-		}
-		else {
-			++it;
+	for (const auto& info : unitedInfo) {
+		if (info.second.size() < calculations.size()) {
+			utils::logError("calculation::getCalculationsConjunction wrong united info size");
 		}
 	}
-	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
-	auto data = utils::readFromJson(utils::lastDataDir);
-	if (data.size() != unitedInfo.size()) {
+	if (lastData.size() != unitedInfo.size()) {
 		utils::logError("calculation::getCalculationsConjunction wrong united data size");
 	}
+	utils::log("<Conjunction> size - [ " + std::to_string(unitedInfo.size()) + " ] ");
 
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
