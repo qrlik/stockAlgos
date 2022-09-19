@@ -205,7 +205,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
 
-void calculation::alignByMaxLossPercent(const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations) {
+void calculation::alignByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations) {
 	for (const auto& [id, infos] : combinations) {
 		if (infos.empty()) {
 			utils::logError("calculation::alignByMaxLossPercent empty data - " + std::to_string(id));
@@ -220,10 +220,13 @@ void calculation::alignByMaxLossPercent(const combinationsCalculations& combinat
 		}
 
 		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, it->maxLossPercent);
-		balancer.calculate();
+		balancer.calculate(algoType);
 
-		// get balanced data;
+		auto balancedMaxLossPercent = balancer.getMaxLossPercent();
+		auto balancedDealPercent = balancer.getDealPercent();
 
+		auto x = 5;
+		//update values;
 	}
 }
 

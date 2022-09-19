@@ -109,7 +109,7 @@ void statistic::initFromJson(const Json& aJson) {
 
 double statistic::getMaxLossPercentActual() const {
 	auto maxLoss = maxLossHighCash - maxLossLowCash;
-	return (utils::isGreater(data.getOrderSize(), 0.0)) ? maxLoss / data.getStartCash() * 100 : maxLoss / maxLossHighCash * 100;
+	return (utils::isGreater(data.getOrderSize(), 0.0)) ? (maxLoss / data.getStartCash() * 100) : (maxLoss / maxLossHighCash * 100);
 }
 
 void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) const {

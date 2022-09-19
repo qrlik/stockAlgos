@@ -18,7 +18,6 @@ namespace calculation {
 
 		template<typename algorithmType, typename algorithmDataType>
 		void iterate(combinationFactory<algorithmDataType>& aFactory, market::eCandleInterval aTimeframe, int aThread) {
-			std::vector<market::candle> candles;
 			auto& threadResults = threadsData[aThread];
 			const auto& threadData = aFactory.getThreadData(aThread);
 			for (const auto& data : threadData) {
