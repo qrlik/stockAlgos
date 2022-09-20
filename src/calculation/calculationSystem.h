@@ -40,16 +40,12 @@ namespace calculation {
 		template<typename algorithmType>
 		void processCalculations() {
 			for (const auto& [ticker, timeframe] : calculations) {
-				if (!MARKET_DATA->loadTickerData(ticker)) {
-					utils::logError("calculationSystem::calculate wrong ticker - " + ticker);
-					continue;
-				}
 				progress = 0;
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
 
-				auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount);
+				auto factory = combinationFactory<algorithmType::algorithmDataType>(threadsAmount, ticker);
 				combinations = factory.getCombinationsAmount();
 				std::vector<std::future<void>> futures;
 				for (size_t i = 0; i < threadsAmount; ++i) {

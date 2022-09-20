@@ -5,7 +5,7 @@
 
 using namespace algorithm;
 
-order::order() : state(eOrderState::NONE) {}
+order::order(const algorithm::algorithmDataBase& data) : state(eOrderState::NONE), mData(data) {}
 
 std::string order::toString() const {
 	std::ostringstream ostr;
@@ -51,53 +51,54 @@ void order::updateStopLoss(double aStopLoss) {
 	}
 }
 
-double order::calculateStopLoss(const algorithm::algorithmDataBase& aData) const {
-	if (auto stopLossPercent = aData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
+double order::calculateStopLoss() const {
+	if (auto stopLossPercent = mData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
 		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
 		auto result = price * (100 + stopLossSign * stopLossPercent) / 100.0;
-		return utils::round(result, MARKET_DATA->getPricePrecision());
+		return utils::round(result, mData.getMarketData().getPricePrecision());
 	}
-	const auto liqPrice = MARKET_DATA->getLiquidationPrice(price, notionalValue, aData.getLeverage(), quantity, state == eOrderState::LONG);
+	const auto liqPrice = mData.getMarketData().getLiquidationPrice(price, notionalValue, mData.getLeverage(), quantity, state == eOrderState::LONG);
 	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
-	auto result = liqPrice * (100 + stopLossSign * aData.getLiquidationOffsetPercent()) / 100.0;
-	return utils::round(result, MARKET_DATA->getPricePrecision());
+	auto result = liqPrice * (100 + stopLossSign * mData.getLiquidationOffsetPercent()) / 100.0;
+	return utils::round(result, mData.getMarketData().getPricePrecision());
 }
 
-double order::calculateMinimumProfit(const algorithm::algorithmDataBase& aData) const {
+double order::calculateMinimumProfit() const {
 	auto minProfitSign = (state == eOrderState::LONG) ? 1 : -1;
-	auto result = price * (100.0 + minProfitSign * aData.getMinimumProfitPercent()) / 100.0;
-	return utils::round(result, MARKET_DATA->getPricePrecision());
+	auto result = price * (100.0 + minProfitSign * mData.getMinimumProfitPercent()) / 100.0;
+	return utils::round(result, mData.getMarketData().getPricePrecision());
 }
 
-bool order::openOrder(const algorithm::algorithmDataBase& aData, eOrderState aState, double aPrice, double aCash, const std::string& aTime) {
+bool order::openOrder(eOrderState aState, double aPrice, double aCash, const std::string& aTime) {
 	reset();
-	const auto quotePrecision = MARKET_DATA->getQuotePrecision();
-	auto allowedCash = utils::floor(aCash * aData.getDealPercent() / 100.0, quotePrecision);
-	if (const auto allowedCashBySize = utils::floor(aData.getOrderSize(), quotePrecision); utils::isGreater(allowedCashBySize, 0.0)) {
+	const auto& marketData = mData.getMarketData();
+	const auto quotePrecision = marketData.getQuotePrecision();
+	auto allowedCash = utils::floor(aCash * mData.getDealPercent() / 100.0, quotePrecision);
+	if (const auto allowedCashBySize = utils::floor(mData.getOrderSize(), quotePrecision); utils::isGreater(allowedCashBySize, 0.0)) {
 		allowedCash = utils::minFloat(allowedCash, allowedCashBySize);
 	}
-	const auto allowedNotionalValue = utils::minFloat(allowedCash * aData.getLeverage(), MARKET_DATA->getLeverageMaxPosition(aData.getLeverage()));
-	const auto calcQuantity = [allowedNotionalValue, aPrice]() {
-		const auto minQuantity = MARKET_DATA->getQuantityPrecision();
+	const auto allowedNotionalValue = utils::minFloat(allowedCash * mData.getLeverage(), marketData.getLeverageMaxPosition(mData.getLeverage()));
+	const auto calcQuantity = [allowedNotionalValue, aPrice, &marketData]() {
+		const auto minQuantity = marketData.getQuantityPrecision();
 		auto result = utils::floor(allowedNotionalValue / aPrice, minQuantity);
 		return (utils::isGreaterOrEqual(result, minQuantity)) ? result : minQuantity;
 	}(); 
 	const auto calcNotionalValue = utils::round(calcQuantity * aPrice, quotePrecision);
-	if (utils::isLess(calcQuantity, MARKET_DATA->getQuantityPrecision()) || utils::isLess(calcNotionalValue, MARKET_DATA->getMinNotionalValue())) {
+	if (utils::isLess(calcQuantity, marketData.getQuantityPrecision()) || utils::isLess(calcNotionalValue, marketData.getMinNotionalValue())) {
 		utils::logError("orderData::openOrder can't open order");
 		return false;
 	}
 
 	state = aState;
-	fullCheck = aData.getFullCheck();
+	fullCheck = mData.getFullCheck();
 	price = aPrice;
 	quantity = calcQuantity;
 	notionalValue = calcNotionalValue;
-	margin = utils::round(notionalValue / aData.getLeverage(), quotePrecision);
+	margin = utils::round(notionalValue / mData.getLeverage(), quotePrecision);
 
 	time = aTime;
-	minimumProfit = calculateMinimumProfit(aData);
-	initStopLoss = calculateStopLoss(aData);
+	minimumProfit = calculateMinimumProfit();
+	initStopLoss = calculateStopLoss();
 	stopLoss = initStopLoss;
 	return true;
 }
@@ -115,15 +116,15 @@ double order::closeOrder() {
 }
 
 double order::getProfit() const {
-	auto quotePrecision = MARKET_DATA->getQuotePrecision();
+	auto quotePrecision = mData.getMarketData().getQuotePrecision();
 	const auto orderCloseSummary = utils::round(quantity * stopLoss, quotePrecision);
-	const auto orderCloseTax = utils::round(orderCloseSummary * MARKET_DATA->getTaxFactor(), quotePrecision);
+	const auto orderCloseTax = utils::round(orderCloseSummary * MARKET_SYSTEM->getTaxFactor(), quotePrecision);
 	auto profitWithoutTax = (state == eOrderState::LONG) ? orderCloseSummary - notionalValue : notionalValue - orderCloseSummary;
 	return profitWithoutTax - orderCloseTax;
 }
 
-void order::initFromJson(const algorithm::algorithmDataBase& aAlgData, const Json& aJson) {
-	fullCheck = aAlgData.getFullCheck();
+void order::initFromJson(const Json& aJson) {
+	fullCheck = mData.getFullCheck();
 	for (const auto& [field, value] : aJson.items()) {
 		if (value.is_null()) {
 			continue;

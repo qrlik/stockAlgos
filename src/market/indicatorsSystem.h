@@ -1,4 +1,5 @@
 #pragma once
+#include "market/marketRules.h"
 #include "candle.h"
 #include "indicatorsData.h"
 #include <vector>
@@ -8,7 +9,7 @@ namespace market {
 	class indicatorsData;
 	class indicatorsSystem {
 	public:
-		indicatorsSystem(const indicatorsData& aData);
+		indicatorsSystem(const indicatorsData& aData, const std::string& ticker);
 		bool operator==(const indicatorsSystem& aOther) const;
 		void initFromJson(const Json& aValue);
 
@@ -28,6 +29,7 @@ namespace market {
 		bool checkSkip();
 
 		const indicatorsData& data;
+		const market::marketData& marketData;
 
 		std::deque<double> trList; // atr
 		double atr = 0.f;

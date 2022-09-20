@@ -52,10 +52,11 @@ namespace calculation {
 	template<typename algorithmDataType>
 	class combinationFactory {
 	public:
-		combinationFactory(size_t aThreadsAmount) :
+		combinationFactory(size_t aThreadsAmount, const std::string& ticker) :
 			threadsAmount(aThreadsAmount),
 			combinationsData(aThreadsAmount),
-			indexes(aThreadsAmount, 0)
+			indexes(aThreadsAmount, 0),
+			mTicker(ticker)
 		{
 			settings = utils::readFromJson("input/combinationSettings");
 			if (threadsAmount == 0 || settings.empty()) {
@@ -183,6 +184,7 @@ namespace calculation {
 			else {
 				++combinations;
 				data.setID();
+				data.setTicker(mTicker);
 				allData.push_back(data);
 			}
 		}
@@ -211,6 +213,7 @@ namespace calculation {
 		std::vector<algorithmDataType> allData;
 		algorithmDataType data;
 		std::vector<size_t> indexes;
+		std::string mTicker;
 
 		size_t combinations = 0;
 		const size_t threadsAmount = 0;

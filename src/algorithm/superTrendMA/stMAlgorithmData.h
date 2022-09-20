@@ -4,7 +4,7 @@
 namespace algorithm {
 	class stMAlgorithmData final : public algorithmDataBase {
 	public:
-		stMAlgorithmData();
+		stMAlgorithmData(const std::string ticker);
 		bool operator==(const stMAlgorithmData& aOther) const;
 
 		size_t getCustomID() const override;

@@ -8,6 +8,10 @@ closerModule::closerModule(stMAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
 
+const order& closerModule::getOrder() const {
+	return static_cast<const stMAlgorithm&>(algorithm).getOrder();
+}
+
 bool closerModule::check() {
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		if (isNeedToClose(true)) {
@@ -15,7 +19,7 @@ bool closerModule::check() {
 			return true;
 		}
 
-		if (utils::isLessOrEqual(algorithm.getCandle().low, algorithm.getOrder().getStopLoss())) {
+		if (utils::isLessOrEqual(algorithm.getCandle().low, getOrder().getStopLoss())) {
 			algorithm.closeOrder();
 			return true;
 		}
@@ -26,7 +30,7 @@ bool closerModule::check() {
 			return true;
 		}
 
-		if (utils::isGreaterOrEqual(algorithm.getCandle().high, algorithm.getOrder().getStopLoss())) {
+		if (utils::isGreaterOrEqual(algorithm.getCandle().high, getOrder().getStopLoss())) {
 			algorithm.closeOrder();
 			return true;
 		}
@@ -64,17 +68,17 @@ bool closerModule::updateTrail() {
 	}
 	// if touched this candle -> return
 	// else close < trail if long / close > trail if short
-	const auto pricePrecision = MARKET_DATA->getPricePrecision();
+	const auto pricePrecision = algorithm.getData().getMarketData().getPricePrecision();
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto trailStopLoss = utils::round(algorithm.getCandle().high * (100.0 - algorithm.getData().getCloserTrailPrecision()) / 100.0, pricePrecision);
-		if (utils::isGreaterOrEqual(trailStopLoss, algorithm.getOrder().getMinimumProfit()) && utils::isGreater(trailStopLoss, algorithm.getOrder().getStopLoss())) {
+		if (utils::isGreaterOrEqual(trailStopLoss, getOrder().getMinimumProfit()) && utils::isGreater(trailStopLoss, getOrder().getStopLoss())) {
 			algorithm.updateOrderStopLoss(trailStopLoss);
 			return true;
 		}
 	}
 	else if (algorithm.getState() == getIntState(eBaseState::SHORT)) {
 		auto trailStopLoss = utils::round(algorithm.getCandle().low * (100.0 + algorithm.getData().getCloserTrailPrecision()) / 100.0, pricePrecision);
-		if (utils::isLessOrEqual(trailStopLoss, algorithm.getOrder().getMinimumProfit()) && utils::isLess(trailStopLoss, algorithm.getOrder().getStopLoss())) {
+		if (utils::isLessOrEqual(trailStopLoss, getOrder().getMinimumProfit()) && utils::isLess(trailStopLoss, getOrder().getStopLoss())) {
 			algorithm.updateOrderStopLoss(trailStopLoss);
 			return true;
 		}

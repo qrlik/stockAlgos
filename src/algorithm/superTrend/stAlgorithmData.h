@@ -5,7 +5,7 @@
 namespace algorithm {
 	class stAlgorithmData final : public algorithmDataBase {
 	public:
-		stAlgorithmData();
+		stAlgorithmData(const std::string ticker);
 		bool operator==(const stAlgorithmData& aOther) const;
 
 		double getDynamicSLPercent() const { return dynamicSLPercent; }

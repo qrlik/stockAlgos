@@ -1,4 +1,5 @@
 #pragma once
+#include "algorithm/order.h"
 
 namespace algorithm {
 	class stMAlgorithm;
@@ -12,6 +13,7 @@ namespace algorithm {
 	private:
 		void updateState(bool& aState, bool aAdd) const;
 		bool updateTrail();
+		const order& getOrder() const;
 
 		stMAlgorithm& algorithm;
 	};

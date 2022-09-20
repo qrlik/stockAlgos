@@ -1,4 +1,5 @@
 {
+	"ticker": "BTCUSDT",
 	"candlesFileName": "300_15m",
 	"algorithmData": {
 		"firstMA": 20,

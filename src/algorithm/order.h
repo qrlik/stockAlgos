@@ -14,10 +14,10 @@ namespace algorithm {
 	};
 	class order {
 	public:
-		order();
-		void initFromJson(const algorithm::algorithmDataBase& aAlgorithm, const Json& aJson);
+		order(const algorithm::algorithmDataBase& data);
+		void initFromJson(const Json& aJson);
 		bool operator==(const order& aOther) const;
-		bool openOrder(const algorithm::algorithmDataBase& aData, eOrderState aState, double aPrice, double aCash, const std::string& aTime);
+		bool openOrder(eOrderState aState, double aPrice, double aCash, const std::string& aTime);
 		double closeOrder();
 		void reset();
 		std::string toString() const;
@@ -33,9 +33,10 @@ namespace algorithm {
 		eOrderState getState() const { return state; }
 		void updateStopLoss(double aStopLoss);
 	private:
-		double calculateStopLoss(const algorithm::algorithmDataBase& aData) const;
-		double calculateMinimumProfit(const algorithm::algorithmDataBase& aData) const;
+		double calculateStopLoss() const;
+		double calculateMinimumProfit() const;
 
+		const algorithm::algorithmDataBase& mData;
 		std::string time;
 		double price = 0.0;
 		double stopLoss = 0.0;

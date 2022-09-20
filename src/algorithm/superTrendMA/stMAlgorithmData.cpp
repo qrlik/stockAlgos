@@ -3,7 +3,7 @@
 
 using namespace algorithm;
 
-stMAlgorithmData::stMAlgorithmData() {
+stMAlgorithmData::stMAlgorithmData(const std::string ticker) : algorithmDataBase(ticker) {
 	getIndicatorsData().enableMA(2);
 	getIndicatorsData().enableSuperTrend();
 	//getIndicatorsData().enableRSI();

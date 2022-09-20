@@ -122,7 +122,7 @@ void stAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
 }
 
 void stAlgorithm::updateOrderStopLoss(double aStopLoss) {
-	order.updateStopLoss(aStopLoss);
+	getOrder().updateStopLoss(aStopLoss);
 }
 
 void stAlgorithm::initInternal() {

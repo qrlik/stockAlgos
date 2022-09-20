@@ -28,7 +28,7 @@ namespace calculation {
 
 	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const calculationsType& calculations);
 	void alignByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations);
-	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations, size_t aSize);
+	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations);
 	void saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree);
 
 	void addStats(Json& aStats, const Json& aData, double aWeight);

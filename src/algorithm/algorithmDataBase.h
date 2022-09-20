@@ -1,15 +1,20 @@
 #pragma once
 #include "market/indicatorsData.h"
+#include "market/marketRules.h"
 #include "json/json.hpp"
 
 namespace algorithm {
 	class algorithmDataBase {
 	public:
-		algorithmDataBase() = default;
+		algorithmDataBase(const std::string ticker);
 		bool operator==(const algorithmDataBase& aOther) const;
+
 		void setID();
 		size_t getID() const { return id; }
 		virtual size_t getCustomID() const { return 0; }
+		const std::string& getTicker() const { return mTicker; }
+		const market::marketData& getMarketData() const { return mMarketData; }
+
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
 		bool initDataField(const std::string& aName, const Json& aValue);
@@ -45,6 +50,9 @@ namespace algorithm {
 	private:
 		size_t getHash() const;
 		size_t getBaseHash() const;
+
+		std::string mTicker;
+		const market::marketData& mMarketData;
 
 		market::indicatorsData indicatorsData;
 

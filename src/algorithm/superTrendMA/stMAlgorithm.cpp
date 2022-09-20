@@ -39,7 +39,6 @@ void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
 }
 
 void stMAlgorithm::logInternal(std::ofstream& aFile) const {
-	// TO DO
 }
 
 void stMAlgorithm::initInternal() {}
@@ -54,5 +53,5 @@ void stMAlgorithm::initDataFieldInternal(const std::string& aName, const Json& a
 }
 
 void stMAlgorithm::updateOrderStopLoss(double aStopLoss) {
-	order.updateStopLoss(aStopLoss);
+	getOrder().updateStopLoss(aStopLoss);
 }

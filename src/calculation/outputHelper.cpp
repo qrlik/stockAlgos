@@ -234,7 +234,7 @@ void calculation::alignByMaxLossPercent(const std::string& algoType, const combi
 	}
 }
 
-combinationsAverages calculation::getCalculationsAverages(const combinationsCalculations& aCalculations, size_t aSize) {
+combinationsAverages calculation::getCalculationsAverages(const combinationsCalculations& aCalculations) {
 	combinationsAverages averageInfo;
 	for (const auto& united : aCalculations) {
 		calculationInfo average;

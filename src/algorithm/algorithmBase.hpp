@@ -32,7 +32,7 @@ namespace algorithm {
 	public:
 		using algorithmDataType = dataType;
 		algorithmBase(const dataType& aData, market::eCandleInterval aTimeframe) :
-			data(aData), stats(data, aTimeframe), indicators(data.getIndicatorsData())
+			data(aData), stats(data, aTimeframe), indicators(data.getIndicatorsData(), data.getTicker()), order(data)
 		{
 			cash = data.getStartCash();
 			statesMap[getIntState(eBaseState::NONE)] = "NONE";
@@ -47,7 +47,7 @@ namespace algorithm {
 			result &= state == aOther.state;
 			if (data.getFullCheck()) {
 				result &= stats == aOther.stats;
-				result &= utils::isEqual(cash, aOther.cash, MARKET_DATA->getQuotePrecision());
+				result &= utils::isEqual(cash, aOther.cash, data.getMarketData().getQuotePrecision());
 			}
 			return result;
 		}
@@ -77,13 +77,13 @@ namespace algorithm {
 			return true;
 		}
 		void openOrder(eOrderState aState, double aPrice) {
-			aPrice = utils::round(aPrice, MARKET_DATA->getPricePrecision());
-			if (!order.openOrder(data, aState, aPrice, cash, getCandle().time)) {
+			aPrice = utils::round(aPrice, data.getMarketData().getPricePrecision());
+			if (!order.openOrder(aState, aPrice, cash, getCandle().time)) {
 				return;
 			}
 
 			setState(getIntState(aState));
-			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_DATA->getTaxFactor(), MARKET_DATA->getQuotePrecision());
+			auto taxAmount = utils::round(getOrder().getNotionalValue() * MARKET_SYSTEM->getTaxFactor(), data.getMarketData().getQuotePrecision());
 			cash = cash - getOrder().getMargin() - taxAmount;
 			stats.onOpenOrder((aState == eOrderState::LONG), taxAmount);
 			onOpenOrder();
@@ -118,7 +118,7 @@ namespace algorithm {
 					if (value.contains("lifeState")) {
 						order.reset();
 					}
-					order.initFromJson(data, value);
+					order.initFromJson(value);
 				}
 				else if (key == "stats") {
 					stats.initFromJson(value);
@@ -175,9 +175,8 @@ namespace algorithm {
 		bool getWithLogs() const { return withLogs; }
 		bool getStopCashBreak() const { return stopCashBreak; }
 		statistic& getStats() { return stats; }
+		order& getOrder() { return order; }
 		const market::candle& getPrevCandle() const { return prevCandle; }
-
-		order order;
 
 	private:
 		bool isReady() const { return indicators.isInited() && !prevCandle.time.empty(); }
@@ -223,6 +222,7 @@ namespace algorithm {
 		const dataType data;
 		statistic stats;
 		market::indicatorsSystem indicators;
+		order order;
 		std::unordered_map<int, std::string> statesMap;
 		std::ofstream logsFile;
 

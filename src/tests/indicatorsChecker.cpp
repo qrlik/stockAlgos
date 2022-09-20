@@ -17,8 +17,8 @@ indicatorsChecker::indicatorsChecker() {
 	if (!data.isValid()) {
 		utils::logError("indicatorsChecker - invalid indicators data");
 	}
-	actualSystem = std::make_unique<market::indicatorsSystem>(data);
-	testSystem = std::make_unique<market::indicatorsSystem>(data);
+	actualSystem = std::make_unique<market::indicatorsSystem>(data, json["ticker"].get<std::string>());
+	testSystem = std::make_unique<market::indicatorsSystem>(data, json["ticker"].get<std::string>());
 	testData = json["testIndicatorsData"];
 	testNextTime = testData[0]["time"].get<std::string>();
 

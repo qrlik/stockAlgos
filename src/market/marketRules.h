@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
-#define MARKET_DATA market::marketData::getInstance()
+#define MARKET_SYSTEM market::marketSystem::getInstance()
 
 namespace market {
 	struct tierData {
@@ -16,8 +16,7 @@ namespace market {
 
 	class marketData {
 	public:
-		static marketData* getInstance();
-		bool loadTickerData(const std::string& aTicker);
+		marketData(const std::string& ticker);
 
 		const tierData& getTierData(double aPosition) const;
 		const std::vector<tierData>& getTiersData() const;
@@ -30,24 +29,31 @@ namespace market {
 		double getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
 		double getLiquidationPercent(double aMargin, int aLeverage) const;
-		double getTaxFactor() const;
 		int getMaxLeverage() const;
 	private:
-		marketData();
+		bool loadTickerData(const std::string& ticker);
+
+		std::vector<tierData> tiersData;
+		std::string mTicker;
+		double quantityPrecision = 0.0;
+		double pricePrecision = 0.0;
+		double quotePrecision = 0.0;
+		double minNotionalValue = 0.0;
+	};
+
+	class marketSystem {
+	public:
+		static marketSystem* getInstance();
+
+		const marketData& getMarketData(const std::string& ticker);
+		double getTaxFactor() const;
+	private:
+		marketSystem();
 		void loadExchangeSettings();
 
-		static marketData* instance;
+		static marketSystem* instance;
 
-		struct tickerData {
-			std::vector<tierData> tiersData;
-			double quantityPrecision = 0.0;
-			double pricePrecision = 0.0;
-			double quotePrecision = 0.0;
-			double minNotionalValue = 0.0;
-		};
-
-		std::unordered_map<std::string, tickerData> data;
-		std::string currentTicker;
+		std::unordered_map<std::string, marketData> data;
 		double tax = 0.0;
 	};
 }

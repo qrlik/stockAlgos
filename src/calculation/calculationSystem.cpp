@@ -135,7 +135,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 void calculationSystem::uniteResults() {
 	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
 	alignByMaxLossPercent(algorithmType, combinationsCalculations, combinationsJsons, calculations);
-	auto combinationsAverages = getCalculationsAverages(combinationsCalculations, calculations.size());
+	auto combinationsAverages = getCalculationsAverages(combinationsCalculations);
 	if (combinationsAverages.empty()) {
 		utils::log("calculationSystem::uniteResults EMPTY");
 		return;

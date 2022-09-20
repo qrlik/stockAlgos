@@ -5,11 +5,12 @@
 
 using namespace market;
 
-indicatorsSystem::indicatorsSystem(const indicatorsData& aData): data(aData) {}
+indicatorsSystem::indicatorsSystem(const indicatorsData& aData, const std::string& ticker) :
+	data(aData), marketData(MARKET_SYSTEM->getMarketData(ticker)) {}
 
 bool indicatorsSystem::operator==(const indicatorsSystem& aOther) const {
 	auto result = true;
-	result &= utils::isEqual(utils::round(atr, MARKET_DATA->getPricePrecision()), aOther.atr);
+	result &= utils::isEqual(utils::round(atr, marketData.getPricePrecision()), aOther.atr);
 
 	result &= utils::isEqual(superTrend, aOther.superTrend);
 	result &= trendIsUp == aOther.trendIsUp;
@@ -129,7 +130,7 @@ void indicatorsSystem::calculateSuperTrend(candle& aCandle) {
 	}
 	auto middlePrice = (aCandle.high + aCandle.low) / 2;
 
-	const auto pricePrecision = MARKET_DATA->getPricePrecision();
+	const auto pricePrecision = marketData.getPricePrecision();
 	auto upperBand = utils::round(middlePrice + data.getStFactor() * atr, pricePrecision);
 	auto lowerBand = utils::round(middlePrice - data.getStFactor() * atr, pricePrecision);
 
@@ -182,8 +183,8 @@ bool indicatorsSystem::calculateMA(candle& aCandle) {
 	}
 	firstMA = (data.getFirstMASize() > 0) ? firstMASum / data.getFirstMASize() : 0.0;
 	secondMA = (data.getSecondMASize() > 0) ? secondMASum / data.getSecondMASize() : 0.0;
-	firstMA = utils::round(firstMA, MARKET_DATA->getPricePrecision());
-	secondMA = utils::round(secondMA, MARKET_DATA->getPricePrecision());
+	firstMA = utils::round(firstMA, marketData.getPricePrecision());
+	secondMA = utils::round(secondMA, marketData.getPricePrecision());
 	return true;
 }
 
