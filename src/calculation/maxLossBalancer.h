@@ -17,11 +17,12 @@ namespace calculation {
 		void terminate();
 		void onSuccess();
 		void onOverhead();
+		void onBalanced();
 		void increaseValues(bool success);
 
 		template<typename algorithmType>
 		void iterate() {
-			auto data = algorithmType::algorithmDataType{};
+			auto data = algorithmType::algorithmDataType{mTicker};
 			mData["dealPercent"] = mLastDealPercent;
 			if (!data.initFromJson(mData)) {
 				utils::logError("MaxLossBalancer::iterate wrong alrorithm data");
@@ -46,14 +47,17 @@ namespace calculation {
 		const double mMaxLossPercentCeil = 0.0;
 		const double mDealPercentPrecision = 0.01;
 
+		double mIncreaseFactor = 1.0;
 		double mLastMaxLossPercent = 0.0;
 		double mLastDealPercent = 0.0;
-		double mLastIncreaseFactor = 1.0;
 
 		double mActualMaxLossPercent = 0.0;
 		double mActualDealPercent = 0.0;
 
+		double mMinFailedPercent = std::numeric_limits<double>::max();
+
 		market::eCandleInterval mInterval = market::eCandleInterval::NONE;
+		bool mStepsStarted = false;
 		bool mBalanced = false;
 		bool mTerminated = false;
 	};

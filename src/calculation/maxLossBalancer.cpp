@@ -23,6 +23,7 @@ MaxLossBalancer::MaxLossBalancer(const std::string& ticker, market::eCandleInter
 }
 
 void MaxLossBalancer::calculate(const std::string& algoType) {
+	increaseValues(true);
 	while (isReadyForBalance()) {
 		if (algoType == "superTrend") {
 			iterate<algorithm::stAlgorithm>();
@@ -38,7 +39,7 @@ void MaxLossBalancer::calculate(const std::string& algoType) {
 }
 
 bool MaxLossBalancer::isValid() const {
-	auto percentCheck = utils::isLessOrEqual(mLastMaxLossPercent, mMaxLossPercentCeil);
+	auto percentCheck = utils::isLessOrEqual(mActualMaxLossPercent, mMaxLossPercentCeil);
 	if (!percentCheck) {
 		utils::logError("MaxLossBalancer::isValid max loss ceil break");
 	}
@@ -54,26 +55,46 @@ void MaxLossBalancer::terminate() {
 }
 
 void MaxLossBalancer::increaseValues(bool success) {
-	if (success) {
-		mLastIncreaseFactor = 1.0;
+	if (!mStepsStarted) {
+		if (!success) {
+			mIncreaseFactor /= 2;
+		}
+		auto increaseFactor = 1.0 + mIncreaseFactor;
+		mLastDealPercent = mActualDealPercent;
+		mLastDealPercent *= increaseFactor;
+		mLastDealPercent = utils::floor(mLastDealPercent, mDealPercentPrecision);
+
+		if (utils::isLessOrEqual(mLastDealPercent, mActualDealPercent)) {
+			mStepsStarted = true;
+		}
 	}
-	else {
-		mLastIncreaseFactor /= 2;
+	if (mStepsStarted) {
+		mLastDealPercent += mDealPercentPrecision;
+		mLastDealPercent = utils::floor(mLastDealPercent, mDealPercentPrecision);
 	}
-	mLastDealPercent *= 1 + mLastIncreaseFactor;
-	mLastDealPercent = utils::floor(mLastDealPercent, mDealPercentPrecision);
 }
 
 void MaxLossBalancer::onSuccess() {
 	mActualMaxLossPercent = mLastMaxLossPercent;
 	mActualDealPercent = mLastDealPercent;
 	increaseValues(true);
+	while (!mStepsStarted && utils::isGreaterOrEqual(mLastDealPercent, mMinFailedPercent)) {
+		increaseValues(false);
+	}
 }
 
 void MaxLossBalancer::onOverhead() {
-	if (utils::isLessOrEqual(mLastDealPercent - mActualDealPercent, mDealPercentPrecision)) {
-		mBalanced = true;
+	mMinFailedPercent = utils::minFloat(mMinFailedPercent, mLastDealPercent);
+	if (mStepsStarted) {
+		onBalanced();
 		return;
 	}
 	increaseValues(false);
+}
+
+void MaxLossBalancer::onBalanced() {
+	mBalanced = true;
+	if (utils::isLessOrEqual(mMinFailedPercent - mActualDealPercent, mDealPercentPrecision * 1.5)) {
+		utils::logError("MaxLossBalancer::onBalanced wrong algorithm result - " + mData["id"].get<size_t>());
+	}
 }
