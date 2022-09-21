@@ -2,10 +2,10 @@
 #include "combinationFactory.hpp"
 #include "market/indicatorsSystem.h"
 #include "market/marketRules.h"
+#include "outputHelper.h"
 #include <mutex>
 
 namespace calculation {
-	using calculationsType = std::vector<std::pair<std::string, market::eCandleInterval>>;
 	class calculationSystem {
 	public:
 		calculationSystem();
@@ -14,7 +14,16 @@ namespace calculation {
 		void loadSettings();
 		void printProgress(size_t aIndex);
 		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
-		void uniteResults();
+		combinationsJsons balanceResultsByMaxLoss();
+		void uniteResults(const combinationsCalculations& calculations, const combinationsJsons& jsons);
+
+		template<typename algorithmType>
+		void calculateInternal() {
+			//processCalculations<algorithmType>();
+			auto balancedJsons = balanceResultsByMaxLoss();
+			auto balancedInfos = recalculateBalancedData<algorithmType>(balancedJsons);
+			uniteResults(balancedInfos, balancedJsons);
+		}
 
 		template<typename algorithmType, typename algorithmDataType>
 		void iterate(combinationFactory<algorithmDataType>& aFactory, market::eCandleInterval aTimeframe, int aThread) {
@@ -29,12 +38,6 @@ namespace calculation {
 				aFactory.incrementThreadIndex(aThread);
 				printProgress(aFactory.getCurrentIndex());
 			}
-		}
-
-		template<typename algorithmType>
-		void calculateInternal() {
-			//processCalculations<algorithmType>();
-			uniteResults();
 		}
 
 		template<typename algorithmType>
@@ -58,6 +61,33 @@ namespace calculation {
 				saveFinalData(ticker, timeframe);
 				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
 			}
+			candlesSource.clear();
+		}
+
+		template<typename algorithmType>
+		combinationsCalculations recalculateBalancedData(const combinationsJsons& balancedData) {
+			combinationsCalculations unitedInfo(balancedData.size());
+			for (const auto& [ticker, timeframe] : calculations) {
+				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
+				auto candles = utils::parseCandles(json);
+				for (const auto& [id, jsonData] : balancedData) {
+					auto algData = algorithmType::algorithmDataType{ ticker };
+					if (!algData.initFromJson(jsonData)) {
+						utils::logError("calculationSystem::recalculateBalancedData wrong alrorithm json data");
+						continue;
+					}
+
+					auto algorithm = algorithmType(algData, timeframe);
+					const auto result = algorithm.calculate(candles);
+					if (result) {
+						unitedInfo[id].push_back(getCalculationInfo(ticker, algorithm.getJsonData()));
+					}
+					else {
+						utils::logError("calculationSystem::recalculateBalancedData wrong balance");
+					}
+				}
+			}
+			return unitedInfo;
 		}
 
 		std::vector<std::vector<Json>> threadsData;

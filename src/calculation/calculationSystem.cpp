@@ -1,7 +1,6 @@
 #include "calculationSystem.h"
 #include "algorithm/superTrend/stAlgorithm.h"
 #include "algorithm/superTrendMA/stMAlgorithm.h"
-#include "outputHelper.h"
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <execution>
@@ -132,13 +131,17 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	saveStats(stats, dirName + "stats.json");
 }
 
-void calculationSystem::uniteResults() {
+combinationsJsons calculationSystem::balanceResultsByMaxLoss() {
 	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
-	alignByMaxLossPercent(algorithmType, combinationsCalculations, combinationsJsons, calculations);
-	auto combinationsAverages = getCalculationsAverages(combinationsCalculations);
+	balanceByMaxLossPercent(algorithmType, combinationsCalculations, combinationsJsons, calculations);
+	return std::move(combinationsJsons);
+}
+
+void calculationSystem::uniteResults(const combinationsCalculations& calculations, const combinationsJsons& jsons) {
+	auto combinationsAverages = getCalculationsAverages(calculations);
 	if (combinationsAverages.empty()) {
-		utils::log("calculationSystem::uniteResults EMPTY");
+		utils::log("calculationSystem::uniteResults empty averages");
 		return;
 	}
-	saveDataAndStats(combinationsAverages, combinationsJsons, parabolaDegree);
+	saveDataAndStats(combinationsAverages, jsons, parabolaDegree);
 }

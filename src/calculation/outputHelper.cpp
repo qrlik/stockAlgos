@@ -159,6 +159,18 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 	return utils::outputDir + '/' + aTicker + '_' + market::getCandleIntervalApiStr(aInterval) + '/';
 }
 
+calculationInfo calculation::getCalculationInfo(const std::string& ticker, const Json& data) {
+	calculationInfo info;
+	info.ticker = ticker;
+	info.cash = data["cash"].get<double>();
+	info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
+	info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
+	info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
+	info.maxLossPercent = data["stats"]["maxLossPercent"].get<double>();
+	info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
+	return info;
+}
+
 std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const calculationsType& calculations) {
 	auto lastData = utils::readFromJson(utils::lastDataDir);
 	combinationsCalculations unitedInfo(lastData.size());
@@ -184,15 +196,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 			if (!idToJsons.count(data["data"]["id"].get<size_t>())) {
 				continue;
 			}
-			calculationInfo info;
-			info.ticker = ticker;
-			info.cash = data["cash"].get<double>();
-			info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
-			info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
-			info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
-			info.maxLossPercent = data["stats"]["maxLossPercent"].get<double>();
-			info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
-			unitedInfo[data["data"]["id"].get<size_t>()].push_back(std::move(info));
+			unitedInfo[data["data"]["id"].get<size_t>()].push_back(getCalculationInfo(ticker, data));
 		}
 	}
 
@@ -209,7 +213,7 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
 
-void calculation::alignByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, const combinationsJsons& jsons, const calculationsType& calculations) {
+void calculation::balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations) {
 	for (const auto& [id, infos] : combinations) {
 		if (infos.empty()) {
 			utils::logError("calculation::alignByMaxLossPercent empty data - " + std::to_string(id));
@@ -217,7 +221,7 @@ void calculation::alignByMaxLossPercent(const std::string& algoType, const combi
 		}
 		auto it = std::max_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return lhs.maxLossPercent < rhs.maxLossPercent; });
 		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [it](const auto& pair) { return pair.first == it->ticker; });
-		auto jsonIt = std::find_if(jsons.begin(), jsons.end(), [id = id](const auto& pair) { return pair.first == id; });
+		auto jsonIt = std::find(jsons.begin(), jsons.end(), id);
 		if (calcIt == calculations.end() || jsonIt == jsons.end()) {
 			utils::logError("calculation::alignByMaxLossPercent can't find data - " + it->ticker + " " + std::to_string(id));
 			continue;
@@ -225,12 +229,7 @@ void calculation::alignByMaxLossPercent(const std::string& algoType, const combi
 
 		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, it->maxLossPercent);
 		balancer.calculate(algoType);
-
-		auto balancedMaxLossPercent = balancer.getMaxLossPercent();
-		auto balancedDealPercent = balancer.getDealPercent();
-
-		auto x = 5;
-		//update values;
+		jsonIt->second["dealPercent"] = balancer.getDealPercent();
 	}
 }
 
