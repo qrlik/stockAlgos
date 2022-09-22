@@ -66,8 +66,8 @@ void calculationSystem::calculate() {
 	}
 }
 
-void calculationSystem::printProgress(size_t aIndex) {
-	const auto newProgress = static_cast<int>(static_cast<double>(aIndex) / combinations * 100);
+void calculationSystem::printProgress(int index, int summary) {
+	const auto newProgress = static_cast<int>(static_cast<double>(index) / summary * 100);
 	if (newProgress > progress) {
 		std::lock_guard<std::mutex> lock(printMutex);
 		progress = newProgress;
@@ -137,8 +137,8 @@ combinationsJsons calculationSystem::balanceResultsByMaxLoss() {
 	return std::move(combinationsJsons);
 }
 
-void calculationSystem::uniteResults(const combinationsCalculations& calculations, const combinationsJsons& jsons) {
-	auto combinationsAverages = getCalculationsAverages(calculations);
+void calculationSystem::uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons) {
+	auto combinationsAverages = getCalculationsAverages(infos);
 	if (combinationsAverages.empty()) {
 		utils::log("calculationSystem::uniteResults empty averages");
 		return;

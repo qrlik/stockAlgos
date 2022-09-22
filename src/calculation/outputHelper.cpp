@@ -214,23 +214,28 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 }
 
 void calculation::balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations) {
+	std::vector<std::pair<size_t, calculationInfo>> worstTickers;
 	for (const auto& [id, infos] : combinations) {
-		if (infos.empty()) {
-			utils::logError("calculation::alignByMaxLossPercent empty data - " + std::to_string(id));
-			continue;
-		}
 		auto it = std::max_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return lhs.maxLossPercent < rhs.maxLossPercent; });
-		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [it](const auto& pair) { return pair.first == it->ticker; });
-		auto jsonIt = std::find(jsons.begin(), jsons.end(), id);
+		if (it != infos.end()) {
+			worstTickers.emplace_back(id, *it);
+		}
+	}
+	std::sort(worstTickers.begin(), worstTickers.end(), [](const auto& lhs, const auto& rhs) { return lhs.second.ticker < rhs.second.ticker; });
+
+	for (const auto& [id, worstInfo] : worstTickers) {
+		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [ticker = worstInfo.ticker](const auto& pair) { return pair.first == ticker; });
+		auto jsonIt = jsons.find(id);
 		if (calcIt == calculations.end() || jsonIt == jsons.end()) {
-			utils::logError("calculation::alignByMaxLossPercent can't find data - " + it->ticker + " " + std::to_string(id));
+			utils::logError("calculation::balanceByMaxLossPercent can't find data - " + worstInfo.ticker + " " + std::to_string(id));
 			continue;
 		}
 
-		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, it->maxLossPercent);
+		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, worstInfo.maxLossPercent);
 		balancer.calculate(algoType);
 		jsonIt->second["dealPercent"] = balancer.getDealPercent();
 	}
+	utils::log("calculation::balanceByMaxLossPercent finished");
 }
 
 combinationsAverages calculation::getCalculationsAverages(const combinationsCalculations& aCalculations) {

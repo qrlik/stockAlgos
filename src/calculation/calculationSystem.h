@@ -12,10 +12,10 @@ namespace calculation {
 		void calculate();
 	private:
 		void loadSettings();
-		void printProgress(size_t aIndex);
+		void printProgress(int index, int summary);
 		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
 		combinationsJsons balanceResultsByMaxLoss();
-		void uniteResults(const combinationsCalculations& calculations, const combinationsJsons& jsons);
+		void uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons);
 
 		template<typename algorithmType>
 		void calculateInternal() {
@@ -36,14 +36,13 @@ namespace calculation {
 					threadResults.push_back(algorithm.getJsonData());
 				}
 				aFactory.incrementThreadIndex(aThread);
-				printProgress(aFactory.getCurrentIndex());
+				printProgress(aFactory.getCurrentIndex(), combinations);
 			}
 		}
 
 		template<typename algorithmType>
 		void processCalculations() {
 			for (const auto& [ticker, timeframe] : calculations) {
-				progress = 0;
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
 				threadsData.resize(threadsAmount);
@@ -60,6 +59,7 @@ namespace calculation {
 				factory.onFinish();
 				saveFinalData(ticker, timeframe);
 				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
+				progress = 0;
 			}
 			candlesSource.clear();
 		}
@@ -67,26 +67,31 @@ namespace calculation {
 		template<typename algorithmType>
 		combinationsCalculations recalculateBalancedData(const combinationsJsons& balancedData) {
 			combinationsCalculations unitedInfo(balancedData.size());
+			int index = 0;
+			const int summary = calculations.size() * balancedData.size();
 			for (const auto& [ticker, timeframe] : calculations) {
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				auto candles = utils::parseCandles(json);
 				for (const auto& [id, jsonData] : balancedData) {
 					auto algData = algorithmType::algorithmDataType{ ticker };
 					if (!algData.initFromJson(jsonData)) {
-						utils::logError("calculationSystem::recalculateBalancedData wrong alrorithm json data");
+						utils::logError("\ncalculationSystem::recalculateBalancedData wrong alrorithm json data");
 						continue;
 					}
 
 					auto algorithm = algorithmType(algData, timeframe);
 					const auto result = algorithm.calculate(candles);
+					const auto jsonData = algorithm.getJsonData();
 					if (result) {
-						unitedInfo[id].push_back(getCalculationInfo(ticker, algorithm.getJsonData()));
+						unitedInfo[id].push_back(getCalculationInfo(ticker, jsonData));
 					}
 					else {
-						utils::logError("calculationSystem::recalculateBalancedData wrong balance");
+						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + jsonData);
 					}
+					printProgress(++index, summary);
 				}
 			}
+			utils::log("\ncalculation::recalculateBalancedData finished");
 			return unitedInfo;
 		}
 

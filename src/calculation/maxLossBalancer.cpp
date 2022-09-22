@@ -5,6 +5,11 @@
 
 using namespace calculation;
 
+namespace {
+	std::vector<market::candle> lastCandles;
+	std::string lastTicker;
+}
+
 MaxLossBalancer::MaxLossBalancer(const std::string& ticker, market::eCandleInterval interval, const Json& data, double maxLossPercent) :
 	mData(data),
 	mTicker(ticker),
@@ -18,8 +23,11 @@ MaxLossBalancer::MaxLossBalancer(const std::string& ticker, market::eCandleInter
 	if (utils::isGreater(mLastMaxLossPercent, mMaxLossPercentCeil) || utils::isLessOrEqual(mLastDealPercent, 0.0)) {
 		utils::logError("MaxLossBalancer wrong data");
 	}
-	auto candlesJson = utils::readFromJson("assets/candles/" + mTicker + '_' + getCandleIntervalApiStr(mInterval));
-	mCandles = utils::parseCandles(candlesJson);
+	if (ticker != lastTicker) {
+		lastTicker = ticker;
+		auto candlesJson = utils::readFromJson("assets/candles/" + mTicker + '_' + getCandleIntervalApiStr(mInterval));
+		lastCandles = utils::parseCandles(candlesJson);
+	}
 }
 
 void MaxLossBalancer::calculate(const std::string& algoType) {
@@ -57,11 +65,16 @@ void MaxLossBalancer::terminate() {
 void MaxLossBalancer::increaseValues(bool success) {
 	if (!mStepsStarted) {
 		if (!success) {
-			mIncreaseFactor /= 2;
+			if (utils::isGreater(mIncreaseFactor / 2, 1.0)) {
+				mIncreaseFactor /= 2;
+			}
+			else {
+				auto mod = (mIncreaseFactor - 1.0) / 2;
+				mIncreaseFactor = 1.0 + mod;
+			}
 		}
-		auto increaseFactor = 1.0 + mIncreaseFactor;
 		mLastDealPercent = mActualDealPercent;
-		mLastDealPercent *= increaseFactor;
+		mLastDealPercent *= mIncreaseFactor;
 		mLastDealPercent = utils::floor(mLastDealPercent, mDealPercentPrecision);
 
 		if (utils::isLessOrEqual(mLastDealPercent, mActualDealPercent)) {
@@ -94,7 +107,7 @@ void MaxLossBalancer::onOverhead() {
 
 void MaxLossBalancer::onBalanced() {
 	mBalanced = true;
-	if (utils::isLessOrEqual(mMinFailedPercent - mActualDealPercent, mDealPercentPrecision * 1.5)) {
-		utils::logError("MaxLossBalancer::onBalanced wrong algorithm result - " + mData["id"].get<size_t>());
+	if (utils::isLess(mMinFailedPercent, mActualDealPercent) || utils::isGreaterOrEqual(mMinFailedPercent - mActualDealPercent, mDealPercentPrecision * 1.5)) {
+		utils::logError("MaxLossBalancer::onBalanced wrong algorithm result - " + std::to_string(mData["id"].get<size_t>()));
 	}
 }

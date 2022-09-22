@@ -30,7 +30,7 @@ namespace calculation {
 				return;
 			}
 			auto algorithm = algorithmType(data, mInterval);
-			auto result = algorithm.calculate(mCandles);
+			auto result = algorithm.calculate(lastCandles);
 			mLastMaxLossPercent = algorithm.getJsonData()["stats"]["maxLossPercent"].get<double>();
 			if (result) {
 				onSuccess();
@@ -41,13 +41,12 @@ namespace calculation {
 		}
 
 		Json mData;
-		std::vector<market::candle> mCandles;
 		std::string mTicker;
 
 		const double mMaxLossPercentCeil = 0.0;
 		const double mDealPercentPrecision = 0.01;
 
-		double mIncreaseFactor = 1.0;
+		double mIncreaseFactor = 10.0;
 		double mLastMaxLossPercent = 0.0;
 		double mLastDealPercent = 0.0;
 
