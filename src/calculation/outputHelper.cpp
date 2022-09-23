@@ -234,6 +234,7 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, worstInfo.maxLossPercent);
 		balancer.calculate(algoType);
 		jsonIt->second["dealPercent"] = balancer.getDealPercent();
+		jsonIt->second["maxLossPercent"] = 100.0; // allow small imbalance
 	}
 	utils::log("calculation::balanceByMaxLossPercent finished");
 }

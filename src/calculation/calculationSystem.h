@@ -86,7 +86,7 @@ namespace calculation {
 						unitedInfo[id].push_back(getCalculationInfo(ticker, jsonData));
 					}
 					else {
-						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + jsonData);
+						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + std::to_string(id));
 					}
 					printProgress(++index, summary);
 				}
