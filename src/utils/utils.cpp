@@ -1,9 +1,15 @@
 #include "utils.h"
 #include <filesystem>
 #include <fstream>
+#include <future>
 #include <iostream>
 
 using namespace utils;
+
+namespace {
+	std::mutex printMutex;
+	int progress = 0;
+}
 
 Json utils::readFromJson(const std::string& aPath) {
 	std::ifstream input(aPath + ".json");
@@ -84,4 +90,18 @@ bool utils::isLess(double aLhs, double aRhs) {
 
 bool utils::isLessOrEqual(double aLhs, double aRhs) {
 	return isLess(aLhs, aRhs) || isEqual(aLhs, aRhs);
+}
+
+void utils::printProgress(int index, int summary) {
+	const auto newProgress = static_cast<int>(static_cast<double>(index) / summary * 100);
+	if (newProgress > progress) {
+		std::lock_guard<std::mutex> lock(printMutex);
+		progress = newProgress;
+		std::cout << std::to_string(progress) + "%...";
+		std::cout.flush();
+	}
+}
+
+void utils::resetProgress() {
+	progress = 0;
 }

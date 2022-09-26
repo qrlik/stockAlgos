@@ -27,6 +27,9 @@ namespace utils {
 	bool isLess(double aLhs, double aRhs);
 	bool isLessOrEqual(double aLhs, double aRhs);
 
+	void printProgress(int index, int summary);
+	void resetProgress();
+
 	template <class T>
 	inline void hash_combine(std::size_t& seed, const T& v)
 	{
