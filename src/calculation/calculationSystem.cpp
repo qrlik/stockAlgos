@@ -4,7 +4,6 @@
 #include "market/marketRules.h"
 #include "utils/utils.h"
 #include <execution>
-#include <future>
 #include <iostream>
 
 using namespace calculation;
@@ -63,16 +62,6 @@ void calculationSystem::calculate() {
 	}
 	else {
 		utils::logError("calculationSystem::calculate unknown algorithm type");
-	}
-}
-
-void calculationSystem::printProgress(int index, int summary) {
-	const auto newProgress = static_cast<int>(static_cast<double>(index) / summary * 100);
-	if (newProgress > progress) {
-		std::lock_guard<std::mutex> lock(printMutex);
-		progress = newProgress;
-		std::cout << std::to_string(progress) + "%...";
-		std::cout.flush();
 	}
 }
 

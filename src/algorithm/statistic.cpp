@@ -117,11 +117,11 @@ void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) co
 	aJson["orderProfitStreak"] = profitableStreak;
 	aJson["orderUnprofitStreak"] = unprofitableStreak;
 	aJson["maxLossPercent"] = getMaxLossPercentActual();
-	aJson["recoveryFactor"] = (aCash - data.getStartCash()) / summaryLoss;
+	aJson["recoveryFactor"] = (aCash - data.getStartCash()) / summaryLoss; // more - good
 
 	if (auto itProfit = statCounters.find("profitableOrder"); itProfit != statCounters.end()) {
 		if (auto itUnprofit = statCounters.find("unprofitableOrder"); itUnprofit != statCounters.end()) {
-			 aJson["profitsFactor"] = static_cast<double>(itUnprofit->second) / itProfit->second;
+			 aJson["profitsFactor"] = static_cast<double>(itUnprofit->second) / itProfit->second; // less - good
 		}
 	}
 

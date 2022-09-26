@@ -12,7 +12,6 @@ namespace calculation {
 		void calculate();
 	private:
 		void loadSettings();
-		void printProgress(int index, int summary);
 		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
 		combinationsJsons balanceResultsByMaxLoss();
 		void uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons);
@@ -36,7 +35,7 @@ namespace calculation {
 					threadResults.push_back(algorithm.getJsonData());
 				}
 				aFactory.incrementThreadIndex(aThread);
-				printProgress(aFactory.getCurrentIndex(), combinations);
+				utils::printProgress(aFactory.getCurrentIndex(), combinations);
 			}
 		}
 
@@ -59,7 +58,7 @@ namespace calculation {
 				factory.onFinish();
 				saveFinalData(ticker, timeframe);
 				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
-				progress = 0;
+				utils::resetProgress;
 			}
 			candlesSource.clear();
 		}
@@ -68,7 +67,7 @@ namespace calculation {
 		combinationsCalculations recalculateBalancedData(const combinationsJsons& balancedData) {
 			combinationsCalculations unitedInfo(balancedData.size());
 			int index = 0;
-			const int summary = calculations.size() * balancedData.size();
+			const int summary = static_cast<int>(calculations.size() * balancedData.size());
 			for (const auto& [ticker, timeframe] : calculations) {
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				auto candles = utils::parseCandles(json);
@@ -81,30 +80,28 @@ namespace calculation {
 
 					auto algorithm = algorithmType(algData, timeframe);
 					const auto result = algorithm.calculate(candles);
-					const auto jsonData = algorithm.getJsonData();
 					if (result) {
-						unitedInfo[id].push_back(getCalculationInfo(ticker, jsonData));
+						unitedInfo[id].push_back(getCalculationInfo(ticker, algorithm.getJsonData()));
 					}
 					else {
 						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + std::to_string(id));
 					}
-					printProgress(++index, summary);
+					utils::printProgress(++index, summary);
 				}
 			}
+			utils::resetProgress();
 			utils::log("\ncalculation::recalculateBalancedData finished");
 			return unitedInfo;
 		}
 
 		std::vector<std::vector<Json>> threadsData;
 		std::vector<market::candle> candlesSource;
-		std::mutex printMutex;
 		
 		std::string algorithmType;
 		calculationsType calculations;
 		size_t threadsAmount = 0;
 		int parabolaDegree = 0;
 
-		int progress = 0;
 		size_t combinations = 0;
 	};
 }
