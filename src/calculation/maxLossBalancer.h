@@ -32,7 +32,7 @@ namespace calculation {
 			auto algorithm = algorithmType(data, mInterval);
 			auto result = algorithm.calculate(lastCandles);
 			mLastMaxLossPercent = algorithm.getJsonData()["stats"]["maxLossPercent"].get<double>();
-			if (result) {
+			if (result && utils::isGreater(algorithm.getFullCash(), algorithm.getData().getStartCash())) {
 				onSuccess();
 			}
 			else {

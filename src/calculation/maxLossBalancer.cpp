@@ -83,7 +83,6 @@ void MaxLossBalancer::increaseValues(bool success) {
 	}
 	if (mStepsStarted) {
 		mLastDealPercent += mDealPercentPrecision;
-		mLastDealPercent = utils::floor(mLastDealPercent, mDealPercentPrecision);
 	}
 }
 
@@ -93,6 +92,10 @@ void MaxLossBalancer::onSuccess() {
 	increaseValues(true);
 	while (!mStepsStarted && utils::isGreaterOrEqual(mLastDealPercent, mMinFailedPercent)) {
 		increaseValues(false);
+	}
+	if (mStepsStarted && utils::isLessOrEqual(mLastDealPercent, mActualDealPercent)) {
+		onBalanced();
+		return;
 	}
 }
 
