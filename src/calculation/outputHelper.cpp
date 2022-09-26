@@ -1,6 +1,7 @@
 #include "outputHelper.h"
 #include "maxLossBalancer.h"
 #include "utils/utils.h"
+#include <future>
 
 using namespace calculation;
 
@@ -213,30 +214,52 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 	return { std::move(unitedInfo), std::move(idToJsons) };
 }
 
-void calculation::balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations) {
-	std::vector<std::pair<size_t, calculationInfo>> worstTickers;
-	for (const auto& [id, infos] : combinations) {
-		auto it = std::min_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return utils::isLess(lhs.profitPerInterval, rhs.profitPerInterval); });
-		if (it != infos.end()) {
-			worstTickers.emplace_back(id, *it);
+namespace {
+	void balanceByMaxLossPercentAsync(const std::string& algoType, const std::string& ticker, market::eCandleInterval interval,
+									const std::vector<size_t>& ids, const combinationsJsons& jsons, const combinationsCalculations& combinations,
+									std::unordered_map<size_t, double>& minDealPercents) {
+		for (auto id : ids) {
+			auto infosIt = combinations.find(id);
+			auto jsonIt = jsons.find(id);
+			if (infosIt == combinations.end() || jsonIt == jsons.end()) {
+				utils::logError("calculation::balanceByMaxLossPercent can't find data - " + ticker + " " + std::to_string(id));
+				continue;
+			}
+			auto infoIt = std::find_if(infosIt->second.begin(), infosIt->second.end(), [&ticker](const auto& info) { return info.ticker == ticker; });
+			if (infoIt == infosIt->second.end()) {
+				utils::logError("calculation::balanceByMaxLossPercent can't find max loss data - " + ticker + " " + std::to_string(id));
+				continue;
+			}
+
+			MaxLossBalancer balancer(ticker, interval, jsonIt->second, infoIt->maxLossPercent);
+			balancer.calculate(algoType);
+			minDealPercents[id] = utils::minFloat(minDealPercents[id], balancer.getDealPercent());
+			//utils::printProgress(++index, static_cast<int>(worstTickers.size()));
 		}
 	}
-	std::sort(worstTickers.begin(), worstTickers.end(), [](const auto& lhs, const auto& rhs) { return lhs.second.ticker < rhs.second.ticker; });
+}
 
-	auto index = 0;
-	for (const auto& [id, worstInfo] : worstTickers) {
-		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [ticker = worstInfo.ticker](const auto& pair) { return pair.first == ticker; });
-		auto jsonIt = jsons.find(id);
-		if (calcIt == calculations.end() || jsonIt == jsons.end()) {
-			utils::logError("calculation::balanceByMaxLossPercent can't find data - " + worstInfo.ticker + " " + std::to_string(id));
-			continue;
+void calculation::balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons,
+										const calculationsType& calculations, size_t threadsAmount) {
+	std::unordered_map<size_t, double> minDealPercents(jsons.size());
+	std::vector<std::vector<size_t>> ids(threadsAmount);
+
+	for_each(jsons.begin(), jsons.end(), [&ids, &minDealPercents, index = 0, mods = threadsAmount](const auto& pair) mutable {
+		ids[index % mods].push_back(pair.first);
+		minDealPercents[pair.first] = std::numeric_limits<double>::max();
+		++index;
+	});
+	for (const auto& [ticker, interval] : calculations) {
+		std::vector<std::future<void>> futures(threadsAmount);
+		for (size_t i = 0; i < threadsAmount; ++i) {
+			futures.push_back(std::async(std::launch::async, &balanceByMaxLossPercentAsync, algoType, ticker, interval, ids[i], jsons, combinations, std::ref(minDealPercents)));
 		}
-
-		MaxLossBalancer balancer(calcIt->first, calcIt->second, jsonIt->second, worstInfo.maxLossPercent);
-		balancer.calculate(algoType);
-		jsonIt->second["dealPercent"] = balancer.getDealPercent();
-		jsonIt->second["maxLossPercent"] = 100.0; // allow small imbalance
-		utils::printProgress(++index, static_cast<int>(worstTickers.size()));
+		for (const auto& future : futures) {
+			future.wait();
+		}
+	}
+	for (auto [id, balancedPercent] : minDealPercents) {
+		jsons[id]["dealPercent"] = balancedPercent;
 	}
 	utils::resetProgress();
 	utils::log("calculation::balanceByMaxLossPercent finished");

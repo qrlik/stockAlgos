@@ -13,13 +13,13 @@ namespace calculation {
 	private:
 		void loadSettings();
 		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
-		combinationsJsons balanceResultsByMaxLoss();
+		combinationsJsons balanceResultsByMaxLoss(size_t threadsAmount);
 		void uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons);
 
 		template<typename algorithmType>
 		void calculateInternal() {
 			//processCalculations<algorithmType>();
-			auto balancedJsons = balanceResultsByMaxLoss();
+			auto balancedJsons = balanceResultsByMaxLoss(threadsAmount);
 			auto balancedInfos = recalculateBalancedData<algorithmType>(balancedJsons);
 			uniteResults(balancedInfos, balancedJsons);
 		}

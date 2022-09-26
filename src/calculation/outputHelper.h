@@ -29,7 +29,7 @@ namespace calculation {
 	calculationInfo getCalculationInfo(const std::string& ticker, const Json& data);
 
 	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const calculationsType& calculations);
-	void balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations);
+	void balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations, size_t threadsAmount);
 	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations);
 	void saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree);
 
