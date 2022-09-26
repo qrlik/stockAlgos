@@ -216,13 +216,14 @@ std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculati
 void calculation::balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations) {
 	std::vector<std::pair<size_t, calculationInfo>> worstTickers;
 	for (const auto& [id, infos] : combinations) {
-		auto it = std::max_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return lhs.maxLossPercent < rhs.maxLossPercent; });
+		auto it = std::min_element(infos.begin(), infos.end(), [](const auto& lhs, const auto& rhs) { return utils::isLess(lhs.profitPerInterval, rhs.profitPerInterval); });
 		if (it != infos.end()) {
 			worstTickers.emplace_back(id, *it);
 		}
 	}
 	std::sort(worstTickers.begin(), worstTickers.end(), [](const auto& lhs, const auto& rhs) { return lhs.second.ticker < rhs.second.ticker; });
 
+	auto index = 0;
 	for (const auto& [id, worstInfo] : worstTickers) {
 		auto calcIt = std::find_if(calculations.begin(), calculations.end(), [ticker = worstInfo.ticker](const auto& pair) { return pair.first == ticker; });
 		auto jsonIt = jsons.find(id);
@@ -235,7 +236,9 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 		balancer.calculate(algoType);
 		jsonIt->second["dealPercent"] = balancer.getDealPercent();
 		jsonIt->second["maxLossPercent"] = 100.0; // allow small imbalance
+		utils::printProgress(++index, static_cast<int>(worstTickers.size()));
 	}
+	utils::resetProgress();
 	utils::log("calculation::balanceByMaxLossPercent finished");
 }
 
@@ -252,6 +255,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 			average.profitsFactor = utils::maxFloat(average.profitsFactor, info.profitsFactor);
 			average.recoveryFactor = utils::minFloat(average.recoveryFactor,info.recoveryFactor);
 			average.ordersPerInterval = utils::minFloat(average.ordersPerInterval, info.ordersPerInterval);
+			average.profitPerIntervalWorst = utils::minFloat(average.profitPerIntervalWorst, info.profitPerInterval);
 			if (utils::isGreater(info.maxLossPercent, average.maxLossPercent)) {
 				average.ticker = info.ticker;
 				average.maxLossPercent = info.maxLossPercent;
@@ -265,14 +269,16 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 
 		averageInfo.push_back({ united.first, std::move(average) });
 	}
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) { return aLhs.second.profitPerInterval > aRhs.second.profitPerInterval ; });
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs)
+		{ return std::tie(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
+					> std::tie(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
 	return averageInfo;
 }
 
 void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree) {
 	Json unitedData;
 	Json unitedStats;
-	double maxProfit = combinationsAverages[0].second.profitPerInterval;
+	double maxProfit = combinationsAverages[0].second.profitPerIntervalWorst;
 	for (const auto& info : combinationsAverages) {
 		Json data;
 		data["cash"] = info.second.cash;
@@ -285,10 +291,11 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 		stats["ordersPerInterval"] = info.second.ordersPerInterval;
 		stats["maxLossTicker"] = info.second.ticker;
 		stats["maxLossPercent"] = info.second.maxLossPercent;
+		stats["profitPerIntervalWorst"] = info.second.profitPerIntervalWorst;
 		stats["profitPerInterval"] = info.second.profitPerInterval;
 		unitedData.push_back(data);
 
-		const auto weight = getWeight(info.second.profitPerInterval, maxProfit, degree);
+		const auto weight = getWeight(info.second.profitPerIntervalWorst, maxProfit, degree);
 		addStats(unitedStats, data["data"], weight);
 	}
 

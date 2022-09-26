@@ -6,13 +6,14 @@
 
 namespace calculation {
 	struct calculationInfo {
-		std::string ticker;
-		double cash = 0.0;
+		std::string ticker; // actual or worst
+		double cash = 0.0; // actual or summary
 		double profitsFactor = std::numeric_limits<double>::min();
 		double recoveryFactor = std::numeric_limits<double>::max();
 		double ordersPerInterval = std::numeric_limits<double>::max();
 		double maxLossPercent = std::numeric_limits<double>::min();
-		double profitPerInterval = 0.0;
+		double profitPerIntervalWorst = std::numeric_limits<double>::max();
+		double profitPerInterval = 0.0; // actual or median
 	};
 
 	using combinationId = size_t;
