@@ -234,8 +234,8 @@ namespace {
 			MaxLossBalancer balancer(ticker, interval, jsonIt->second, infoIt->maxLossPercent);
 			balancer.calculate(algoType);
 			minDealPercents[id] = utils::minFloat(minDealPercents[id], balancer.getDealPercent());
-			//utils::printProgress(++index, static_cast<int>(worstTickers.size()));
 		}
+		utils::printProgress(ids.size());
 	}
 }
 
@@ -249,6 +249,7 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 		minDealPercents[pair.first] = std::numeric_limits<double>::max();
 		++index;
 	});
+	utils::setSummaryProgress(static_cast<int>(calculations.size() * jsons.size()));
 	for (const auto& [ticker, interval] : calculations) {
 		std::vector<std::future<void>> futures(threadsAmount);
 		for (size_t i = 0; i < threadsAmount; ++i) {

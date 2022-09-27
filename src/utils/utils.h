@@ -28,6 +28,8 @@ namespace utils {
 	bool isLessOrEqual(double aLhs, double aRhs);
 
 	void printProgress(int index, int summary);
+	void printProgress(int added);
+	void setSummaryProgress(int summary);
 	void resetProgress();
 
 	template <class T>

@@ -9,6 +9,7 @@ using namespace utils;
 namespace {
 	std::mutex printMutex;
 	int progress = 0;
+	int summaryProgress = 0;
 }
 
 Json utils::readFromJson(const std::string& aPath) {
@@ -102,6 +103,15 @@ void utils::printProgress(int index, int summary) {
 	}
 }
 
+void utils::printProgress(int added) {
+	printProgress(progress + added, summaryProgress);
+}
+
+void utils::setSummaryProgress(int summary) {
+	summaryProgress = summary;
+}
+
 void utils::resetProgress() {
 	progress = 0;
+	summaryProgress = 0;
 }
