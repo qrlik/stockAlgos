@@ -94,7 +94,7 @@ bool algorithmDataBase::initFromJson(const Json& aValue) {
 	for (const auto& [key, value] : aValue.items()) {
 		result &= initDataField(key, value);
 	}
-	return result;
+	return result && isValid();
 }
 
 bool algorithmDataBase::initDataField(const std::string& aName, const Json& aValue) {

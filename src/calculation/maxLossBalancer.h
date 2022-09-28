@@ -5,6 +5,9 @@
 namespace calculation {
 	class MaxLossBalancer {
 	public:
+		static void cleanupCandels();
+		static void loadCandles(const std::string& ticker, market::eCandleInterval interval);
+
 		MaxLossBalancer(const std::string& ticker, market::eCandleInterval interval, const Json& data, double maxLossPercent);
 
 		void calculate(const std::string& algoType);
@@ -46,7 +49,7 @@ namespace calculation {
 		const double mMaxLossPercentCeil = 0.0;
 		const double mDealPercentPrecision = 0.01;
 
-		double mIncreaseFactor = 10.0;
+		double mIncreaseFactor = 5.0;
 		double mLastMaxLossPercent = 0.0;
 		double mLastDealPercent = 0.0;
 
@@ -55,6 +58,7 @@ namespace calculation {
 
 		double mMinFailedPercent = std::numeric_limits<double>::max();
 
+		size_t mId = 0;
 		market::eCandleInterval mInterval = market::eCandleInterval::NONE;
 		bool mStepsStarted = false;
 		bool mBalanced = false;

@@ -230,12 +230,14 @@ namespace {
 				utils::logError("calculation::balanceByMaxLossPercent can't find max loss data - " + ticker + " " + std::to_string(id));
 				continue;
 			}
-
+			if (utils::isLessOrEqual(minDealPercents[id], jsonIt->second["dealPercent"].get<double>())) {
+				continue;
+			} // TMP
 			MaxLossBalancer balancer(ticker, interval, jsonIt->second, infoIt->maxLossPercent);
 			balancer.calculate(algoType);
 			minDealPercents[id] = utils::minFloat(minDealPercents[id], balancer.getDealPercent());
 		}
-		utils::printProgress(ids.size());
+		utils::printProgress(static_cast<int>(ids.size()));
 	}
 }
 
@@ -251,9 +253,11 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 	});
 	utils::setSummaryProgress(static_cast<int>(calculations.size() * jsons.size()));
 	for (const auto& [ticker, interval] : calculations) {
-		std::vector<std::future<void>> futures(threadsAmount);
+		MaxLossBalancer::loadCandles(ticker, interval);
+		std::vector<std::future<void>> futures;
 		for (size_t i = 0; i < threadsAmount; ++i) {
-			futures.push_back(std::async(std::launch::async, &balanceByMaxLossPercentAsync, algoType, ticker, interval, ids[i], jsons, combinations, std::ref(minDealPercents)));
+			futures.push_back(std::async(std::launch::async, &balanceByMaxLossPercentAsync, algoType, ticker, interval, ids[i], jsons,
+										combinations, std::ref(minDealPercents)));
 		}
 		for (const auto& future : futures) {
 			future.wait();
@@ -262,6 +266,7 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 	for (auto [id, balancedPercent] : minDealPercents) {
 		jsons[id]["dealPercent"] = balancedPercent;
 	}
+	MaxLossBalancer::cleanupCandels();
 	utils::resetProgress();
 	utils::log("calculation::balanceByMaxLossPercent finished");
 }

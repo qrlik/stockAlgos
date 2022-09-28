@@ -9,6 +9,7 @@ using namespace utils;
 namespace {
 	std::mutex printMutex;
 	int progress = 0;
+	int accumulateProgress = 0;
 	int summaryProgress = 0;
 }
 
@@ -104,7 +105,8 @@ void utils::printProgress(int index, int summary) {
 }
 
 void utils::printProgress(int added) {
-	printProgress(progress + added, summaryProgress);
+	accumulateProgress += added;
+	printProgress(accumulateProgress, summaryProgress);
 }
 
 void utils::setSummaryProgress(int summary) {
@@ -114,4 +116,5 @@ void utils::setSummaryProgress(int summary) {
 void utils::resetProgress() {
 	progress = 0;
 	summaryProgress = 0;
+	accumulateProgress = 0;
 }
