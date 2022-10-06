@@ -131,7 +131,7 @@ void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) co
 		aJson["ordersPerInterval"] = itOrders->second / intervalsAmount;
 	}
 	const auto cashProfitFactor = aCash / data.getStartCash();
-	aJson["profitPerInterval"] = (std::pow(cashProfitFactor, 1 / (intervalsAmount - 1)) - 1) * 100.0;
+	aJson["profitPerInterval"] = (std::pow(cashProfitFactor, 1 / (intervalsAmount - 1)) - 1) * 100.0; // % per stats interval
 
 	for (const auto& [name, count] : statCounters) {
 		aJson[name] = count;

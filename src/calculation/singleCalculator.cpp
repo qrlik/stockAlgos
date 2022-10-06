@@ -29,7 +29,7 @@ namespace {
 		algorithm.setWithLogs();
 		auto result = algorithm.calculate(utils::parseCandles(aCandles));
 		auto json = algorithm.getJsonData();
-		utils::log("singleCalculation result - " + (result) ? "true" : "false");
+		utils::log("singleCalculation result - " + std::string((result) ? "true" : "false"));
 		std::cout << json;
 	}
 }
