@@ -219,6 +219,9 @@ namespace {
 									const std::vector<size_t>& ids, const combinationsJsons& jsons, const combinationsCalculations& combinations,
 									std::unordered_map<size_t, double>& minDealPercents) {
 		for (auto id : ids) {
+			if (utils::isLessOrEqual(minDealPercents[id], 0.0)) {
+				continue;
+			}
 			auto infosIt = combinations.find(id);
 			auto jsonIt = jsons.find(id);
 			if (infosIt == combinations.end() || jsonIt == jsons.end()) {
@@ -230,12 +233,14 @@ namespace {
 				utils::logError("calculation::balanceByMaxLossPercent can't find max loss data - " + ticker + " " + std::to_string(id));
 				continue;
 			}
-			if (utils::isLessOrEqual(minDealPercents[id], jsonIt->second["dealPercent"].get<double>())) {
-				continue;
-			} // TMP
 			MaxLossBalancer balancer(ticker, interval, jsonIt->second, infoIt->maxLossPercent);
 			balancer.calculate(algoType);
-			minDealPercents[id] = utils::minFloat(minDealPercents[id], balancer.getDealPercent());
+			if (balancer.getTerminated()) {
+				minDealPercents[id] = -1.0;
+			}
+			else {
+				minDealPercents[id] = utils::minFloat(minDealPercents[id], balancer.getDealPercent());
+			}
 		}
 		utils::printProgress(static_cast<int>(ids.size()));
 	}
@@ -264,11 +269,16 @@ void calculation::balanceByMaxLossPercent(const std::string& algoType, const com
 		}
 	}
 	for (auto [id, balancedPercent] : minDealPercents) {
-		jsons[id]["dealPercent"] = balancedPercent;
+		if (utils::isLessOrEqual(balancedPercent, 0.0)) {
+			jsons.erase(id);
+		}
+		else {
+			jsons[id]["dealPercent"] = balancedPercent;
+		}
 	}
 	MaxLossBalancer::cleanupCandels();
 	utils::resetProgress();
-	utils::log("calculation::balanceByMaxLossPercent finished");
+	utils::log("calculation::balanceByMaxLossPercent finished. size - [ " + std::to_string(jsons.size()) + " ] ");
 }
 
 combinationsAverages calculation::getCalculationsAverages(const combinationsCalculations& aCalculations) {

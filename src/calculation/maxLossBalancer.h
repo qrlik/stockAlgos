@@ -13,6 +13,7 @@ namespace calculation {
 		void calculate(const std::string& algoType);
 		double getMaxLossPercent() const { return mActualMaxLossPercent; }
 		double getDealPercent() const { return mActualDealPercent; }
+		bool getTerminated() const { return mTerminated; }
 	private:
 		bool isValid() const;
 		bool isReadyForBalance() const;
@@ -35,8 +36,13 @@ namespace calculation {
 			auto algorithm = algorithmType(data, mInterval);
 			auto result = algorithm.calculate(lastCandles);
 			mLastMaxLossPercent = algorithm.getJsonData()["stats"]["maxLossPercent"].get<double>();
-			if (result && utils::isGreater(algorithm.getFullCash(), algorithm.getData().getStartCash())) {
-				onSuccess();
+			if (result) {
+				if (utils::isLess(algorithm.getFullCash(), algorithm.getData().getStartCash())) {
+					terminate();
+				}
+				else {
+					onSuccess();
+				}
 			}
 			else {
 				onOverhead();
