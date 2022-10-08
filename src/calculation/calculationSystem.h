@@ -3,6 +3,7 @@
 #include "market/indicatorsSystem.h"
 #include "market/marketRules.h"
 #include "outputHelper.h"
+#include <future>
 #include <mutex>
 
 namespace calculation {
@@ -18,7 +19,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			//processCalculations<algorithmType>();
+			processCalculations<algorithmType>();
 			auto balancedJsons = balanceResultsByMaxLoss(threadsAmount);
 			auto balancedInfos = recalculateBalancedData<algorithmType>(balancedJsons);
 			uniteResults(balancedInfos, balancedJsons);
@@ -35,7 +36,7 @@ namespace calculation {
 					threadResults.push_back(algorithm.getJsonData());
 				}
 				aFactory.incrementThreadIndex(aThread);
-				utils::printProgress(aFactory.getCurrentIndex(), combinations);
+				utils::printProgress(static_cast<int>(aFactory.getCurrentIndex()), static_cast<int>(combinations));
 			}
 		}
 
@@ -58,7 +59,7 @@ namespace calculation {
 				factory.onFinish();
 				saveFinalData(ticker, timeframe);
 				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
-				utils::resetProgress;
+				utils::resetProgress();
 			}
 			candlesSource.clear();
 		}

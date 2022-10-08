@@ -56,7 +56,8 @@ namespace calculation {
 			threadsAmount(aThreadsAmount),
 			combinationsData(aThreadsAmount),
 			indexes(aThreadsAmount, 0),
-			mTicker(ticker)
+			mTicker(ticker),
+			data(ticker)
 		{
 			settings = utils::readFromJson("input/combinationSettings");
 			if (threadsAmount == 0 || settings.empty()) {
@@ -109,7 +110,7 @@ namespace calculation {
 			}
 			else {
 				for (const auto& json : lastData) {
-					data = algorithmDataType{};
+					data = algorithmDataType{ mTicker };
 					data.initFromJson(json["data"]);
 					onIterate();
 				}
@@ -178,13 +179,11 @@ namespace calculation {
 		}
 		void onIterate() {
 			if (!data.isValid()) {
-				auto valid = data.isValid();
 				++errorCombinations;
 			}
 			else {
 				++combinations;
 				data.setID();
-				data.setTicker(mTicker);
 				allData.push_back(data);
 			}
 		}

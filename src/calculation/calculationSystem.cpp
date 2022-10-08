@@ -120,9 +120,9 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	saveStats(stats, dirName + "stats.json");
 }
 
-combinationsJsons calculationSystem::balanceResultsByMaxLoss(size_t threadsAmount) {
+combinationsJsons calculationSystem::balanceResultsByMaxLoss(size_t threads) {
 	auto [combinationsCalculations, combinationsJsons] = getCalculationsConjunction(calculations);
-	balanceByMaxLossPercent(algorithmType, combinationsCalculations, combinationsJsons, calculations, threadsAmount);
+	balanceByMaxLossPercent(algorithmType, combinationsCalculations, combinationsJsons, calculations, threads);
 	return std::move(combinationsJsons);
 }
 

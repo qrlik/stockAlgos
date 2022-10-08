@@ -13,7 +13,7 @@ namespace algorithm {
 		size_t getID() const { return id; }
 		virtual size_t getCustomID() const { return 0; }
 		const std::string& getTicker() const { return mTicker; }
-		const market::marketData& getMarketData() const { return mMarketData; }
+		const market::marketData& getMarketData() const { return *mMarketData; }
 
 		void addJsonData(Json& aData) const;
 		bool initFromJson(const Json& aValue);
@@ -52,7 +52,7 @@ namespace algorithm {
 		size_t getBaseHash() const;
 
 		std::string mTicker;
-		const market::marketData& mMarketData;
+		const market::marketData* mMarketData;
 
 		market::indicatorsData indicatorsData;
 

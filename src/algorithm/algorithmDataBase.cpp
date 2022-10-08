@@ -7,7 +7,7 @@ namespace {
 	market::eCandleInterval statsInterval = market::eCandleInterval::ONE_DAY;
 }
 
-algorithmDataBase::algorithmDataBase(const std::string ticker) : mTicker(ticker), mMarketData(MARKET_SYSTEM->getMarketData(ticker)) {}
+algorithmDataBase::algorithmDataBase(const std::string ticker) : mTicker(ticker), mMarketData(&MARKET_SYSTEM->getMarketData(ticker)) {}
 
 bool algorithmDataBase::operator==(const algorithmDataBase& aOther) const {
 	bool result = true;
@@ -63,16 +63,16 @@ bool algorithmDataBase::isValid() const {
 
 	result &= indicatorsData.isValid();
 	result &= utils::isGreater(dealPercent, 0.0) && utils::isLess(dealPercent, 100.0);
-	result &= leverage > 0 && leverage <= mMarketData.getMaxLeverage();
+	result &= leverage > 0 && leverage <= mMarketData->getMaxLeverage();
 
-	result &= utils::isGreater(startCash, mMarketData.getMinNotionalValue() / leverage);
+	result &= utils::isGreater(startCash, mMarketData->getMinNotionalValue() / leverage);
 	result &= utils::isGreater(startCash, maxLossCash);
 	result &= utils::isLess(orderSize, startCash);
 	result &= utils::isGreater(maxLossPercent, 0.0) && utils::isLess(maxLossPercent, 100.0);
 
 	const auto minLiqPercent = (utils::isGreater(orderSize, 0.0))
-		? mMarketData.getLiquidationPercent(orderSize, leverage)
-		: mMarketData.getLeverageLiquidationRange(leverage).first;
+		? mMarketData->getLiquidationPercent(orderSize, leverage)
+		: mMarketData->getLeverageLiquidationRange(leverage).first;
 	result &= utils::isGreater(stopLossPercent, 0.0) || utils::isGreater(liquidationOffsetPercent, 0.0);
 	result &= utils::isLess(stopLossPercent, minLiqPercent);
 	result &= utils::isLess(liquidationOffsetPercent, minLiqPercent);
