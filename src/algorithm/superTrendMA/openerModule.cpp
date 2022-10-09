@@ -7,67 +7,49 @@ openerModule::openerModule(stMAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
 bool openerModule::check() {
-	auto touchedThisCandle = checkTrendTouch();
-	return tryToOpenOrder(touchedThisCandle);
+	return tryToOpenOrder();
 }
 
-bool openerModule::checkTrendTouch() {
-	if (touchActivated) {
-		return false;
-	}
-	const auto trendActivation = getActivationPrice();
-	const auto isTrendUp = algorithm.getIndicators().isSuperTrendUp();
+double openerModule::getOpenOffsetPrice() const {
+	const auto superTrend = algorithm.getIndicators().getSuperTrend();
+	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
+	const auto openOffsetPrice = superTrend * (100 + sign * algorithm.getData().getOpenOffsetPercent()) / 100.0;
+	return utils::round(openOffsetPrice, algorithm.getData().getMarketData().getPricePrecision());
+}
+
+double openerModule::getOpenPrice() const {
+	const auto openOffsetPrice = getOpenOffsetPrice();
 	const auto& candle = algorithm.getCandle();
-	if (isTrendUp && utils::isLessOrEqual(candle.low, trendActivation)) {
-		touchActivated = true;
-	}
-	else if (!isTrendUp && utils::isGreaterOrEqual(candle.high, trendActivation)) {
-		touchActivated = true;
-	}
-	return touchActivated;
-}
-
-double openerModule::getActivationPrice() const {
-	const auto superTrend = algorithm.getIndicators().getSuperTrend();
-	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
-	return superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
-}
-
-double openerModule::getDeactivationPrice() const {
-	const auto percent = algorithm.getData().getDeactivationPercent();
-	if (utils::isLessOrEqual(percent, 0.0)) {
-		return -1.0;
-	}
-	const auto superTrend = algorithm.getIndicators().getSuperTrend();
-	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
-	const auto fullPercent = percent + algorithm.getData().getActivationPercent();
-	return superTrend * (100 + sign * fullPercent) / 100.0;
-}
-
-double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
-	if (!aIsTochedThisCandle) {
-		return algorithm.getCandle().open;
-	}
-	const auto activationPrice = getActivationPrice();
 	if (algorithm.getIndicators().isSuperTrendUp()) {
-		return utils::minFloat(activationPrice, algorithm.getCandle().open);
+		if (utils::isGreater(candle.low, openOffsetPrice)) {
+			return -1.0;
+		}
+		else if (utils::isLessOrEqual(candle.open, openOffsetPrice)) {
+			return candle.open;
+		}
+		else {
+			return openOffsetPrice;
+		}
 	}
 	else {
-		return utils::maxFloat(activationPrice, algorithm.getCandle().open);
+		if (utils::isLess(candle.high, openOffsetPrice)) {
+			return -1.0;
+		}
+		else if (utils::isGreaterOrEqual(candle.open, openOffsetPrice)) {
+			return candle.open;
+		}
+		else {
+			return openOffsetPrice;
+		}
 	}
 }
 
-bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
-	if (!touchActivated) {
-		return false;
-	}
+bool openerModule::tryToOpenOrder() {
 	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
 	const auto isFirstMAGrowing = algorithm.getMAModule().isFirstUp();
 	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
 	const auto firstMA = algorithm.getIndicators().getFirstMA();
 	const auto secondMA = algorithm.getIndicators().getSecondMA();
-	const auto openPrice = getOpenPrice(aIsTochedThisCandle);
-	const auto deactivationPrice = getDeactivationPrice();
 
 	if (algorithm.getIndicators().isSuperTrendUp()) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
@@ -76,13 +58,11 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 					if (algorithm.getCloserModule().isNeedToClose(true)) { // will be closed in same candle
 						return false;
 					}
-					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isGreaterOrEqual(openPrice, deactivationPrice)) {
-						return false;
-					}
-					else {
+					else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
 						algorithm.openOrder(eOrderState::LONG, openPrice);
 						return true;
 					}
+
 				}
 			}
 		}
@@ -91,16 +71,15 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		if (!isFirstMAGrowing && !isSecondMAGrowing) {
 			if (utils::isGreater(firstMA, secondMA)) {
 				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
+
 					if (algorithm.getCloserModule().isNeedToClose(false)) { // will be closed in same candle
 						return false;
 					}
-					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isLessOrEqual(openPrice, deactivationPrice)) {
-						return false;
-					}
-					else {
+					else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
 						algorithm.openOrder(eOrderState::SHORT, openPrice);
 						return true;
 					}
+
 				}
 			}
 		}
@@ -109,7 +88,6 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 }
 
 void openerModule::onOpenOrder() {
-	touchActivated = false;
 }
 
 void openerModule::onCloseOrder(eOrderState aState, double aProfit) {
