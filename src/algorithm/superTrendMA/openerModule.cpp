@@ -77,7 +77,6 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 						return false;
 					}
 					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isGreaterOrEqual(openPrice, deactivationPrice)) {
-						touchActivated = false;
 						return false;
 					}
 					else {
@@ -96,7 +95,6 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 						return false;
 					}
 					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isLessOrEqual(openPrice, deactivationPrice)) {
-						touchActivated = false;
 						return false;
 					}
 					else {
