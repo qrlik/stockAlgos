@@ -73,9 +73,8 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
 			if (utils::isGreater(secondMA, firstMA)) {
 				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT)) {
-					if (algorithm.getCloserModule().isNeedToClose(true)) {
-						touchActivated = false;
-						return !aIsTochedThisCandle;
+					if (algorithm.getCloserModule().isNeedToClose(true)) { // will be closed in same candle
+						return false;
 					}
 					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isGreaterOrEqual(openPrice, deactivationPrice)) {
 						touchActivated = false;
@@ -93,9 +92,8 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		if (!isFirstMAGrowing && !isSecondMAGrowing) {
 			if (utils::isGreater(firstMA, secondMA)) {
 				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
-					if (algorithm.getCloserModule().isNeedToClose(false)) {
-						touchActivated = false;
-						return !aIsTochedThisCandle;
+					if (algorithm.getCloserModule().isNeedToClose(false)) { // will be closed in same candle
+						return false;
 					}
 					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isLessOrEqual(openPrice, deactivationPrice)) {
 						touchActivated = false;
