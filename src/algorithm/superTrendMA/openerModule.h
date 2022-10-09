@@ -20,12 +20,6 @@ namespace algorithm {
 		void onOpenOrder();
 		void onCloseOrder(eOrderState aState, double aProfit);
 
-		std::map<int, int> rsiProfitLongs;
-		std::map<int, int> rsiUnprofitLongs;
-		std::map<int, int> rsiProfitShorts;
-		std::map<int, int> rsiUnprofitShorts;
-		double lastOpenRsi = 0;
-
 		stMAlgorithm& algorithm;
 		std::pair<std::string, eOrderState> lastClosedOrder;
 
