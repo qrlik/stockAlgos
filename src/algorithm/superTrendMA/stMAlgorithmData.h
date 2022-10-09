@@ -14,6 +14,7 @@ namespace algorithm {
 		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }
 		double getCloserTrailPrecision() const { return closerTrailPrecision; }
 		double getActivationPercent() const { return activationPercent; }
+		double getDeactivationPercent() const { return deactivationPercent; }
 
 		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
 		bool getCloserMACheck() const { return closerMACheck; }
@@ -34,6 +35,7 @@ namespace algorithm {
 		double closerMATrendPrecision = -1.0;
 		double closerTrailPrecision = -1.0;
 		double activationPercent = -1.0;
+		double deactivationPercent = -1.0;
 		
 		bool closerTrendChangeCheck = false;
 		bool closerMACheck = false;

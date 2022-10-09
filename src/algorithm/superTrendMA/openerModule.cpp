@@ -33,6 +33,17 @@ double openerModule::getActivationPrice() const {
 	return superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
 }
 
+double openerModule::getDeactivationPrice() const {
+	const auto percent = algorithm.getData().getDeactivationPercent();
+	if (utils::isLessOrEqual(percent, 0.0)) {
+		return -1.0;
+	}
+	const auto superTrend = algorithm.getIndicators().getSuperTrend();
+	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
+	const auto fullPercent = percent + algorithm.getData().getActivationPercent();
+	return superTrend * (100 + sign * fullPercent) / 100.0;
+}
+
 double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
 	if (!aIsTochedThisCandle) {
 		return algorithm.getCandle().open;
@@ -56,6 +67,8 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 	const auto firstMA = algorithm.getIndicators().getFirstMA();
 	const auto secondMA = algorithm.getIndicators().getSecondMA();
 	const auto openPrice = getOpenPrice(aIsTochedThisCandle);
+	const auto deactivationPrice = getDeactivationPrice();
+
 	if (algorithm.getIndicators().isSuperTrendUp()) {
 		if (isFirstMAGrowing && isSecondMAGrowing) {
 			if (utils::isGreater(secondMA, firstMA)) {
@@ -63,6 +76,10 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 					if (algorithm.getCloserModule().isNeedToClose(true)) {
 						touchActivated = false;
 						return !aIsTochedThisCandle;
+					}
+					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isGreaterOrEqual(openPrice, deactivationPrice)) {
+						touchActivated = false;
+						return false;
 					}
 					else {
 						algorithm.openOrder(eOrderState::LONG, openPrice);
@@ -79,6 +96,10 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 					if (algorithm.getCloserModule().isNeedToClose(false)) {
 						touchActivated = false;
 						return !aIsTochedThisCandle;
+					}
+					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isLessOrEqual(openPrice, deactivationPrice)) {
+						touchActivated = false;
+						return false;
 					}
 					else {
 						algorithm.openOrder(eOrderState::SHORT, openPrice);

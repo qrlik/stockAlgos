@@ -16,6 +16,7 @@ bool stMAlgorithmData::operator==(const stMAlgorithmData& aOther) const {
 	result &= utils::isEqual(closerMATrendPrecision, aOther.closerMATrendPrecision);
 	result &= utils::isEqual(closerTrailPrecision, aOther.closerTrailPrecision);
 	result &= utils::isEqual(activationPercent, aOther.activationPercent);
+	result &= utils::isEqual(deactivationPercent, aOther.deactivationPercent);
 
 	result &= closerTrendChangeCheck == aOther.closerTrendChangeCheck;
 	result &= closerMACheck == aOther.closerMACheck;
@@ -31,6 +32,7 @@ size_t stMAlgorithmData::getCustomHash() const {
 	utils::hash_combine(result, closerMATrendPrecision);
 	utils::hash_combine(result, closerTrailPrecision);
 	utils::hash_combine(result, activationPercent);
+	utils::hash_combine(result, deactivationPercent);
 
 	utils::hash_combine(result, closerTrendChangeCheck);
 	utils::hash_combine(result, closerMACheck);
@@ -72,6 +74,10 @@ bool stMAlgorithmData::initDataFieldInternal(const std::string& aName, const Jso
 		activationPercent = aValue.get<double>();
 		return true;
 	}
+	if (aName == "deactivationPercent") {
+		deactivationPercent = aValue.get<double>();
+		return true;
+	}
 	if (aName == "closerTrendChangeCheck") {
 		closerTrendChangeCheck = aValue.get<bool>();
 		return true;
@@ -107,6 +113,9 @@ bool stMAlgorithmData::checkCriteriaInternal(const std::string& aName, const Jso
 	if (aName == "activationPercent") {
 		return utils::isEqual(activationPercent, aValue.get<double>());
 	}
+	if (aName == "deactivationPercent") {
+		return utils::isEqual(deactivationPercent, aValue.get<double>());
+	}
 	if (aName == "closerTrendChangeCheck") {
 		return closerTrendChangeCheck == aValue.get<bool>();
 	}
@@ -128,6 +137,7 @@ bool stMAlgorithmData::isValidInternal() const {
 	result &= utils::isGreater(firstMATrendPrecision, 0.0);
 	result &= utils::isGreater(secondMATrendPrecision, 0.0);
 	result &= utils::isGreaterOrEqual(activationPercent, 0.0);
+	result &= utils::isGreaterOrEqual(deactivationPercent, 0.0);
 	if (closerMACheck) {
 		result &= !closerTrailStop;
 		result &= utils::isGreater(closerMATrendPrecision, 0.0);
@@ -150,6 +160,7 @@ void stMAlgorithmData::addJsonDataInternal(Json& aData) const {
 	aData["closerMATrendPrecision"] = closerMATrendPrecision;
 	aData["closerTrailPrecision"] = closerTrailPrecision;
 	aData["activationPercent"] = activationPercent;
+	aData["deactivationPercent"] = deactivationPercent;
 	aData["closerTrendChangeCheck"] = closerTrendChangeCheck;
 	aData["closerMACheck"] = closerMACheck;
 	aData["closerTrailStop"] = closerTrailStop;

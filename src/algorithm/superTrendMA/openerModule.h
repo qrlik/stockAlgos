@@ -13,6 +13,7 @@ namespace algorithm {
 		bool check();
 	private:
 		double getActivationPrice() const;
+		double getDeactivationPrice() const;
 		double getOpenPrice(bool aIsTochedThisCandle) const;
 		bool checkTrendTouch();
 		bool tryToOpenOrder(bool aIsTochedThisCandle);
