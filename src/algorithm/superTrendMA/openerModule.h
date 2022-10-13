@@ -20,6 +20,12 @@ namespace algorithm {
 		void onOpenOrder();
 		void onCloseOrder(eOrderState aState, double aProfit);
 
+		bool isMADirectionCorrect() const;
+		bool isMAPositionCorrect() const;
+		bool isPrevPositionCorrect() const;
+		bool isDeactivationPriceCross(double openPrice) const;
+		bool isCloseAfterOpen() const;
+
 		stMAlgorithm& algorithm;
 		std::pair<std::string, eOrderState> lastClosedOrder;
 

@@ -30,7 +30,8 @@ bool openerModule::checkTrendTouch() {
 double openerModule::getActivationPrice() const {
 	const auto superTrend = algorithm.getIndicators().getSuperTrend();
 	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
-	return superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
+	const auto activationPrice = superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
+	return utils::round(activationPrice, algorithm.getData().getMarketData().getPricePrecision());
 }
 
 double openerModule::getDeactivationPrice() const {
@@ -41,10 +42,16 @@ double openerModule::getDeactivationPrice() const {
 	const auto superTrend = algorithm.getIndicators().getSuperTrend();
 	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
 	const auto fullPercent = percent + algorithm.getData().getActivationPercent();
-	return superTrend * (100 + sign * fullPercent) / 100.0;
+
+	const auto deactivationPrice = superTrend * (100 + sign * fullPercent) / 100.0;
+	return utils::round(deactivationPrice, algorithm.getData().getMarketData().getPricePrecision());
 }
 
 double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
+	// to do
+	// 
+	// add activation percent == -1
+
 	if (!aIsTochedThisCandle) {
 		return algorithm.getCandle().open;
 	}
@@ -57,54 +64,80 @@ double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
 	}
 }
 
+bool openerModule::isMADirectionCorrect() const {
+	const auto isFirstMAGrowing = algorithm.getMAModule().isFirstUp();
+	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
+
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return isFirstMAGrowing && isSecondMAGrowing;
+	}
+	else {
+		return !isFirstMAGrowing && !isSecondMAGrowing;
+	}
+}
+
+bool openerModule::isMAPositionCorrect() const {
+	const auto firstMA = algorithm.getIndicators().getFirstMA();
+	const auto secondMA = algorithm.getIndicators().getSecondMA();
+
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return utils::isGreater(secondMA, firstMA);
+	}
+	else {
+		return utils::isLess(secondMA, firstMA);
+	}
+}
+
+bool openerModule::isPrevPositionCorrect() const {
+	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
+
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return !sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT);
+	}
+	else {
+		return !sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG);
+	}
+}
+
+bool openerModule::isDeactivationPriceCross(double openPrice) const {
+	const auto deactivationPrice = getDeactivationPrice();
+	if (utils::isLessOrEqual(deactivationPrice, 0.0)) {
+		return false;
+	}
+
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return utils::isGreaterOrEqual(openPrice, deactivationPrice);
+	}
+	else {
+		return utils::isLessOrEqual(openPrice, deactivationPrice);
+	}
+}
+
+bool openerModule::isCloseAfterOpen() const {
+	return algorithm.getCloserModule().isNeedToClose(algorithm.getIndicators().isSuperTrendUp());
+}
+
 bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 	if (!touchActivated) {
 		return false;
 	}
-	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
-	const auto isFirstMAGrowing = algorithm.getMAModule().isFirstUp();
-	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
-	const auto firstMA = algorithm.getIndicators().getFirstMA();
-	const auto secondMA = algorithm.getIndicators().getSecondMA();
-	const auto openPrice = getOpenPrice(aIsTochedThisCandle);
-	const auto deactivationPrice = getDeactivationPrice();
 
-	if (algorithm.getIndicators().isSuperTrendUp()) {
-		if (isFirstMAGrowing && isSecondMAGrowing) {
-			if (utils::isGreater(secondMA, firstMA)) {
-				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT)) {
-					if (algorithm.getCloserModule().isNeedToClose(true)) { // will be closed in same candle
-						return false;
-					}
-					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isGreaterOrEqual(openPrice, deactivationPrice)) {
-						return false;
-					}
-					else {
-						algorithm.openOrder(eOrderState::LONG, openPrice);
-						return true;
-					}
-				}
-			}
+	const auto openPrice = getOpenPrice(aIsTochedThisCandle);
+	if (isMADirectionCorrect() && isMAPositionCorrect() && isPrevPositionCorrect()) {
+		if (isDeactivationPriceCross(openPrice)) {
+			touchActivated = false; // check without
+			return false;
+		}
+		else if (isCloseAfterOpen()) {
+			touchActivated = false; // check without
+			return false;
+		}
+		else {
+			algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
+			return true;
 		}
 	}
-	else {
-		if (!isFirstMAGrowing && !isSecondMAGrowing) {
-			if (utils::isGreater(firstMA, secondMA)) {
-				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
-					if (algorithm.getCloserModule().isNeedToClose(false)) { // will be closed in same candle
-						return false;
-					}
-					else if (utils::isGreater(deactivationPrice, 0.0) && utils::isLessOrEqual(openPrice, deactivationPrice)) {
-						return false;
-					}
-					else {
-						algorithm.openOrder(eOrderState::SHORT, openPrice);
-						return true;
-					}
-				}
-			}
-		}
-	}
+
 	return false;
 }
 
