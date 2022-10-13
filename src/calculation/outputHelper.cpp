@@ -294,10 +294,10 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 			average.profitsFactor = utils::maxFloat(average.profitsFactor, info.profitsFactor);
 			average.recoveryFactor = utils::minFloat(average.recoveryFactor,info.recoveryFactor);
 			average.ordersPerInterval = utils::minFloat(average.ordersPerInterval, info.ordersPerInterval);
-			average.profitPerIntervalWorst = utils::minFloat(average.profitPerIntervalWorst, info.profitPerInterval);
-			if (utils::isGreater(info.maxLossPercent, average.maxLossPercent)) {
+			average.maxLossPercent = utils::maxFloat(average.maxLossPercent, info.maxLossPercent);
+			if (utils::isLess(info.profitPerInterval, average.profitPerIntervalWorst)) {
 				average.ticker = info.ticker;
-				average.maxLossPercent = info.maxLossPercent;
+				average.profitPerIntervalWorst = info.profitPerInterval;
 			}
 
 			// median
