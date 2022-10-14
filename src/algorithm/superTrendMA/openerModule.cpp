@@ -44,46 +44,57 @@ double openerModule::getOpenPrice() const {
 	}
 }
 
-bool openerModule::tryToOpenOrder() {
-	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
+bool openerModule::isMADirectionCorrect() const {
 	const auto isFirstMAGrowing = algorithm.getMAModule().isFirstUp();
 	const auto isSecondMAGrowing = algorithm.getMAModule().isSecondUp();
+
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return isFirstMAGrowing && isSecondMAGrowing;
+	}
+	else {
+		return !isFirstMAGrowing && !isSecondMAGrowing;
+	}
+}
+
+bool openerModule::isMAPositionCorrect() const {
 	const auto firstMA = algorithm.getIndicators().getFirstMA();
 	const auto secondMA = algorithm.getIndicators().getSecondMA();
 
 	if (algorithm.getIndicators().isSuperTrendUp()) {
-		if (isFirstMAGrowing && isSecondMAGrowing) {
-			if (utils::isGreater(secondMA, firstMA)) {
-				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT)) {
-					if (algorithm.getCloserModule().isNeedToClose(true)) { // will be closed in same candle
-						return false;
-					}
-					else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
-						algorithm.openOrder(eOrderState::LONG, openPrice);
-						return true;
-					}
-
-				}
-			}
-		}
+		return utils::isGreater(secondMA, firstMA);
 	}
 	else {
-		if (!isFirstMAGrowing && !isSecondMAGrowing) {
-			if (utils::isGreater(firstMA, secondMA)) {
-				if (!sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG)) {
+		return utils::isLess(secondMA, firstMA);
+	}
+}
 
-					if (algorithm.getCloserModule().isNeedToClose(false)) { // will be closed in same candle
-						return false;
-					}
-					else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
-						algorithm.openOrder(eOrderState::SHORT, openPrice);
-						return true;
-					}
+bool openerModule::isPrevPositionCorrect() const {
+	const auto sameCandleAsLastClose = algorithm.getCandle().time == lastClosedOrder.first;
 
-				}
-			}
+	if (algorithm.getIndicators().isSuperTrendUp()) {
+		return !sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::SHORT);
+	}
+	else {
+		return !sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG);
+	}
+}
+
+bool openerModule::isCloseAfterOpen() const {
+	return algorithm.getCloserModule().isNeedToClose(algorithm.getIndicators().isSuperTrendUp());
+}
+
+bool openerModule::tryToOpenOrder() {
+	if (isMADirectionCorrect() && isMAPositionCorrect() && isPrevPositionCorrect()) {
+		if (isCloseAfterOpen()) {
+			//touchActivated = false; // check without
+			return false;
+		}
+		else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
+			algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
+			return true;
 		}
 	}
+
 	return false;
 }
 
