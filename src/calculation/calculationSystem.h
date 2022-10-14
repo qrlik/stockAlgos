@@ -13,13 +13,15 @@ namespace calculation {
 		void calculate();
 	private:
 		void loadSettings();
-		void saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
+		bool saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
 		combinationsJsons balanceResultsByMaxLoss(size_t threadsAmount);
 		void uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons);
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			processCalculations<algorithmType>();
+			if (!processCalculations<algorithmType>()) {
+				return;
+			}
 			auto balancedJsons = balanceResultsByMaxLoss(threadsAmount);
 			auto balancedInfos = recalculateBalancedData<algorithmType>(balancedJsons);
 			uniteResults(balancedInfos, balancedJsons);
@@ -41,7 +43,7 @@ namespace calculation {
 		}
 
 		template<typename algorithmType>
-		void processCalculations() {
+		bool processCalculations() {
 			for (const auto& [ticker, timeframe] : calculations) {
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				candlesSource = utils::parseCandles(json);
@@ -57,11 +59,14 @@ namespace calculation {
 					future.wait();
 				}
 				factory.onFinish();
-				saveFinalData(ticker, timeframe);
+				if (!saveFinalData(ticker, timeframe)) {
+					return false;
+				}
 				utils::log("calculationSystem::calculate finish - " + ticker + '\n');
 				utils::resetProgress();
 			}
 			candlesSource.clear();
+			return true;
 		}
 
 		template<typename algorithmType>

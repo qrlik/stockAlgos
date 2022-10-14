@@ -65,7 +65,7 @@ void calculationSystem::calculate() {
 	}
 }
 
-void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval) {
+bool calculationSystem::saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval) {
 	std::vector<Json> finalVector;
 	size_t size = 0;
 	for (auto& threadData : threadsData) {
@@ -81,7 +81,7 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 	});
 	utils::log("\ncalculationSystem::saveFinalData finalVector size - [" + std::to_string(finalVector.size()) + ']');
 	if (finalVector.empty()) {
-		return;
+		return false;
 	}
 	utils::log("calculationSystem::saveFinalData maxCash - [" + std::to_string(finalVector[0]["cash"].get<double>()) + ']');
 	const auto dirName = getDirName(aTicker, aInterval);
@@ -112,12 +112,16 @@ void calculationSystem::saveFinalData(const std::string& aTicker, market::eCandl
 		finalVector.clear();
 	}
 	utils::log("calculationSystem::saveFinalData profits size - [" + std::to_string(jsonAllData.size()) + "]");
+	if (jsonAllData.size() == 0) {
+		return false;
+	}
 	{
 		utils::saveToJson(dirName + getAllDataFilename(), jsonAllData);
 		utils::saveToJson(utils::lastDataDir, jsonAllData);
 		jsonAllData.clear();
 	}
 	saveStats(stats, dirName + "stats.json");
+	return true;
 }
 
 combinationsJsons calculationSystem::balanceResultsByMaxLoss(size_t threads) {
