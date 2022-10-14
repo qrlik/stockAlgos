@@ -86,7 +86,6 @@ bool openerModule::isCloseAfterOpen() const {
 bool openerModule::tryToOpenOrder() {
 	if (isMADirectionCorrect() && isMAPositionCorrect() && isPrevPositionCorrect()) {
 		if (isCloseAfterOpen()) {
-			//touchActivated = false; // check without
 			return false;
 		}
 		else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
