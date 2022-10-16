@@ -92,7 +92,7 @@ void MaxLossBalancer::increaseValues(bool success) {
 }
 
 void MaxLossBalancer::onSuccess() {
-	mActualMaxLossPercent = mLastMaxLossPercent;
+	mActualMaxLossPercent = utils::maxFloat(mActualMaxLossPercent, mLastMaxLossPercent);
 	mActualDealPercent = mLastDealPercent;
 	increaseValues(true);
 	while (!mStepsStarted && (utils::isGreaterOrEqual(mLastDealPercent, mMinFailedPercent)
@@ -123,4 +123,11 @@ void MaxLossBalancer::onBalanced() {
 			&& utils::isGreaterOrEqual(mMinFailedPercent - mActualDealPercent, mDealPercentPrecision * 1.5))) {
 		utils::logError("MaxLossBalancer::onBalanced wrong algorithm result - " + std::to_string(mData["id"].get<size_t>()));
 	}
+}
+
+void MaxLossBalancer::updateData() {
+	mData["dealPercent"] = mLastDealPercent;
+	const auto& marketData = MARKET_SYSTEM->getInstance()->getMarketData(mTicker);
+	const auto leverage = mData["leverage"].get<int>();
+	mData["maxLossCash"] = (marketData.getLeverageMaxPosition(leverage) / leverage) * mMaxLossPercentCeil / mLastDealPercent;
 }
