@@ -39,15 +39,14 @@ bool statistic::onCloseOrder(double aCash, double aProfit) {
 		currentLossLowCash = aCash;
 	}
 	if (utils::isEqual(maxLossHighCash, 0.0) && !utils::isEqual(currentLossHighCash, 0.0)
-		|| utils::isLess(currentLossLowCash / currentLossHighCash, maxLossLowCash / maxLossHighCash)
-		|| utils::isGreater(data.getMaxLossCash(), 0.0) && utils::isGreater(currentLossHighCash - currentLossLowCash, maxLossHighCash - maxLossLowCash)) {
+		|| utils::isLess(currentLossLowCash / currentLossHighCash, maxLossLowCash / maxLossHighCash)) {
 		maxLossHighCash = currentLossHighCash;
 		maxLossLowCash = currentLossLowCash;
 	}
+	maxLossCash = utils::maxFloat(maxLossCash, (currentLossHighCash - currentLossLowCash));
 
-	const auto curMaxLoss = maxLossHighCash - maxLossLowCash;
 	if (utils::isGreater(getMaxLossPercentActual(), data.getMaxLossPercent()) ||
-		(utils::isGreater(data.getMaxLossCash(), 0.0) && utils::isGreater(curMaxLoss, data.getMaxLossCash()))) {
+		(utils::isGreater(data.getMaxLossCash(), 0.0) && utils::isGreaterOrEqual(maxLossCash, data.getMaxLossCash()))) {
 		return true;
 	}
 

@@ -22,6 +22,7 @@ namespace algorithm {
 
 		double maxLossHighCash = 0.0;
 		double maxLossLowCash = 0.0;
+		double maxLossCash = 0.0;
 		double summaryLoss = 0.0;
 
 		double currentLossHighCash = 0.0;

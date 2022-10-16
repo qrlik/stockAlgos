@@ -78,9 +78,7 @@ bool order::openOrder(eOrderState aState, double aPrice, double aCash, const std
 		allowedCash = utils::minFloat(allowedCash, allowedCashBySize);
 	}
 
-	// disable leverage caps for calculations
-	// utils::minFloat(allowedCash * mData.getLeverage(), marketData.getLeverageMaxPosition(mData.getLeverage()));
-	const auto allowedNotionalValue = allowedCash * mData.getLeverage();
+	const auto allowedNotionalValue = utils::minFloat(allowedCash * mData.getLeverage(), marketData.getLeverageMaxPosition(mData.getLeverage()));
 	const auto calcQuantity = [allowedNotionalValue, aPrice, &marketData]() {
 		const auto minQuantity = marketData.getQuantityPrecision();
 		auto result = utils::floor(allowedNotionalValue / aPrice, minQuantity);

@@ -66,7 +66,6 @@ bool algorithmDataBase::isValid() const {
 	result &= leverage > 0 && leverage <= mMarketData->getMaxLeverage();
 
 	result &= utils::isGreater(startCash, mMarketData->getMinNotionalValue() / leverage);
-	result &= utils::isGreater(startCash, maxLossCash);
 	result &= utils::isLess(orderSize, startCash);
 	result &= utils::isGreater(maxLossPercent, 0.0) && utils::isLess(maxLossPercent, 100.0);
 

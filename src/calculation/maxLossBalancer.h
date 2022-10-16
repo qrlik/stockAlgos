@@ -23,11 +23,12 @@ namespace calculation {
 		void onOverhead();
 		void onBalanced();
 		void increaseValues(bool success);
+		void updateData();
 
 		template<typename algorithmType>
 		void iterate() {
 			auto data = algorithmType::algorithmDataType{mTicker};
-			mData["dealPercent"] = mLastDealPercent;
+			updateData();
 			if (!data.initFromJson(mData)) {
 				utils::logError("MaxLossBalancer::iterate wrong alrorithm data");
 				terminate();
