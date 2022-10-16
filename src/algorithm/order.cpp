@@ -52,12 +52,21 @@ void order::updateStopLoss(double aStopLoss) {
 }
 
 double order::calculateStopLoss() const {
+	const auto liqPrice = mData.getMarketData().getLiquidationPrice(price, notionalValue, mData.getLeverage(), quantity, state == eOrderState::LONG);
+
 	if (auto stopLossPercent = mData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
 		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
 		auto result = price * (100 + stopLossSign * stopLossPercent) / 100.0;
-		return utils::round(result, mData.getMarketData().getPricePrecision());
+		result = utils::round(result, mData.getMarketData().getPricePrecision());
+
+		if ((state == eOrderState::LONG && utils::isLessOrEqual(result, liqPrice))
+			|| (state == eOrderState::SHORT && utils::isGreaterOrEqual(result, liqPrice))) {
+			utils::logError("order::calculateStopLoss wrong stopLoss");
+		}
+
+		return result;
 	}
-	const auto liqPrice = mData.getMarketData().getLiquidationPrice(price, notionalValue, mData.getLeverage(), quantity, state == eOrderState::LONG);
+
 	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * mData.getLiquidationOffsetPercent()) / 100.0;
 	return utils::round(result, mData.getMarketData().getPricePrecision());
