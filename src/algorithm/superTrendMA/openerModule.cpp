@@ -89,8 +89,7 @@ bool openerModule::tryToOpenOrder() {
 			return false;
 		}
 		else if (auto openPrice = getOpenPrice(); utils::isGreater(openPrice, 0.0)) {
-			algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
-			return true;
+			return algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
 		}
 	}
 

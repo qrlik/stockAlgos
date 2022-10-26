@@ -76,10 +76,10 @@ namespace algorithm {
 			}
 			return true;
 		}
-		void openOrder(eOrderState aState, double aPrice) {
+		bool openOrder(eOrderState aState, double aPrice) {
 			aPrice = utils::round(aPrice, data.getMarketData().getPricePrecision());
 			if (!order.openOrder(aState, aPrice, cash, getCandle().time)) {
-				return;
+				return false;
 			}
 
 			setState(getIntState(aState));
@@ -87,6 +87,7 @@ namespace algorithm {
 			cash = cash - getOrder().getMargin() - taxAmount;
 			stats.onOpenOrder((aState == eOrderState::LONG), taxAmount);
 			onOpenOrder();
+			return true;
 		}
 		void closeOrder(double aPrice = -1.0) {
 			setState(getIntState(eBaseState::NONE));

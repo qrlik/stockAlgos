@@ -1,4 +1,5 @@
 #include "outputHelper.h"
+#include "algorithm/order.h"
 #include "maxLossBalancer.h"
 #include "utils/utils.h"
 #include <future>
@@ -71,11 +72,12 @@ void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
 		weight = weight.get<double>() + aWeight;
 	};
 	for (const auto& [name, value] : aData.items()) {
-		if (name == "id") {
+		if (name == "id" || name == "dealPercent") {
 			continue;
 		}
 		incrementCb(aStats[name], getStrFromJson(value));
 	}
+	incrementCb(aStats["minLiquidationPercent"], getStrFromJson(Json{ algorithm::getMinLiquidationPercent() }));
 }
 
 void calculation::saveStats(Json& aStats, const std::string& aFileName) {

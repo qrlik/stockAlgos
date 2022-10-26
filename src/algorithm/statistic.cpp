@@ -9,7 +9,12 @@ statistic::statistic(const algorithmDataBase& aData, market::eCandleInterval aTi
 	data(aData),
 	timeframe(aTimeframe),
 	currentLossHighCash(aData.getStartCash()),
-	currentLossLowCash(aData.getStartCash()) {}
+	currentLossLowCash(aData.getStartCash())
+{
+	statCounters["profitableOrder"];
+	statCounters["unprofitableOrder"];
+	statCounters["orderCounter"];
+}
 
 void statistic::incrementCounter(const std::string& aName, int aAmount) {
 	statCounters[aName] += aAmount;
@@ -118,17 +123,13 @@ void statistic::addJsonData(Json& aJson, double aCash, size_t aCandlesAmount) co
 	aJson["maxLossPercent"] = getMaxLossPercentActual();
 	aJson["recoveryFactor"] = (aCash - data.getStartCash()) / summaryLoss; // more - good
 
-	if (auto itProfit = statCounters.find("profitableOrder"); itProfit != statCounters.end()) {
-		if (auto itUnprofit = statCounters.find("unprofitableOrder"); itUnprofit != statCounters.end()) {
-			 aJson["profitsFactor"] = static_cast<double>(itUnprofit->second) / itProfit->second; // less - good
-		}
-	}
+	const auto divider = (statCounters.at("profitableOrder")) ? statCounters.at("profitableOrder") : 1;
+	aJson["profitsFactor"] = static_cast<double>(statCounters.at("unprofitableOrder")) / divider; // less - good
 
 	const auto timeframesPerInterval = static_cast<int>(data.getStatsInterval()) / static_cast<int>(timeframe);
 	const auto intervalsAmount = static_cast<double>(aCandlesAmount) / timeframesPerInterval;
-	if (auto itOrders = statCounters.find("orderCounter"); itOrders != statCounters.end()) {
-		aJson["ordersPerInterval"] = itOrders->second / intervalsAmount;
-	}
+	aJson["ordersPerInterval"] = statCounters.at("orderCounter") / intervalsAmount;
+
 	const auto cashProfitFactor = aCash / data.getStartCash();
 	aJson["profitPerInterval"] = (std::pow(cashProfitFactor, 1 / (intervalsAmount - 1)) - 1) * 100.0; // % per stats interval
 
