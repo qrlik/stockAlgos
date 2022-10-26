@@ -133,7 +133,7 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 			return false;
 		}
 		else {
-			algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
+			return algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
 			return true;
 		}
 	}

@@ -12,6 +12,7 @@ namespace algorithm {
 		LONG = 1,
 		SHORT = 2
 	};
+	double getMinLiquidationPercent();
 	class order {
 	public:
 		order(const algorithm::algorithmDataBase& data);

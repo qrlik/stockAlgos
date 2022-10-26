@@ -5,6 +5,14 @@
 
 using namespace algorithm;
 
+namespace {
+	double minLiquidationPercent = std::numeric_limits<double>::max();
+}
+
+double algorithm::getMinLiquidationPercent() {
+	return minLiquidationPercent;
+}
+
 order::order(const algorithm::algorithmDataBase& data) : state(eOrderState::NONE), mData(data) {}
 
 std::string order::toString() const {
@@ -52,24 +60,42 @@ void order::updateStopLoss(double aStopLoss) {
 }
 
 double order::calculateStopLoss() const {
+	const auto precision = mData.getMarketData().getPricePrecision();
 	const auto liqPrice = mData.getMarketData().getLiquidationPrice(price, notionalValue, mData.getLeverage(), quantity, state == eOrderState::LONG);
+	const auto actualLiqPercent = (state == eOrderState::LONG) ? (100.0 - liqPrice / price * 100.0) : (liqPrice / price * 100.0 - 100.0);
+	minLiquidationPercent = utils::minFloat(minLiquidationPercent, actualLiqPercent);
+
+	if (utils::isLess(std::abs(liqPrice - price), precision * 1.5)) { // one tick between price and liquidation
+		return -1.0;
+	}
 
 	if (auto stopLossPercent = mData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
 		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
 		auto result = price * (100 + stopLossSign * stopLossPercent) / 100.0;
-		result = utils::round(result, mData.getMarketData().getPricePrecision());
+		if (state == eOrderState::LONG) {
+			result = utils::ceil(result, precision);
+		}
+		else {
+			result = utils::floor(result, precision);
+		}
 
 		if ((state == eOrderState::LONG && utils::isLessOrEqual(result, liqPrice))
 			|| (state == eOrderState::SHORT && utils::isGreaterOrEqual(result, liqPrice))) {
 			utils::logError("order::calculateStopLoss wrong stopLoss");
 		}
-
-		return result;
+		else {
+			return result;
+		}
 	}
 
 	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
 	auto result = liqPrice * (100 + stopLossSign * mData.getLiquidationOffsetPercent()) / 100.0;
-	return utils::round(result, mData.getMarketData().getPricePrecision());
+	if (state == eOrderState::LONG) {
+		return utils::ceil(result, precision);
+	}
+	else {
+		return utils::floor(result, precision);
+	}
 }
 
 double order::calculateMinimumProfit() const {
@@ -98,6 +124,10 @@ bool order::openOrder(eOrderState aState, double aPrice, double aCash, const std
 		utils::logError("orderData::openOrder can't open order");
 		return false;
 	}
+	const auto stopLossPrice = calculateStopLoss();
+	if (utils::isLessOrEqual(stopLossPrice, 0.0)) {
+		return false;
+	}
 
 	state = aState;
 	fullCheck = mData.getFullCheck();
@@ -108,7 +138,7 @@ bool order::openOrder(eOrderState aState, double aPrice, double aCash, const std
 
 	time = aTime;
 	minimumProfit = calculateMinimumProfit();
-	initStopLoss = calculateStopLoss();
+	initStopLoss = stopLossPrice;
 	stopLoss = initStopLoss;
 	return true;
 }
