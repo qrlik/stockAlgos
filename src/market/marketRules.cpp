@@ -135,8 +135,17 @@ double marketData::getQuantityPrecision() const {
 	return quantityPrecision;
 }
 
-double marketData::getPricePrecision() const {
-	return pricePrecision;
+double marketData::getPricePrecision(double price) const {
+	auto curPriceTick = price * MARKET_SYSTEM->getTickFactor();
+	auto roundedTick = pricePrecision;
+	
+	for (auto tick : { 1.0, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001, 0.0000001, 0.00000001, 0.000000001 }) {
+		if (utils::isLessOrEqual(tick, curPriceTick)) {
+			roundedTick = tick;
+			break;
+		}
+	}
+	return utils::minFloat(roundedTick, pricePrecision);
 }
 
 double marketData::getQuotePrecision() const {
@@ -170,9 +179,12 @@ namespace {
 		auto result = true;
 		result &= aData.is_object();
 		result &= aData.contains("tax") && aData["tax"].is_number_float();
+		result &= aData.contains("priceTickFactor") && aData["priceTickFactor"].is_number_float();
 		if (result) {
 			const auto tax = aData["tax"].get<double>();
-			result &= !utils::isEqual(tax, 0.0) && utils::isGreater(tax, 0.0);
+			result &= utils::isGreater(tax, 0.0);
+			const auto priceTickFactor = aData["priceTickFactor"].get<double>();
+			result &= utils::isGreater(priceTickFactor, 0.0) ;
 		}
 		return result;
 	}
@@ -184,6 +196,7 @@ void marketSystem::loadExchangeSettings() {
 		utils::logError("marketData::loadExchangeSettings wrong exchange json");
 	}
 	tax = exchageSettings["tax"].get<double>();
+	priceTickFactor = exchageSettings["priceTickFactor"].get<double>();
 }
 
 const marketData& marketSystem::getMarketData(const std::string& ticker) {
@@ -193,4 +206,8 @@ const marketData& marketSystem::getMarketData(const std::string& ticker) {
 
 double marketSystem::getTaxFactor() const {
 	return tax / 100.0;
+}
+
+double marketSystem::getTickFactor() const {
+	return priceTickFactor;
 }

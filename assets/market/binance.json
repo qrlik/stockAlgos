@@ -1,3 +1,4 @@
 {
-    "tax": 0.04
+    "tax": 0.04,
+    "priceTickFactor": 0.0025707
 }

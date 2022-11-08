@@ -77,7 +77,7 @@ namespace algorithm {
 			return true;
 		}
 		bool openOrder(eOrderState aState, double aPrice) {
-			aPrice = utils::round(aPrice, data.getMarketData().getPricePrecision());
+			aPrice = utils::round(aPrice, data.getMarketData().getPricePrecision(aPrice));
 			if (!order.openOrder(aState, aPrice, cash, getCandle().time)) {
 				return false;
 			}
