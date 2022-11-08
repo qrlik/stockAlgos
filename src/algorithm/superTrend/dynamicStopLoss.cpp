@@ -35,7 +35,7 @@ bool dynamicStopLoss::checkDynamic() {
 	}
 	const auto& order = static_cast<const stAlgorithm&>(algorithm).getOrder();
 	const auto& candle = algorithm.getCandle();
-	const auto pricePrecision = algorithm.getData().getMarketData().getPricePrecision();
+	const auto pricePrecision = algorithm.getData().getMarketData().getPricePrecision(candle.high);
 	if (algorithm.getState() == getIntState(eBaseState::LONG)) {
 		auto dynamicStopLoss = utils::round(candle.high * (100.0 - dynamicSLPercent) / 100.0, pricePrecision);
 		if (utils::isGreaterOrEqual(dynamicStopLoss, order.getMinimumProfit()) && utils::isGreater(dynamicStopLoss, order.getStopLoss())) {

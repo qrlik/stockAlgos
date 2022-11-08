@@ -31,7 +31,7 @@ double openerModule::getActivationPrice() const {
 	const auto superTrend = algorithm.getIndicators().getSuperTrend();
 	const auto sign = (algorithm.getIndicators().isSuperTrendUp()) ? 1 : -1;
 	const auto activationPrice = superTrend * (100 + sign * algorithm.getData().getActivationPercent()) / 100.0;
-	return utils::round(activationPrice, algorithm.getData().getMarketData().getPricePrecision());
+	return utils::round(activationPrice, algorithm.getData().getMarketData().getPricePrecision(algorithm.getCandle().high));
 }
 
 double openerModule::getDeactivationPrice() const {

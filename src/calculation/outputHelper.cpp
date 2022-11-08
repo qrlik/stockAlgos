@@ -310,7 +310,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 
 		averageInfo.push_back({ united.first, std::move(average) });
 	}
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs)
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) // to do look
 		{ return std::tie(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
 					> std::tie(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
 	return averageInfo;

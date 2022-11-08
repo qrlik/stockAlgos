@@ -46,7 +46,7 @@ namespace algorithm {
 		double margin = 0.0;
 		double notionalValue = 0.0;
 		double quantity = 0.0;
-		eOrderState state;
+		eOrderState state = eOrderState::NONE;
 		bool fullCheck = false;
 	};
 }

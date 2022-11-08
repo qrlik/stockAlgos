@@ -23,7 +23,7 @@ namespace market {
 		std::pair<double, double> getLeverageLiquidationRange(int aLeverage) const;
 		double getLeverageMaxPosition(int aLeverage) const;
 		double getQuantityPrecision() const;
-		double getPricePrecision() const;
+		double getPricePrecision(double price) const;
 		double getQuotePrecision() const;
 		double getMinNotionalValue() const;
 		double getLiquidationPrice(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const;
@@ -47,6 +47,7 @@ namespace market {
 
 		const marketData& getMarketData(const std::string& ticker);
 		double getTaxFactor() const;
+		double getTickFactor() const;
 	private:
 		marketSystem();
 		void loadExchangeSettings();
@@ -55,5 +56,6 @@ namespace market {
 
 		std::unordered_map<std::string, marketData> data;
 		double tax = 0.0;
+		double priceTickFactor = 0.0;
 	};
 }
