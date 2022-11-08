@@ -54,6 +54,13 @@ size_t algorithmDataBase::getBaseHash() const {
 	return result;
 }
 
+Json algorithmDataBase::getBaseErrorData() const {
+	Json result;
+	result["id"] = id;
+	result["ticker"] = getTicker();
+	return result;
+}
+
 market::eCandleInterval algorithmDataBase::getStatsInterval() const {
 	return statsInterval;
 }

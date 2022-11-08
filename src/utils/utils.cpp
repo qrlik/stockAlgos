@@ -3,10 +3,12 @@
 #include <fstream>
 #include <future>
 #include <iostream>
+#include <unordered_set>
 
 using namespace utils;
 
 namespace {
+	std::unordered_map<std::string, std::unordered_set<Json>> errorsMap;
 	std::mutex printMutex;
 	int progress = 0;
 	int accumulateProgress = 0;
@@ -47,8 +49,11 @@ void utils::log(const std::string& aStr) {
 	std::cout << aStr + '\n';
 }
 
-void utils::logError(const std::string& aStr) {
+void utils::logError(const std::string& aStr, Json data) {
 	std::cout << "[ERROR]" + aStr + '\n';
+	if (data) {
+		errorsMap[aStr].insert(std::move(data));
+	}
 }
 
 double utils::round(double aValue, double aPrecision) {

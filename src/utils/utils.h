@@ -12,7 +12,7 @@ namespace utils {
 
 	void createDir(const std::string& aDir);
 	void log(const std::string& aStr);
-	void logError(const std::string& aStr);
+	void logError(const std::string& aStr, Json data = Json{});
 
 	double round(double aValue, double aPrecision);
 	double floor(double aValue, double aPrecision);

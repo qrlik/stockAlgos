@@ -35,7 +35,11 @@ namespace algorithm {
 		void updateStopLoss(double aStopLoss);
 	private:
 		double calculateStopLoss() const;
+		double calculateStopLossByType(double liqPrice, double precision) const;
 		double calculateMinimumProfit() const;
+		bool checkPriceNearLiquidation(double liqPrice, double precision) const;
+		bool checkStopLossBeyondLiquidation(double stopLoss, double liqPrice) const;
+		bool checkStopLossBeyondPrice(double stopLoss) const;
 
 		const algorithm::algorithmDataBase& mData;
 		std::string time;
