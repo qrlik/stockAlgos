@@ -21,6 +21,7 @@ namespace algorithm {
 		bool checkCriteria(const std::string& aName, const Json& aValue) const;
 		bool isValid() const;
 
+		Json getBaseErrorData() const;
 		const market::indicatorsData& getIndicatorsData() const { return indicatorsData; }
 		market::eCandleInterval getStatsInterval() const;
 		double getDealPercent() const { return dealPercent; }

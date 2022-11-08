@@ -59,45 +59,88 @@ void order::updateStopLoss(double aStopLoss) {
 	}
 }
 
+bool order::checkPriceNearLiquidation(double liqPrice, double precision) const {
+	if (utils::isLess(std::abs(liqPrice - price), precision * 1.5)) { // one tick between price and liquidation
+		auto errorData = mData.getBaseErrorData();
+		errorData["liqPrice"] = liqPrice;
+		errorData["price"] = price;
+		errorData["precision"] = precision;
+		utils::logError("order::calculateStopLoss wrong precision", std::move(errorData));
+		return false;
+	}
+	return true;
+}
+
+bool order::checkStopLossBeyondLiquidation(double stopPrice, double liqPrice) const {
+	if ((state == eOrderState::LONG && utils::isLessOrEqual(stopPrice, liqPrice))
+		|| (state == eOrderState::SHORT && utils::isGreaterOrEqual(stopPrice, liqPrice))) {
+		auto errorData = mData.getBaseErrorData();
+		errorData["stopLoss"] = stopPrice;
+		errorData["liqPrice"] = liqPrice;
+		errorData["state"] = state;
+		utils::logError("order::calculateStopLoss wrong stopLoss");
+		return false;
+	}
+	return true;
+}
+
+bool order::checkStopLossBeyondPrice(double stopPrice) const {
+	if ((state == eOrderState::LONG && utils::isGreaterOrEqual(stopPrice, price))
+		|| (state == eOrderState::SHORT && utils::isLessOrEqual(stopPrice, price))) {
+		auto errorData = mData.getBaseErrorData();
+		errorData["checkedPrice"] = price;
+		errorData["stopLoss"] = stopPrice;
+		errorData["state"] = state;
+		utils::logError("order::calculateStopLoss wrong stopLoss");
+		return false;
+	}
+	return true;
+}
+
+double order::calculateStopLossByType(double liqPrice, double precision) const {
+	double result = -1.0;
+
+	if (utils::isGreater(mData.getStopLossPercent(), 0.0)) {
+		const auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
+		result = price * (100 + stopLossSign * mData.getStopLossPercent()) / 100.0;
+	}
+	else if (utils::isGreater(mData.getLiquidationOffsetPercent(), 0.0)) {
+		auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
+		result = liqPrice * (100 + stopLossSign * mData.getLiquidationOffsetPercent()) / 100.0;
+	}
+
+	if (state == eOrderState::LONG) {
+		result = utils::ceil(result, precision);
+	}
+	else {
+		result = utils::floor(result, precision);
+	}
+
+	if (utils::isGreater(mData.getStopLossPercent(), 0.0)) {
+		if (!checkStopLossBeyondLiquidation(result, liqPrice)) {
+			return -1.0;
+		}
+	}
+	else if (utils::isGreater(mData.getLiquidationOffsetPercent(), 0.0)) {
+		if (!checkStopLossBeyondPrice(result)) {
+			return -1.0;
+		}
+	}
+
+	return result;
+}
+
 double order::calculateStopLoss() const {
 	const auto precision = mData.getMarketData().getPricePrecision(price);
 	const auto liqPrice = mData.getMarketData().getLiquidationPrice(price, notionalValue, mData.getLeverage(), quantity, state == eOrderState::LONG);
 	const auto actualLiqPercent = (state == eOrderState::LONG) ? (100.0 - liqPrice / price * 100.0) : (liqPrice / price * 100.0 - 100.0);
 	minLiquidationPercent = utils::minFloat(minLiquidationPercent, actualLiqPercent);
 
-	if (utils::isLess(std::abs(liqPrice - price), precision * 1.5)) { // one tick between price and liquidation
-		utils::logError("order::calculateStopLoss wrong precision");
+	if (!checkPriceNearLiquidation(liqPrice, precision)) {
 		return -1.0;
 	}
 
-	if (auto stopLossPercent = mData.getStopLossPercent(); utils::isGreater(stopLossPercent, 0.0)) {
-		auto stopLossSign = (state == eOrderState::LONG) ? -1 : 1;
-		auto result = price * (100 + stopLossSign * stopLossPercent) / 100.0;
-		if (state == eOrderState::LONG) {
-			result = utils::ceil(result, precision);
-		}
-		else {
-			result = utils::floor(result, precision);
-		}
-
-		if ((state == eOrderState::LONG && utils::isLessOrEqual(result, liqPrice))
-			|| (state == eOrderState::SHORT && utils::isGreaterOrEqual(result, liqPrice))) {
-			utils::logError("order::calculateStopLoss wrong stopLoss");
-			return -1.0;
-		}
-		else {
-			return result;
-		}
-	}
-
-	auto stopLossSign = (state == eOrderState::LONG) ? 1 : -1;
-	auto result = liqPrice * (100 + stopLossSign * mData.getLiquidationOffsetPercent()) / 100.0;
-	if (state == eOrderState::LONG) {
-		return utils::ceil(result, precision);
-	}
-	else {
-		return utils::floor(result, precision);
-	}
+	return calculateStopLossByType(liqPrice, precision);
 }
 
 double order::calculateMinimumProfit() const {
