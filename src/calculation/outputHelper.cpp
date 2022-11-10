@@ -77,7 +77,7 @@ void calculation::addStats(Json& aStats, const Json& aData, double aWeight) {
 		}
 		incrementCb(aStats[name], getStrFromJson(value));
 	}
-	incrementCb(aStats["minLiquidationPercent"], getStrFromJson(Json{ algorithm::getMinLiquidationPercent() }));
+	incrementCb(aStats["minLiquidationPercent"], getStrFromJson(Json(algorithm::getMinLiquidationPercent())));
 }
 
 void calculation::saveStats(Json& aStats, const std::string& aFileName) {
@@ -311,8 +311,8 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 		averageInfo.push_back({ united.first, std::move(average) });
 	}
 	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) // to do look
-		{ return std::tie(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
-					> std::tie(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
+		{ return std::make_tuple(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
+					> std::make_tuple(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
 	return averageInfo;
 }
 

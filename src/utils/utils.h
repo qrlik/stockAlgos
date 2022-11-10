@@ -5,6 +5,7 @@
 namespace utils {
 	const std::string outputDir = "output";
 	const std::string lastDataDir = outputDir + "/lastData";
+	const std::string errorsDir = outputDir + "/errors";
 
 	Json readFromJson(const std::string& aPath);
 	void saveToJson(const std::string& aPath, const Json& aData);
@@ -13,6 +14,7 @@ namespace utils {
 	void createDir(const std::string& aDir);
 	void log(const std::string& aStr);
 	void logError(const std::string& aStr, Json data = Json{});
+	void saveErrors();
 
 	double round(double aValue, double aPrecision);
 	double floor(double aValue, double aPrecision);
