@@ -51,9 +51,19 @@ void utils::log(const std::string& aStr) {
 
 void utils::logError(const std::string& aStr, Json data) {
 	std::cout << "[ERROR]" + aStr + '\n';
-	if (data) {
+	if (!data.is_null()) {
 		errorsMap[aStr].insert(std::move(data));
 	}
+}
+
+void utils::saveErrors() {
+	Json errors;
+	for (const auto& [error, data] : errorsMap) {
+		for (const auto& json : data) {
+			errors[error].push_back(json);
+		}
+	}
+	saveToJson(errorsDir, errors);
 }
 
 double utils::round(double aValue, double aPrecision) {

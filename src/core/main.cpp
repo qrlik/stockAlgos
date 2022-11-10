@@ -20,5 +20,6 @@ int main() {
 	calculate();
 	//calculation::singleCalculation();
 
+	utils::saveErrors();
 	return 0;
 }

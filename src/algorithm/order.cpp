@@ -78,7 +78,7 @@ bool order::checkStopLossBeyondLiquidation(double stopPrice, double liqPrice) co
 		errorData["stopLoss"] = stopPrice;
 		errorData["liqPrice"] = liqPrice;
 		errorData["state"] = state;
-		utils::logError("order::calculateStopLoss wrong stopLoss");
+		utils::logError("order::calculateStopLoss wrong stopLoss", std::move(errorData));
 		return false;
 	}
 	return true;
@@ -88,10 +88,10 @@ bool order::checkStopLossBeyondPrice(double stopPrice) const {
 	if ((state == eOrderState::LONG && utils::isGreaterOrEqual(stopPrice, price))
 		|| (state == eOrderState::SHORT && utils::isLessOrEqual(stopPrice, price))) {
 		auto errorData = mData.getBaseErrorData();
-		errorData["checkedPrice"] = price;
 		errorData["stopLoss"] = stopPrice;
+		errorData["checkedPrice"] = price;
 		errorData["state"] = state;
-		utils::logError("order::calculateStopLoss wrong stopLoss");
+		utils::logError("order::calculateStopLoss wrong stopLoss", std::move(errorData));
 		return false;
 	}
 	return true;

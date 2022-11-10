@@ -92,9 +92,9 @@ double marketData::getLiquidationPrice(double aPrice, double aNotional, double a
 	}
 
 	if (aLong) {
-		return utils::ceil(liqPrice, pricePrecision);
+		return utils::ceil(liqPrice, getPricePrecision(aPrice));
 	}
-	return utils::floor(liqPrice, pricePrecision);
+	return utils::floor(liqPrice, getPricePrecision(aPrice));
 }
 
 double marketData::getLiquidationPercent(double aPrice, double aNotional, double aLeverage, double aQuantity, bool aLong) const {
