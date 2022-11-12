@@ -44,7 +44,7 @@ double openerModule::getDeactivationPrice() const {
 	const auto fullPercent = percent + algorithm.getData().getActivationPercent();
 
 	const auto deactivationPrice = superTrend * (100 + sign * fullPercent) / 100.0;
-	return utils::round(deactivationPrice, algorithm.getData().getMarketData().getPricePrecision());
+	return utils::round(deactivationPrice, algorithm.getData().getMarketData().getPricePrecision(algorithm.getCandle().high));
 }
 
 double openerModule::getOpenPrice(bool aIsTochedThisCandle) const {
