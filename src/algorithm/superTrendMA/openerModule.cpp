@@ -134,7 +134,6 @@ bool openerModule::tryToOpenOrder(bool aIsTochedThisCandle) {
 		}
 		else {
 			return algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, openPrice);
-			return true;
 		}
 	}
 
