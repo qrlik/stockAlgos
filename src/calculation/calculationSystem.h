@@ -71,6 +71,7 @@ namespace calculation {
 
 		template<typename algorithmType>
 		combinationsCalculations recalculateBalancedData(const combinationsJsons& balancedData) {
+			Json recalculatedBalancedData;
 			combinationsCalculations unitedInfo(balancedData.size());
 			int index = 0;
 			const int summary = static_cast<int>(calculations.size() * balancedData.size());
@@ -87,7 +88,9 @@ namespace calculation {
 					auto algorithm = algorithmType(algData, timeframe);
 					const auto result = algorithm.calculate(candles);
 					if (result) {
-						unitedInfo[id].push_back(getCalculationInfo(ticker, algorithm.getJsonData()));
+						auto algoJson = algorithm.getJsonData();
+						unitedInfo[id].push_back(getCalculationInfo(ticker, algoJson));
+						recalculatedBalancedData[std::to_string(id)][ticker] = std::move(algoJson);
 					}
 					else {
 						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + std::to_string(id));
@@ -95,6 +98,7 @@ namespace calculation {
 					utils::printProgress(++index, summary);
 				}
 			}
+			utils::saveToJson(utils::balancedDataDir, recalculatedBalancedData);
 			utils::resetProgress();
 			utils::log("\ncalculation::recalculateBalancedData finished");
 			return unitedInfo;
