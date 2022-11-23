@@ -27,11 +27,12 @@ namespace calculation {
 	std::string getAllDataFilename();
 	std::string getDirName(const std::string& aTicker, market::eCandleInterval aInterval);
 	calculationInfo getCalculationInfo(const std::string& ticker, const Json& data);
+	combinationsCalculations getCombinationsFromJson(const Json& balancedJson);
 
 	std::pair<combinationsCalculations, combinationsJsons> getCalculationsConjunction(const calculationsType& calculations);
 	void balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations, size_t threadsAmount);
 	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations);
-	void saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree);
+	void saveDataAndStats(const combinationsAverages& combinationsAverages, Json balancedData, int degree);
 
 	void addStats(Json& aStats, const Json& aData, double aWeight);
 	void saveStats(Json& aStats, const std::string& aFileName);

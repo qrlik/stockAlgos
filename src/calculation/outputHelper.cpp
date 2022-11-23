@@ -174,6 +174,18 @@ calculationInfo calculation::getCalculationInfo(const std::string& ticker, const
 	return info;
 }
 
+combinationsCalculations calculation::getCombinationsFromJson(const Json& balancedData) {
+	combinationsCalculations result;
+	result.reserve(balancedData.size());
+	for (const auto& [id, idData] : balancedData.items()) {
+		auto& calculations = result[std::stoull(id)];
+		for (auto& [ticker, data] : idData["tickers"].items()) {
+			calculations.push_back(getCalculationInfo(ticker, data));
+		}
+	}
+	return result;
+}
+
 std::pair<combinationsCalculations, combinationsJsons> calculation::getCalculationsConjunction(const calculationsType& calculations) {
 	auto lastData = utils::readFromJson(utils::lastDataDir);
 	combinationsCalculations unitedInfo(lastData.size());
@@ -316,27 +328,25 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	return averageInfo;
 }
 
-void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, const combinationsJsons& combinationsJsons, int degree) {
+void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, Json balancedData, int degree) {
 	Json unitedData;
 	Json unitedStats;
 	double maxProfit = combinationsAverages[0].second.profitPerIntervalWorst;
-	for (const auto& info : combinationsAverages) {
+	for (const auto& [id, info] : combinationsAverages) {
 		Json data;
-		data["cash"] = info.second.cash;
-		if (auto it = combinationsJsons.find(info.first); it != combinationsJsons.end()) {
-			data["data"] = it->second;
-		}
+		data["cash"] = info.cash;
+		data["data"] = std::move(balancedData[std::to_string(id)]["data"]);
 		auto& stats = data["stats"];
-		stats["profitsFactor"] = info.second.profitsFactor;
-		stats["recoveryFactor"] = info.second.recoveryFactor;
-		stats["ordersPerInterval"] = info.second.ordersPerInterval;
-		stats["maxLossTicker"] = info.second.ticker;
-		stats["maxLossPercent"] = info.second.maxLossPercent;
-		stats["profitPerIntervalWorst"] = info.second.profitPerIntervalWorst;
-		stats["profitPerInterval"] = info.second.profitPerInterval;
+		stats["profitsFactor"] = info.profitsFactor;
+		stats["recoveryFactor"] = info.recoveryFactor;
+		stats["ordersPerInterval"] = info.ordersPerInterval;
+		stats["maxLossTicker"] = info.ticker;
+		stats["maxLossPercent"] = info.maxLossPercent;
+		stats["profitPerIntervalWorst"] = info.profitPerIntervalWorst;
+		stats["profitPerInterval"] = info.profitPerInterval;
 		unitedData.push_back(data);
 
-		const auto weight = getWeight(info.second.profitPerIntervalWorst, maxProfit, degree);
+		const auto weight = getWeight(info.profitPerIntervalWorst, maxProfit, degree);
 		addStats(unitedStats, data["data"], weight);
 	}
 
