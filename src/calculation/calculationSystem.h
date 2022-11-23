@@ -15,16 +15,19 @@ namespace calculation {
 		void loadSettings();
 		bool saveFinalData(const std::string& aTicker, market::eCandleInterval aInterval);
 		combinationsJsons balanceResultsByMaxLoss(size_t threadsAmount);
-		void uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons);
+		void uniteResults(Json balancedData);
 
 		template<typename algorithmType>
 		void calculateInternal() {
-			if (!processCalculations<algorithmType>()) {
-				return;
+			auto balancedData = utils::readFromJson(utils::balancedDataDir);
+			if (balancedData.is_null()) {
+				if (!processCalculations<algorithmType>()) {
+					return;
+				}
+				auto balancedAlgos = balanceResultsByMaxLoss(threadsAmount);
+				balancedData = recalculateBalancedData<algorithmType>(std::move(balancedAlgos));
 			}
-			auto balancedJsons = balanceResultsByMaxLoss(threadsAmount);
-			auto balancedInfos = recalculateBalancedData<algorithmType>(balancedJsons);
-			uniteResults(balancedInfos, balancedJsons);
+			uniteResults(std::move(balancedData));
 		}
 
 		template<typename algorithmType, typename algorithmDataType>
@@ -70,17 +73,20 @@ namespace calculation {
 		}
 
 		template<typename algorithmType>
-		combinationsCalculations recalculateBalancedData(const combinationsJsons& balancedData) {
-			Json recalculatedBalancedData;
-			combinationsCalculations unitedInfo(balancedData.size());
+		Json recalculateBalancedData(combinationsJsons balancedAlgos) {
+			Json balancedData;
+			for (auto& [id, algoData] : balancedAlgos) {
+				balancedData[std::to_string(id)]["data"] = std::move(algoData);
+			}
+
 			int index = 0;
-			const int summary = static_cast<int>(calculations.size() * balancedData.size());
+			const int summary = static_cast<int>(calculations.size() * balancedAlgos.size());
 			for (const auto& [ticker, timeframe] : calculations) {
 				auto json = utils::readFromJson("assets/candles/" + ticker + '_' + getCandleIntervalApiStr(timeframe));
 				auto candles = utils::parseCandles(json);
-				for (const auto& [id, jsonData] : balancedData) {
+				for (const auto& [id, idData] : balancedData.items()) {
 					auto algData = algorithmType::algorithmDataType{ ticker };
-					if (!algData.initFromJson(jsonData)) {
+					if (!algData.initFromJson(idData["data"])) {
 						utils::logError("\ncalculationSystem::recalculateBalancedData wrong alrorithm json data");
 						continue;
 					}
@@ -89,19 +95,19 @@ namespace calculation {
 					const auto result = algorithm.calculate(candles);
 					if (result) {
 						auto algoJson = algorithm.getJsonData();
-						unitedInfo[id].push_back(getCalculationInfo(ticker, algoJson));
-						recalculatedBalancedData[std::to_string(id)][ticker] = std::move(algoJson);
+						algoJson.erase("data");
+						idData["tickers"][ticker] = std::move(algoJson);
 					}
 					else {
-						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + std::to_string(id));
+						utils::logError("\ncalculationSystem::recalculateBalancedData wrong balance - " + ticker + " - " + id);
 					}
 					utils::printProgress(++index, summary);
 				}
 			}
-			utils::saveToJson(utils::balancedDataDir, recalculatedBalancedData);
+			utils::saveToJson(utils::balancedDataDir, balancedData);
 			utils::resetProgress();
 			utils::log("\ncalculation::recalculateBalancedData finished");
-			return unitedInfo;
+			return balancedData;
 		}
 
 		std::vector<std::vector<Json>> threadsData;

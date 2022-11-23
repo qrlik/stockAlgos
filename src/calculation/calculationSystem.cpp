@@ -130,11 +130,12 @@ combinationsJsons calculationSystem::balanceResultsByMaxLoss(size_t threads) {
 	return std::move(combinationsJsons);
 }
 
-void calculationSystem::uniteResults(const combinationsCalculations& infos, const combinationsJsons& jsons) {
+void calculationSystem::uniteResults(Json balancedData) { 
+	auto infos = getCombinationsFromJson(balancedData);
 	auto combinationsAverages = getCalculationsAverages(infos);
 	if (combinationsAverages.empty()) {
 		utils::log("calculationSystem::uniteResults empty averages");
 		return;
 	}
-	saveDataAndStats(combinationsAverages, jsons, parabolaDegree);
+	saveDataAndStats(combinationsAverages, std::move(balancedData), parabolaDegree);
 }
