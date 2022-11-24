@@ -16,6 +16,12 @@ namespace calculation {
 		double profitPerIntervalWorst = std::numeric_limits<double>::max();
 		double profitPerInterval = 0.0; // actual or median
 	};
+	struct tickerInfo {
+		int minPlace = std::numeric_limits<int>::max();
+		int maxPlace = std::numeric_limits<int>::min();
+		int medianPlace = 0;
+		double averagePlace = 0;
+	};
 
 	using combinationId = size_t;
 	using combinationsCalculations = std::unordered_map<size_t, std::vector<calculationInfo>>;
@@ -34,6 +40,7 @@ namespace calculation {
 	void balanceByMaxLossPercent(const std::string& algoType, const combinationsCalculations& combinations, combinationsJsons& jsons, const calculationsType& calculations, size_t threadsAmount);
 	combinationsAverages getCalculationsAverages(const combinationsCalculations& aCalculations);
 	void saveDataAndStats(const combinationsAverages& combinationsAverages, Json balancedData, int degree);
+	void saveTickersRating(const combinationsCalculations& calculations);
 
 	void addStats(Json& aStats, const Json& aData, double aWeight);
 	void saveStats(Json& aStats, const std::string& aFileName);

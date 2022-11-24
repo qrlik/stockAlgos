@@ -43,7 +43,11 @@ namespace {
 		return os.str();
 	}
 
-	double getMedian(const std::vector<double>& aValues) {
+	template<typename T>
+	T getMedian(const std::vector<T>& aValues) {
+		if (aValues.empty()) {
+			return T{};
+		}
 		auto firstIndex = 0;
 		auto secondIndex = 0;
 		if (aValues.size() % 2 == 0) {
@@ -180,9 +184,12 @@ combinationsCalculations calculation::getCombinationsFromJson(const Json& balanc
 	result.reserve(balancedData.size());
 	for (const auto& [id, idData] : balancedData.items()) {
 		auto& calculations = result[std::stoull(id)];
+		calculations.reserve(idData["tickers"].size());
 		for (auto& [ticker, data] : idData["tickers"].items()) {
 			calculations.push_back(getCalculationInfo(ticker, data));
 		}
+		std::sort(calculations.begin(), calculations.end(), [](const auto& aLhs, const auto& aRhs)
+			{ return std::make_tuple(aLhs.profitPerInterval, aLhs.cash) > std::make_tuple(aRhs.profitPerInterval, aRhs.cash); });
 	}
 	return result;
 }
@@ -311,10 +318,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 			average.recoveryFactor = utils::minFloat(average.recoveryFactor,info.recoveryFactor);
 			average.ordersPerInterval = utils::minFloat(average.ordersPerInterval, info.ordersPerInterval);
 			average.maxLossPercent = utils::maxFloat(average.maxLossPercent, info.maxLossPercent);
-			if (utils::isLess(info.profitPerInterval, average.profitPerIntervalWorst)) {
-				average.ticker = info.ticker;
-				average.profitPerIntervalWorst = info.profitPerInterval;
-			}
+			average.profitPerIntervalWorst = utils::minFloat(average.profitPerIntervalWorst, info.profitPerInterval);
 
 			// median, average
 			profitsPerInterval.push_back(info.profitPerInterval);
@@ -345,7 +349,6 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 		stats["profitsFactor"] = info.profitsFactor;
 		stats["recoveryFactor"] = info.recoveryFactor;
 		stats["ordersPerInterval"] = info.ordersPerInterval;
-		stats["maxLossTicker"] = info.ticker;
 		stats["maxLossPercent"] = info.maxLossPercent;
 		stats["PPI_Average"] = info.profitPerIntervalAverage;
 		stats["PPI_Worst"] = info.profitPerIntervalWorst;
@@ -362,4 +365,67 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 		addData(unitedOutput, unitedStats, data);
 	}
 	saveStats(unitedStats, utils::outputDir + "/stats.json");
+}
+
+void calculation::saveTickersRating(const combinationsCalculations& calculations) {
+	std::unordered_map<std::string, tickerInfo> tickers;
+	std::unordered_map<std::string, std::vector<int>> tickersPlaces;
+	std::unordered_map<std::string, int> tickersPlacesSums;
+
+	for (const auto& [id, infos] : calculations) {
+		for (auto i = 0, size = static_cast<int>(infos.size()); i < size; ++i) {
+			const auto& info = infos[i];
+			const auto place = i + 1;
+			auto& tickerInfo = tickers[info.ticker];
+
+			tickerInfo.minPlace = std::min(place, tickerInfo.minPlace);
+			tickerInfo.maxPlace = std::max(place, tickerInfo.maxPlace);
+			tickersPlaces[info.ticker].push_back(place);
+			tickersPlacesSums[info.ticker] += place;
+		}
+	}
+	for (auto& [ticker, places] : tickersPlaces) {
+		std::sort(places.begin(), places.end(), std::greater<int>());
+		tickers[ticker].medianPlace = getMedian(places);
+	}
+	for (const auto& [ticker, sum] : tickersPlacesSums) {
+		tickers[ticker].averagePlace = utils::floor(sum / static_cast<double>(calculations.size()), 0.1);
+	}
+	std::vector<std::pair<std::string, tickerInfo>> tickersVector;
+	std::transform(tickers.begin(), tickers.end(), std::back_inserter(tickersVector), [](const auto& pair) { return pair; });
+	Json ratings;
+
+	{
+		std::sort(tickersVector.begin(), tickersVector.end(), [](const auto& aLhs, const auto& aRhs)
+			{ return std::make_tuple(aLhs.second.minPlace, aLhs.second.medianPlace, aLhs.second.averagePlace) >
+			std::make_tuple(aRhs.second.minPlace, aRhs.second.medianPlace, aRhs.second.averagePlace); });
+		Json common;
+		auto& minRating = common["common"];
+		for (const auto& [ticker, info] : tickersVector) {
+			Json tickerPlace;
+			tickerPlace[ticker].push_back(info.minPlace);
+			tickerPlace[ticker].push_back(info.medianPlace);
+			tickerPlace[ticker].push_back(info.averagePlace);
+			minRating.push_back(std::move(tickerPlace));
+		}
+		ratings.push_back(std::move(common));
+	}
+
+	const auto addSingleRating = [&tickersVector, &ratings](const std::string& name, const auto ptr) {
+		std::sort(tickersVector.begin(), tickersVector.end(), [ptr](const auto& aLhs, const auto& aRhs)
+			{ return aLhs.second.*ptr > aRhs.second.*ptr; });
+		Json rating;
+		auto& minRating = rating[name];
+		for (const auto& [ticker, info] : tickersVector) {
+			Json tickerPlace;
+			tickerPlace[ticker] = info.*ptr;
+			minRating.push_back(std::move(tickerPlace));
+		}
+		ratings.push_back(std::move(rating));
+	};
+	addSingleRating("minimum", &tickerInfo::minPlace);
+	addSingleRating("median", &tickerInfo::medianPlace);
+	addSingleRating("average", &tickerInfo::averagePlace);
+
+	utils::saveToJson(utils::tickersRatingDir, ratings);
 }
