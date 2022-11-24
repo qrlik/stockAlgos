@@ -57,6 +57,9 @@ void utils::logError(const std::string& aStr, Json data) {
 }
 
 void utils::saveErrors() {
+	if (errorsMap.empty()) {
+		return;
+	}
 	Json errors;
 	for (const auto& [error, data] : errorsMap) {
 		for (const auto& json : data) {

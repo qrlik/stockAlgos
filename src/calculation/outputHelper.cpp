@@ -12,7 +12,8 @@ namespace {
 	const auto intWidth = 12;
 	const auto boolWidth = 8;
 	const auto spaceWidth = 4;
-	const auto floatPrecision = 3;
+	const auto fixedPrecision = 3;
+	const auto floatPrecision = 1e-3;
 
 	int getWidth(const std::string& aName, const Json& aValue) {
 		auto width = static_cast<int>(aName.length()) + spaceWidth;
@@ -34,7 +35,7 @@ namespace {
 	std::string getStrFromJson(const Json& aValue) {
 		std::ostringstream os;
 		if (aValue.is_number_float()) {
-			os << std::fixed << std::setprecision(floatPrecision) << aValue.get<double>();
+			os << std::fixed << std::setprecision(fixedPrecision) << aValue.get<double>();
 		}
 		else {
 			os << aValue;
@@ -165,12 +166,12 @@ std::string calculation::getDirName(const std::string& aTicker, market::eCandleI
 calculationInfo calculation::getCalculationInfo(const std::string& ticker, const Json& data) {
 	calculationInfo info;
 	info.ticker = ticker;
-	info.cash = data["cash"].get<double>();
-	info.profitsFactor = data["stats"]["profitsFactor"].get<double>();
-	info.recoveryFactor = data["stats"]["recoveryFactor"].get<double>();
-	info.ordersPerInterval = data["stats"]["ordersPerInterval"].get<double>();
-	info.maxLossPercent = data["stats"]["maxLossPercent"].get<double>();
-	info.profitPerInterval = data["stats"]["profitPerInterval"].get<double>();
+	info.cash = utils::floor(data["cash"].get<double>(), 1.0);
+	info.profitsFactor = utils::ceil(data["stats"]["profitsFactor"].get<double>(), 0.1);
+	info.recoveryFactor = utils::floor(data["stats"]["recoveryFactor"].get<double>(), floatPrecision);
+	info.ordersPerInterval = utils::floor(data["stats"]["ordersPerInterval"].get<double>(), floatPrecision);
+	info.maxLossPercent = utils::ceil(data["stats"]["maxLossPercent"].get<double>(), 0.1);
+	info.profitPerInterval = utils::floor(data["stats"]["profitPerInterval"].get<double>(), floatPrecision);
 	return info;
 }
 
@@ -322,7 +323,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 
 		averageInfo.push_back({ united.first, std::move(average) });
 	}
-	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs) // to do look
+	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs)
 		{ return std::make_tuple(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
 					> std::make_tuple(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
 	return averageInfo;
