@@ -12,6 +12,7 @@ namespace calculation {
 		double recoveryFactor = std::numeric_limits<double>::max();
 		double ordersPerInterval = std::numeric_limits<double>::max();
 		double maxLossPercent = std::numeric_limits<double>::min();
+		double profitPerIntervalAverage = 0.0;
 		double profitPerIntervalWorst = std::numeric_limits<double>::max();
 		double profitPerInterval = 0.0; // actual or median
 	};
