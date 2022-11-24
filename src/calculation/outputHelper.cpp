@@ -301,6 +301,7 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 	for (const auto& united : aCalculations) {
 		calculationInfo average;
 		std::vector<double> profitsPerInterval;
+		double profitsPerIntervalSum = 0.0;
 
 		for (const auto& info : united.second) {
 			average.cash += info.cash;
@@ -315,24 +316,27 @@ combinationsAverages calculation::getCalculationsAverages(const combinationsCalc
 				average.profitPerIntervalWorst = info.profitPerInterval;
 			}
 
-			// median
+			// median, average
 			profitsPerInterval.push_back(info.profitPerInterval);
+			profitsPerIntervalSum += info.profitPerInterval;
 		}
 		std::sort(profitsPerInterval.begin(), profitsPerInterval.end());
+
 		average.profitPerInterval = getMedian(profitsPerInterval);
+		average.profitPerIntervalAverage = utils::floor(profitsPerIntervalSum / united.second.size(), floatPrecision);
 
 		averageInfo.push_back({ united.first, std::move(average) });
 	}
 	std::sort(averageInfo.begin(), averageInfo.end(), [](const auto& aLhs, const auto& aRhs)
-		{ return std::make_tuple(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval)
-					> std::make_tuple(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval) ; });
+		{ return std::make_tuple(aLhs.second.profitPerIntervalWorst, aLhs.second.profitPerInterval, aLhs.second.profitPerIntervalAverage)
+					> std::make_tuple(aRhs.second.profitPerIntervalWorst, aRhs.second.profitPerInterval, aRhs.second.profitPerIntervalAverage) ; });
 	return averageInfo;
 }
 
 void calculation::saveDataAndStats(const combinationsAverages& combinationsAverages, Json balancedData, int degree) {
 	Json unitedData;
 	Json unitedStats;
-	double maxProfit = combinationsAverages[0].second.profitPerIntervalWorst;
+	const double maxWorstPPI = combinationsAverages[0].second.profitPerIntervalWorst;
 	for (const auto& [id, info] : combinationsAverages) {
 		Json data;
 		data["cash"] = info.cash;
@@ -343,11 +347,12 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 		stats["ordersPerInterval"] = info.ordersPerInterval;
 		stats["maxLossTicker"] = info.ticker;
 		stats["maxLossPercent"] = info.maxLossPercent;
-		stats["profitPerIntervalWorst"] = info.profitPerIntervalWorst;
-		stats["profitPerInterval"] = info.profitPerInterval;
+		stats["PPI_Average"] = info.profitPerIntervalAverage;
+		stats["PPI_Worst"] = info.profitPerIntervalWorst;
+		stats["PPI"] = info.profitPerInterval;
 		unitedData.push_back(data);
 
-		const auto weight = getWeight(info.profitPerIntervalWorst, maxProfit, degree);
+		const auto weight = getWeight(info.profitPerIntervalWorst, maxWorstPPI, degree);
 		addStats(unitedStats, data["data"], weight);
 	}
 
