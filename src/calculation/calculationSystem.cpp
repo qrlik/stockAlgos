@@ -138,4 +138,5 @@ void calculationSystem::uniteResults(Json balancedData) {
 		return;
 	}
 	saveDataAndStats(combinationsAverages, std::move(balancedData), parabolaDegree);
+	saveTickersRating(infos);
 }

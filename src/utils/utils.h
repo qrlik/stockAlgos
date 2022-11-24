@@ -5,6 +5,7 @@
 namespace utils {
 	const std::string outputDir = "output";
 	const std::string balancedDataDir = outputDir + "/balancedData";
+	const std::string tickersRatingDir = outputDir + "/tickersRating";
 	const std::string lastDataDir = outputDir + "/lastData";
 	const std::string errorsDir = outputDir + "/errors";
 
