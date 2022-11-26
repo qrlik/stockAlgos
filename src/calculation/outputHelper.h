@@ -17,10 +17,17 @@ namespace calculation {
 		double profitPerInterval = 0.0; // actual or median
 	};
 	struct tickerInfo {
-		int minPlace = std::numeric_limits<int>::max();
-		int maxPlace = std::numeric_limits<int>::min();
 		int medianPlace = 0;
 		double averagePlace = 0;
+
+		double ppiMedian = 0.0;
+		double ppiAverage = 0.0;
+
+		double opiMedian = 0.0;
+		double opiAverage = 0.0;
+
+		double profitsFactorMedian = 0.0;
+		double profitsFactorAverage = 0.0;
 	};
 
 	using combinationId = size_t;

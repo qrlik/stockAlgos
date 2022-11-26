@@ -369,63 +369,86 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 
 void calculation::saveTickersRating(const combinationsCalculations& calculations) {
 	std::unordered_map<std::string, tickerInfo> tickers;
-	std::unordered_map<std::string, std::vector<int>> tickersPlaces;
-	std::unordered_map<std::string, int> tickersPlacesSums;
+
+	std::unordered_map<std::string, std::vector<int>> places;
+	std::unordered_map<std::string, int> placesSums;
+
+	std::unordered_map<std::string, std::vector<double>> PPIs;
+	std::unordered_map<std::string, double> sumsPPI;
+
+	std::unordered_map<std::string, std::vector<double>> OPIs;
+	std::unordered_map<std::string, double> sumsOPI;
+
+	std::unordered_map<std::string, std::vector<double>> profitFactors;
+	std::unordered_map<std::string, double> profitFactorsSums;
 
 	for (const auto& [id, infos] : calculations) {
 		for (auto i = 0, size = static_cast<int>(infos.size()); i < size; ++i) {
 			const auto& info = infos[i];
 			const auto place = i + 1;
-			auto& tickerInfo = tickers[info.ticker];
 
-			tickerInfo.minPlace = std::min(place, tickerInfo.minPlace);
-			tickerInfo.maxPlace = std::max(place, tickerInfo.maxPlace);
-			tickersPlaces[info.ticker].push_back(place);
-			tickersPlacesSums[info.ticker] += place;
+			places[info.ticker].push_back(place);
+			placesSums[info.ticker] += place;
+
+			PPIs[info.ticker].push_back(info.profitPerInterval);
+			sumsPPI[info.ticker] += info.profitPerInterval;
+
+			OPIs[info.ticker].push_back(info.ordersPerInterval);
+			sumsOPI[info.ticker] += info.ordersPerInterval;
+
+			profitFactors[info.ticker].push_back(info.profitsFactor);
+			profitFactorsSums[info.ticker] += info.profitsFactor;
 		}
 	}
-	for (auto& [ticker, places] : tickersPlaces) {
-		std::sort(places.begin(), places.end(), std::greater<int>());
-		tickers[ticker].medianPlace = getMedian(places);
-	}
-	for (const auto& [ticker, sum] : tickersPlacesSums) {
-		tickers[ticker].averagePlace = utils::floor(sum / static_cast<double>(calculations.size()), 0.1);
-	}
+
+	const auto computeMedian = [&tickers](auto& container, auto field, auto pred) {
+		for (auto& [ticker, places] : container) {
+			std::sort(places.begin(), places.end(), pred);
+			tickers[ticker].*field = getMedian(places);
+		}
+	};
+	const auto computeAverage = [&tickers, size = calculations.size()](auto& container, auto field, double precision) {
+		for (const auto& [ticker, sum] : container) {
+			tickers[ticker].*field = utils::floor(sum / static_cast<double>(size), precision);
+		}
+	};
+
+	computeMedian(places, &tickerInfo::medianPlace, std::greater<int>());
+	computeAverage(placesSums, &tickerInfo::averagePlace, 0.1);
+
+	computeMedian(PPIs, &tickerInfo::ppiMedian, [](auto lhs, auto rhs) { return utils::isGreater(lhs, rhs); });
+	computeAverage(sumsPPI, &tickerInfo::ppiAverage, floatPrecision);
+
+	computeMedian(OPIs, &tickerInfo::opiMedian, [](auto lhs, auto rhs) { return utils::isGreater(lhs, rhs); });
+	computeAverage(sumsOPI, &tickerInfo::opiAverage, floatPrecision);
+
+	computeMedian(profitFactors, &tickerInfo::profitsFactorMedian, [](auto lhs, auto rhs) { return utils::isGreater(lhs, rhs); });
+	computeAverage(profitFactorsSums, &tickerInfo::profitsFactorAverage, 0.1);
+
 	std::vector<std::pair<std::string, tickerInfo>> tickersVector;
 	std::transform(tickers.begin(), tickers.end(), std::back_inserter(tickersVector), [](const auto& pair) { return pair; });
 	Json ratings;
 
-	{
-		std::sort(tickersVector.begin(), tickersVector.end(), [](const auto& aLhs, const auto& aRhs)
-			{ return std::make_tuple(aLhs.second.minPlace, aLhs.second.medianPlace, aLhs.second.averagePlace) >
-			std::make_tuple(aRhs.second.minPlace, aRhs.second.medianPlace, aRhs.second.averagePlace); });
-		Json common;
-		auto& minRating = common["common"];
-		for (const auto& [ticker, info] : tickersVector) {
-			Json tickerPlace;
-			tickerPlace[ticker].push_back(info.minPlace);
-			tickerPlace[ticker].push_back(info.medianPlace);
-			tickerPlace[ticker].push_back(info.averagePlace);
-			minRating.push_back(std::move(tickerPlace));
-		}
-		ratings.push_back(std::move(common));
-	}
-
-	const auto addSingleRating = [&tickersVector, &ratings](const std::string& name, const auto ptr) {
-		std::sort(tickersVector.begin(), tickersVector.end(), [ptr](const auto& aLhs, const auto& aRhs)
-			{ return aLhs.second.*ptr > aRhs.second.*ptr; });
+	const auto addRating = [&tickersVector, &ratings](std::string_view name, auto fField, auto sField) {
+		std::sort(tickersVector.begin(), tickersVector.end(), [fField, sField](const auto& aLhs, const auto& aRhs)
+			{ return std::make_tuple(aLhs.second.*fField, aLhs.second.*sField) >
+			std::make_tuple(aRhs.second.*fField, aRhs.second.*sField); });
 		Json rating;
-		auto& minRating = rating[name];
+		auto& ratingField = rating[name.data()];
 		for (const auto& [ticker, info] : tickersVector) {
-			Json tickerPlace;
-			tickerPlace[ticker] = info.*ptr;
-			minRating.push_back(std::move(tickerPlace));
+			Json tickerJson;
+			tickerJson[ticker].push_back(info.*fField);
+			tickerJson[ticker].push_back(info.*sField);
+			ratingField.push_back(std::move(tickerJson));
 		}
 		ratings.push_back(std::move(rating));
 	};
-	addSingleRating("minimum", &tickerInfo::minPlace);
-	addSingleRating("median", &tickerInfo::medianPlace);
-	addSingleRating("average", &tickerInfo::averagePlace);
+	addRating("place", &tickerInfo::medianPlace, &tickerInfo::averagePlace);
+	std::reverse(ratings[0]["place"].begin(), ratings[0]["place"].end());
+	addRating("profitPerInterval", &tickerInfo::ppiMedian, &tickerInfo::ppiAverage);
+	addRating("ordersPerInterval", &tickerInfo::opiMedian, &tickerInfo::opiAverage);
+	addRating("profitFactor", &tickerInfo::profitsFactorMedian, &tickerInfo::profitsFactorAverage);
+	std::reverse(ratings[3]["profitFactor"].begin(), ratings[3]["profitFactor"].end());
 
 	utils::saveToJson(utils::tickersRatingDir, ratings);
 }
