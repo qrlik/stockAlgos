@@ -17,9 +17,6 @@ namespace calculation {
 		double profitPerInterval = 0.0; // actual or median
 	};
 	struct tickerInfo {
-		int medianPlace = 0;
-		double averagePlace = 0;
-
 		double ppiMedian = 0.0;
 		double ppiAverage = 0.0;
 
