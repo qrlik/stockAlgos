@@ -370,9 +370,6 @@ void calculation::saveDataAndStats(const combinationsAverages& combinationsAvera
 void calculation::saveTickersRating(const combinationsCalculations& calculations) {
 	std::unordered_map<std::string, tickerInfo> tickers;
 
-	std::unordered_map<std::string, std::vector<int>> places;
-	std::unordered_map<std::string, int> placesSums;
-
 	std::unordered_map<std::string, std::vector<double>> PPIs;
 	std::unordered_map<std::string, double> sumsPPI;
 
@@ -383,13 +380,7 @@ void calculation::saveTickersRating(const combinationsCalculations& calculations
 	std::unordered_map<std::string, double> profitFactorsSums;
 
 	for (const auto& [id, infos] : calculations) {
-		for (auto i = 0, size = static_cast<int>(infos.size()); i < size; ++i) {
-			const auto& info = infos[i];
-			const auto place = i + 1;
-
-			places[info.ticker].push_back(place);
-			placesSums[info.ticker] += place;
-
+		for(const auto& info : infos) {
 			PPIs[info.ticker].push_back(info.profitPerInterval);
 			sumsPPI[info.ticker] += info.profitPerInterval;
 
@@ -412,9 +403,6 @@ void calculation::saveTickersRating(const combinationsCalculations& calculations
 			tickers[ticker].*field = utils::floor(sum / static_cast<double>(size), precision);
 		}
 	};
-
-	computeMedian(places, &tickerInfo::medianPlace, std::greater<int>());
-	computeAverage(placesSums, &tickerInfo::averagePlace, 0.1);
 
 	computeMedian(PPIs, &tickerInfo::ppiMedian, [](auto lhs, auto rhs) { return utils::isGreater(lhs, rhs); });
 	computeAverage(sumsPPI, &tickerInfo::ppiAverage, floatPrecision);
@@ -443,8 +431,6 @@ void calculation::saveTickersRating(const combinationsCalculations& calculations
 		}
 		ratings.push_back(std::move(rating));
 	};
-	addRating("place", &tickerInfo::medianPlace, &tickerInfo::averagePlace);
-	std::reverse(ratings[0]["place"].begin(), ratings[0]["place"].end());
 	addRating("profitPerInterval", &tickerInfo::ppiMedian, &tickerInfo::ppiAverage);
 	addRating("ordersPerInterval", &tickerInfo::opiMedian, &tickerInfo::opiAverage);
 	addRating("profitFactor", &tickerInfo::profitsFactorMedian, &tickerInfo::profitsFactorAverage);
