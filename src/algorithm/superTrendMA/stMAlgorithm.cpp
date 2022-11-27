@@ -5,21 +5,16 @@ using namespace algorithm;
 stMAlgorithm::stMAlgorithm(const stMAlgorithmData& aData, market::eCandleInterval aTimeframe) :
 	baseClass(aData, aTimeframe),
 	opener(*this),
-	maDirection(*this),
 	closer(*this) {}
 
 bool stMAlgorithm::operator==(const stMAlgorithm& aOther) const {
 	auto result = baseClass::operator==(aOther);
-	result &= maDirection == aOther.maDirection;
 	return result;
 }
 
 void stMAlgorithm::preLoop() {}
 
 bool stMAlgorithm::loop() {
-	if (!maDirection.update()) {
-		return false;
-	}
 	const auto curState = getState();
 	if (curState == getIntState(eBaseState::NONE)) {
 		return opener.check();
@@ -36,20 +31,6 @@ void stMAlgorithm::onOpenOrder() {
 
 void stMAlgorithm::onCloseOrder(eOrderState aState, double aProfit) {
 	opener.onCloseOrder(aState, aProfit);
-}
-
-void stMAlgorithm::logInternal(std::ofstream& aFile) const {
-}
-
-void stMAlgorithm::initInternal() {}
-
-void stMAlgorithm::initDataFieldInternal(const std::string& aName, const Json& aValue) {
-	if (aName == "firstMA") {
-		maDirection.updateData(maDirection.firstData, aValue);
-	}
-	else if (aName == "secondMA") {
-		maDirection.updateData(maDirection.secondData, aValue);
-	}
 }
 
 void stMAlgorithm::updateOrderStopLoss(double aStopLoss) {

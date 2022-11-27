@@ -9,17 +9,6 @@ namespace algorithm {
 
 		size_t getCustomID() const override;
 
-		double getFirstMATrendPrecision() const { return firstMATrendPrecision; }
-		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
-		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }
-		double getCloserTrailPrecision() const { return closerTrailPrecision; }
-		double getOpenOffsetPercent() const { return openOffsetPercent; }
-
-		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
-		bool getCloserMACheck() const { return closerMACheck; }
-		bool getCloserConjuctionCheck() const { return closerConjuctionCheck; }
-		bool getCloserTrailStop() const { return closerTrailStop; }
-
 	protected:
 		size_t getCustomHash() const override;
 
@@ -29,15 +18,5 @@ namespace algorithm {
 		bool isValidInternal() const override;
 		void addJsonDataInternal(Json& aData) const override;
 
-		double firstMATrendPrecision = -1.0;
-		double secondMATrendPrecision = -1.0;
-		double closerMATrendPrecision = -1.0;
-		double closerTrailPrecision = -1.0;
-		double openOffsetPercent = -1.0;
-		
-		bool closerTrendChangeCheck = false;
-		bool closerMACheck = false;
-		bool closerTrailStop = false;
-		bool closerConjuctionCheck = false;
 	};
 }

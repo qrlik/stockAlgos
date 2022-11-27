@@ -144,9 +144,9 @@ namespace algorithm {
 		virtual bool loop() = 0;
 		virtual void onOpenOrder() = 0;
 		virtual void onCloseOrder(eOrderState aState, double aProfit) = 0;
-		virtual void logInternal(std::ofstream& aFile) const = 0;
-		virtual void initInternal() = 0;
-		virtual void initDataFieldInternal(const std::string& aName, const Json& aValue) = 0;
+		virtual void logInternal(std::ofstream& file) const {};
+		virtual void initInternal() {};
+		virtual void initDataFieldInternal(const std::string& name, const Json& value) {};
 
 		void addState(int aState, std::string aStr) {
 			if (statesMap.count(aState) == 0) {

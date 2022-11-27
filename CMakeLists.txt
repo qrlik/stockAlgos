@@ -16,6 +16,7 @@ include_directories(src)
 set(CMAKE_CXX_FLAGS  "-W4 -EHsc" )
 set(CMAKE_CXX_FLAGS_RELEASE "-Ox -GL")
 set(CMAKE_EXE_LINKER_FLAGS "-LTCG")
+add_definitions("/wd4100")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})

@@ -1,7 +1,6 @@
 #pragma once
 #include "algorithm/algorithmBase.hpp"
 #include "closerModule.h"
-#include "maDirectionModule.h"
 #include "openerModule.h"
 #include "stMAlgorithmData.h"
 
@@ -12,7 +11,6 @@ namespace algorithm {
 		stMAlgorithm(const stMAlgorithmData& aData, market::eCandleInterval aTimeframe);
 		bool operator==(const stMAlgorithm& aOther) const;
 
-		const maDirectionModule& getMAModule() const { return maDirection; }
 		const closerModule& getCloserModule() const { return closer; }
 		void updateOrderStopLoss(double aStopLoss);
 	private:
@@ -20,11 +18,7 @@ namespace algorithm {
 		bool loop() override;
 		void onOpenOrder() override;
 		void onCloseOrder(eOrderState aState, double aProfit) override;
-		void logInternal(std::ofstream& aFile) const override;
-		void initInternal() override;
-		void initDataFieldInternal(const std::string& aName, const Json& aValue) override;
 
-		maDirectionModule maDirection;
 		openerModule opener;
 		closerModule closer;
 	};
