@@ -13,8 +13,7 @@ namespace algorithm {
 		double getSecondMATrendPrecision() const { return secondMATrendPrecision; }
 		double getCloserMATrendPrecision() const { return closerMATrendPrecision; }
 		double getCloserTrailPrecision() const { return closerTrailPrecision; }
-		double getActivationPercent() const { return activationPercent; }
-		double getDeactivationPercent() const { return deactivationPercent; }
+		double getOpenOffsetPercent() const { return openOffsetPercent; }
 
 		bool getCloserTrendChangeCheck() const { return closerTrendChangeCheck; }
 		bool getCloserMACheck() const { return closerMACheck; }
@@ -34,8 +33,7 @@ namespace algorithm {
 		double secondMATrendPrecision = -1.0;
 		double closerMATrendPrecision = -1.0;
 		double closerTrailPrecision = -1.0;
-		double activationPercent = -1.0;
-		double deactivationPercent = -1.0;
+		double openOffsetPercent = -1.0;
 		
 		bool closerTrendChangeCheck = false;
 		bool closerMACheck = false;
