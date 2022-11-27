@@ -82,7 +82,6 @@ bool statistic::operator==(const statistic& aOther) const {
 	const auto& marketData = data.getMarketData();
 	result &= utils::isEqual(maxLossHighCash, aOther.maxLossHighCash, marketData.getQuotePrecision());
 	result &= utils::isEqual(maxLossLowCash, aOther.maxLossLowCash, marketData.getQuotePrecision());
-	result &= utils::isEqual(summaryLoss, aOther.summaryLoss, marketData.getQuotePrecision());
 	result &= statCounters == aOther.statCounters;
 	result &= profitableStreak == aOther.profitableStreak;
 	result &= unprofitableStreak == aOther.unprofitableStreak;
