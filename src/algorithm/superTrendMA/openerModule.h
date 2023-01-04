@@ -12,7 +12,6 @@ namespace algorithm {
 		openerModule(stMAlgorithm& aAlgorithm);
 		bool check();
 	private:
-		bool tryToOpenOrder();
 		void onOpenOrder();
 		void onCloseOrder(eOrderState state, double profit);
 

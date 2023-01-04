@@ -7,7 +7,11 @@ openerModule::openerModule(stMAlgorithm& aAlgorithm)
 	:algorithm(aAlgorithm) {}
 
 bool openerModule::check() {
-	return tryToOpenOrder();
+	if (isPrevPositionCorrect()) {
+		return algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, algorithm.getCandle().open);
+	}
+
+	return false;
 }
 
 bool openerModule::isPrevPositionCorrect() const {
@@ -19,14 +23,6 @@ bool openerModule::isPrevPositionCorrect() const {
 	else {
 		return !sameCandleAsLastClose || (sameCandleAsLastClose && lastClosedOrder.second == eOrderState::LONG);
 	}
-}
-
-bool openerModule::tryToOpenOrder() {
-	if (isPrevPositionCorrect()) {
-		return algorithm.openOrder((algorithm.getIndicators().isSuperTrendUp()) ? eOrderState::LONG : eOrderState::SHORT, algorithm.getCandle().open);
-	}
-
-	return false;
 }
 
 void openerModule::onOpenOrder() {

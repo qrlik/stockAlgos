@@ -21,9 +21,9 @@ namespace calculation {
 		void calculateInternal() {
 			auto balancedData = utils::readFromJson(utils::balancedDataDir);
 			if (balancedData.is_null()) {
-				//if (!processCalculations<algorithmType>()) {
-				//	return;
-				//}
+				if (!processCalculations<algorithmType>()) {
+					return;
+				}
 				auto balancedAlgos = balanceResultsByMaxLoss(threadsAmount);
 				balancedData = recalculateBalancedData<algorithmType>(std::move(balancedAlgos));
 			}
