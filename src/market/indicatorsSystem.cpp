@@ -119,7 +119,7 @@ bool indicatorsSystem::calculateRSI(candle& aCandle) {
 	}
 	upMa = calculateCustomMA(market::eAtrType::RMA, upList, upMa);
 	downMa = calculateCustomMA(market::eAtrType::RMA, downList, downMa);
-	const auto rs = (utils::isGreater(downMa, 0.0)) ? upMa / downMa : 0.0;
+	const auto rs = (utils::isGreater(downMa, 0.0)) ? upMa / downMa : std::numeric_limits<double>::max();
 	rsi = (utils::isGreater(rs, 0.0)) ? 100.0 - 100.0 / (1.0 + rs) : 100.0;
 	return static_cast<int>(upList.size()) >= data.getRsiSize();
 }
