@@ -1,0 +1,52 @@
+[
+	{
+		"name": "startCash",
+		"value": 1000
+	},
+	{
+		"name": "maxLossPercent",
+		"value": 30
+	},
+	{
+		"name": "dealPercent", 
+		"value": 0.5
+	},
+	{
+		"name": "leverage",
+		"value": 10
+	},
+	{
+		"name": "stopLossPercent",
+		"values": [ 5.0 ]
+	},
+	{
+		"name": "minimumProfitPercent",
+		"value": 0.1
+	},
+	{
+		"name": "firstMA",
+		"value": 20
+	},
+	{
+		"name": "secondMA",
+		"value": 5
+	},
+	{
+		"name": "atrType",
+		"value": "RMA"
+	},
+	{
+		"name": "atrSize",
+		"values": [ 25, 50, 75, 100, 150, 200, 250, 300, 350, 400 ]
+	},
+	{
+		"name": "stFactor",
+		"values": [
+			2.5, 5.0, 7.5, 10.0,
+		   15.0, 20.0, 25.0, 30.0,
+		   35.0, 40.0, 45.0, 50.0,
+		   75.0, 100.0, 125.0, 150.0,
+		   200.0, 250.0, 300.0, 350.0
+	  ]
+	}
+]

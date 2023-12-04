@@ -5,7 +5,6 @@
 
 /*.exe
 build/*
-input/*
 output/*
 
 # User-specific files

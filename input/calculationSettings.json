@@ -1,0 +1,142 @@
+{
+	"threadsAmount": 8,
+	"parabolaDegree": 7,
+	"algorithmType": "superTrendMA",
+	"calculations": [
+		{
+			"ticker": "SHIBUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "CRVUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "XTZUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "XLMUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "MANAUSDT",
+			"timeframe": "1m"
+		},
+
+
+
+		{
+			"ticker": "BCHUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "EOSUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "DOTUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "LTCUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "SANDUSDT",
+			"timeframe": "1m"
+		},
+
+
+
+		{
+			"ticker": "ENJUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "NEARUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "MATICUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "ZECUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "AVAXUSDT",
+			"timeframe": "1m"
+		},
+
+
+
+		{
+			"ticker": "XRPUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "XMRUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "AXSUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "DOGEUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "ETCUSDT",
+			"timeframe": "1m"
+		},
+
+
+
+		{
+			"ticker": "FILUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "THETAUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "SOLUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "WAVESUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "BTCBUSD",
+			"timeframe": "1m"
+		},
+
+
+
+		{
+			"ticker": "LINKUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "BTCUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "ADAUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "BNBUSDT",
+			"timeframe": "1m"
+		},
+		{
+			"ticker": "ETHUSDT",
+			"timeframe": "1m"
+		}
+	]
+}

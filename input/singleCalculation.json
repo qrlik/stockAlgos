@@ -1,0 +1,34 @@
+{
+	"algorithmType": "superTrendMA",
+	"ticker": "AXSUSDT",
+	"timeframe": "1m",
+	"data": {
+		"startCash": 5000,
+		"maxLossPercent": 30.0,
+
+		"dealPercent": 1.0,
+		"leverage": 50,
+
+		"stopLossPercent": 0.5,
+		"minimumProfitPercent": 0.1,
+
+		"firstMA": 20,
+		"secondMA": 5,
+
+		"atrType": "RMA",
+		"atrSize": 65,
+		"stFactor": 20.0,
+
+		"activationPercent": 1.0,
+
+		"closerTrendChangeCheck": false,
+		"closerMACheck": true,
+		"closerConjuctionCheck": false,
+		"closerTrailStop": false,
+		
+		"firstMATrendPrecision": 2.0,
+		"secondMATrendPrecision": 10.0,
+		"closerMATrendPrecision": 32.5,
+		"closerTrailPrecision": -1.0
+	}
+}
